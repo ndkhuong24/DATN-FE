@@ -1,0 +1,212 @@
+<div class=" row">
+<!--  <div class="col-2" style="padding-left: 20px">-->
+<!--    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">-->
+<!--      <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>-->
+<!--        <li class="mat-tree-node">-->
+<!--          <button mat-icon-button disabled></button>-->
+<!--          {{node.name}}-->
+<!--        </li>-->
+<!--      </mat-tree-node>-->
+<!--      <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">-->
+<!--        <li>-->
+<!--          <div class="mat-tree-node">-->
+<!--            <button mat-icon-button matTreeNodeToggle-->
+<!--                    [attr.aria-label]="'toggle ' + node.name">-->
+<!--              <mat-icon class="mat-icon-rtl-mirror">-->
+<!--                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}-->
+<!--              </mat-icon>-->
+<!--            </button>-->
+<!--            {{node.name}}-->
+<!--          </div>-->
+<!--          <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">-->
+<!--            <ng-container matTreeNodeOutlet></ng-container>-->
+<!--          </ul>-->
+<!--        </li>-->
+<!--      </mat-nested-tree-node>-->
+<!--    </mat-tree>-->
+<!--  </div>-->
+  <div class="san-pham col-10" style="margin-top: 40px;">
+    <h1 style="text-align: center; ">Sản Phẩm</h1>
+    <div class="">
+      <ul class="nav justify-content-center">
+        <li class="nav-item">
+          <button type="button" class="btn btn-light" (click)="changeBrand(0)">Tất cả</button>
+        </li>
+        <li class="nav-item" *ngFor="let b of listBrand">
+          <input type="button" class="btn btn-light" id="brandName" [value]="b.name" (click)="changeBrand(b.id)">
+        </li>
+      </ul>
+    </div>
+    <div style="margin-top: 40px;">
+      <div class="container text-center">
+        <div class="row align-items-start">
+          <div style="display: flex; gap: 10px; margin-top: 50px" class="col-3" *ngFor="let p of listProductNoiBat">
+            <div class="card" style="width: 18rem;">
+              <a  [routerLink]="['/product-details',p.id]">
+                <img style="width: 250px; height: 330px"
+                     (mouseenter)="onMouseEnter(p)"
+                     (mouseleave)="onMouseLeave(p)"
+                     [src]="isMouseOver[p.id] ? p.imagesDTOList[1].imageName : p.imagesDTOList[0].imageName"
+                     class="card-img-top"
+                     alt="..."
+                >
+                <span *ngIf="p.reducePrice != null && p.percentageReduce != null" class="percentage-badge">{{ p.percentageReduce }}%</span>
+              </a>
+
+              <div class="card-body">
+                <h5 class="card-title">{{p.name}}</h5>
+                <div *ngIf="p.reducePrice == null && p.percentageReduce == null"><span>{{p.price}}</span> đ</div>
+                <div *ngIf="p.reducePrice != null && p.percentageReduce != null"> <del>{{utilService.formatMoney(p.price)}}</del>  <span style="margin-left: 5px">{{utilService.formatMoney(p.price - p.reducePrice)}}</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--<div class="container">-->
+<!--  <h1 style="text-align: center">Sneaker</h1>-->
+<!--  <div class="danhmuc" style="display: flex;">-->
+<!--    -->
+
+<!--    <div class="img row">-->
+<!--      <div class="card" style="width: 16rem;">-->
+<!--        <img src="./assets/image/anh1.jpeg" class="card-img-top" >-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">2.999.000đ</h5>-->
+<!--          <p class="card-text">Nike Air Force 1</p>-->
+<!--          <a href="#" class="btn btn-primary">Add To Card</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="card" style="width: 16rem;">-->
+<!--        <img src="./assets/image/anh1.jpeg" class="card-img-top" >-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">2.999.000đ</h5>-->
+<!--          <p class="card-text">Nike Air Force 1</p>-->
+<!--          <a href="#" class="btn btn-primary">Add To Card</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="card" style="width: 16rem;">-->
+<!--        <img src="./assets/image/anh1.jpeg" class="card-img-top" >-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">2.999.000đ</h5>-->
+<!--          <p class="card-text">Nike Air Force 1</p>-->
+<!--          <a href="#" class="btn btn-primary">Add To Card</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="card" style="width: 16rem;">-->
+<!--        <img src="./assets/image/anh1.jpeg" class="card-img-top" >-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">2.999.000đ</h5>-->
+<!--          <p class="card-text">Nike Air Force 1</p>-->
+<!--          <a href="#" class="btn btn-primary">Add To Card</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="img1 rơ">-->
+<!--      <div class="card" style="width: 16rem;">-->
+<!--        <img src="./assets/image/anh1.jpeg" class="card-img-top" >-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">2.999.000đ</h5>-->
+<!--          <p class="card-text">Nike Air Force 1</p>-->
+<!--          <a href="#" class="btn btn-primary">Add To Card</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="card" style="width: 16rem;">-->
+<!--        <img src="./assets/image/anh1.jpeg" class="card-img-top" >-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">2.999.000đ</h5>-->
+<!--          <p class="card-text">Nike Air Force 1</p>-->
+<!--          <a href="#" class="btn btn-primary">Add To Card</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="card" style="width: 16rem;">-->
+<!--        <img src="./assets/image/anh1.jpeg" class="card-img-top" >-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">2.999.000đ</h5>-->
+<!--          <p class="card-text">Nike Air Force 1</p>-->
+<!--          <a href="#" class="btn btn-primary">Add To Card</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="card" style="width: 16rem;">-->
+<!--        <img src="./assets/image/anh1.jpeg" class="card-img-top" >-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">2.999.000đ</h5>-->
+<!--          <p class="card-text">Nike Air Force 1</p>-->
+<!--          <a href="#" class="btn btn-primary">Add To Card</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="img2">-->
+<!--      <div class="card" style="width: 16rem;">-->
+<!--        <img src="./assets/image/anh1.jpeg" class="card-img-top" >-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">2.999.000đ</h5>-->
+<!--          <p class="card-text">Nike Air Force 1</p>-->
+<!--          <a href="#" class="btn btn-primary">Add To Card</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="card" style="width: 16rem;">-->
+<!--        <img src="./assets/image/anh1.jpeg" class="card-img-top" >-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">2.999.000đ</h5>-->
+<!--          <p class="card-text">Nike Air Force 1</p>-->
+<!--          <a href="#" class="btn btn-primary">Add To Card</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="card" style="width: 16rem;">-->
+<!--        <img src="./assets/image/anh1.jpeg" class="card-img-top" >-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">2.999.000đ</h5>-->
+<!--          <p class="card-text">Nike Air Force 1</p>-->
+<!--          <a href="#" class="btn btn-primary">Add To Card</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="card" style="width: 16rem;">-->
+<!--        <img src="./assets/image/anh1.jpeg" class="card-img-top" >-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">2.999.000đ</h5>-->
+<!--          <p class="card-text">Nike Air Force 1</p>-->
+<!--          <a href="#" class="btn btn-primary">Add To Card</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="img3">-->
+<!--      <div class="card" style="width: 16rem;">-->
+<!--        <img src="./assets/image/anh1.jpeg" class="card-img-top" >-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">2.999.000đ</h5>-->
+<!--          <p class="card-text">Nike Air Force 1</p>-->
+<!--          <a href="#" class="btn btn-primary">Add To Card</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="card" style="width: 16rem;">-->
+<!--        <img src="./assets/image/anh1.jpeg" class="card-img-top" >-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">2.999.000đ</h5>-->
+<!--          <p class="card-text">Nike Air Force 1</p>-->
+<!--          <a href="#" class="btn btn-primary">Add To Card</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="card" style="width: 16rem;">-->
+<!--        <img src="./assets/image/anh1.jpeg" class="card-img-top" >-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">2.999.000đ</h5>-->
+<!--          <p class="card-text">Nike Air Force 1</p>-->
+<!--          <a href="#" class="btn btn-primary">Add To Card</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="card" style="width: 16rem;">-->
+<!--        <img src="./assets/image/anh1.jpeg" class="card-img-top" >-->
+<!--        <div class="card-body">-->
+<!--          <h5 class="card-title">2.999.000đ</h5>-->
+<!--          <p class="card-text">Nike Air Force 1</p>-->
+<!--          <a href="#" class="btn btn-primary">Add To Card</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--  </div>-->
+<!--</div>-->

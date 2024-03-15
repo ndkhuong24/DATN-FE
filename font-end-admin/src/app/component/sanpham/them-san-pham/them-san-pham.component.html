@@ -1,0 +1,158 @@
+
+<h1 mat-dialog-title>Thêm sản phẩm</h1>
+<div mat-dialog-content class="example-container"style="display: flex">
+  <div style="margin-right: 10px">
+    <mat-form-field appearance="outline">
+      <mat-label>Tên sản phẩm</mat-label>
+      <input [(ngModel)]="Name" name="Name" matInput placeholder="Tên" (keydown)="revoveInvalid(validName)" (blur)="validateName()">
+      <div class="validate-input" *ngIf="!validName.done">
+        <p class="validate-input-label" *ngIf="validName.empty">Tên không được để trống</p>
+        <p class="validate-input-label" *ngIf="validName.maxLength">Tên sản phẩm dưới 250 kí tự</p>
+      </div>
+    </mat-form-field>
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>Tên người tạo</mat-label>-->
+<!--      <input [(ngModel)]="CreateName" name="CreateName" matInput placeholder="Người tạo">-->
+<!--    </mat-form-field>-->
+    <mat-form-field appearance="outline">
+      <mat-label>Mô tả</mat-label>
+      <input [(ngModel)]="Description" name="Description" matInput placeholder="Mô tả" (keydown)="revoveInvalid(validDescription)" (blur)="validateDescription()">
+      <div class="validate-input" *ngIf="!validDescription.done">
+        <p class="validate-input-label" *ngIf="validDescription.empty">Mô tả không được để trống</p>
+      </div>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Gía</mat-label>
+      <input [(ngModel)]="Price" name="Price" matInput placeholder="Gía" (keydown)="revoveInvalid(validPrice)" (blur)="validatePrice()">
+      <div class="validate-input" *ngIf="!validPrice.done">
+        <p class="validate-input-label" *ngIf="validPrice.empty">Giá không được để trống</p>
+        <p class="validate-input-label" *ngIf="validPrice.regex">Không đúng định dạng giá phải là số dương</p>
+      </div>
+    </mat-form-field>
+    <mat-radio-group [(ngModel)]="Status" name="Status">
+      <mat-label>Trạng thái</mat-label>
+      <mat-radio-button [value]="0">Hoạt động</mat-radio-button>
+      <mat-radio-button [value]="1">Ngừng hoạt động</mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Thương hiệu</mat-label>
+      <mat-select [(ngModel)]="IdBrand" (keydown)="revoveInvalid(validBrand)" (blur)="validateBrand()">
+        <mat-option *ngFor="let br of brand" [value]="br.id">
+          {{br.name}}
+        </mat-option>
+      </mat-select>
+      <div class="validate-input" *ngIf="!validBrand.done">
+        <p class="validate-input-label" *ngIf="validBrand.empty">Vui lòng chọn thương hiệu</p>
+      </div>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Danh mục</mat-label>
+      <mat-select [(ngModel)]="IdCategory" (keydown)="revoveInvalid(validCategory)" (blur)="validateCategory()">
+        <mat-option *ngFor="let cate of categories" [value]="cate.id">
+          {{cate.name}}
+        </mat-option>
+      </mat-select>
+      <div class="validate-input" *ngIf="!validCategory.done">
+        <p class="validate-input-label" *ngIf="validCategory.empty">Vui lòng chọn Danh mục</p>
+      </div>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Đế giày</mat-label>
+      <mat-select [(ngModel)]="IdSole" (keydown)="revoveInvalid(validSole)" (blur)="validateSole()">
+        <mat-option *ngFor="let sl of sole" [value]="sl.id">
+          {{sl.soleMaterial}}
+        </mat-option>
+      </mat-select>
+      <div class="validate-input" *ngIf="!validSole.done">
+        <p class="validate-input-label" *ngIf="validSole.empty">Vui lòng chọn Đế giày</p>
+      </div>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Chất liệu</mat-label>
+      <mat-select [(ngModel)]="IdMaterial" (keydown)="revoveInvalid(validMaterial)" (blur)="validateMaterial()">
+        <mat-option *ngFor="let mt of material" [value]="mt.id">
+          {{mt.name}}
+        </mat-option>
+      </mat-select>
+      <div class="validate-input" *ngIf="!validMaterial.done">
+        <p class="validate-input-label" *ngIf="validMaterial.empty">Vui lòng chọn Chất liệu</p>
+      </div>
+    </mat-form-field>
+    <div>
+      <input type="file" [(ngModel)]="imgLst" style="color: red" (change)="OnChangeFile($event)" multiple (keydown)="revoveInvalid(validImage)" (blur)="validateImage()">
+      <p class="validate-input-label" *ngIf="validImage.empty">Ảnh không được để trống</p>
+<!--      <p class="validate-input-label" *ngIf="validateImageCount(imgLst)">-->
+<!--        Ảnh phải tối đa là 3-->
+<!--      </p>-->
+    </div>
+    <br>
+    <div *ngIf="Name">
+            <h1 style="display: flex">Thêm Kích cỡ & Màu sắc</h1>
+      <ng-select [items]="size"
+                 bindLabel="sizeNumber"
+                 bindValue="id"
+                 [multiple]="true"
+                 (change)="OnChangSize($event)"
+                 placeholder="Chọn kích thước"
+                 >
+      </ng-select>
+      <br>
+      <ng-select [items]="color"
+                 bindLabel="name"
+                 bindValue="id"
+                 [multiple]="true"
+                 (change)="OnChangColor($event)"
+                 placeholder="Chọn màu sắc"
+                 >
+      </ng-select>
+      <br>
+    </div>
+  </div>
+</div>
+<div  *ngIf="productDetail && productDetail.length > 0">
+  <h1> Chi tiết sản phẩm</h1>
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">Tên Sản Phẩm</th>
+      <th scope="col">Kích thước</th>
+      <th scope="col">Màu sắc</th>
+      <th scope="col">Số Lượng</th>
+      <th scope="col">Cổ giày</th>
+      <th scope="col">Chức năng</th>
+    </tr>
+    </thead>
+    <tbody class="table-group-divider">
+    <tr *ngFor="let prdtl of productDetail; let i = index">
+      <td>{{prdtl.name}}</td>
+      <td>{{prdtl.sizeDTO.sizeNumber}}</td>
+      <td>{{prdtl.colorDTO.name}}</td>
+      <td>
+        <div>
+          <input type="text" [(ngModel)]="productDetail[i].quantity" style="width: 50px">
+        </div>
+      </td>
+      <td>
+        <div>
+          <ng-select [items]="listShoeCollar"
+                     bindLabel="name"
+                     bindValue="id"
+                     [(ngModel)]="productDetail[i].shoeCollar"
+                     [clearable]="false"
+          >
+          </ng-select>
+        </div>
+      </td>
+      <td><button mat-icon-button color="warn"  (click)="deleteProductDetail(i)"><mat-icon>delete</mat-icon></button></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div mat-dialog-actions [align]="'end'">
+  <button mat-raised-button color="warn" routerLink="/admin/san-pham">Đóng</button>
+  <button mat-raised-button color="primary" (click)="clickaddProduct()">Thêm</button>
+</div>
+
+

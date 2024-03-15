@@ -1,0 +1,84 @@
+<div class="container">
+  <div class="group-block">
+    <div class="block">
+      <h3 class="title">Doanh số tháng này</h3>
+      <div class="block-item">
+        <div class="left">{{totalOrder}} Đơn hàng / {{utilService.formatMoney(totalRevenue)}}</div>
+      </div>
+    </div>
+    <div class="block">
+      <h3 class="title">Doanh thu hôm nay</h3>
+      <div class="block-item">
+        <div class="left">{{totalOrderToDay}} Đơn hàng /{{utilService.formatMoney(totalRevenueToday)}}</div>
+      </div>
+    </div>
+    <div class="block">
+      <h3 class="title">Hàng bán được tháng này</h3>
+      <div class="block-item">
+        <div class="left">{{totalQuantityProduct}} Sản phẩm</div>
+      </div>
+    </div>
+
+  </div>
+  <div>
+    <div style="display: flex; justify-content: flex-end; margin-top: 10px">
+      <ejs-daterangepicker id='daterangepicker' placeholder='Chọn thời gian' [(startDate)]="dateFromCurrent" [(endDate)]="dateToCurrent" (change)="getDater($event)"></ejs-daterangepicker>
+<!--      <span *ngIf="checkDateRanges === false">Date range is valid</span>-->
+    </div>
+    <div class="row">
+      <div class="col">
+        <kendo-chart>
+          <kendo-chart-title text="Biểu đồ thống kê"></kendo-chart-title>
+          <kendo-chart-tooltip [shared]="true">
+            <ng-template kendoChartSharedTooltipTemplate let-category="category" let-points="points" let-indx="i">
+              <div><strong>Ngày:</strong>  {{ category }} </div>
+              <div *ngFor="let point of points; let i = index">
+                <strong>Đơn hàng:</strong> <span style="margin-left: 5px">{{ point.value }} / {{getRevenue(category)}}</span><br>
+                <strong>Số lượng bán:</strong><span style="margin-left: 10px">{{getQuantityProduct(category)}}</span>
+              </div>
+            </ng-template>
+          </kendo-chart-tooltip>
+          <kendo-chart-category-axis>
+            <kendo-chart-category-axis-item [categories]="seriesDateStr" [labels]="{ rotation: 'auto' }">
+            </kendo-chart-category-axis-item>
+
+          </kendo-chart-category-axis>
+          <kendo-chart-series>
+            <kendo-chart-series-item type="column" [gap]="3"  [spacing]=".25" [data]="categoriesOrder">
+            </kendo-chart-series-item>
+          </kendo-chart-series>
+        </kendo-chart>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col">
+      <div style="font-size: 20px; font-weight: 500">Danh sách sản phẩm bản chạy trong tháng</div>
+      <table class="table" style="margin-top: 15px">
+        <thead>
+        <tr>
+          <th scope="col">STT</th>
+          <th scope="col">Mã SP</th>
+          <th scope="col">Ảnh</th>
+          <th scope="col">Tên sản phẩm</th>
+          <th scope="col">Thương hiệu</th>
+          <th scope="col">Giá bán</th>
+          <th scope="col">Doanh số</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let p of listProductBestSeller, let i = index">
+          <th scope="row">{{i + 1}}</th>
+          <td>{{p?.code}}</td>
+          <td><img width="60px" height="60px" src="{{p?.imagesDTOList[0]?.imageName}}" alt=""></td>
+          <td>{{p?.name}}
+          <td>{{p?.brandName}}</td>
+          <td>{{utilService.formatMoney(p?.price)}}</td>
+          <td>{{utilService.padZero(p?.totalBestSeller)}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

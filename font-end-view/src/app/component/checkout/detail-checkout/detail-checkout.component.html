@@ -1,0 +1,187 @@
+<!--<div class="container">-->
+<!--  <h1>Thông Tin Người Nhận Hàng</h1>-->
+<!--  <div class="row">-->
+<!--    <div class="col-md-6">-->
+<!--      <div class="card">-->
+<!--        <div class="card-body">-->
+<!--          &lt;!&ndash; Thông tin người nhận hàng &ndash;&gt;-->
+<!--          <h2>Người Nhận Hàng</h2>-->
+<!--          <p>Tên: {{order.receiver}}</p>-->
+<!--          <p>Địa chỉ: {{order.addressReceived}}</p>-->
+<!--          <p>Số điện thoại: {{order.receiverPhone}}</p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    <div class="col-md-6">-->
+<!--      <div class="card">-->
+<!--        <div class="card-body">-->
+<!--          &lt;!&ndash; Thông tin thanh toán &ndash;&gt;-->
+<!--          <h2>Thông Tin Thanh Toán</h2>-->
+<!--          <p>Phương thức thanh toán: Thẻ tín dụng</p>-->
+<!--          <p>Số thẻ: **** **** **** 1234</p>-->
+<!--          <p>Ngày hết hạn: 12/25</p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <h1>Thông Tin Đơn Hàng</h1>-->
+<!--  <div class="row">-->
+<!--    <div class="col-md-12">-->
+<!--      <div class="card">-->
+<!--        <div class="card-body">-->
+<!--          &lt;!&ndash; Thông tin đơn hàng &ndash;&gt;-->
+<!--          <h2>Đơn Hàng {{order.code}}</h2>-->
+<!--          <table class="table">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--              <th scope="col">STT</th>-->
+<!--              <th scope="col">Sản Phẩm</th>-->
+<!--              <th scope="col">Phân loại hàng</th>-->
+<!--              <th scope="col">Giá tiền</th>-->
+<!--              <th scope="col">Số lượng</th>-->
+<!--              <th scope="col">Thành tiền</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr *ngFor="let c of listCart; let i = index">-->
+<!--              <th scope="row">-->
+<!--                {{i + 1}}-->
+<!--              </th>-->
+<!--              <td><img width="80px" height="80px" src="{{c.imageName}}" alt=""> <span class="productName" title="{{c.productName}}">{{c.productName}}</span></td>-->
+<!--              <td><div><span style="font-weight: bold">Color:</span> {{c.productDetailDTO.colorDTO.name}}</div>-->
+<!--                <div><span style="font-weight: bold">Size: </span> {{c.productDetailDTO.sizeDTO.sizeNumber}}</div>-->
+<!--              </td>-->
+<!--              <td>-->
+<!--                <div *ngIf="c.productDTO.reducePrice != null && c.productDTO.percentageReduce != null">-->
+<!--                  <del>{{utilService.formatMoney(c.productDTO.price)}}</del>-->
+<!--                  <span style="color: red; margin-left: 5px">{{utilService.formatMoney(c.productDTO.price - c.productDTO.reducePrice)}}</span>-->
+<!--                </div>-->
+<!--                <div *ngIf="c.productDTO.reducePrice == null && c.productDTO.percentageReduce == null">-->
+<!--                  <span style="color: red; margin-left: 5px">{{utilService.formatMoney(c.productDTO.price - c.productDTO.reducePrice)}}</span>-->
+<!--                </div>-->
+<!--              </td>-->
+<!--              <td> {{c.quantity}}</td>-->
+<!--              <th style="color: red">-->
+<!--                <div *ngIf="c.productDTO.reducePrice != null && c.productDTO.percentageReduce != null">-->
+<!--                  <span style="color: red; margin-left: 5px">{{calculateTotal(c.productDTO.price - c.productDTO.reducePrice, c.quantity)}}</span>-->
+<!--                </div>-->
+<!--                <div *ngIf="c.productDTO.reducePrice == null && c.productDTO.percentageReduce == null">-->
+<!--                  <span style="color: red; margin-left: 5px">{{calculateTotal(c.productDTO.price, c.quantity)}}</span>-->
+<!--                </div>-->
+<!--              </th>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--          </table>-->
+<!--          <p>Tổng cộng: {{utilService.formatMoney(order.totalPrice)}}</p>-->
+<!--          <p>Tổng cộng thanh toán: {{utilService.formatMoney(order.totalPayment)}}</p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="row">-->
+<!--    <div>-->
+<!--      <button type="submit" class="btn btn-light" (click)="openHome();">Quay về trang chủ</button>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      <button type="submit" class="btn btn-success" *ngIf="this.email == null || this.email === undefined" (click)="openDonMua();">Xem đơn mua</button>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<br>
+<div class="container">
+  <!-- Phần cảm ơn -->
+  <div class="row">
+    <div class="col-md-12" style="display: flex;justify-content: center">
+      <div>
+        <div>
+          <h3 style="margin-left: 70px">Đặt Hàng thành công</h3>
+          <p>Cuộc sống có nhiều lực chọn , cảm ơn bạn đã lựa chọn T2 STORE</p>
+          <br>
+          <p style="margin-left: -30px">Đơn hàng của bạn chắc chắn đã được chuyển tới hệ thống xử lý đơn hàng của T2 STORE. </p>
+          <p style="margin-left: -20px">Trong quá trình xử lý T2 STORE sẽ liên hệ lại nếu như cần thêm thông tin từ bạn. </p>
+          <p>Ngoài ra T2 STORE cũng sẽ có gửi xác nhận đơn hàng bằng Email lại cho bạn </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <!-- Phần thông tin người nhận hàng và danh sách sản phẩm -->
+  <div class="row">
+    <!-- Thông tin người nhận hàng -->
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h2>Thông tin nhận hàng Nhận Hàng</h2>
+          <p>Tên: {{order?.receiver}}</p>
+          <p>Địa chỉ: {{order?.addressReceived}}</p>
+          <p>Số điện thoại: {{order?.receiverPhone}}</p>
+          <p>Email: {{order?.email}}</p>
+          <p>Hình thức thanh toán: {{order?.paymentType === 1? 'Thanh toán online': 'Thanh toán COD'}}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Danh sách sản phẩm -->
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <h2>Đơn Hàng {{order?.code}}</h2>
+          <table class="table">
+            <thead>
+            <tr>
+              <th scope="col">STT</th>
+              <th scope="col">Sản Phẩm</th>
+              <th scope="col">Phân loại hàng</th>
+              <th scope="col">Giá tiền</th>
+              <th scope="col">Số lượng</th>
+              <th scope="col">Thành tiền</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let c of listCart; let i = index">
+              <th scope="row">
+                {{i + 1}}
+              </th>
+              <td><img width="80px" height="80px" src="{{c.imageName}}" alt=""> <span class="productName" title="{{c.productName}}">{{c.productName}}</span></td>
+              <td><div><span style="font-weight: bold">Color:</span> {{c.productDetailDTO?.colorDTO.name}}</div>
+                <div><span style="font-weight: bold">Size: </span> {{c.productDetailDTO?.sizeDTO.sizeNumber}}</div>
+              </td>
+              <td>
+                <div *ngIf="c.productDTO.reducePrice != null && c.productDTO.percentageReduce != null">
+                  <del>{{utilService.formatMoney(c.productDTO.price)}}</del>
+                  <span style="color: red; margin-left: 5px">{{utilService.formatMoney(c.productDTO.price - c.productDTO.reducePrice)}}</span>
+                </div>
+                <div *ngIf="c.productDTO.reducePrice == null && c.productDTO.percentageReduce == null">
+                  <span style="color: red; margin-left: 5px">{{utilService.formatMoney(c.productDTO.price - c.productDTO.reducePrice)}}</span>
+                </div>
+              </td>
+              <td> {{c.quantity}}</td>
+              <th style="color: red">
+                <div *ngIf="c.productDTO.reducePrice != null && c.productDTO.percentageReduce != null">
+                  <span style="color: red; margin-left: 5px">{{calculateTotal(c.productDTO.price - c.productDTO.reducePrice, c.quantity)}}</span>
+                </div>
+                <div *ngIf="c.productDTO.reducePrice == null && c.productDTO.percentageReduce == null">
+                  <span style="color: red; margin-left: 5px">{{calculateTotal(c.productDTO.price, c.quantity)}}</span>
+                </div>
+              </th>
+            </tr>
+            </tbody>
+          </table>
+          <p>Tổng cộng: {{utilService.formatMoney(order?.totalPrice)}}</p>
+          <p>Tổng cộng thanh toán: {{utilService.formatMoney(order?.totalPayment)}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <!-- Nút điều hướng -->
+<!--  <div class="row">-->
+<!--    <div class="col-md-12">-->
+<!--      <button type="submit" class="btn btn-light" (click)="openHome();">Quay về trang chủ</button>-->
+<!--      <button type="submit" class="btn btn-success" *ngIf="this.email == null || this.email === undefined" (click)="openDonMua();">Xem đơn mua</button>-->
+<!--    </div>-->
+<!--  </div>-->
+</div>
+

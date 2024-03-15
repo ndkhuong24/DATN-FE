@@ -1,0 +1,74 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-md-12">
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">Voucher FreeShip Chi Tiết</h3>
+          </div>
+          <div class="card-body">
+            <table class="table">
+              <tbody>
+              <tr>
+                <th scope="row">Tên</th>
+                <td>{{ voucher.name }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Nội dung</th>
+                <td>{{ voucher.description }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Ngày bắt đầu</th>
+                <td>{{ util.format(voucher.startDate )}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Ngày kết thúc</th>
+                <td>{{ util.format(voucher.endDate )}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Điều kiện áp dụng</th>
+                <td>{{ voucher.conditionApply }}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">Giá trị giảm</th>
+                <td>{{ voucher.reducedValue }}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">Số lượng</th>
+                <td>{{ voucher.quantity }}</td>
+              </tr>
+              <tr *ngIf="voucher.optionCustomer === 1">
+                <th scope="row" >Giới hạn số lần sử dụng của mỗi khách hàng</th>
+                <td>{{ voucher.limitCustomer }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Người tạo</th>
+                <td>{{ voucher.createName }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Ngày tạo</th>
+                <td>{{ util.formatDateTime(voucher.createDate) }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Khách hàng</th>
+                <td>
+                  <ul *ngIf="voucher.customerAdminDTOList && voucher.customerAdminDTOList.length > 0; else noCustomers">
+                    <li *ngFor="let c of voucher.customerAdminDTOList">
+                      {{ c.code }} - {{ c.fullname }}
+                    </li>
+                  </ul>
+                  <ng-template #noCustomers>
+                    Tất cả khách hàng
+                  </ng-template>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

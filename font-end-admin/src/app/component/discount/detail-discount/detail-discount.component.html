@@ -1,0 +1,68 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-md-12">
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">Giảm Giá Chi Tiết</h3>
+          </div>
+          <div class="card-body">
+            <table class="table">
+              <tbody>
+              <tr>
+                <th scope="row">Tên</th>
+                <td>{{ discount.name }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Nội dung</th>
+                <td>{{ discount.description }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Ngày bắt đầu</th>
+                <td>{{ util.format(discount.startDate) }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Ngày kết thúc</th>
+                <td>{{util.format( discount.endDate )}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Loại giảm giá</th>
+                <td>{{ discount.discountType == 1 ? 'Theo %' : 'Theo tiền mặt' }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Giá trị giảm</th>
+                <td>{{ discount.reducedValue }}</td>
+              </tr>
+              <tr *ngIf="discount.discountType == 1">
+                <th scope="row">Giá trị giảm tối đa</th>
+                <td>{{ discount.maxReduced }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Người tạo</th>
+                <td>{{ discount.createName }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Ngày tạo</th>
+                <td>{{ util.formatDateTime(discount.createDate) }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Sản phẩm</th>
+                <td>
+                  <ul *ngIf="discount.productDTOList && discount.productDTOList.length > 0; else noCustomers">
+                    <li *ngFor="let c of discount.productDTOList">
+                      {{ c.code }} - {{ c.name }}- {{ c.price }}
+                    </li>
+                  </ul>
+                  <ng-template #noCustomers>
+                    Tất cả sản phẩm
+                  </ng-template>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

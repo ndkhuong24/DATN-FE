@@ -1,0 +1,46 @@
+.colornav {
+  background-color: #7fad38;
+  color: white;
+}
+
+.menu-left {
+  border: 1px solid #ebebeb;
+}
+
+.card {
+  border: #ebebeb;
+  border-radius: 6px;
+  /*background: #5ea4f3;*/
+}
+
+.card-title {
+  font-weight: bold;
+}
+
+.img-thumbnail {
+  border: #ebebeb;
+  float: left;
+}
+
+.gia {
+  font-weight: bold;
+}
+
+.card-img-top {
+  width: 300px;
+  height: 400px;
+}
+
+.img-thumbnail {
+  width: 100px;
+  height: 100px;
+}
+.percentage-badge {
+  position: absolute;
+  top: 0;
+  right: 13px;
+  background-color: #ff0000; /* Màu nền của phần % */
+  color: #ffffff; /* Màu chữ của phần % */
+  padding: 5px; /* Khoảng cách padding cho phần % */
+  border-radius: 5px; /* Bo góc cho phần % */
+}

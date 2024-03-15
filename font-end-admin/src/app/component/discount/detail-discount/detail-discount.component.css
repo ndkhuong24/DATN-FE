@@ -1,0 +1,6 @@
+.ag-header-cell-label, .ag-cell {
+    transform: rotate(-90deg);
+    white-space: nowrap; /* Để tránh tràn nội dung */
+    height: 100px; /* Điều chỉnh chiều cao của cột */
+  }
+  

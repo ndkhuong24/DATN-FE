@@ -1,0 +1,60 @@
+<div class="container">
+  <h1 class="mb-4">Nhân Viên</h1>
+  <form class="row g-3" >
+    <div class="col-md-6">
+      <label for="fullName" class="form-label">Họ và Tên</label>
+      <input type="text" class="form-control" id="fullName" name="fullname" placeholder="Nhập họ và tên" [(ngModel)]="staff.fullname" [ngModelOptions]="{standalone: true}" disabled>
+    </div>
+
+    <div class="col-md-6">
+      <label for="phoneNumber" class="form-label">Số Điện Thoại</label>
+      <input type="text" class="form-control" id="phoneNumber" placeholder="Nhập số điện thoại"  [(ngModel)]="staff.phone" [ngModelOptions]="{standalone: true}" disabled>
+    </div>
+
+    <div class="col-md-6">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" placeholder="Nhập email"[(ngModel)]="staff.email" [ngModelOptions]="{standalone: true}" disabled>
+    </div>
+
+    <div class="col-md-6">
+      <label for="username" class="form-label">Tên Đăng Nhập</label>
+      <input type="text" class="form-control" id="username" placeholder="Nhập tên đăng nhập" [(ngModel)]="staff.username" [ngModelOptions]="{standalone: true}" disabled>
+    </div>
+
+    <div class="col-md-6">
+      <label for="birthdate" class="form-label">Ngày Sinh</label>
+      <input type="date" class="form-control" id="birthdate" [(ngModel)]="staff.birthday" [ngModelOptions]="{standalone: true}" disabled>
+    </div>
+    <div class="col-md-6">
+      <label for="gender" class="form-label">Giới Tính</label>
+      <select class="form-select" id="gender" [(ngModel)]="staff.gender" [ngModelOptions]="{standalone: true}" disabled>
+        <option >Chọn giới tính</option>
+        <option value="Nam" selected>Nam</option>
+        <option value="Nữ">Nữ</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label for="address" class="form-label">Quê Quán</label>
+      <input type="text" class="form-control" id="address" placeholder="Nhập quê quán" [(ngModel)]="staff.description" [ngModelOptions]="{standalone: true}" disabled>
+    </div>
+    <div class="col-md-6">
+      <label for="status" class="form-label">Chức Vụ</label>
+      <select class="form-select" id="status" [(ngModel)]="staff.role" [ngModelOptions]="{standalone: true}" disabled>
+        <option selected value="STAFF">Nhân Viên</option>
+        <option value="ADMIN">Quản lý</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label for="status" class="form-label" >Trạng Thái</label>
+      <select class="form-select" id="status" [(ngModel)]="staff.idel" [ngModelOptions]="{standalone: true}" disabled >
+        <option value="0" selected>Đang hoạt động</option>
+        <option value="1">Không hoạt động</option>
+      </select>
+    </div>
+
+    <div class="col-12 mb-3">
+      <a class="btn btn-error">Đóng</a>
+    </div>
+  </form>
+</div>
+

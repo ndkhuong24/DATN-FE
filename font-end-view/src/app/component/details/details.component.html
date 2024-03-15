@@ -1,0 +1,147 @@
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-5">
+      <div class="main-img">
+        <app-custom-carousel [images]="product.imagesDTOList" [height]="0"></app-custom-carousel>
+        <div class="row my-3 previews" style="display: flex;justify-content: space-around;">
+        </div>
+      </div>
+    </div>
+    <div class="col-md-7">
+      <div class="main-description px-2">
+        <div class="category text-bold">
+          Loại: {{product?.categoryDTO?.name}}
+        </div>
+        <div class="product-title text-bold my-3">
+          {{product?.name}}
+        </div>
+        <div class="price-area my-4" *ngIf="product?.reducePrice != null && product?.percentageReduce != null">
+          <div class="old-price" style="font-size: 15px; margin-top: 10px"><div style="text-decoration: line-through; color: #757575">{{utilService.formatMoney(product.price)}}</div></div>
+          <div class="new-price" style="font-size: 25px"><span>{{utilService.formatMoney(product.price - product.reducePrice)}}</span></div>
+          <div  style="display: flex;text-align: center;align-items: center;background-color:red; color: #ffffff;margin-left: 30px;border-radius: 4px; height: 20px; margin-top: 10px">
+            <div style="font-size: 10px; padding: 5px;font-weight: 700;">{{product?.percentageReduce}}% GIẢM</div></div>
+        </div>
+        <div class="price-area my-4" *ngIf="product?.reducePrice == null && product?.percentageReduce == null">
+          <div class="new-price" style="font-size: 25px"><span>{{utilService.formatMoney(product?.price)}}</span></div>
+        </div>
+
+      </div>
+
+<!--      size-->
+      <div class="product-details my-2">
+        <div class="d-flex" style="display: flex; gap: 80px">
+          <p class="details-title text-color mb-1">Size : </p>
+          <ng-select style="width: 150px; " [items]="listSize" bindLabel="sizeNumber" bindValue="id" placeholder="--Lựa chọn--"
+                     [(ngModel)]="sizeId" [ngModelOptions]="{standalone: true}"  [searchable]="false" (change)="onSizeChange($event)">
+          </ng-select>
+        </div>
+      </div>
+
+
+      <!--      màu sắc-->
+      <div class="product-details my-2" style="margin-top: 10px !important;">
+        <div class="d-flex" style="display: flex; gap: 33px">
+          <p class="details-title text-color mb-1">Màu Sắc : </p>
+
+          <ng-select style="width: 150px" [items]="listColor" bindLabel="name" bindValue="id" placeholder="--Lựa chọn--"
+                     [(ngModel)]="colorId" [ngModelOptions]="{standalone: true}"  [searchable]="false" (change)="onColorChange($event)">
+          </ng-select>
+        </div>
+      </div>
+
+<!--      Số lượng-->
+<!--      <br>-->
+      <div class="product-details my-2">
+        <p class="details-title text-color mb-1" *ngIf="getProductDetailQuantity() != 0">Số lượng :{{(getProductDetailQuantity() == -1 || getProductDetailQuantity()== null) ? product?.totalQuantity : getProductDetailQuantity()}}</p>
+        <div class="details-title text-color mb-1" style="color: red" *ngIf="getProductDetailQuantity() === 0">Hết hàng</div>
+      </div>
+      <div class="wrap-num-product flex-w m-r-20 m-tb-10 flex-w flex-r-m p-b-10" *ngIf="bothSizeAndColorSelected == true">
+        <button type="button"
+          class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m" [style.cursor]="quantityBuy > 1? 'pointer':'not-allowed'" (click)="giamSoLuong();" [disabled]="quantityBuy <= 1">
+          <i class="fa-solid fa-minus"></i>
+        </button>
+
+        <input style="width: 30px;height: 30px;"
+          class="mtext-104 cl3 txt-center num-product"
+          type="number"
+          name="num-product"
+          [(ngModel)]="quantityBuy"
+          (ngModelChange)="checkQuantity()"
+        />
+        <button type="button"
+          class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m" [style.cursor]="quantityBuy < getProductDetailQuantity()? 'pointer':'not-allowed'" (click)="tangSoLuong();" [disabled]="quantityBuy >= getProductDetailQuantity()">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+      <div class="validate-input" *ngIf="validQuantityBuy">
+        <p class="validate-input-label" *ngIf="validQuantityBuy">{{validQuantityBuyMess}}</p>
+      </div>
+      <div class ="btn-groups">
+        <button class = "add-cart-btn" style="border-radius: 5px" [disabled]="bothSizeAndColorSelected === false || this.validQuantityBuy" [style.opacity]="(bothSizeAndColorSelected === false || this.validQuantityBuy) ? '0.5': ''" (click)="addToCart(product.id)"><i class = "fas fa-shopping-cart"></i>Thêm giỏ hàng</button>
+        <button class = "buy-now-btn" style="border-radius: 5px" [disabled]="bothSizeAndColorSelected === false || this.validQuantityBuy" [style.opacity]="(bothSizeAndColorSelected === false || this.validQuantityBuy) ? '0.5': ''" (click)="buyNow(product.id);"><i class = "fas fa-wallet"></i>Mua ngay</button>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 50px;">
+    <div class="product-details my-2">
+      <p class="details-title text-color mb-1" style="font-weight: bold; color: black">Mô Tả</p>
+      <p class="description" style="margin-left: 10px">{{product?.description}}</p>
+    </div>
+    <div class="product-details my-2">
+      <p class="details-title text-color mb-2" style="font-weight: bold; color: black">Thông Tin Chi Tiết</p>
+      <ul>
+        <li style="margin-top: 10px">Hãng: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{product?.brandDTO?.name}}</li>
+        <li style="margin-top: 10px">Chất Liệu: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    {{product?.materialDTO?.name}} </li>
+        <li style="margin-top: 10px">Độ cao của đế: &nbsp;&nbsp;&nbsp;&nbsp;  {{product?.soleDTO?.soleHeight}} cm (Chất liệu: {{product?.soleDTO?.soleMaterial}})</li>
+<!--        <li>Cổ giày: &nbsp;&nbsp;&nbsp;&nbsp;       {{product?.brandDTO?.name}}</li>-->
+      </ul>
+    </div>
+<!--    <div class="product-details my-2">-->
+<!--      <p class="details-title text-color mb-2">Chất Liệu</p>-->
+<!--      <ul>-->
+<!--        <li>Cotton</li>-->
+<!--        <li>Machine-wash</li>-->
+<!--      </ul>-->
+<!--    </div>-->
+  </div>
+</div>
+
+
+
+<div class="container similar-products my-4">
+  <hr>
+  <p class="display-5">Sản Phẩm Tương Tự</p>
+
+  <div class="row">
+    <div class="col-3" style="display: flex; gap: 10px" *ngFor="let p of listProductTuongTu">
+      <div class="card" style="width: 18rem;">
+        <a [routerLink]="['/product-details',p?.id]">
+          <img style="width: 250px; height: 330px"
+            (mouseenter)="onMouseEnter(p)"
+            (mouseleave)="onMouseLeave(p)"
+            [src]="isMouseOver[p?.id] ? p?.imagesDTOList[1]?.imageName : p?.imagesDTOList[0]?.imageName"
+            class="card-img-top"
+            alt="..."
+          >
+          <span *ngIf="p?.reducePrice != null && p?.percentageReduce != null" class="percentage-badge">{{ p?.percentageReduce }}%</span>
+        </a>
+
+        <div class="card-body">
+          <h5 class="card-title">{{p.name}}</h5>
+          <!--                <div *ngIf="p.reducePrice == null && p.percentageReduce == null"><span>{{p.price}}</span> đ</div>-->
+          <div class="price-area my-4" *ngIf="p?.reducePrice == null && p?.percentageReduce == null">
+            <div class="new-price" style="font-size: 25px"><span>{{utilService.formatMoney(p?.price)}}</span></div>
+          </div>
+          <!--                <div *ngIf="p.reducePrice != null && p.percentageReduce != null"> <del>{{utilService.formatMoney(p.price)}}</del>-->
+          <!--                  <span style="margin-left: 5px">{{utilService.formatMoney(p.price - p.reducePrice)}}</span></div>-->
+          <div class="price-area my-4" *ngIf="p?.reducePrice != null && p?.percentageReduce != null">
+            <div class="old-price" style="font-size: 15px; margin-top: 10px"><div style="text-decoration: line-through; color: #757575">{{utilService.formatMoney(p.price)}}</div></div>
+            <div class="new-price" style="font-size: 25px"><span>{{utilService.formatMoney(p.price - p.reducePrice)}}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

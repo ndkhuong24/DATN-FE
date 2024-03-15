@@ -1,0 +1,101 @@
+<div class="container">
+  <div class="row"><h5>Chọn Voucher</h5></div>
+  <div class="row">
+    <div class="col">
+      <label for="search" class="col-form-label">Tìm kiếm</label>
+    </div>
+    <div class="col">
+      <input type="text" id="search" class="form-control" [(ngModel)]="codeSearch" placeholder="Nhập mã giảm giá">
+    </div>
+    <div class="col">
+    <button class="btn btn-primary" (click)="searchVoucher();">Tìm kiếm</button>
+    </div>
+  </div>
+  <br>
+  <div *ngIf="listVoucherShip && listVoucherShip.length > 0">
+    <h5>Mã Vận chuyển</h5>
+    <div class="row" style="border: 1px solid; margin-bottom:10px " *ngFor="let v of listVoucherShip">
+      <div style="display: flex; justify-content: space-between" [style.opacity]="checkValidateVoucher(v) ? '0.5': ''">
+        <div style="display: flex">
+          <div>
+            <img style="width: 70px; height: 70px" src="../../../../assets/image/image-voucher-ship.png" alt="">
+          </div>
+          <div style="display:flex; margin-left: 10px; flex-direction: column">
+            <div class="row" style="display: flex">
+              <div class="col">
+                <label>Mã: {{v.code}}</label>
+              </div>
+<!--              <div class="col" *ngIf="v.voucherType === 1">-->
+<!--                <label>Giảm: {{v.reducedValue}} %</label>-->
+<!--                <label>Giảm Tối đa: {{v.maxReduced | number:'1.0-0'}} đ</label>-->
+<!--              </div>-->
+              <div>
+                <label>Giảm: {{v.reducedValue | number:'1.0-0'}} đ</label>
+              </div>
+            </div>
+            <div class="row">
+              <label>Đơn tối thiểu: {{v.conditionApply | number:'1.0-0'}} đ</label>
+            </div>
+            <div class="row">
+              <label>HSD: {{utilService.formatDateTime(v.endDate)}}</label>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 23px">
+          <input type="radio" style="transform: scale(1.5);" [value]="v.code" [(ngModel)]="voucherChoice.voucherShip" name="voucherShip" [disabled]="checkValidateVoucher(v)">
+        </div>
+      </div>
+      <span style="color: red" *ngIf="checkConditionApply"><strong>Đơn hàng không đủ điều kiện</strong></span>
+      <span style="color: red" *ngIf="checkStartDate"><strong>Sắp diễn ra</strong></span>
+
+    </div>
+  </div>
+
+  <div *ngIf="listVoucher && listVoucher.length > 0">
+    <h5>Mã Giảm giá</h5>
+    <div class="row" style="border: 1px solid; margin-bottom:10px " *ngFor="let v of listVoucher">
+      <div style="display: flex; justify-content: space-between" [style.opacity]="checkValidateVoucher(v) ? '0.5': ''">
+        <div style="display: flex">
+          <div>
+            <img style="width: 70px; height: 70px" src="../../../../assets/image/680c03454d4a8e6510cde78faa437224_tn.png" alt="">
+          </div>
+          <div style="display:flex; margin-left: 10px; flex-direction: column">
+            <div class="row" style="display: flex">
+              <div>
+                <label>Mã: {{v.code}}</label>
+              </div>
+              <div  *ngIf="v.voucherType === 1">
+                <label>Giảm: {{v.reducedValue}} %</label>
+                <label>Giảm Tối đa: {{v.maxReduced | number:'1.0-0'}} đ</label>
+              </div>
+              <div *ngIf="v.voucherType === 0">
+                <label>Giảm: {{v.reducedValue | number:'1.0-0'}} đ</label>
+              </div>
+            </div>
+            <div class="row">
+              <label>Đơn tối thiểu: {{v.conditionApply | number:'1.0-0'}} đ</label>
+            </div>
+            <div class="row">
+              <label>HSD: {{utilService.formatDateTime(v.endDate)}}</label>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 23px">
+          <input type="radio" style="transform: scale(1.5);" [value]="v.code" [(ngModel)]="voucherChoice.voucher" name="voucher" [disabled]="checkValidateVoucher(v)">
+        </div>
+      </div>
+      <span style="color: red" *ngIf="checkConditionApply"><strong>Đơn hàng không đủ điều kiện</strong></span>
+      <span style="color: red" *ngIf="checkStartDate"><strong>Sắp diễn ra</strong></span>
+
+    </div>
+  </div>
+
+  <div style="display: flex; margin-top: 10px">
+    <div>
+      <button type="button" class="btn btn-secondary" (click)="closePopup();">Đóng</button>
+    </div>
+    <div>
+      <button type="button" class="btn btn-success" (click)="xacNhan()">Xác nhận</button>
+    </div>
+  </div>
+</div>

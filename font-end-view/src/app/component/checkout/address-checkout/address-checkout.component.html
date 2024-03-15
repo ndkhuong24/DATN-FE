@@ -1,0 +1,26 @@
+<div>
+  <div style="border-bottom: 1px solid">
+    <h5>Địa chỉ của tôi</h5>
+  </div>
+  <div style="display: flex;justify-content: space-between; border-bottom: 1px solid" *ngFor="let d of listAddress">
+    <div style="max-width: 300px; display: flex">
+      <input type="radio" name="address" style="transform: scale(1.5);" [value]="d.id" [checked]="idAddress === d.id" [(ngModel)]="idAddress">
+      <p style="margin-left: 10px; margin-top: 10px">{{d?.specificAddress + ', ' + d.wards + ', '
+      + d?.district + ', ' + d?.province}}</p>
+    </div>
+    <div style="margin-top: 10px">
+      <button type="button" class="button-capnhat" (click)="openPopupUpdate()">Cập nhật</button>
+    </div>
+  </div>
+  <br>
+  <div>
+    <button type="button" class="button-capnhat" (click)="openPopup()">Thêm mới địa chỉ</button>
+  </div>
+  <br>
+  <div>
+    <div style="max-width: 200px; display: flex; justify-content: space-around">
+      <button type="button" class="btn btn-secondary" (click)="closePopup()">Đóng</button>
+      <button type="button" class="btn btn-success" (click)="xacNhan();">Xác Nhận</button>
+    </div>
+  </div>
+</div>

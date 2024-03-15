@@ -1,0 +1,11 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import '../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css';
+@import '../node_modules/ag-grid-community/dist/styles/ag-theme-balham.css';
+@import '../node_modules/ag-grid-community/dist/styles/ag-grid.css';
+@import "~ngx-toastr/toastr.css";
+@import '../node_modules/@syncfusion/ej2-angular-calendars/styles/material.css';
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+

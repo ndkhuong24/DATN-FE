@@ -1,0 +1,36 @@
+.voucher {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  justify-content: space-between;
+}
+.validate-input{
+  .validate-input-label{
+    margin: 5px 0 0 !important;
+    color: red;
+    font-size: 12px;
+    line-height: 10px;
+    font-weight: 500;
+  }
+}
+.voucher h6 {
+  margin: 0;
+}
+
+.voucher span {
+  flex: 1; /* Nội dung được căn giữa */
+  text-align: center; /* Nội dung được căn giữa */
+}
+
+.voucher button {
+  justify-content: flex-end; /* Đẩy nút về phía bên phải */
+}
+.button-thaydoi{
+  background-color: transparent; /* Để làm cho nút trong suốt */
+  border: none; /* Loại bỏ đường viền */
+  color: blue; /* Màu chữ xanh */
+  cursor: pointer; /* Hiển thị con trỏ khi di chuột vào */
+  padding: 0; /* Loại bỏ khoảng cách xung quanh nút */
+  text-decoration: none;
+}
+

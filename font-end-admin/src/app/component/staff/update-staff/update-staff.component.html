@@ -1,0 +1,95 @@
+<div class="container">
+  <h1 class="mb-4">Nhân Viên</h1>
+  <form class="row g-3" (ngSubmit)="updateInfor()">
+    <div class="col-md-6">
+      <label for="fullName" class="form-label">Họ và Tên</label>
+      <input type="text" class="form-control" id="fullName" name="fullname" placeholder="Nhập họ và tên" [(ngModel)]="staff.fullname" [ngModelOptions]="{standalone: true}" (keydown)="revoveInvalid(validReceiver)" (blur)="validateReceiver()">
+      <div class="validate-input" *ngIf="!validReceiver.done">
+        <p class="validate-input-label" *ngIf="validReceiver.empty">Họ và tên không để trống</p>
+        <p class="validate-input-label" *ngIf="validReceiver.maxLength">Họ và tên tối đa 250 kí tự</p>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label for="phoneNumber" class="form-label">Số Điện Thoại</label>
+      <input type="text" class="form-control" id="phoneNumber" placeholder="Nhập số điện thoại" (keydown)="revoveInvalid(validReceiverPhone)" (blur)="validateReceiverPhone()" [(ngModel)]="staff.phone" [ngModelOptions]="{standalone: true}">
+      <div class="validate-input" *ngIf="!validReceiverPhone.done">
+        <p class="validate-input-label" *ngIf="validReceiverPhone.empty">Số điện thoại không để trống</p>
+        <p class="validate-input-label" *ngIf="validReceiverPhone.regex">số điện thoại không đúng</p>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" placeholder="Nhập email" (keydown)="revoveInvalid(validEmail)" (blur)="validateEmail()" [(ngModel)]="staff.email" [ngModelOptions]="{standalone: true}">
+      <div class="validate-input" *ngIf="!validEmail.done">
+        <p class="validate-input-label" *ngIf="validEmail.empty">Email không để trống</p>
+        <p class="validate-input-label" *ngIf="validEmail.maxLength">Email tối đa 250 kí tự</p>
+        <p class="validate-input-label" *ngIf="validEmail.regex">Email Không đúng định dạng</p>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label for="username" class="form-label">Tên Đăng Nhập</label>
+      <input type="text" class="form-control" id="username" placeholder="Nhập tên đăng nhập" (keydown)="revoveInvalid(validUsername)" (blur)="validateReceiverUsername()" [(ngModel)]="staff.username" [ngModelOptions]="{standalone: true}" readonly>
+      <div class="validate-input" *ngIf="!validUsername.done">
+        <p class="validate-input-label" *ngIf="validUsername.empty">Tên đăng nhập không để trống</p>
+        <p class="validate-input-label" *ngIf="validUsername.maxLength">Tên đăng nhập tối đa 50 kí tự</p>
+        <p class="validate-input-label" *ngIf="validUsername.regex">Tên đăng nhập bắt đầu bằng chữ thường
+          <br>và chỉ chứa các số nguyên dương và có ít nhất 6 kí tự</p>
+        <p class="validate-input-label" *ngIf="validUsername.space">Tên đăng nhập không được chứa dấu cách</p>
+        <p class="validate-input-label" *ngIf="validUsername.UTF8">Tên đăng nhập bắt đầu bằng chữ thường không dấu</p>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label for="password" class="form-label">Mật Khẩu</label>
+      <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu" (keydown)="revoveInvalid(validReceiverPassword)" (blur)="validateReceiverPassword()" [(ngModel)]="staff.passwword" [ngModelOptions]="{standalone: true}">
+      <div class="validate-input" *ngIf="!validReceiverPassword.done">
+        <p class="validate-input-label" *ngIf="validReceiverPassword.empty">Mật khẩu không để trống</p>
+        <p class="validate-input-label" *ngIf="validReceiverPassword.maxLength">Mật khẩu tối đa 50 kí tự</p>
+        <p class="validate-input-label" *ngIf="validReceiverPassword.regex">Mật khẩu bắt đầu bằng chữ có ít nhất một chứ cái in hoa
+          <br> có ít nhất 1 số, <br>
+          có ít nhất 1 kí tự đặc biệt <br> và có ít nhất 8 ký tự</p>
+        <p class="validate-input-label" *ngIf="validReceiverPassword.space">Mật khẩu không được chứa dấu cách</p>
+        <p class="validate-input-label" *ngIf="validReceiverPassword.UTF8">Mật khẩu bắt đầu bằng chữ thường không dấu</p>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label for="birthdate" class="form-label">Ngày Sinh</label>
+      <input type="date" class="form-control" id="birthdate" [(ngModel)]="staff.birthday" [ngModelOptions]="{standalone: true}">
+    </div>
+    <div class="col-md-6">
+      <label for="gender" class="form-label">Giới Tính</label>
+      <select class="form-select" id="gender" [(ngModel)]="staff.gender" [ngModelOptions]="{standalone: true}">
+        <option >Chọn giới tính</option>
+        <option value="Nam" selected>Nam</option>
+        <option value="Nữ">Nữ</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label for="address" class="form-label">Quê Quán</label>
+      <input type="text" class="form-control" id="address" placeholder="Nhập quê quán" [(ngModel)]="staff.description" [ngModelOptions]="{standalone: true}">
+    </div>
+    <div class="col-md-6">
+      <label for="status" class="form-label">Chức Vụ</label>
+      <select class="form-select" id="status" [(ngModel)]="staff.role" [ngModelOptions]="{standalone: true}">
+        <option selected value="STAFF">Nhân Viên</option>
+        <option value="ADMIN">Quản lý</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label for="status" class="form-label" >Trạng Thái</label>
+      <select class="form-select" id="status" [(ngModel)]="staff.idel" [ngModelOptions]="{standalone: true}">
+        <option value="0" selected>Đang hoạt động</option>
+        <option value="1">Không hoạt động</option>
+      </select>
+    </div>
+
+    <div class="col-12 mb-3">
+      <button type="submit" class="btn btn-primary">Cập nhật</button>
+      <a href="/staff" class="btn btn-error">Hủy</a>
+    </div>
+  </form>
+</div>

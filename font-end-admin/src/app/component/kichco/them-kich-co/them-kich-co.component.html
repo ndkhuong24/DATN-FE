@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Thêm kích cỡ</h1>
+<div mat-dialog-content class="example-container">
+  <mat-form-field appearance="outline">
+    <mat-label>Số kích cỡ</mat-label>
+    <input  [(ngModel)]="SizeNumber" matInput placeholder="Số kích cỡ" (keydown)="revoveInvalid(validSizeNumber)" (blur)="validateSizeNumber()">
+    <div class="validate-input" *ngIf="!validSizeNumber.done">
+      <p class="validate-input-label" *ngIf="validSizeNumber.empty">Số kích cỡ không được để trống</p>
+      <p class="validate-input-label" *ngIf="validSizeNumber.maxLength">Số kích cỡ phải dưới 250 kí tự</p>
+    </div>
+  </mat-form-field>
+  <mat-radio-group [(ngModel)]="Status">
+    <mat-label>Trạng thái</mat-label>
+    <mat-radio-button [value]="0">Hoạt Động</mat-radio-button>
+    <mat-radio-button [value]="1">Ngừng Hoạt Động</mat-radio-button>
+  </mat-radio-group>
+</div>
+<div mat-dialog-actions [align]="'end'">
+  <button mat-raised-button color="warn" mat-dialog-close>Đóng</button>
+  <button  mat-raised-button color="primary"(click)="clickadd()">Thêm</button>
+</div>

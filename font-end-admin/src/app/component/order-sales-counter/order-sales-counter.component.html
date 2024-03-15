@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="d-flex">
+    <h1 class="title">Danh sách hóa đơn</h1>
+  </div>
+  <div>
+    <div class="" style="display: flex; justify-content: flex-end">
+      <div>
+        <div class="form-group" style="margin-top: -20px;">
+          <label for="input2" class="form-label"><strong>Mã hóa đơn</strong></label>
+          <input type="text" matTooltipClass="material-tooltip" [(ngModel)]="modelSearch.code" class="form-control w-100 input-sm overflow-dot place_text" id="input2" placeholder="Nhập mã đơn hàng" style="height: 35px; min-width: 220px!important;">
+        </div>
+      </div>
+      <div class="" style="margin-left: 20px; margin-top: 13px">
+        <ejs-daterangepicker id='daterangepicker' placeholder='Chọn thời gian' [(startDate)]="modelSearch.dateFrom" [(endDate)]="modelSearch.dateTo"></ejs-daterangepicker>
+      </div>
+
+      <div style="margin-left: 20px; margin-top: 10px;">
+        <button style=" font-size: 14px" type="submit" class="btn btn-success" (click)="searchOrder();">Tìm kiếm</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <mat-tab-group (selectedTabChange)="tabChanged($event)">
+      <mat-tab [label]="s.name" *ngFor="let s of listStatus">
+        <div class="order-table">
+          <div class="grid">
+            <ag-grid-angular
+              style="width: 100%; height: 600px;"
+              class="ag-theme-alpine"
+              [rowData]="rowData"
+              [columnDefs]="columnDefs"
+              [headerHeight]="70"
+              [rowHeight]="50"
+              [pagination]="true"
+              [paginationPageSize]="10"
+              (gridReady)="onGridReady($event)">
+            </ag-grid-angular>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Cập nhật màu sắc</h1>
+<div mat-dialog-content class="example-container">
+  <mat-form-field appearance="outline">
+    <mat-label>Tên màu</mat-label>
+    <input matInput [(ngModel)]="data.name" placeholder="Tên màu" (keydown)="revoveInvalid(validName)" (blur)="validateName()">
+    <div class="validate-input" *ngIf="!validName.done">
+      <p class="validate-input-label" *ngIf="validName.empty">Tên không được để trống</p>
+      <p class="validate-input-label" *ngIf="validName.maxLength">Tên màu sắc 250 kí tự</p>
+      <p class="validate-input-label" *ngIf="validName.regex">Tên Không được chứa số</p>
+    </div>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Mã màu</mat-label>
+    <input matInput [(ngModel)]="data.code" placeholder="Mã màu" (keydown)="revoveInvalid(validCode)" (blur)="validateCode()">
+    <div class="validate-input" *ngIf="!validCode.done">
+      <p class="validate-input-label" *ngIf="validCode.empty">Mã không được để trống</p>
+      <p class="validate-input-label" *ngIf="validCode.maxLength">Mã màu sắc 250 kí tự</p>
+    </div>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions [align]="'end'">
+  <button mat-raised-button color="warn" mat-dialog-close>Đóng</button>
+  <button mat-raised-button color="primary"(click)="clickUpdate(data.id)" >Cập nhật</button>
+</div>

@@ -1,0 +1,47 @@
+<div class="container">
+  <h2>Đăng kí</h2>
+  <form (ngSubmit)="signUp()" novalidate>
+    <div class="col-5">
+      <div class="form-group">
+        <label>Họ và tên</label>
+        <input type="text" class="form-control" name="fullname" [(ngModel)]="form.fullname"  [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="form-group">
+        <label>Tên Đăng Nhập</label>
+        <input type="text" class="form-control" name="user" [(ngModel)]="form.username"  [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="text" class="form-control" name="email" [(ngModel)]="form.email"  [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="text" class="form-control" name="phone" [(ngModel)]="form.phone"  [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="form-group">
+        <label>Chức vụ</label>
+        <div class="col-auto">
+          <select class="form-select" id="autoSizingSelect" [(ngModel)]="form.role"  [ngModelOptions]="{standalone: true}">
+            <option value="ADMIN">Quản Lý</option>
+            <option value="STAFF">Nhân Viên</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="col-5">
+      <div class="form-group">
+        <label>Ngày Sinh</label>
+        <input type="date" class="form-control" name="birthday" [(ngModel)]="form.birthday"  [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="form-group">
+        <label>Giới Tính</label>
+        <input type="text" class="form-control" name="gender" [(ngModel)]="form.gender"  [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="form-group">
+        <label>Mật Khẩu</label>
+        <input type="text" class="form-control" name="password" [(ngModel)]="form.password"  [ngModelOptions]="{standalone: true}">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Đăng Nhập</button>
+  </form>
+</div>

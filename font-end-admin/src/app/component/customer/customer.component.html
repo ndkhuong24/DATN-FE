@@ -1,0 +1,81 @@
+<div class="container">
+
+  <h2>Thêm Khách Hàng</h2>
+
+  <form (ngSubmit)="addCustomerSC()">
+    <div class="row align-items-start">
+      <div class="col-md-5 ">
+        <div class="form-group">
+          <label for="maKhachHang">Mã khách hàng:</label>
+          <input type="text" class="form-control" id="maKhachHang" name="maKhachHang" placeholder="Mã mặc định"
+                 readonly>
+        </div>
+
+        <div class="form-group">
+          <label for="tenKhachHang">Tên khách hàng:</label>
+          <input type="text" class="form-control" id="tenKhachHang" name="tenKhachHang" placeholder="Tên khách hàng"
+                 required (keydown)="revoveInvalid(validReceiver)" (blur)="validateReceiver()"
+                 [(ngModel)]="customer.fullname" [ngModelOptions]="{standalone: true}">
+          <div class="validate-input" *ngIf="!validReceiver.done">
+            <p class="validate-input-label" *ngIf="validReceiver.empty">Tên khách hàng không để trống</p>
+            <p class="validate-input-label" *ngIf="validReceiver.maxLength">Tên khách hàng tối đa 250 kí tự</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="dienThoai">Điện thoại:</label>
+          <input type="tel" class="form-control" id="dienThoai" name="dienThoai" placeholder="Điện thoại"
+                 (keydown)="revoveInvalid(validReceiverPhone)" (blur)="validateReceiverPhone()" required
+                 [(ngModel)]="customer.phone">
+          <div class="validate-input" *ngIf="!validReceiverPhone.done">
+            <p class="validate-input-label" *ngIf="validReceiverPhone.empty">Số điện thoại không để trống</p>
+            <p class="validate-input-label" *ngIf="validReceiverPhone.regex">số điện thoại không đúng</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="diaChi">Địa chỉ:</label>
+          <input type="text" class="form-control" id="diaChi" name="diaChi" placeholder="Số nhà, tòa nhà, ngõ, đường"
+                 required>
+        </div>
+
+        <div class="form-group">
+          <label for="khuVuc">Khu vực:</label>
+          <input type="text" class="form-control" id="khuVuc" name="khuVuc" placeholder="Khu vực" required>
+        </div>
+      </div>
+
+      <div class="col-md-5">
+        <div class="form-group">
+          <label for="tinhThanh">Tỉnh/TP - Quận/Huyện:</label>
+          <select class="form-control" id="tinhThanh" name="tinhThanh" required>
+            <!-- Thêm các tùy chọn của bạn -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="phuongXa">Phường/Xã:</label>
+          <select class="form-control" id="phuongXa" name="phuongXa" required>
+            <!-- Thêm các tùy chọn của bạn -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="ngaySinh">Ngày sinh:</label>
+          <input type="date" class="form-control" id="ngaySinh" name="ngaySinh" required>
+        </div>
+
+        <div class="form-group">
+          <label for="gioiTinh">Giới tính:</label>
+          <select class="form-control" id="gioiTinh" name="gioiTinh" required [(ngModel)]="customer.gender">
+            <option value="Nam">Nam</option>
+            <option value="Nữ">Nữ</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Thêm khách Hàng</button>
+  </form>
+
+</div>

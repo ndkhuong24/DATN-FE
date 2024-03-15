@@ -1,0 +1,210 @@
+<div class="container">
+  <div class="banner">
+    <div class="container">
+      <div class="row ">
+        <div class="col-12">
+          <div class="img-nav9">
+            <div class="card">
+              <img src="assets/image/banner1.jpg" class="card-img" alt="...">
+              <div class="card-img-overlay" style="margin-left: 60px; margin-top: 100px;">
+                <h6 class="card-title" style="font-weight: bold; color: orange;">Giày Thể Thao Nam</h6>
+                <h1 style="font-weight: bold;" class="card-title">Chính Hãng <br> Giá rẻ</h1>
+
+                <p class="card-text" style="color: #2f7476;"><small>Nhiều Mẫu Mã</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="san-pham" style="margin-top: 40px;">
+    <h1 style="text-align: center; ">Sản Phẩm Nổi Bật</h1>
+    <div class="">
+      <ul class="nav justify-content-center">
+        <li class="nav-item">
+          <button type="button" class="btn btn-light" (click)="changeBrand(0)">Tất cả</button>
+        </li>
+        <li class="nav-item" *ngFor="let b of listBrand">
+          <input type="button" class="btn btn-light" id="brandName" [value]="b.name" (click)="changeBrand(b.id)">
+        </li>
+      </ul>
+    </div>
+    <div style="margin-top: 40px;">
+      <div class="container text-center">
+        <div class="row align-items-start">
+          <div style="display: flex; gap: 10px; margin-top: 50px" class="col-3" *ngFor="let p of listProductNoiBat">
+            <div class="card" style="width: 18rem;">
+              <a  [routerLink]="['/product-details',p.id]">
+                <img style="width: 250px; height: 330px"
+                  (mouseenter)="onMouseEnter(p)"
+                  (mouseleave)="onMouseLeave(p)"
+                  [src]="isMouseOver[p.id] ? p.imagesDTOList[1].imageName : p.imagesDTOList[0].imageName"
+                  class="card-img-top"
+                  alt="..."
+                >
+                <span *ngIf="p.reducePrice != null && p.percentageReduce != null" class="percentage-badge">{{ p.percentageReduce }}%</span>
+              </a>
+
+              <div class="card-body">
+                <h5 class="card-title">{{p.name}}</h5>
+<!--                <div *ngIf="p.reducePrice == null && p.percentageReduce == null"><span>{{p.price}}</span> đ</div>-->
+                <div  *ngIf="p?.reducePrice == null && p?.percentageReduce == null">
+                  <div  style="font-size: 25px"><span>{{utilService.formatMoney(p?.price)}}</span></div>
+                </div>
+<!--                <div *ngIf="p.reducePrice != null && p.percentageReduce != null"> <del>{{utilService.formatMoney(p.price)}}</del>-->
+<!--                  <span style="margin-left: 5px">{{utilService.formatMoney(p.price - p.reducePrice)}}</span></div>-->
+                <div *ngIf="p?.reducePrice != null && p?.percentageReduce != null">
+                  <div  style="font-size: 15px; margin-top: 10px"><div style="text-decoration: line-through; color: #757575">{{utilService.formatMoney(p.price)}}</div></div>
+                  <div style="font-size: 25px"><span>{{utilService.formatMoney(p.price - p.reducePrice)}}</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!--    <div style="margin-top: 50px;">-->
+<!--      <div class="container text-center">-->
+<!--        <div class="row align-items-start">-->
+<!--          <div class="col-4">-->
+<!--            <h6 style="float: left;margin-left: 20px ; font-weight: bold; font-size: 18px;">Sản Phẩm Bán-->
+<!--              Chạy</h6>-->
+<!--            <button type="submi" style="border: #ebebeb;">-->
+<!--              < </button>-->
+<!--            <button type="submi" style="border: #ebebeb;">></button>-->
+<!--          </div>-->
+<!--          <div class="col-4">-->
+<!--            <h6 style="float: left;margin-left: 40px ; font-weight: bold; font-size: 18px;">Sản Phẩm Mới-->
+<!--            </h6>-->
+<!--            <button type="submi" style="border: #ebebeb;">-->
+<!--              <</button>-->
+<!--            <button type="submi" style="border: #ebebeb;">></button>-->
+<!--          </div>-->
+<!--          <div class="col-4">-->
+<!--            <h6 style="float: left;margin-left: 40px ; font-weight: bold; font-size: 18px;">Đánh Giá Cao-->
+<!--            </h6>-->
+<!--            <button type="submi" style="border: #ebebeb;">-->
+<!--              <</button>-->
+<!--            <button type="submi" style="border: #ebebeb;">></button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div style="margin-top: 30px;">-->
+<!--      <div class="container">-->
+<!--        <div class="row align-items-start">-->
+<!--          <div class="col-4">-->
+<!--            <img src="assets/image/anh1.jpeg" class="img-thumbnail" alt="...">-->
+<!--            <p class="mota" style="margin-left: 140px;"> Giày chính Hãng</p>-->
+<!--            <p class="gia" style="margin-left: 140px;">300.000 đ</p>-->
+<!--          </div>-->
+<!--          <div class="col-4">-->
+<!--            <img src="assets/image/anh1.jpeg" class="img-thumbnail" alt="...">-->
+<!--            <p class="mota" style="margin-left: 140px;"> Giày chính Hãng</p>-->
+<!--            <p class="gia" style="margin-left: 140px;">300.000 đ</p>-->
+<!--          </div>-->
+<!--          <div class="col-4">-->
+<!--            <img src="assets/image/anh2.jpg" class="img-thumbnail" alt="...">-->
+<!--            <p class="mota" style="margin-left: 140px;"> Giày chính Hãng</p>-->
+<!--            <p class="gia" style="margin-left: 140px;">300.000 đ </p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div style="margin-top: 10px;">-->
+<!--      <div class="container">-->
+<!--        <div class="row align-items-start">-->
+<!--          <div class="col-4">-->
+<!--            <img src="assets/image/anh2.jpg" class="img-thumbnail" alt="...">-->
+<!--            <p class="mota" style="margin-left: 140px;"> Giày chính Hãng</p>-->
+<!--            <p class="gia" style="margin-left: 140px;">300.000 đ</p>-->
+<!--          </div>-->
+<!--          <div class="col-4">-->
+<!--            <img src="assets/image/anh2.jpg" class="img-thumbnail" alt="...">-->
+<!--            <p class="mota" style="margin-left: 140px;"> Giày chính Hãng</p>-->
+<!--            <p class="gia" style="margin-left: 140px;">300.000 đ</p>-->
+<!--          </div>-->
+<!--          <div class="col-4">-->
+<!--            <img src="assets/image/anh2.jpg" class="img-thumbnail" alt="...">-->
+<!--            <p class="mota" style="margin-left: 140px;"> Giày chính Hãng</p>-->
+<!--            <p class="gia" style="margin-left: 140px;">300.000 đ</p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div style="margin-top: 10px;">-->
+<!--      <div class="container">-->
+<!--        <div class="row align-items-start">-->
+<!--          <div class="col-4">-->
+<!--            <img src="assets/image/anh3.jpeg" class="img-thumbnail" alt="...">-->
+<!--            <p class="mota" style="margin-left: 140px;"> Giày chính Hãng</p>-->
+<!--            <p class="gia" style="margin-left: 140px;">300.000 đ</p>-->
+<!--          </div>-->
+<!--          <div class="col-4">-->
+<!--            <img src="assets/image/anh3.jpeg" class="img-thumbnail" alt="...">-->
+<!--            <p class="mota" style="margin-left: 140px;"> Giày chính Hãng</p>-->
+<!--            <p class="gia" style="margin-left: 140px;">300.000 đ</p>-->
+<!--          </div>-->
+<!--          <div class="col-4">-->
+<!--            <img src="assets/image/anh4.jpg" class="img-thumbnail" alt="...">-->
+<!--            <p class="mota" style="margin-left: 140px;"> Giày chính Hãng</p>-->
+<!--            <p class="gia" style="margin-left: 140px;">300.000 đ</p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+    <div>
+      <h1 style="text-align: center; margin-top: 40px;">Sản Phẩm Liên Quan</h1>
+    </div>
+    <div>
+      <div class="container" style="margin-top: 40px;">
+        <div class="row align-items-start">
+          <div class="col-4">
+            <div class="card" style="width: 18rem;">
+              <img src="assets/image/anh10.jpeg" style="width: 400px;" class="card-img-top" alt="...">
+              <div class="card-body">
+
+                <h5 style="font-size: 15px ; clear: both;" class="card-title">Giày Thể Thao Xu Hướng
+                </h5>
+                <p class="card-text">- Màu sắc tối giản dễ dàng phối hợp với nhiều phong cách thời
+                  trang khác nhau.
+                  Mũi giày thiết kế hình vỏ sò vừa thời trang vừa giúp bảo vệ đầu ngón chân.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card" style="width: 18rem;">
+              <img src="assets/image/anh9.jpg" style="width: 400px;" class="card-img-top" alt="...">
+              <div class="card-body">
+
+                <h5 style="font-size: 15px ; clear: both;" class="card-title">Giày Thể Thao Xu Hướng
+                </h5>
+                <p class="card-text">- Màu sắc tối giản dễ dàng phối hợp với nhiều phong cách thời
+                  trang khác nhau.
+                  Mũi giày thiết kế hình vỏ sò vừa thời trang vừa giúp bảo vệ đầu ngón chân.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="card" style="width: 18rem;">
+              <img src="assets/image/anh1.jpeg" style="width: 400px;" class="card-img-top" alt="...">
+              <div class="card-body">
+
+                <h5 style="font-size: 15px ; clear: both;" class="card-title">Giày Thể Thao Xu Hướng
+                </h5>
+                <p class="card-text">- Màu sắc tối giản dễ dàng phối hợp với nhiều phong cách thời
+                  trang khác nhau.
+                  Mũi giày thiết kế hình vỏ sò vừa thời trang vừa giúp bảo vệ đầu ngón chân.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

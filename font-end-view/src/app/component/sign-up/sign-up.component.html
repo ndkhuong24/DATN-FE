@@ -1,0 +1,122 @@
+<div class="login_form">
+  <div class="left">
+    <img src="/assets/image/logshoes.png">
+  </div>
+
+  <div class="right">
+    <h1>Đăng Kí</h1>
+
+    <form (ngSubmit)="signUp()">
+      <div class="row align-items-start">
+        <div class="col-md-6">
+          <p>Họ và Tên</p>
+          <div class="user">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" name="fullname" placeholder="Full Name" (keydown)="revoveInvalid(validReceiver)" (blur)="validateReceiver()" class="input" [(ngModel)]="form.fullname" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="validate-input" *ngIf="!validReceiver.done">
+            <p class="validate-input-label" *ngIf="validReceiver.empty">Họ và tên không để trống</p>
+            <p class="validate-input-label" *ngIf="validReceiver.maxLength">Họ và tên tối đa 250 kí tự</p>
+          </div>
+<!--          sdt-->
+          <p>SDT</p>
+          <div class="user">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" name="phone" placeholder="0345678..." class="input" (keydown)="revoveInvalid(validReceiverPhone)" (blur)="validateReceiverPhone()" [(ngModel)]="form.phone" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="validate-input" *ngIf="!validReceiverPhone.done">
+            <p class="validate-input-label" *ngIf="validReceiverPhone.empty">Số điện thoại không để trống</p>
+            <p class="validate-input-label" *ngIf="validReceiverPhone.regex">số điện thoại không đúng</p>
+          </div>
+<!--          pass-->
+          <p class="password_tag">Mật khẩu</p>
+          <div class="password">
+            <i class="fa-solid fa-lock"></i>
+            <input type="{{ showPassword ? 'text' : 'password' }}"
+                   name="password"
+                   placeholder="Password"
+                   (keydown)="revoveInvalid(validReceiverPassword)"
+                   (blur)="validateReceiverPassword()"
+                   [(ngModel)]="form.password"
+                   [ngModelOptions]="{standalone: true}">
+            <a class="btn" (click)="togglePasswordVisibility()"><i class="fa-solid fa-eye"></i></a>
+          </div>
+          <div class="validate-input" *ngIf="!validReceiverPassword.done">
+            <p class="validate-input-label" *ngIf="validReceiverPassword.empty">Mật khẩu không để trống</p>
+            <p class="validate-input-label" *ngIf="validReceiverPassword.maxLength">Mật khẩu tối đa 50 kí tự</p>
+            <p class="validate-input-label" *ngIf="validReceiverPassword.regex">Mật khẩu bắt đầu bằng chữ có ít nhất một chứ cái in hoa
+              <br> có ít nhất 1 số, <br>
+            có ít nhất 1 kí tự đặc biệt <br> và có ít nhất 8 ký tự</p>
+            <p class="validate-input-label" *ngIf="validReceiverPassword.space">Mật khẩu không được chứa dấu cách</p>
+            <p class="validate-input-label" *ngIf="validReceiverPassword.UTF8">Mật khẩu bắt đầu bằng chữ thường không dấu</p>
+          </div>
+
+          <p class="passworg_tag"> NHập lại mật khẩu</p>
+          <div class="password">
+            <i class="fa-solid fa-lock"></i>
+            <input type="{{ showPassword ? 'text' : 'password' }}" name="confirmPassword" placeholder="ConfirmPassword" (change)="validateConfirmPass()"  [(ngModel)]="confirmPass">
+            <a class="btn" (click)="togglePasswordVisibility()"><i class="fa-solid fa-eye"></i></a>
+          </div>
+          <div class="validate-input" *ngIf="validConfirm === false">
+            <p class="validate-input-label">Mật khẩu nhập lại không chính xác</p>
+          </div>
+          <div class="d-flex back-to-signIn">
+            <a href="/login">Quay lại đăng nhập</a>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <p>Tên Tài Khoản</p>
+          <div class="user">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" name="username" placeholder="User Name" class="input"
+                   (keydown)="revoveInvalid(validUsername)" (blur)="validateReceiverUsername()" [(ngModel)]="form.username" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="validate-input" *ngIf="!validUsername.done">
+            <p class="validate-input-label" *ngIf="validUsername.empty">Tên đăng nhập không để trống</p>
+            <p class="validate-input-label" *ngIf="validUsername.maxLength">Tên đăng nhập tối đa 50 kí tự</p>
+            <p class="validate-input-label" *ngIf="validUsername.regex">Tên đăng nhập bắt đầu bằng chữ thường
+              <br>và chỉ chứa các số nguyên dương và có ít nhất 6 kí tự</p>
+            <p class="validate-input-label" *ngIf="validUsername.space">Tên đăng nhập không được chứa dấu cách</p>
+            <p class="validate-input-label" *ngIf="validUsername.UTF8">Tên đăng nhập bắt đầu bằng chữ thường không dấu</p>
+          </div>
+
+          <p>Email</p>
+          <div class="user">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" name="email" placeholder="Email" class="input" (keydown)="revoveInvalid(validEmail)" (blur)="validateEmail()" [(ngModel)]="form.email" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="validate-input" *ngIf="!validEmail.done">
+            <p class="validate-input-label" *ngIf="validEmail.empty">Email không để trống</p>
+            <p class="validate-input-label" *ngIf="validEmail.maxLength">Email tối đa 250 kí tự</p>
+            <p class="validate-input-label" *ngIf="validEmail.regex">Email Không đúng định dạng</p>
+          </div>
+          <p class="passworg_tag">Ngày Sinh</p>
+          <div class="password">
+            <i class="fa-solid fa-lock"></i>
+            <input type="date" name="bỉthday" placeholder="Password" [(ngModel)]="form.birthday" [ngModelOptions]="{standalone: true}">
+          </div>
+
+          <p class="passworg_tag">Giới Tính</p>
+          <div class="password">
+            <select class="form-control " style="background: none" id="gioiTinh" name="gioiTinh" required [(ngModel)]="form.gender" [ngModelOptions]="{standalone: true}">
+              <option value="Nam" selected>Nam</option>
+              <option value="Nữ" >Nữ</option>
+            </select>
+          </div>
+          <button type="submit" style="margin-top: 10px">Đăng Ký</button>
+
+          <div class="loging_icon">
+            <a href="#"><img src="assets/image/google.png"></a>
+            <a href="#"><img src="assets/image/facebook.png"></a>
+            <a href="#"><img src="assets/image/twitter.png"></a>
+          </div>
+        </div>
+      </div>
+
+
+    </form>
+
+  </div>
+
+</div>

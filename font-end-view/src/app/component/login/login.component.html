@@ -1,0 +1,38 @@
+<div class="login_form ">
+  <div class="left">
+    <img src="assets/image/logshoes.png">
+  </div>
+
+  <div class="right">
+    <h2>Chào mừng đến với 2T Store</h2>
+
+    <form (ngSubmit)="login()">
+      <p>Tên đăng nhập</p>
+      <div class="user">
+        <i class="fa-solid fa-user"></i>
+        <input type="text" name="user" placeholder="Tên đăng nhập" class="username" [(ngModel)]="form.username"
+               [ngModelOptions]="{standalone: true}" autocomplete="off">
+      </div>
+
+      <p class="passworg_tag">Mật khẩu</p>
+      <div class="password">
+        <i class="fa-solid fa-lock"></i>
+        <input type="{{ showPassword ? 'text' : 'password' }}" name="password" placeholder="Mật khẩu" [(ngModel)]="form.password" [ngModelOptions]="{standalone: true}">
+        <a class="btn" (click)="togglePasswordVisibility()"><i class="fa-solid fa-eye"></i></a>
+      </div>
+      <div class="d-flex">
+        <p class="sign-up">
+          <a href="/sign-up">Đăng kí</a>
+        </p>
+        <p class="forget">
+          <a href="/forgot-pass">Quên mật khẩu ?</a>
+        </p>
+      </div>
+
+      <button type="submit">Login</button>
+
+    </form>
+
+  </div>
+
+</div>

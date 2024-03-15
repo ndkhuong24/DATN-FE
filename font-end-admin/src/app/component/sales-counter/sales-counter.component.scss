@@ -1,0 +1,148 @@
+.sales{
+  background-color: whitesmoke;
+  width: 100%;
+}
+.col-left {
+  width: 70%;
+  flex: 1;
+  /*overflow-x: scroll;*/
+  /*overflow-y: scroll;*/
+  margin-left: 10px;
+}
+.col-right{
+height: 560px;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+}
+
+tr.shadowed-row {
+  background-color: white;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 10px;
+}
+.form-order{
+  border: 1px solid rgb(104, 219, 219);
+  padding-left: 15px;
+  padding-right: 10px;
+  border-radius: 10px;
+  font-size: 16px;
+  box-shadow: 0px 2px 5px rgb(92, 95, 95);
+
+}
+.name-nv{
+  font-weight: bold;
+  font-family: "Helvetica Neue", sans-serif;
+  font-size: 18px;
+}
+.time-order{
+  font-size: 18px;
+  text-align: right;
+}
+.icon-add{
+  text-align: left;
+  font-size: 18px;
+  margin-right: 12px;
+}
+.custom-input{
+  background-color: whitesmoke;
+  border: none;
+  border-bottom: 1px solid #8cd6f6;
+}
+.radio-custom{
+  margin-left: 5px;
+}
+.note-custom{
+  height: 100px;
+}
+.tt-custom{
+  height: 40px;
+}
+.sales {
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.search-product {
+  margin-left: 5px;
+  margin-top: 10px;
+  position: relative;
+}
+
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 40%;
+  z-index: 100;
+  display: block;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+}
+.search-results-kh{
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  display: block;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+}
+
+.mat-list-item {
+  cursor: pointer;
+  padding: 8px;
+}
+
+.mat-list-item:hover {
+  background-color: #f0f0f0;
+}
+
+.header-custom {
+  font-size: 20px;
+}
+.remove-btn-order{
+  margin-left: 15px;
+  font-size: 20px;
+  border: none;
+}
+.add-btn-order{
+  margin-top: 12px;
+  font-size: 20px;
+  border: none;
+}
+.quantity{
+  width: 50px;
+}
+.select-size{
+  width: 60px;
+}
+.img{
+  width: 200px;
+  height: 200px;
+}
+.camera-container {
+  display: none;
+}
+.validate-input{
+  .validate-input-label{
+    margin: 5px 0 0 !important;
+    color: red;
+    font-size: 12px;
+    line-height: 10px;
+    font-weight: 500;
+  }
+}
+
+
+

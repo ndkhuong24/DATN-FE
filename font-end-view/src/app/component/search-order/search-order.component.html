@@ -1,0 +1,62 @@
+<div class="container">
+  <div style="text-align: center"><h2>Tra cứu đơn hàng</h2></div>
+  <div class="row">
+    <div style="display: flex;justify-content: center">
+
+        <mat-form-field appearance="outline" style="width: 550px">
+          <mat-label>Mã đơn hàng</mat-label>
+          <input matInput [(ngModel)]="codeOrderSearch"  type="text" >
+        </mat-form-field>
+
+      <div style="margin-left: 20px; margin-top: 20px"><button mat-raised-button color="primary" (click)="searchOrder();">Tìm kiếm</button></div>
+    </div>
+  </div>
+
+  <div *ngIf="order">
+    <div class="row">
+      <div class="col-8">
+        <mat-card class="example-card">
+          <mat-card-header>
+            <mat-card-title>Thông tin đơn hàng</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Mã đơn hàng: {{order?.code || '...'}}</p>
+            <p>Ngày tạo: {{order?.createDate ? utilService.formatDateTime(order?.createDate): '...'}}</p>
+            <p>Tổng tiền: {{order?.totalPrice ? utilService.formatMoney(order?.totalPrice) : '...' }}</p>
+            <p>Tổng tiền thanh toán: {{order?.totalPayment? utilService.formatMoney(order?.totalPayment) : '...'}}</p>
+            <p>Hình thức thanh toán: {{order?.paymentType === 0 ? 'Thanh toán COD' : 'Thanh toán online'}}</p>
+            <p>Trạng thái thanh toán: {{order?.statusPayment === 0 ? 'Đã thanh toán' : 'Chưa thanh toán'}} </p>
+            <p>Trạng thái: {{order?.statusSendEmail || '...'}}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-4">
+        <mat-card class="example-card">
+          <mat-card-header>
+            <mat-card-title>Thông tin người nhận hàng</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Họ tên: {{order?.receiver || '...'}}</p>
+            <p>SDT: {{order?.receiverPhone || '...'}}</p>
+            <p>Email: {{order?.email || '...'}}</p>
+            <p>Địa chỉ nhận: {{order?.addressReceived || '...'}}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="grid">
+        <ag-grid-angular style="width: 100%; height: 300px" class="ag-theme-alpine"
+                         [rowData]="rowData"
+                         [columnDefs]="columnDefs"
+                         [headerHeight]="60"
+                         [rowHeight]="65"
+                         [suppressHorizontalScroll]="true"
+                         (gridReady)="onGridReady($event)">
+        </ag-grid-angular>
+      </div>
+    </div>
+  </div>
+
+</div>

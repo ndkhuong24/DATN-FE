@@ -1,0 +1,55 @@
+<h1 mat-dialog-title>Thêm chi tiết sản phẩm</h1>
+<div mat-dialog-content class="example-container">
+  <mat-form-field>
+    <mat-label>Sản phẩm</mat-label>
+    <mat-select [ngModelOptions]="{ standalone: true }" [(ngModel)]="IdProduct" (keydown)="revoveInvalid(validProduct)" (blur)="validateProduct()">
+      <mat-option *ngFor="let prd of product" [value]="prd.id">
+        {{prd.name}}
+      </mat-option>
+    </mat-select>
+    <div class="validate-input" *ngIf="!validProduct.done">
+      <p class="validate-input-label" *ngIf="validProduct.empty">Vui lòng chọn sản phẩm</p>
+    </div>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Màu sắc</mat-label>
+    <mat-select [ngModelOptions]="{ standalone: true }" [(ngModel)]="IdColor" (keydown)="revoveInvalid(validColor)" (blur)="validateColor()">
+      <mat-option *ngFor="let cl of color" [value]="cl.id">
+        {{cl.name}}
+      </mat-option>
+    </mat-select>
+    <div class="validate-input" *ngIf="!validColor.done">
+      <p class="validate-input-label" *ngIf="validColor.empty">Vui lòng chọn Màu sắc</p>
+    </div>
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Kích cỡ</mat-label>
+    <mat-select [ngModelOptions]="{ standalone: true }" [(ngModel)]="IdSize" (keydown)="revoveInvalid(validSize)" (blur)="validateSize()">
+      <mat-option *ngFor="let sz of size" [value]="sz.id">
+        {{sz.sizeNumber}}
+      </mat-option>
+    </mat-select>
+    <div class="validate-input" *ngIf="!validSize.done">
+      <p class="validate-input-label" *ngIf="validSize.empty">Vui lòng chọn Kích cỡ</p>
+    </div>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Số lượng</mat-label>
+    <input [ngModelOptions]="{ standalone: true }" [(ngModel)]="quantity" name="quantity" matInput placeholder="Số lượng" (keydown)="revoveInvalid(validQuantity)" (blur)="validateQuantity()">
+    <div class="validate-input" *ngIf="!validQuantity.done">
+      <p class="validate-input-label" *ngIf="validQuantity.empty">Mô tả không được để trống</p>
+    </div>
+  </mat-form-field>
+  <br>
+  <mat-radio-group [ngModelOptions]="{ standalone: true }" [(ngModel)]="shoeCollar" name="shoeCollar">
+    <mat-label>Cổ giày</mat-label>
+    <mat-radio-button [value]="0">Cổ thấp</mat-radio-button>
+    <mat-radio-button [value]="1">Cổ cao</mat-radio-button>
+  </mat-radio-group>
+</div>
+<br>
+<div mat-dialog-actions [align]="'end'">
+  <button mat-raised-button color="warn" mat-dialog-close>Đóng</button>
+  <button mat-raised-button color="primary" (click)="clickadd()">Thêm</button>
+</div>

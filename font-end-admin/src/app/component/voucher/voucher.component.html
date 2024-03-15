@@ -1,0 +1,107 @@
+<div class="example-button-row" >
+  <button mat-raised-button color="primary" style="margin-bottom: 20px; margin-left: 20px" routerLink="/admin/creat-voucher" >Thêm Voucher</button>
+</div>
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      Tất Cả
+    </ng-template>
+    <div class="row">
+      <div class="search-from col-12" style="display: flex; margin-top: 10px">
+        <div class="form-group col-2 align-self-start">
+      <select
+        class="form-control"
+        id="discountType"
+        name="discountType"
+        required
+        [(ngModel)]="loc"
+      >
+        <option value="0" selected>Điều kiện lọc</option>
+        <option value="1">Theo voucher</option>
+        <option value="2">Theo khách hàng</option>
+        <option value="3">Theo khoảng thời gian</option>
+      </select>
+    </div>
+        <div class="col-4 align-self-center">
+    <div class="search-box" *ngIf="loc === '1' ">
+      <input class="form-control border-end-0 border rounded-pill" type="search" id="searchByVoucher"  placeholder="Tên hoặc mã voucher" (input)="searchByVoucher($event)">
+    </div>
+    <div class="search-box" *ngIf="loc === '2' ">
+      <input class="form-control border-end-0 border rounded-pill" type="search" id="searchByCustomer" placeholder="Tên hoặc mã hoặc sdt khách hàng" (input)="searchByCustomer($event)">
+    </div>
+      <div class="search-box" *ngIf="loc === '3' " style="display: flex">
+        <div style="display: flex; justify-content: flex-end; margin-top: 10px">
+          <ejs-daterangepicker id='daterangepicker' placeholder='Chọn thời gian' [startDate]='dateFromCurrent' [endDate]='dateToCurrent' (change)="getDater($event)"></ejs-daterangepicker>
+          <!--      <span *ngIf="checkDateRanges === false">Date range is valid</span>-->
+        </div>
+      </div>
+        </div>
+      <div class="col-md-4 offset-md-4">
+        <button type="button" class="btn btn-light" (click)="Excel()">Xuất file excel</button>
+        <!--          <button type="button" (click)="Excel()">In</button>-->
+      </div>
+      </div>
+    <div>
+    </div>
+    </div>
+      <div class="grid" style="margin-top: 10px">
+        <ag-grid-angular
+          style="width: 100%; height: 500px;"
+          class="ag-theme-balham"
+          [rowData]="searchResults"
+          [columnDefs]="columnDefs"
+          [headerHeight]="headerHeight"
+          [rowHeight]="rowHeight"
+          [pagination]="true"
+          [paginationPageSize]="10"
+          [domLayout]="'autoHeight'"
+        ></ag-grid-angular>
+      </div>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      Đang kích hoạt
+    </ng-template>
+    <div>
+      <div class="grid">
+        <ag-grid-angular
+          style="width: 100%; height: 500px;"
+          class="ag-theme-balham"
+          [rowData]="rowData1"
+          [columnDefs]="columnDefs"
+          [headerHeight]="headerHeight"
+          [rowHeight]="rowHeight"
+          [pagination]="true"
+          [paginationPageSize]="10"
+          [domLayout]="'autoHeight'"
+        ></ag-grid-angular>
+      </div>
+    </div>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      Chưa kích hoạt
+    </ng-template>
+    <div>
+      <div class="grid">
+        <ag-grid-angular
+          style="width: 100%; height: 500px;"
+          class="ag-theme-balham"
+          [rowData]="rowData2"
+          [columnDefs]="columnDefs"
+          [headerHeight]="headerHeight"
+          [rowHeight]="rowHeight"
+          [pagination]="true"
+          [paginationPageSize]="10"
+          [domLayout]="'autoHeight'"
+        ></ag-grid-angular>
+      </div>
+    </div>
+  </mat-tab>
+
+</mat-tab-group>
+
+
+

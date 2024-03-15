@@ -1,0 +1,6 @@
+<!--<div style="text-decoration: none" class="btn btn-link" (click)="openXemChiTiet();">Xem chi tiết</div>-->
+<div class="btn btn-primary custom-btn" *ngIf="status === 0">Xác nhận</div>
+<div class="btn btn-primary custom-btn" *ngIf="status === 1">Giao hàng</div>
+<div class="btn btn-danger custom-btn" *ngIf="status === 1 || status == 0" (click)="cancelOrder();">Từ chối</div>
+<div class="btn btn-success custom-btn" *ngIf="status === 2"><span>Hoàn Thành</span></div>
+<div class="btn btn-danger custom-btn" *ngIf="status === 2">Bỏ lỡ</div>

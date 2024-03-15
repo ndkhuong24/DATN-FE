@@ -1,0 +1,72 @@
+
+<!--<div class="container d-flex align-items-center justify-content-center vh-100">-->
+<!--  <div class="card customer-card">-->
+<!--    <div class="card-body">-->
+<!--      <h1 class="card-title text-center">Chào mừng đến với ...</h1>-->
+<!--      <form (ngSubmit)="login()">-->
+<!--        <div class="mb-3">-->
+<!--          <label for="user" class="form-label">Tên tài khoản</label>-->
+<!--          <div class="input-group">-->
+<!--            <span class="input-group-text"><i class="bi bi-person-circle"></i></span>-->
+<!--            <input type="text" name="user" id="user" class="form-control" placeholder="User Name" [(ngModel)]="form.username" [ngModelOptions]="{standalone: true}">-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        <div class="mb-3">-->
+<!--          <label for="password" class="form-label">Mật khẩu</label>-->
+<!--          <div class="input-group">-->
+<!--            <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>-->
+<!--            <input type="password" name="password" id="password" class="form-control" placeholder="Password" [(ngModel)]="form.password" [ngModelOptions]="{standalone: true}">-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        <button type="submit" class="btn btn-primary w-100">Login</button>-->
+<!--      </form>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<section class="vh-100" style="background-color: #edf2f8;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <h1 class="card-title text-center" style="font-weight: bold">Chào mừng đến với Trang quản trị 2T STORE</h1>
+        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+          <div class="card-body p-5">
+            <h2 class="mb-5 text-center">Sign in</h2>
+            <form (ngSubmit)="login()">
+              <div class="form-outline mb-4">
+                <mat-form-field appearance="fill" style=" width: 428px !important; background-color: white !important;">
+                  <mat-label>Tên đăng nhập</mat-label>
+                  <input class="form-control form-control-lg" matInput [type]="'text'" [(ngModel)]="form.username" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+              </div>
+
+              <div class="form-outline mb-4">
+                <mat-form-field appearance="fill" style="width: 428px !important;">
+                  <mat-label>Mật Khẩu</mat-label>
+                  <input class="form-control form-control-lg" matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="form.password" [ngModelOptions]="{standalone: true}">
+                  <a mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </a>
+                </mat-form-field>
+              </div>
+
+              <!-- Checkbox -->
+<!--              <div class="form-check d-flex justify-content-start mb-4">-->
+<!--                <input class="form-check-input" type="checkbox" value="" id="form1Example3" />-->
+<!--                <label class="form-check-label" for="form1Example3"> Nhớ mật khẩu </label>-->
+<!--              </div>-->
+
+              <div>
+                <button class="btn btn-primary btn-lg btn-block  " style="margin-left: 120px; width: 200px" type="submit">
+                  <i class="bi bi-box-arrow-in-right"></i>
+                  Đăng Nhập</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

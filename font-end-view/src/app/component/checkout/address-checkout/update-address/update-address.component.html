@@ -1,0 +1,39 @@
+<div class="row">
+  <h5 style="text-align: center">Thêm địa chỉ</h5>
+  <div class="col-md-4">
+    <label class="form-label">Thành Phố</label>
+    <ng-select [items]="listProvince" bindLabel="ProvinceName" bindValue="ProvinceID" placeholder="--Lựa chọn--"
+               [searchable]="false" [(ngModel)]="address.provinceId" [ngModelOptions]="{standalone: true}" (change)="getDistrict($event.ProvinceID)">
+    </ng-select>
+    <div class="invalid-feedback">
+      Please select a valid country.
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <label for="" class="form-label">Quận Huyện</label>
+    <ng-select [items]="listDistrict" bindLabel="DistrictName" bindValue="DistrictID" placeholder="--Lựa chọn--"
+               [searchable]="false" [(ngModel)]="address.districtId" [ngModelOptions]="{standalone: true}" (change)="getWard($event.DistrictID)">
+    </ng-select>
+  </div>
+  <div class="col-md-4">
+    <label for="" class="form-label">Phường Xã</label>
+    <ng-select [items]="listWard" bindLabel="WardName" bindValue="WardCode" placeholder="--Lựa chọn--"
+               [searchable]="false" [ngModelOptions]="{standalone: true}" [(ngModel)]="address.wardCode">
+    </ng-select>
+    <div class="invalid-feedback">
+      Please provide a valid state.
+    </div>
+  </div>
+</div>
+<div class="col-12">
+  <label for="address" class="form-label">Địa chỉ cụ thể</label>
+  <input type="text" class="form-control" id="address" placeholder="" [ngModelOptions]="{standalone: true}" [(ngModel)]="address.specificAddress" required>
+  <div class="invalid-feedback">
+    Please enter your shipping address.
+  </div>
+  <div style="text-align: center; margin-top:20px">
+    <button type="button" class="btn btn-light" (click)="matRef.close()">Quay lại</button>
+    <button type="button" class="btn btn-primary" style="margin-left: 10px" (click)="add()">Thêm</button>
+  </div>
+</div>

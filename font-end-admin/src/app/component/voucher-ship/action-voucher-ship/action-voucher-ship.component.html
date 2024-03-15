@@ -1,0 +1,6 @@
+<button mat-button [matMenuTriggerFor]="menu"><i class="fa-solid fa-bars"></i></button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="editItem()" *ngIf="data.isUpdate === 0 && data.idel===0 ">Sửa</button>
+  <button mat-menu-item (click)="detail()">Xem chi tiết</button>
+  <button mat-menu-item (click)="delete()" *ngIf="data.isUpdate === 0 && data.idel===0">Xóa</button>
+</mat-menu>

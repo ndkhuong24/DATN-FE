@@ -1,0 +1,70 @@
+<div class="container">
+  <div style="text-align: center">
+    <h4><strong>Chi tiết đơn hàng</strong></h4>
+  </div>
+  <div class="grid">
+    <ag-grid-angular style="width: 100%; height: 300px" class="ag-theme-alpine"
+                     [rowData]="rowData"
+                     [columnDefs]="columnDefs"
+                     [headerHeight]="60"
+                     [rowHeight]="65"
+                     [suppressHorizontalScroll]="true"
+                     (gridReady)="onGridReady($event)">
+    </ag-grid-angular>
+    <table class="table">
+      <!--      <thead>-->
+      <!--      <tr>-->
+      <!--        <th scope="col">#</th>-->
+      <!--        <th scope="col">First</th>-->
+      <!--        <th scope="col">Last</th>-->
+      <!--      </tr>-->
+      <!--      </thead>-->
+      <tbody>
+      <!--      <tr>-->
+      <!--        <th scope="row">Số tiền Giảm giá</th>-->
+      <!--        <td></td>-->
+      <!--        <td></td>-->
+      <!--        <td></td>-->
+      <!--        <td>Thornton</td>-->
+      <!--      </tr>-->
+      <tr>
+        <th scope="row">Tổng giá trị sản phẩm</th>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>{{utilService.formatMoney(data.data?.totalPrice)}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Tổng số lượng sản phẩm</th>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>{{totalQuantity}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Voucher</th>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>{{this.data.data?.codeVoucher}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Tổng thanh toán</th>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>{{ data.data?.totalPayment !== null ? utilService.formatMoney(data.data?.totalPayment) : 0 }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Hình thức thanh toán</th>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>{{data.data?.statusPayment === 0 ? "Đã thanh toán": "Chưa thanh toán"}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+

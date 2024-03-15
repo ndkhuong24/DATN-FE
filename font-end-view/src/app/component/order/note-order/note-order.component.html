@@ -1,0 +1,8 @@
+<div class="mb-3">
+  <label for="exampleFormControlTextarea1" class="form-label">Lý do</label>
+  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" [(ngModel)]="note"></textarea>
+  <div style="margin-top: 10px; text-align: right">
+    <button type="button" class="btn btn-secondary" (click)="matRef.close()">Đóng</button>
+    <button type="button" class="btn btn-success" style="margin-left: 15px" (click)="xacNhan()">Xác nhận</button>
+  </div>
+</div>

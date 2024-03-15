@@ -1,0 +1,79 @@
+<main class="page">
+  <div class="container">
+    <br>
+    <h1 style="text-align: center; color: #2f7476 ">Giỏ Hàng</h1>
+    <br>
+    <div class="row">
+      <table class="table">
+        <thead>
+        <tr>
+<!--          <th scope="col"><input type="checkbox" name="" [(ngModel)]="selectAll" (click)="toggleSelectAll()"></th>-->
+          <th scope="col"><mat-checkbox color="primary" value="{{selectAll}}" [checked]="selectAll" (change)="selectAll = ! selectAll;toggleSelectAll()"></mat-checkbox></th>
+          <th scope="col">Sản Phẩm</th>
+          <th scope="col">Phân loại hàng</th>
+          <th scope="col">Giá tiền</th>
+          <th scope="col" style="display: flex;justify-content: center">Số lượng</th>
+          <th scope="col">Thành tiền</th>
+          <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let c of listCart; let i = index">
+          <th scope="row">
+            <mat-checkbox color="primary" value="{{c.selected}}" [checked]="c.selected" [(ngModel)]="checkboxStatus[i]" (change)="c.selected = !c.selected;toggleCheckbox(i)"></mat-checkbox>
+          </th>
+          <td><img width="80px" height="80px" src="{{c.imageName}}" alt=""> <span class="productName" title="{{c.productName}}">{{c.productName}}</span></td>
+          <td><div><span style="font-weight: bold">Color:</span> {{c.productDetailDTO.colorDTO.name}}</div>
+            <div><span style="font-weight: bold">Size: </span> {{c.productDetailDTO.sizeDTO.sizeNumber}}</div>
+          </td>
+          <td>
+            <div *ngIf="c.productDTO.reducePrice != null && c.productDTO.percentageReduce != null">
+              <del>{{utilService.formatMoney(c.productDTO.price)}}</del>
+              <span style="color: red; margin-left: 5px">{{utilService.formatMoney(c.productDTO.price - c.productDTO.reducePrice)}}</span>
+            </div>
+            <div *ngIf="c.productDTO.reducePrice == null && c.productDTO.percentageReduce == null">
+              <span style="color: red; margin-left: 5px">{{utilService.formatMoney(c.productDTO.price - c.productDTO.reducePrice)}}</span>
+            </div>
+          </td>
+          <td>
+            <div style="display: flex; justify-content: space-around">
+              <button  style="border-radius: 5px;border-color: #0000003b; height: 25px; width: 25px;" (click)="giamSoLuong(c)"><div style="margin-top: -3px">-</div></button>
+              <div>{{c.quantity}}</div>
+              <button style="border-radius: 5px;border-color: #0000003b; height: 25px; width: 25px;" [disabled]="c.quantity == c.productDetailDTO.quantity" (click)="tangSoLuong(c)"><div style="margin-top: -3px">+</div></button>
+            </div>
+          </td>
+
+          <td>
+            <div *ngIf="c.productDTO.reducePrice != null && c.productDTO.percentageReduce != null">
+              <span style="color: red; margin-left: 5px">{{calculateTotal(c.productDTO.price - c.productDTO.reducePrice, c.quantity)}}</span>
+            </div>
+            <div *ngIf="c.productDTO.reducePrice == null && c.productDTO.percentageReduce == null">
+              <span style="color: red; margin-left: 5px">{{calculateTotal(c.productDTO.price, c.quantity)}}</span>
+            </div>
+          </td>
+          <td><button type="button" class="btn -btn-danger" (click)="deleteItem(c)"><i style="color: red" class="fa-solid fa-trash"></i></button></td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">Tổng tiền</th>
+          <th scope="col">Tiết kiện</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <th scope="row">{{utilService.formatMoney(totalMoney)}}</th>
+          <td>{{utilService.formatMoney(totalSaveMoney)}}</td>
+          <td><button class="btn btn-success" [disabled]="!disableCheckOut" (click)="checkOut()">Thanh toán</button></td>
+<!--          <td>@mdo</td>-->
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>

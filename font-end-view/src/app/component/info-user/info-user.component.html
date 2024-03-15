@@ -1,0 +1,117 @@
+<div class="container">
+  <mat-tab-group>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        Thông tin tài  khoản
+      </ng-template>
+      <h6>chi tiết:</h6>
+      <div>
+        <div class="container">
+          <form (ngSubmit)="updateInfor()">
+            <div class="row align-items-start">
+              <div class="col-md-5 ">
+                <div class="form-group">
+                  <label for="maKhachHang">Mã khách hàng:</label>
+                  <input type="text" class="form-control" id="maKhachHang" name="maKhachHang" readonly placeholder="Mã mặc định" required [(ngModel)]="infoCustomer.code" autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                  <label for="tenKhachHang">Họ và tên:</label>
+                  <input type="text" class="form-control" id="tenKhachHang" name="tenKhachHang" placeholder="Tên khách hàng" required (keydown)="revoveInvalid(validReceiver)" (blur)="validateReceiver()"  [(ngModel)]="infoCustomer.fullname" autocomplete="off">
+                </div>
+                <div class="validate-input" *ngIf="!validReceiver.done">
+                  <p class="validate-input-label" *ngIf="validReceiver.empty">Họ và tên không để trống</p>
+                  <p class="validate-input-label" *ngIf="validReceiver.maxLength">Họ và tên tối đa 250 kí tự</p>
+                </div>
+                <div class="form-group">
+                  <label for="dienThoai">Điện thoại:</label>
+                  <input type="tel" class="form-control" id="dienThoai" name="dienThoai" placeholder="Điện thoại" required (keydown)="revoveInvalid(validReceiverPhone)" (blur)="validateReceiverPhone()" [(ngModel)]="infoCustomer.phone" autocomplete="off">
+                </div>
+                <div class="validate-input" *ngIf="!validReceiverPhone.done">
+                  <p class="validate-input-label" *ngIf="validReceiverPhone.empty">Số điện thoại không để trống</p>
+                  <p class="validate-input-label" *ngIf="validReceiverPhone.regex">số điện thoại không đúng</p>
+                </div>
+                <div class="form-group">
+                  <label for="diaChi">Địa chỉ email:</label>
+                  <input type="text" class="form-control" id="diaChi" name="diaChiEmail" placeholder="Số nhà, tòa nhà, ngõ, đường" required [(ngModel)]="infoCustomer.email" (keydown)="revoveInvalid(validEmail)" (blur)="validateEmail()" autocomplete="off">
+                </div>
+                <div class="validate-input" *ngIf="!validEmail.done">
+                  <p class="validate-input-label" *ngIf="validEmail.empty">Email không để trống</p>
+                  <p class="validate-input-label" *ngIf="validEmail.maxLength">Email tối đa 250 kí tự</p>
+                  <p class="validate-input-label" *ngIf="validEmail.regex">Email Không đúng định dạng</p>
+                </div>
+
+              </div>
+
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label for="ngaySinh">Tên đăng nhập:</label>
+                  <input type="text" class="form-control" id="tendangnhap" name="username" required [(ngModel)]="infoCustomer.username" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="ngaySinh">Ngày sinh:</label>
+                  <input type="date" class="form-control" id="ngaySinh" name="ngaySinh" required [(ngModel)]="infoCustomer.birthday">
+                </div>
+
+                <div class="form-group">
+                  <label for="gioiTinh">Giới tính:</label>
+                  <select class="form-control" id="gioiTinh" name="gioiTinh" required [(ngModel)]="infoCustomer.gender">
+                    <option value="Nam">Nam</option>
+                    <option value="Nữ">Nữ</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Cập Nhật</button>
+          </form>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+          Đổi mật khẩu
+      </ng-template>
+      <div class="container">
+        <form (ngSubmit)="changePass()" >
+          <div class="row align-items-start">
+            <div class="col-md-5 ">
+              <div class="form-group">
+                <label for="maKhachHang">Mật  Khẩu  cũ</label>
+                <input type="password" class="form-control" name="passwordOld" placeholder="Mật Khẩu Cũ" required (keydown)="revoveInvalid(validReceiverPassword)" (blur)="validateReceiverPassword()" [(ngModel)]="infoCustomer.password" autocomplete="off">
+              </div>
+              <div class="validate-input" *ngIf="!validReceiverPassword.done">
+                <p class="validate-input-label" *ngIf="validReceiverPassword.empty">Mật khẩu không để trống</p>
+                <p class="validate-input-label" *ngIf="validReceiverPassword.maxLength">Mật khẩu tối đa 50 kí tự</p>
+                <p class="validate-input-label" *ngIf="validReceiverPassword.regex">Mật khẩu có ít nhất 8 kí tự</p>
+              </div>
+              <div class="form-group">
+                <label for="tenKhachHang">Mât Khẩu Mới</label>
+                <input type="password" class="form-control"  name="newPass" placeholder="Mât Khẩu Mới" required (keydown)="revoveInvalid(validReceivernewPassword)" (blur)="validateReceivernewPassword()" [(ngModel)]="infoCustomer.newPass" autocomplete="off">
+              </div>
+              <div class="validate-input" *ngIf="!validReceivernewPassword.done">
+                <div class="validate-input" *ngIf="!validReceivernewPassword.done">
+                  <p class="validate-input-label" *ngIf="validReceivernewPassword.empty">Mật khẩu không để trống</p>
+                  <p class="validate-input-label" *ngIf="validReceivernewPassword.maxLength">Mật khẩu tối đa 50 kí tự</p>
+                  <p class="validate-input-label" *ngIf="validReceivernewPassword.regex">Mật khẩu bắt đầu bằng chữ có ít nhất một chứ cái in hoa
+                    <br> có ít nhất 1 số, <br>
+                    có ít nhất 1 kí tự đặc biệt <br> và có ít nhất 8 ký tự</p>
+                  <p class="validate-input-label" *ngIf="validReceivernewPassword.space">Mật khẩu không được chứa dấu cách</p>
+                  <p class="validate-input-label" *ngIf="validReceivernewPassword.UTF8">Mật khẩu bắt đầu bằng chữ thường không dấu</p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="dienThoai">Nhập lại Mật Khẩu Mới</label>
+                <input type="password" class="form-control" name="reNewPass" placeholder="Nhập lại Mật Khẩu Mới" required (change)="validateConfirmPass()" [(ngModel)]="rePass" autocomplete="off">
+              </div>
+              <div class="validate-input" *ngIf="validConfirm === false">
+                <p class="validate-input-label">Mật khẩu nhập lại không chính xác</p>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+        </form>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

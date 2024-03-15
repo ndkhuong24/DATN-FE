@@ -1,0 +1,102 @@
+<h1 mat-dialog-title>Cập nhật sản phẩm</h1>
+<div mat-dialog-content class="example-container"style="display: flex">
+  <div>
+    <mat-form-field appearance="outline">
+      <mat-label>Mã</mat-label>
+      <input [ngModelOptions]="{ standalone: true }" [(ngModel)]="product.code" disabled matInput placeholder="Mã">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Tên sản phẩm</mat-label>
+      <input [ngModelOptions]="{ standalone: true }" [(ngModel)]="product.name" name="Name" matInput placeholder="Tên sản phẩm" (keydown)="revoveInvalid(validName)" (blur)="validateName()">
+      <div class="validate-input" *ngIf="!validName.done">
+        <p class="validate-input-label" *ngIf="validName.empty">Tên không được để trống</p>
+        <p class="validate-input-label" *ngIf="validName.maxLength">Tên sản phẩm dưới 250 kí tự</p>
+      </div>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Mô tả</mat-label>
+      <input [ngModelOptions]="{ standalone: true }" [(ngModel)]="product.description" name="Description" matInput placeholder="Mô tả" (keydown)="revoveInvalid(validDescription)" (blur)="validateDescription()">
+      <div class="validate-input" *ngIf="!validDescription.done">
+        <p class="validate-input-label" *ngIf="validDescription.empty">Mô tả không được để trống</p>
+      </div>
+    </mat-form-field>
+    <mat-radio-group [ngModelOptions]="{ standalone: true }" [(ngModel)]="product.status" name="Status">
+      <mat-label>Trạng thái</mat-label>
+      <mat-radio-button [value]="0">Hoạt động</mat-radio-button>
+      <mat-radio-button [value]="1">Ngừng hoạt động</mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Thương hiệu</mat-label>
+      <mat-select [ngModelOptions]="{ standalone: true }" [(ngModel)]="product.idBrand" (keydown)="revoveInvalid(validBrand)" (blur)="validateBrand()">
+        <mat-option *ngFor="let br of brand" [value]="br.id">
+          {{br.name}}
+        </mat-option>
+      </mat-select>
+      <div class="validate-input" *ngIf="!validBrand.done">
+        <p class="validate-input-label" *ngIf="validBrand.empty">Vui lòng chọn thương hiệu</p>
+      </div>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Danh mục</mat-label>
+      <mat-select [ngModelOptions]="{ standalone: true }" [(ngModel)]="product.idCategory" (keydown)="revoveInvalid(validCategory)" (blur)="validateCategory()">
+        <mat-option *ngFor="let cate of categories" [value]="cate.id">
+          {{cate.name}}
+        </mat-option>
+      </mat-select>
+      <div class="validate-input" *ngIf="!validCategory.done">
+        <p class="validate-input-label" *ngIf="validCategory.empty">Vui lòng chọn Danh mục</p>
+      </div>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Đế giày</mat-label>
+      <mat-select [ngModelOptions]="{ standalone: true }" [(ngModel)]="product.idSole" (keydown)="revoveInvalid(validSole)" (blur)="validateSole()">
+        <mat-option *ngFor="let sl of sole" [value]="sl.id">
+          {{sl.soleMaterial}}
+        </mat-option>
+      </mat-select>
+      <div class="validate-input" *ngIf="!validSole.done">
+        <p class="validate-input-label" *ngIf="validSole.empty">Vui lòng chọn Đế giày</p>
+      </div>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Chất liệu</mat-label>
+      <mat-select [ngModelOptions]="{ standalone: true }" [(ngModel)]="product.idMaterial"(keydown)="revoveInvalid(validMaterial)" (blur)="validateMaterial()">
+        <mat-option *ngFor="let mt of material" [value]="mt.id">
+          {{mt.name}}
+        </mat-option>
+      </mat-select>
+      <div class="validate-input" *ngIf="!validMaterial.done">
+        <p class="validate-input-label" *ngIf="validMaterial.empty">Vui lòng chọn Chất liệu</p>
+      </div>
+    </mat-form-field>
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>IdBrand</mat-label>-->
+<!--      <input [ngModelOptions]="{ standalone: true }" [(ngModel)]="product.idBrand" name="IdBrand" matInput placeholder="IdBrand">-->
+<!--    </mat-form-field>-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>IdCategory</mat-label>-->
+<!--      <input [(ngModel)]="data.idCategory" name="IdCategory" matInput placeholder="IdCategory">-->
+<!--    </mat-form-field>-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>IdSole</mat-label>-->
+<!--      <input [(ngModel)]="data.idSole" name="IdSole" matInput placeholder="IdSole">-->
+<!--    </mat-form-field>-->
+<!--    <mat-form-field appearance="outline">-->
+<!--      <mat-label>IdMaterial</mat-label>-->
+<!--      <input [(ngModel)]="data.idMaterial" name="IdMaterial" matInput placeholder="IdMaterial">-->
+<!--    </mat-form-field>-->
+    <mat-form-field appearance="outline">
+      <mat-label>Gía</mat-label>
+      <input [ngModelOptions]="{ standalone: true }" [(ngModel)]="product.price" name="Price" matInput placeholder="Price" (keydown)="revoveInvalid(validPrice)" (blur)="validatePrice()">
+      <div class="validate-input" *ngIf="!validPrice.done">
+        <p class="validate-input-label" *ngIf="validPrice.empty">Giá không được để trống</p>
+      </div>
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions [align]="'end'">
+  <button mat-raised-button color="warn" routerLink="/admin/san-pham">Đóng</button>
+  <button mat-raised-button color="primary" (click)="clickUpdate(idProduct)">Cập nhật</button>
+</div>

@@ -1,0 +1,35 @@
+<h1 mat-dialog-title>Thêm đế giày</h1>
+<div mat-dialog-content class="example-container">
+  <mat-form-field appearance="outline">
+    <mat-label>Chiều cao đế</mat-label>
+    <input matInput [(ngModel)]="SoleHeight" placeholder="Chiều cao đế" (keydown)="revoveInvalid(validSoleHeight)" (blur)="validateSoleHeight()">
+    <div class="validate-input" *ngIf="!validSoleHeight.done">
+      <p class="validate-input-label" *ngIf="validSoleHeight.empty">Chiều cao đế không được để trống</p>
+      <p class="validate-input-label" *ngIf="validSoleHeight.maxLength">Chiều cao đế phải dưới 250 kí tự</p>
+    </div>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Chất liệu đế</mat-label>
+    <input matInput [(ngModel)]="SoleMaterial"  placeholder="Chất liệu đế" (keydown)="revoveInvalid(validSoleMaterial)" (blur)="validateSoleMaterial()">
+    <div class="validate-input" *ngIf="!validSoleMaterial.done">
+      <p class="validate-input-label" *ngIf="validSoleMaterial.empty">Chất liệu đế không được để trống</p>
+      <p class="validate-input-label" *ngIf="validSoleMaterial.maxLength">Chất liệu đế phải dưới 250 kí tự</p>
+    </div>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Mô tả</mat-label>
+    <input matInput [(ngModel)]="Description" placeholder="Mô tả" (keydown)="revoveInvalid(validDescription)" (blur)="validateDescription()">
+    <div class="validate-input" *ngIf="!validDescription.done">
+      <p class="validate-input-label" *ngIf="validDescription.empty">Mô tả không được để trống</p>
+    </div>
+  </mat-form-field>
+  <mat-radio-group [(ngModel)]="Status">
+    <mat-label>Trạng thái</mat-label>
+    <mat-radio-button [value]="0">Hoạt Động</mat-radio-button>
+    <mat-radio-button [value]="1">Ngừng Hoạt Động</mat-radio-button>
+  </mat-radio-group>
+</div>
+<div mat-dialog-actions [align]="'end'">
+  <button mat-raised-button color="warn" mat-dialog-close>Đóng</button>
+  <button mat-raised-button color="primary" (click)="clickadd()">Thêm</button>
+</div>

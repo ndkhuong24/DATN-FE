@@ -1,0 +1,83 @@
+/* Adjustments for staff list body */
+.staff-list-body {
+  padding: 20px;
+}
+
+/* Title and add button alignment */
+.title {
+  flex-grow: 1;
+}
+
+.btn-add-order {
+  margin-left: 10px;
+}
+
+/* Order search form styling */
+.order-sreach {
+  margin-bottom: 20px;
+}
+
+/* Search input and button alignment */
+.order-sreach .d-flex {
+  align-items: flex-end;
+}
+
+/* Order table styling */
+.order-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+/* Table header and cell styling */
+.order-table th,
+.order-table td {
+  text-align: center;
+}
+
+/* Add some padding to table cells */
+.order-table th,
+.order-table td {
+  padding: 10px;
+}
+
+/* Alternating row background color for better readability */
+.order-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Hover effect on table rows */
+.order-table tbody tr:hover {
+  background-color: #e0e0e0;
+}
+
+/* Button in the last cell alignment */
+.order-table tbody td:last-child {
+  display: flex;
+  justify-content: space-around;
+}
+.boder-search{
+  top: 100%;
+  left: 0;
+  width: 80%;
+  z-index: 1;
+  background-color: #fff;
+  border: 1px solid #ccc;
+}
+.table{
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+}
+:host ::ng-deep {
+  .ag-cell-label-container{
+    .ag-header-cell-label{
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+}

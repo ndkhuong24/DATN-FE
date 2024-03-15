@@ -1,0 +1,8 @@
+.button-capnhat{
+  background-color: transparent; /* Để làm cho nút trong suốt */
+  border: none; /* Loại bỏ đường viền */
+  color: blue; /* Màu chữ xanh */
+  cursor: pointer; /* Hiển thị con trỏ khi di chuột vào */
+  padding: 0; /* Loại bỏ khoảng cách xung quanh nút */
+  text-decoration: none;
+}

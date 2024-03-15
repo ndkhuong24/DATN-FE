@@ -1,0 +1,42 @@
+.title{
+  font-weight: normal;
+  font-size: 30px;
+  margin-left: 50px;
+}
+.btn-add-order{
+  margin-left: 10px;
+  height: 40px;
+  border: #bbbec5 solid 1px;
+}
+.col-sm-2{
+  margin-left: 5px;
+}
+
+.xacNhan {
+  border-radius: 4px;
+  padding: 8px;
+  height: 84px;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #897AE3;
+  background-Color: #E7E4F9;
+
+  label {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    //color: #897AE3;
+  }
+}
+:host ::ng-deep {
+
+.ag-header-cell-label {
+
+  display: flex;
+  justify-content: center;
+}
+}
