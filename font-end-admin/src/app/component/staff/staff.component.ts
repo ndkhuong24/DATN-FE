@@ -133,7 +133,7 @@ export class StaffComponent implements OnInit {
         field: 'birthday',
         suppressMovable: true,
         valueFormatter: params => {
-          return formatDateTime(params.data.createDate);
+          return formatDateTime(params.data.birthday);
         },
         cellStyle: {
 
