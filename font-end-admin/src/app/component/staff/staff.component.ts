@@ -1,17 +1,17 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {ColDef, ColumnApi, ColumnResizedEvent, GridReadyEvent, GridApi} from 'ag-grid-community';
-import {all} from 'codelyzer/util/function';
-import {StaffService} from '../../service/staff.service';
-import {UsersDTO} from '../model/UsersDTO';
-import {CustomerComponent} from '../customer/customer.component';
-import {UpdateStaffComponent} from './update-staff/update-staff.component';
-import {MatDialog} from '@angular/material/dialog';
-import {DetailStaffComponent} from './detail-staff/detail-staff.component';
-import {OrderService} from '../../service/order.service';
-import {formatDate, formatDateTime, formatMoney} from '../../util/util';
-import {OrderDetailComponent} from '../order/order-detail/order-detail.component';
-import {ActionDiscountComponent} from '../discount/action-discount/action-discount.component';
-import {ActionStaffComponent} from './action-staff/action-staff.component';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ColDef, ColumnApi, ColumnResizedEvent, GridReadyEvent, GridApi } from 'ag-grid-community';
+import { all } from 'codelyzer/util/function';
+import { StaffService } from '../../service/staff.service';
+import { UsersDTO } from '../model/UsersDTO';
+import { CustomerComponent } from '../customer/customer.component';
+import { UpdateStaffComponent } from './update-staff/update-staff.component';
+import { MatDialog } from '@angular/material/dialog';
+import { DetailStaffComponent } from './detail-staff/detail-staff.component';
+import { OrderService } from '../../service/order.service';
+import { formatDate, formatDateTime, formatMoney } from '../../util/util';
+import { OrderDetailComponent } from '../order/order-detail/order-detail.component';
+import { ActionDiscountComponent } from '../discount/action-discount/action-discount.component';
+import { ActionStaffComponent } from './action-staff/action-staff.component';
 
 @Component({
   selector: 'app-staff',
@@ -74,10 +74,10 @@ export class StaffComponent implements OnInit {
   };
   allOrder: any = [];
   sCOrder: any = [];
-  constructor( private matDialog: MatDialog, private orderService: StaffService, private cdr: ChangeDetectorRef) {
+  constructor(private matDialog: MatDialog, private orderService: StaffService, private cdr: ChangeDetectorRef) {
     const lst =
       [
-        {name: 'Hoàn thành', id: 3},
+        { name: 'Hoàn thành', id: 3 },
       ];
     this.listStatus = lst;
     this.columnDefs = [
@@ -133,7 +133,7 @@ export class StaffComponent implements OnInit {
         field: 'birthday',
         suppressMovable: true,
         valueFormatter: params => {
-          return formatDateTime(params.data.birthday);
+          return params.data.birthday
         },
         cellStyle: {
 
@@ -252,15 +252,15 @@ export class StaffComponent implements OnInit {
       };
     }
   }
-  finbyStaffLike(){
-    if (this.searchStaff === ''){
+  finbyStaffLike() {
+    if (this.searchStaff === '') {
       this.orderService.getAllStaff().subscribe(
         data => {
           this.listStaff = data;
           this.rowData = this.listStaff;
         }
       );
-    }else {
+    } else {
       this.orderService.findByCodeOrPhoneLike(this.searchStaff).subscribe(
         data => {
           this.listStaff = data;
