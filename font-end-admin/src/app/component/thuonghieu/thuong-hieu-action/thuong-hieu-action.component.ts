@@ -46,7 +46,7 @@ export class ThuongHieuActionComponent implements ICellRendererAngularComp, OnIn
   deleteBrand(brand?: any) {
     Swal.fire({
       title: 'Bạn có chắc muốn xóa!',
-      text: 'Bạn sẽ không thể hoàn tác!',
+     // text: 'Bạn sẽ không thể hoàn tác!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

@@ -18,7 +18,7 @@ export class StaffService {
   addStaff(staff: UsersDTO): Observable<any> {
     return this.http.post('http://localhost:8081/admin/api/sign-up', staff);
   }
-  update8081(id: string, staff: UsersDTO): Observable<any> {
+  updateStaff(id: string, staff: UsersDTO): Observable<any> {
     return this.http.put('http://localhost:8081/api/admin/staff-update/' + id, staff);
   }
   findByCodeOrPhoneLike(param: string): Observable<any> {

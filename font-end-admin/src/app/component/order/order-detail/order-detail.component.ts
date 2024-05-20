@@ -1,12 +1,12 @@
-import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
-import {formatMoney, padZero} from '../../../util/util';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {OrderDetailService} from '../../../service/order-detail.service';
-import {OrderService} from '../../../service/order.service';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { formatMoney, padZero } from '../../../util/util';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { OrderDetailService } from '../../../service/order-detail.service';
+import { OrderService } from '../../../service/order.service';
 import Swal from 'sweetalert2';
-import {ToastrService} from 'ngx-toastr';
-import {NoteOrderComponent} from '../note-order/note-order.component';
-import {UtilService} from '../../../util/util.service';
+import { ToastrService } from 'ngx-toastr';
+import { NoteOrderComponent } from '../note-order/note-order.component';
+import { UtilService } from '../../../util/util.service';
 
 @Component({
   selector: 'app-order-detail',
@@ -26,8 +26,8 @@ export class OrderDetailComponent implements OnInit {
   listOrderHistoryView: any = [];
 
   constructor(private orderDetailService: OrderDetailService, public matRef: MatDialogRef<OrderDetailComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any, private orderService: OrderService, private cdr: ChangeDetectorRef, private toastr: ToastrService,
-              private matDiaLog: MatDialog, public utilService: UtilService) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private orderService: OrderService, private cdr: ChangeDetectorRef, private toastr: ToastrService,
+    private matDiaLog: MatDialog, public utilService: UtilService) {
     this.rowData = [];
     this.columnDefs = [
       {
@@ -69,7 +69,7 @@ export class OrderDetailComponent implements OnInit {
         },
       },
       {
-        headerName: 'Gía tiền',
+        headerName: 'Giá tiền',
         field: 'price',
         suppressMovable: true,
         valueFormatter: params => {

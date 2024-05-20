@@ -34,7 +34,7 @@ export class ThemThuongHieuComponent implements OnInit {
     }
     Swal.fire({
       title: 'Bạn muốn thêm?',
-      text: 'Thao tác này sẽ không hoàn tác!',
+     // text: 'Thao tác này sẽ không hoàn tác!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

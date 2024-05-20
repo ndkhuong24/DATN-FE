@@ -1,16 +1,16 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {ThemSanPhamComponent} from './them-san-pham/them-san-pham.component';
-import {SuaSanPhamComponent} from './sua-san-pham/sua-san-pham.component';
-import {ProductService} from '../../service/product.service';
-import {ActionVoucherComponent} from '../voucher/action-voucher/action-voucher.component';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ThemSanPhamComponent } from './them-san-pham/them-san-pham.component';
+import { SuaSanPhamComponent } from './sua-san-pham/sua-san-pham.component';
+import { ProductService } from '../../service/product.service';
+import { ActionVoucherComponent } from '../voucher/action-voucher/action-voucher.component';
 import * as FileSaver from 'file-saver';
-import {formatDateTime, formatMoney, getFormattedDateCurrent} from '../../util/util';
-import {ImportFileComponent} from './import-file/import-file.component';
-import {SanPhamActionComponent} from './san-pham-action/san-pham-action.component';
-import {ImageRendererComponent} from './image-renderer/image-renderer.component';
-import {MaterialpostService} from '../../service/materialpost.service';
-import {Router} from '@angular/router';
+import { formatDateTime, formatMoney, getFormattedDateCurrent } from '../../util/util';
+import { ImportFileComponent } from './import-file/import-file.component';
+import { SanPhamActionComponent } from './san-pham-action/san-pham-action.component';
+import { ImageRendererComponent } from './image-renderer/image-renderer.component';
+import { MaterialpostService } from '../../service/materialpost.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sanpham',
@@ -84,9 +84,9 @@ export class SanphamComponent implements OnInit {
 
 
   constructor(private matdialog: MatDialog,
-              private spsv: ProductService, private changeDetectorRef: ChangeDetectorRef,
-              private cdr: ChangeDetectorRef,
-              private router: Router) {
+    private spsv: ProductService, private changeDetectorRef: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,
+    private router: Router) {
     // this.columnDefs = [
     //   {
     //     headerName: 'Ảnh sản phẩm',
@@ -147,7 +147,7 @@ export class SanphamComponent implements OnInit {
     //   //  width: 150
     //   // },
     //   {
-    //     headerName: 'Gía',
+    //     headerName: 'Giá',
     //     field: '',
     //     sortable: true,
     //     filter: true,
@@ -274,8 +274,8 @@ export class SanphamComponent implements OnInit {
       }
     );
   }
-  finbyProductLike(){
-    if (this.searchProduct === ''){
+  finbyProductLike() {
+    if (this.searchProduct === '') {
       this.spsv.getAllProductAll().subscribe(
         data => {
           this.products = data.map(p => {
@@ -288,7 +288,7 @@ export class SanphamComponent implements OnInit {
           this.status1Products = this.products.filter(p => p.status === 1);
         }
       );
-    }else {
+    } else {
       this.spsv.searchProductNameOrCode(this.searchProduct).subscribe(
         data => {
           this.products = data.map(p => {

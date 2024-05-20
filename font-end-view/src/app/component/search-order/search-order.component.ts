@@ -1,8 +1,8 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {UtilService} from '../../util/util.service';
-import {OrderService} from '../../service/order.service';
-import {formatMoney, padZero} from '../../util/util';
-import {ToastrService} from 'ngx-toastr';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { UtilService } from '../../util/util.service';
+import { OrderService } from '../../service/order.service';
+import { formatMoney, padZero } from '../../util/util';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-search-order',
@@ -20,7 +20,7 @@ export class SearchOrderComponent implements OnInit {
   address = [];
 
   constructor(public utilService: UtilService, private cdr: ChangeDetectorRef, private orderService: OrderService,
-              private toaService: ToastrService) {
+    private toaService: ToastrService) {
 
     this.rowData = [];
     this.columnDefs = [
@@ -63,7 +63,7 @@ export class SearchOrderComponent implements OnInit {
         },
       },
       {
-        headerName: 'Gía tiền',
+        headerName: 'Giá tiền',
         field: 'price',
         suppressMovable: true,
         valueFormatter: params => {
@@ -97,16 +97,16 @@ export class SearchOrderComponent implements OnInit {
       this.toaService.warning('Vui lòng nhập mã đơn hàng cần tra cứu');
       return;
     }
-    this.orderService.traCuuOrder({code: this.codeOrderSearch}).subscribe(res => {
-        if (res.status === 'OK') {
-          this.order = res.data;
-          this.address = res.data.addressReceived.split(',');
-          this.rowData = res.data.orderDetailDTOList;
-          this.toaService.success('Tra cứu đơn hàng thành công');
-        } else {
-          this.toaService.warning(res.message);
-        }
-      },
+    this.orderService.traCuuOrder({ code: this.codeOrderSearch }).subscribe(res => {
+      if (res.status === 'OK') {
+        this.order = res.data;
+        this.address = res.data.addressReceived.split(',');
+        this.rowData = res.data.orderDetailDTOList;
+        this.toaService.success('Tra cứu đơn hàng thành công');
+      } else {
+        this.toaService.warning(res.message);
+      }
+    },
       error => {
         this.toaService.error('Tra cứu đơn hàng thất bại');
       }
