@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {UsersDTO} from '../component/model/UsersDTO';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { UsersDTO } from '../component/model/UsersDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +9,10 @@ import {UsersDTO} from '../component/model/UsersDTO';
 export class CustomerServiceService {
 
   constructor(private http: HttpClient) { }
-  findCustomerByPhone(phone: string): Observable<any>{
-    return this.http.get('http://localhost:6868/sales-customer/findByPhone/' + phone);
+  findCustomerByPhone(phone: string): Observable<any> {
+    return this.http.get('http://localhost:8081/sales-customer/findByPhone/' + phone);
   }
-  addCustomerSC(customer: UsersDTO): Observable<any>{
-    return this.http.post('http://localhost:6868/sales-customer/add-customer', customer);
+  addCustomerSC(customer: UsersDTO): Observable<any> {
+    return this.http.post('http://localhost:8081/sales-customer/add-customer', customer);
   }
 }

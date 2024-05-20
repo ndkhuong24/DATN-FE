@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VoucherShipService {
-  private apiUrl = 'http://localhost:6868/api/admin/voucherFS';
-  constructor(private http: HttpClient) {}
+  private apiUrl = 'http://localhost:8081/api/admin/voucherFS';
+  constructor(private http: HttpClient) { }
 
   getSomeData() {
     return this.http.get<any[]>(this.apiUrl);
   }
   getCustomer() {
-    return this.http.get<any[]>('http://localhost:6868/api/admin/voucherFS/customer');
+    return this.http.get<any[]>('http://localhost:8081/api/admin/voucherFS/customer');
   }
   exportExcel(): Observable<Blob> {
-    return this.http.get('http://localhost:6868/api/admin/voucherFS/export-data',{ responseType: 'blob' });
+    return this.http.get('http://localhost:8081/api/admin/voucherFS/export-data', { responseType: 'blob' });
   }
   updateVoucher(id, voucher: any) {
     const url = `${this.apiUrl}/${id}`;
@@ -34,26 +34,26 @@ export class VoucherShipService {
   createVoucher(voucher: any): Observable<any> {
     return this.http.post(this.apiUrl, voucher);
   }
-  KichHoat(id: number ): Observable<any> {
+  KichHoat(id: number): Observable<any> {
     const url = `${this.apiUrl}/kichHoat/${id}`;
     return this.http.put(url, null);
   }
-  setIdel(id: number ): Observable<any> {
+  setIdel(id: number): Observable<any> {
     const url = `${this.apiUrl}/setIdel/${id}`;
     return this.http.put(url, null);
   }
   getVoucherKH() {
-    return this.http.get<any[]>('http://localhost:6868/api/admin/voucherFS/KH');
+    return this.http.get<any[]>('http://localhost:8081/api/admin/voucherFS/KH');
   }
   sendEmail(voucher: any): Observable<any> {
     const urlEmail = `${this.apiUrl}/sendEmail`;
     return this.http.post(urlEmail, voucher);
   }
   getVoucherKKH() {
-    return this.http.get<any[]>('http://localhost:6868/api/admin/voucherFS/KKH');
+    return this.http.get<any[]>('http://localhost:8081/api/admin/voucherFS/KKH');
   }
   searchByDate(obj): Observable<any> {
-    return this.http.get<any>(`http://localhost:6868/api/admin/voucherFS/searchByDate?fromDate=${obj.fromDate}&toDate=${obj.toDate}` );
+    return this.http.get<any>(`http://localhost:8081/api/admin/voucherFS/searchByDate?fromDate=${obj.fromDate}&toDate=${obj.toDate}`);
   }
   searchByCustomer(search: string): Observable<any> {
     const params = new HttpParams()
@@ -63,7 +63,7 @@ export class VoucherShipService {
   searchByVoucher(search: string): Observable<any> {
     const params = new HttpParams()
       .set('search', search);
-    return this.http.get<any>(`http://localhost:6868/api/admin/voucherFS/searchByVoucherFS`, { params });
+    return this.http.get<any>(`http://localhost:8081/api/admin/voucherFS/searchByVoucherFS`, { params });
   }
 }
 

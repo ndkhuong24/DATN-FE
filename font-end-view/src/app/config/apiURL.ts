@@ -1,6 +1,6 @@
-import {HttpHeaders} from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 
-export const apiURL = 'http://localhost:6868/view/api/';
+export const apiURL = 'http://localhost:8081/view/api/';
 
 export const HTTP_OPTIONS = {
   headers: new HttpHeaders({
