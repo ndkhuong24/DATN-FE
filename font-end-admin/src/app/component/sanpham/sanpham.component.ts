@@ -87,164 +87,19 @@ export class SanphamComponent implements OnInit {
     private spsv: ProductService, private changeDetectorRef: ChangeDetectorRef,
     private cdr: ChangeDetectorRef,
     private router: Router) {
-    // this.columnDefs = [
-    //   {
-    //     headerName: 'Ảnh sản phẩm',
-    //     field: 'image',
-    //     sortable: true,
-    //     filter: true,
-    //     width: 150,
-    //     cellRenderer: (params) => {
-    //       return `<div>
-    //     <img width="40px" height="40px" src="${params.data?.imagesDTOList[0].imageName}">
-    //     </div>`;
-    //     }
-    //   },
-    //   {
-    //     headerName: 'Mã',
-    //     field: 'code',
-    //     sortable: true,
-    //     filter: true,
-    //     width: 110
-    //   },
-    //   {
-    //     headerName: 'Tên sản phẩm',
-    //     field: 'name',
-    //     sortable: true,
-    //     filter: true,
-    //     width: 150
-    //   },
-    //   // {
-    //   //   headerName: 'Ngày tạo',
-    //   //   field: 'createDate',
-    //   //   sortable: true,
-    //   //   filter: true,
-    //   //   width: 150,
-    //   //   valueGetter: (params) => {
-    //   //     return `${formatDateTime(params.data.createDate)}`;
-    //   //   }
-    //   // },
-    //   // {
-    //   //   headerName: 'Ngày cập nhật ',
-    //   //   field: 'updateDate',
-    //   //   sortable: true, filter: true,
-    //   //   width: 150,
-    //   //   valueGetter: (params) => {
-    //   //     return `${formatDateTime(params.data.updateDate)}`;
-    //   //   }
-    //   // },
-    //   // {
-    //   //   headerName: 'Tên người tạo',
-    //   //   field: 'createName',
-    //   //   sortable: true,
-    //   //   filter: true,
-    //   //   width: 150},
-    //   // {
-    //   //   headerName: 'Tên người cập nhật',
-    //   //  field: 'updateName',
-    //   //  sortable: true,
-    //   //  filter: true,
-    //   //  width: 150
-    //   // },
-    //   {
-    //     headerName: 'Giá',
-    //     field: '',
-    //     sortable: true,
-    //     filter: true,
-    //     width: 150,
-    //     valueGetter: (params) => {
-    //       return `${formatMoney(params.data.price)}`;
-    //     }
-    //   },
-    //   {
-    //     headerName: 'Tên thương hiệu',
-    //     field: '',
-    //     sortable: true,
-    //     filter: true,
-    //     width: 150,
-    //     valueGetter: (params) => {
-    //       return params.data?.brandAdminDTO.name;
-    //     }
-    //   },
-    //   {
-    //     headerName: 'Tên danh mục',
-    //     field: '',
-    //     sortable: true,
-    //     filter: true,
-    //     width: 150,
-    //     valueGetter: (params) => {
-    //       return params.data?.categoryAdminDTO.name;
-    //     }
-    //   },
-    //   {
-    //     headerName: 'Tên chất liệu',
-    //     field: '',
-    //     sortable: true,
-    //     filter: true,
-    //     width: 150,
-    //     valueGetter: (params) => {
-    //       return params.data?.materialAdminDTO.name;
-    //     }
-    //   },
-    //   {
-    //     headerName: 'Mô tả',
-    //     field: 'description',
-    //     sortable: true,
-    //     filter: true
-    //   },
-    //   {
-    //     headerName: 'Trạng thái',
-    //     field: 'status',
-    //     sortable: true,
-    //     filter: true,
-    //     width: 150,
-    //     valueGetter: (params) => {
-    //       return params.data?.status === 0 ? 'Hoạt động' : 'Ngưng hoạt động';
-    //     }
-    //   },
-    //   {
-    //     headerName: 'Chất liệu đế',
-    //     field: 'idSole',
-    //     sortable: true,
-    //     filter: true,
-    //     width: 110,
-    //     valueGetter: (params) => {
-    //       return params.data.soleAdminDTO.soleMaterial;
-    //     }
-    //   },
-    //   {
-    //     headerName: 'Chức năng',
-    //     field: '',
-    //     cellRendererFramework: SanPhamActionComponent,
-    //     width: 110
-    //   },
-    // ];
   }
   ngOnInit(): void {
     this.spsv.getAllProductAll().subscribe(products => {
       this.products = products.map(p => ({
         ...p,
         isExpand: false
-      }
-      ));
+      }));
       this.status0Products = this.products.filter(p => p.status === 0);
       this.status1Products = this.products.filter(p => p.status === 1);
 
       console.log('Product: ', this.products);
     });
   }
-
-  // ngOnInit(): void {
-  //   this.spsv.getAllProductAll().subscribe(products => {
-  //     this.products = products.map(p => {
-  //       return {
-  //         ...p,
-  //         isExpand: false
-  //       };
-  //     });
-  //     console.log('Product: ', this.products);
-  //   });
-  // }
   activateProduct(productId: number) {
     this.spsv.activateProduct(productId).subscribe(
       () => {
