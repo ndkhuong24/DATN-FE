@@ -140,11 +140,14 @@ export class ThemSanPhamComponent implements OnInit {
   OnChangeFile(event: any) {
     console.log(event);
     this.imgLst = new FormData();
-    if (event.target.files.length > 0 && event.target.files.length === 3) {
-      for (let i = 0; i < event.target.files.length; i++) {
-        this.imgLst.append('file', event.target.files[i]);
-      }
-    }
+    
+    // if (event.target.files.length > 0 && event.target.files.length === 3) {
+    //   for (let i = 0; i < event.target.files.length; i++) {
+         this.imgLst.append('file', event.target.files[0]);
+         console.log(event.target.files[0]);
+    //   }
+    // }
+    console.log(this.imgLst);
     return;
   }
   clickaddProduct() {
@@ -232,7 +235,7 @@ export class ThemSanPhamComponent implements OnInit {
   }
 
   validatePrice() {
-    this.validPrice = CommonFunction.validateInput(this.Price, 250, '^[0-9]+$');
+    this.validPrice = CommonFunction.validateInput(this.Price, 250, '^[0-9]');
   }
 
   validateBrand() {

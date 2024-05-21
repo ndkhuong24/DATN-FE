@@ -11,7 +11,7 @@ export class ImageService {
   constructor(private http: HttpClient) { }
   UploadImage(image: File): Observable<any>{
     const formdata = new FormData();
-    formdata.append('multipartFile', image);
+    formdata.append('file', image);
     return this.http.post(`${apiURL}upload`, formdata);
   }
 }
