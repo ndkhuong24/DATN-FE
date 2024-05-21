@@ -46,7 +46,7 @@
                   <td>{{ row.brandAdminDTO.name }}</td>
                   <td>{{ row.materialAdminDTO.name }}</td>
                   <td>{{row.categoryAdminDTO.name}}</td>
-                  <td>{{row.price | currency}}</td>
+                  <td>{{row.price }}</td>
                   <td>{{row.status == 0 ? 'Hoạt động' : 'Ngừng hoạt động'}}</td>
                   <td>
                     <button (click)="activateProduct(row.id)">Activate</button>
@@ -106,7 +106,7 @@
                   <td>{{ row1.brandAdminDTO.name }}</td>
                   <td>{{ row1.materialAdminDTO.name }}</td>
                   <td>{{row1.categoryAdminDTO.name}}</td>
-                  <td>{{row1.price | currency}}</td>
+                  <td>{{row1.price}}</td>
                   <td>{{row1.status == 0 ? 'Hoạt động' : 'Ngừng hoạt động'}}</td>
                   <td>
                     <button (click)="activateProduct(row1.id)">Activate</button>
