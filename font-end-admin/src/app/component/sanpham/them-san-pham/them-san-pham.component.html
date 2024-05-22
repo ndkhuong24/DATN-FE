@@ -83,12 +83,8 @@
       </div>
     </mat-form-field>
     <div>
-      <input type="file" [(ngModel)]="imgLst" style="color: red" (change)="OnChangeFile($event)" multiple
-        (keydown)="revoveInvalid(validImage)" (blur)="validateImage()">
+      <input type="file" (change)="OnChangeFile($event)" style="color: red">
       <p class="validate-input-label" *ngIf="validImage.empty">Ảnh không được để trống</p>
-      <!--      <p class="validate-input-label" *ngIf="validateImageCount(imgLst)">-->
-      <!--        Ảnh phải tối đa là 3-->
-      <!--      </p>-->
     </div>
     <br>
     <div *ngIf="Name">

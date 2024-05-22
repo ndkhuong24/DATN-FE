@@ -220,9 +220,9 @@ CREATE TABLE `staff` (
  `username` varchar(250)   NULL unique ,
 `password` VARCHAR(255) NOT NULL,
 `roles` VARCHAR(100) null,
-  `status` int COMMENT 'Trạng thái' default 0,
+  -- `status` int COMMENT 'Trạng thái' default 0,
   `idel` int COMMENT 'Trạng thái xóa : 1.đã xóa 0.bình thường' default 0,
-  `isdn` VARCHAR(100) DEFAULT (UNIX_TIMESTAMP(NOW())) COMMENT 'mã gen theo thời gian',
+  -- `isdn` VARCHAR(100) DEFAULT (UNIX_TIMESTAMP(NOW())) COMMENT 'mã gen theo thời gian',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC COMMENT='nhân viên';
 /*!40101 SET character_set_client = @saved_cs_client */;

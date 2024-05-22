@@ -1,17 +1,17 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {ProductService} from '../../../service/product.service';
-import {BrandService} from '../../../service/brand.service';
-import {CategoryService} from '../../../service/category.service';
-import {SoleService} from '../../../service/sole.service';
-import {MaterialpostService} from '../../../service/materialpost.service';
-import {CategoryInterface} from '../../../interface/category-interface';
-import {BrandInterface} from '../../../interface/brand-interface';
-import {SoleInterface} from '../../../interface/sole-interface';
-import {MaterialInterface} from '../../../interface/material-interface';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ValidateInput} from '../../model/validate-input';
-import {CommonFunction} from '../../../util/common-function';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ProductService } from '../../../service/product.service';
+import { BrandService } from '../../../service/brand.service';
+import { CategoryService } from '../../../service/category.service';
+import { SoleService } from '../../../service/sole.service';
+import { MaterialpostService } from '../../../service/materialpost.service';
+import { CategoryInterface } from '../../../interface/category-interface';
+import { BrandInterface } from '../../../interface/brand-interface';
+import { SoleInterface } from '../../../interface/sole-interface';
+import { MaterialInterface } from '../../../interface/material-interface';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ValidateInput } from '../../model/validate-input';
+import { CommonFunction } from '../../../util/common-function';
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-sua-san-pham',
@@ -45,11 +45,11 @@ export class SuaSanPhamComponent implements OnInit {
   validPrice: ValidateInput = new ValidateInput();
   validDescription: ValidateInput = new ValidateInput();
   constructor(private prdsv: ProductService,
-              private brsv: BrandService,
-              private ctsv: CategoryService,
-              private slsv: SoleService,
-              private mtsv: MaterialpostService, private router: Router,
-              private route: ActivatedRoute) {
+    private brsv: BrandService,
+    private ctsv: CategoryService,
+    private slsv: SoleService,
+    private mtsv: MaterialpostService, private router: Router,
+    private route: ActivatedRoute) {
     this.idProduct = +this.route.snapshot.paramMap.get('idProduct');
   }
 
@@ -64,18 +64,18 @@ export class SuaSanPhamComponent implements OnInit {
 
   getProductDetails(productId: number): void {
     this.prdsv.GetProduct(productId).subscribe((result) => {
-        this.product.code = result.data.code;
-        this.product.name = result.data.name;
-        this.product.idBrand = result.data.idBrand;
-        this.product.idCategory = result.data.idCategory;
-        this.product.idMaterial = result.data.idMaterial;
-        this.product.idSole = result.data.idSole;
-        this.product.description = result.data.description;
-        this.product.price = result.data.price;
-        this.product.status = result.data.status;
-        console.log(this.product.code);
-        console.log(result.data.code);
-      },
+      this.product.code = result.data.code;
+      this.product.name = result.data.name;
+      this.product.idBrand = result.data.idBrand;
+      this.product.idCategory = result.data.idCategory;
+      this.product.idMaterial = result.data.idMaterial;
+      this.product.idSole = result.data.idSole;
+      this.product.description = result.data.description;
+      this.product.price = result.data.price;
+      this.product.status = result.data.status;
+      console.log(this.product.code);
+      console.log(result.data.code);
+    },
       error => {
         console.error('Error retrieving product details:', error);
       }
@@ -143,7 +143,7 @@ export class SuaSanPhamComponent implements OnInit {
     this.validateSole();
     this.validateMaterial();
     if (!this.validName.done || !this.validDescription.done || !this.validPrice.done || !this.validBrand
-    || !this.validCategory.done || !this.validSole.done || !this.validMaterial.done) {
+      || !this.validCategory.done || !this.validSole.done || !this.validMaterial.done) {
       return;
     }
     Swal.fire({
@@ -156,27 +156,27 @@ export class SuaSanPhamComponent implements OnInit {
       confirmButtonText: 'Sửa!'
     }).then((result1) => {
       if (result1.isConfirmed) {
-    const product = {
-      code: this.product.code,
-      name: this.product.name,
-      idBrand: this.product.idBrand,
-      idMaterial: this.product.idMaterial,
-      idSole: this.product.idSole,
-      idCategory: this.product.idCategory,
-      description: this.product.description,
-      status: this.product.status,
-      price: this.product.price
-    };
-    this.prdsv.UpdateProduct(id, product).subscribe(
-      result => {
-        console.log('product add success', result);
-        this.router.navigateByUrl('admin/san-pham');
-      },
-      error => {
-        console.error('product add error', error);
-      }
-    );
-    Swal.fire(
+        const product = {
+          code: this.product.code,
+          name: this.product.name,
+          idBrand: this.product.idBrand,
+          idMaterial: this.product.idMaterial,
+          idSole: this.product.idSole,
+          idCategory: this.product.idCategory,
+          description: this.product.description,
+          status: this.product.status,
+          price: this.product.price
+        };
+        this.prdsv.UpdateProduct(id, product).subscribe(
+          result => {
+            console.log('product add success', result);
+            this.router.navigateByUrl('admin/san-pham');
+          },
+          error => {
+            console.error('product add error', error);
+          }
+        );
+        Swal.fire(
           'Sửa!',
           'Sửa thành công',
           'success'
