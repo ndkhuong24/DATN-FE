@@ -1,8 +1,8 @@
 <div>
   <div class="nav-2">
     <nav class="navbar navbar-expand-lg bg-body-tertiary ">
-      <div class="container-fluid" style="display: flex">
-        <h5 style="margin: auto;">PulseWave</h5>
+      <div class="container-fluid" style="display: flex;">
+        <h5 style="margin: auto;font-size: x-large;"><img style="width: 180px;" src="assets/image/logo.jfif"></h5>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -20,7 +20,8 @@
             <!--                 style="margin-left: 20px;">Hãng</a>-->
             <!--            </li>-->
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/tra-cuu-don-hang">Tra cứu đơn hàng</a>
+              
+              <a class="nav-link active" aria-current="page" href="/tra-cuu-don-hang"> &nbsp;Tra cứu đơn hàng</a>
             </li>
           </ul>
           <form class="d-flex" style="margin-top: 13px">
@@ -43,9 +44,9 @@
               {{ infoCustomer?.fullname}}
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="/user-profile"><i class="fa-solid fa-user"></i> Quản lý tài khoản</a>
+              <li><a class="dropdown-item" href="/user-profile"><i class="fa-solid fa-user"></i> Tài khoản</a>
               </li>
-              <li><a class="dropdown-item" routerLink="order"><i class="fa-solid fa-bag-shopping"></i> Đơn mua</a></li>
+              <li><a class="dropdown-item" routerLink="order"><i class="fa-solid fa-bag-shopping"></i> Đơn Hàng</a></li>
               <li><a class="dropdown-item" href="/user-profile"><i class="fa-solid fa-key"></i> Đổi mật khẩu</a></li>
               <li><a class="dropdown-item" href="/login" (click)="logOut()"><i
                     class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất</a></li>
@@ -53,14 +54,14 @@
           </div>
           <p style="margin-left: 10px; font-size: 20px; margin-top: 20px;" *ngIf="!isLoggedIn">|</p>
           <a style="margin-left: 10px; font-size: 15px; margin-top: 10px; " *ngIf="!isLoggedIn" href="/login"
-            class="nav-link active" aria-current="page"> Login</a>
-          <svg *ngIf="!isLoggedIn" style="margin-left: 5px; margin-top: 10px; " xmlns="http://www.w3.org/2000/svg"
+            class="nav-link active" aria-current="page"> Đăng Nhập <img style="width: 20px;padding-bottom: 3px;" src="/assets/image/login.png" alt="" srcset=""></a>
+          <!-- <svg *ngIf="!isLoggedIn" style="margin-left: 5px; margin-top: 10px; " xmlns="http://www.w3.org/2000/svg"
             width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
             <path fill-rule="evenodd"
               d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z" />
             <path fill-rule="evenodd"
               d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z" />
-          </svg>
+          </svg> -->
         </div>
       </div>
     </nav>
