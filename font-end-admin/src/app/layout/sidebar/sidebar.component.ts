@@ -1,23 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css']
+  styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent implements OnInit {
+  constructor(private router: Router) {}
 
-  constructor(private router: Router) { }
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
-  }
-  logOut(){
-    localStorage.removeItem('token');
-    localStorage.removeItem('users');
-    localStorage.removeItem('fullname');
-    localStorage.removeItem('id');
-    localStorage.removeItem('listOrder');
+  logOut(): void {
+    const itemsToRemove = ['token', 'users', 'fullname', 'id', 'listOrder'];
+
+    itemsToRemove.forEach((item) => localStorage.removeItem(item));
+
     this.router.navigate(['/login']);
   }
 }

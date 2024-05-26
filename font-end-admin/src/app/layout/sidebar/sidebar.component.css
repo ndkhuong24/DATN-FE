@@ -1,0 +1,16 @@
+.navbar-nav .dropdown-menu {
+  background-color: #fff;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-nav .dropdown-item {
+  padding: 10px 20px;
+  color: #333;
+  text-decoration: none;
+}
+
+.navbar-nav .dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #007bff;
+}
