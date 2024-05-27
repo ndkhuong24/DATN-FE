@@ -1,10 +1,10 @@
 <div class="login_form">
-  <div class="left">
-    <img src="/assets/image/logshoes.png">
-  </div>
+  <!-- <div class="left">
+    <img src="/assets/image/OIP.jpg">
+  </div> -->
 
   <div class="right">
-    <h1>Đăng Kí</h1>
+    <h1 style="text-align: center;">Đăng Kí Tài Khoản</h1>
 
     <form (ngSubmit)="signUp()">
       <div class="row align-items-start">
@@ -51,10 +51,10 @@
             <p class="validate-input-label" *ngIf="validReceiverPassword.UTF8">Mật khẩu bắt đầu bằng chữ thường không dấu</p>
           </div>
 
-          <p class="passworg_tag"> NHập lại mật khẩu</p>
+          <p class="passworg_tag"> Nhập lại mật khẩu</p>
           <div class="password">
             <i class="fa-solid fa-lock"></i>
-            <input type="{{ showPassword ? 'text' : 'password' }}" name="confirmPassword" placeholder="ConfirmPassword" (change)="validateConfirmPass()"  [(ngModel)]="confirmPass">
+            <input type="{{ showPassword ? 'text' : 'password' }}" name="confirm Password" placeholder="ConfirmPassword" (change)="validateConfirmPass()"  [(ngModel)]="confirmPass">
             <a class="btn" (click)="togglePasswordVisibility()"><i class="fa-solid fa-eye"></i></a>
           </div>
           <div class="validate-input" *ngIf="validConfirm === false">
@@ -91,11 +91,14 @@
             <p class="validate-input-label" *ngIf="validEmail.maxLength">Email tối đa 250 kí tự</p>
             <p class="validate-input-label" *ngIf="validEmail.regex">Email Không đúng định dạng</p>
           </div>
-          <p class="passworg_tag">Ngày Sinh</p>
-          <div class="password">
-            <i class="fa-solid fa-lock"></i>
-            <input type="date" name="bỉthday" placeholder="Password" [(ngModel)]="form.birthday" [ngModelOptions]="{standalone: true}">
+          <div style="margin-top: -10px;">
+            <p class="passworg_tag">Ngày Sinh</p>
+            <div class="password">
+              <i class="fa-solid fa-lock"></i>
+              <input type="date" name="bỉthday" placeholder="Password" [(ngModel)]="form.birthday" [ngModelOptions]="{standalone: true}">
+            </div>
           </div>
+          
 
           <p class="passworg_tag">Giới Tính</p>
           <div class="password">

@@ -4,7 +4,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-image: url(/assets/image/loging_bg.png);
+  /* background-image: url(/assets/image/R.png); */
   background-size: cover;
   background-position: center;
 }
@@ -19,7 +19,7 @@
 }
 
 .login_form .right h1 {
-  font-family: prevattscriptssk;
+  /* font-family: prevattscriptssk; */
   font-size: 45px;
   margin-bottom: 40px;
 }
@@ -29,7 +29,7 @@
 }
 
 .login_form .right .user {
-  border: 2px solid #6c14d0;
+  border: 2px solid #0b72d2;
   border-radius: 5px;
   width: 350px;
   height: 40px;
@@ -40,7 +40,7 @@
   position: relative;
   top: 9px;
   left: 15px;
-  color: #c72092;
+  color: #0b72d2;
 }
 
 .login_form .right .user .input {
@@ -59,7 +59,7 @@
 }
 
 .login_form .right .password {
-  border: 2px solid #6c14d0;
+  border: 2px solid#0b72d2;
   border-radius: 5px;
   width: 350px;
   height: 40px;
@@ -70,7 +70,7 @@
   position: relative;
   top: 9px;
   left: 15px;
-  color: #c72092;
+  color: #0b72d2;
 }
 .login_form .right .password a i{
   display: block;
@@ -122,7 +122,7 @@
   border-radius: 5px;
   font-size: 20px;
   cursor: pointer;
-  background: linear-gradient(to right, #c72092, #6c14d0);
+  background: linear-gradient(to right,#0b72d2, #179cea);
 }
 
 .login_form .right .loging_icon {

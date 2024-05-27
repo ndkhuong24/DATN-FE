@@ -3,18 +3,18 @@
     <img src="assets/image/logshoes.png">
   </div> -->
 
-  <div class="right">
-    <h2>Chào mừng đến với PulseWave</h2>
+  <div class="right" style="margin-bottom: 100px;margin-left: -100px;">
+    <h2>Welcome to PulseWave</h2>
 
     <form (ngSubmit)="login()">
-      <p>Tên đăng nhập</p>
+      
       <div class="user">
         <i class="fa-solid fa-user"></i>
         <input type="text" name="user" placeholder="Tên đăng nhập" class="username" [(ngModel)]="form.username"
                [ngModelOptions]="{standalone: true}" autocomplete="off">
       </div>
 
-      <p class="passworg_tag">Mật khẩu</p>
+      <p class="passworg_tag"></p>
       <div class="password">
         <i class="fa-solid fa-lock"></i>
         <input type="{{ showPassword ? 'text' : 'password' }}" name="password" placeholder="Mật khẩu" [(ngModel)]="form.password" [ngModelOptions]="{standalone: true}">
@@ -24,12 +24,12 @@
         <p class="sign-up">
           <a href="/sign-up">Đăng kí</a>
         </p>
-        <p class="forget">
+        <p class="forget" style="margin-left: 30px;">
           <a href="/forgot-pass">Quên mật khẩu ?</a>
         </p>
       </div>
 
-      <button type="submit">Login</button>
+      <button type="submit">Đăng Nhập</button>
 
     </form>
 

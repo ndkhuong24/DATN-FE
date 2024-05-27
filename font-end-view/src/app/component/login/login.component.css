@@ -4,7 +4,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-image: url(/assets/image/loging_bg.png);
+  background-image: url(/assets/image/R.png);
   background-size: cover;
   background-position: center;
 }
@@ -42,7 +42,7 @@
   position: relative;
   top: 9px;
   left: 15px;
-  color: #eff707;
+  color: #0b72d2;
 }
 
 .login_form .right .user .username{
@@ -72,7 +72,7 @@
   position: relative;
   top: 9px;
   left: 15px;
-  color: #eff707;
+  color:#0b72d2;
 }
 .login_form .right .password a i{
   display: block;
