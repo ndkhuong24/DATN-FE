@@ -49,32 +49,32 @@
         </li>
       </ul>
     </div>
-    <div style="margin-top: 40px;">
+    <div style="margin-top:10px;">
       <div class="container text-center">
         <div class="row align-items-start">
-          <div style="display: flex; gap: 10px; margin-top: 50px" class="col-3" *ngFor="let p of listProductNoiBat">
+          <div style="display: flex; gap: 10px; margin-top: 50px;" class="col-3" *ngFor="let p of listProductNoiBat">
             <div class="card" style="width: 18rem;">
               <a  [routerLink]="['/product-details',p.id]">
-                <img style="width: 250px; height: 330px"
+                <img style="width: 200px; height: 200px"
                   (mouseenter)="onMouseEnter(p)"
                   (mouseleave)="onMouseLeave(p)"
                   [src]="isMouseOver[p.id] ? p.imagesDTOList[1].imageName : p.imagesDTOList[0].imageName"
                   class="card-img-top"
                   alt="..."
                 >
-                <span *ngIf="p.reducePrice != null && p.percentageReduce != null" class="percentage-badge">{{ p.percentageReduce }}%</span>
+                <span style="font-size:smaller;" *ngIf="p.reducePrice != null && p.percentageReduce != null" class="percentage-badge">{{ p.percentageReduce }}%</span>
               </a>
 
               <div class="card-body">
                 <h5 class="card-title">{{p.name}}</h5>
 <!--                <div *ngIf="p.reducePrice == null && p.percentageReduce == null"><span>{{p.price}}</span> đ</div>-->
                 <div  *ngIf="p?.reducePrice == null && p?.percentageReduce == null">
-                  <div  style="font-size: 25px"><span>{{utilService.formatMoney(p?.price)}}</span></div>
+                  <div  style="font-size: 18px;font-weight: 600;"><span>{{utilService.formatMoney(p?.price)}}</span></div>
                 </div>
 <!--                <div *ngIf="p.reducePrice != null && p.percentageReduce != null"> <del>{{utilService.formatMoney(p.price)}}</del>-->
 <!--                  <span style="margin-left: 5px">{{utilService.formatMoney(p.price - p.reducePrice)}}</span></div>-->
                 <div *ngIf="p?.reducePrice != null && p?.percentageReduce != null">
-                  <div  style="font-size: 15px; margin-top: 10px"><div style="text-decoration: line-through; color: #757575">{{utilService.formatMoney(p.price)}}</div></div>
+                  <div  style="font-size: 10px; margin-top: 10px"><div style="text-decoration: line-through; color: #757575">{{utilService.formatMoney(p.price)}}</div></div>
                   <div style="font-size: 25px"><span>{{utilService.formatMoney(p.price - p.reducePrice)}}</span></div>
                 </div>
               </div>
@@ -237,7 +237,7 @@
               </div>
               <div class="col-sm-4 text-center">
                 <div class="featured">
-                  <img src="assets/image/asics1.jpg" style="width: 350px;height:350px ;border-radius: 20px;" class="card-img-top" alt="...">
+                  <img src="/assets/image/asics1.jpg" style="width: 350px;height:350px ;border-radius: 20px;" class="card-img-top" alt="...">
 
                   <div class="desc">
                     <h2 style="padding-top: 10px; padding-left: 15px;"><a> Asics Collection</a></h2>
