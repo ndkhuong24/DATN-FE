@@ -69,7 +69,7 @@
                 <h5 class="card-title">{{p.name}}</h5>
 <!--                <div *ngIf="p.reducePrice == null && p.percentageReduce == null"><span>{{p.price}}</span> đ</div>-->
                 <div  *ngIf="p?.reducePrice == null && p?.percentageReduce == null">
-                  <div  style="font-size: 18px;font-weight: 600;"><span>{{utilService.formatMoney(p?.price)}}</span></div>
+                  <div  style="font-size: 18px;font-weight: 600;color: red;"><span>{{utilService.formatMoney(p?.price)}}</span></div>
                 </div>
 <!--                <div *ngIf="p.reducePrice != null && p.percentageReduce != null"> <del>{{utilService.formatMoney(p.price)}}</del>-->
 <!--                  <span style="margin-left: 5px">{{utilService.formatMoney(p.price - p.reducePrice)}}</span></div>-->

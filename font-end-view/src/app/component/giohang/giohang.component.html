@@ -12,7 +12,7 @@
           <th scope="col">Sản Phẩm</th>
           <th scope="col">Phân loại hàng</th>
           <th scope="col">Giá tiền</th>
-          <th scope="col" style="display: flex;justify-content: center">Số lượng</th>
+          <th scope="col" style="justify-content: center">Số lượng</th>
           <th scope="col">Thành tiền</th>
           <th scope="col">Action</th>
         </tr>
@@ -37,9 +37,9 @@
           </td>
           <td>
             <div style="display: flex; justify-content: space-around">
-              <button  style="border-radius: 5px;border-color: #0000003b; height: 25px; width: 25px;" (click)="giamSoLuong(c)"><div style="margin-top: -3px">-</div></button>
+              <button  style="border-radius: 5px;border-color: #0000003b; height: 25px; width: 25px;" (click)="giamSoLuong(c)"><div style="margin-top: 0px">-</div></button>
               <div>{{c.quantity}}</div>
-              <button style="border-radius: 5px;border-color: #0000003b; height: 25px; width: 25px;" [disabled]="c.quantity == c.productDetailDTO.quantity" (click)="tangSoLuong(c)"><div style="margin-top: -3px">+</div></button>
+              <button style="border-radius: 5px;border-color: #0000003b; height: 25px; width: 25px;" [disabled]="c.quantity == c.productDetailDTO.quantity" (click)="tangSoLuong(c)"><div style="margin-top: 0px">+</div></button>
             </div>
           </td>
 
@@ -62,7 +62,7 @@
         <thead>
         <tr>
           <th scope="col">Tổng tiền</th>
-          <th scope="col">Tiết kiện</th>
+          <th scope="col">Tiết kiệm</th>
         </tr>
         </thead>
         <tbody>

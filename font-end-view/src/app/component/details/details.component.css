@@ -37,8 +37,9 @@ text-color {
 
 .new-price {
   color: red;
-  margin-left: 10px;
+  margin-left: 0px;
   font-size: 1rem;
+  font-weight: 600;
 }
 
 
@@ -46,7 +47,7 @@ text-color {
   text-transform: uppercase;
   font-weight: 600;
   font-size: 1.2rem;
-  color: #757575;
+  color: #393939;
 }
 
 .buttons .block {
@@ -147,13 +148,13 @@ input[type="radio"] {
   margin-right: 8px;
 }
 .add-cart-btn{
-  background-color: #FF9F00;
-  border: 2px solid #FF9F00;
+  background-color: #2579da;
+  border: 2px solid #2579da;
   margin-right: 8px;
 }
 .add-cart-btn:hover{
   background-color: #fff;
-  color: #FF9F00 !important;
+  color: #2579da !important;
 }
 .buy-now-btn{
   background-color: #000;
