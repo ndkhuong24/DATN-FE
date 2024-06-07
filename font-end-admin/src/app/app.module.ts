@@ -65,7 +65,7 @@ import {ThemThuongHieuComponent} from './component/thuonghieu/them-thuong-hieu/t
 import {SuaThuongHieuComponent} from './component/thuonghieu/sua-thuong-hieu/sua-thuong-hieu.component';
 import {ThemSanPhamComponent} from './component/sanpham/them-san-pham/them-san-pham.component';
 import {SuaSanPhamComponent} from './component/sanpham/sua-san-pham/sua-san-pham.component';
-import {ActionRendererComponent} from './component/chatlieu/action-renderer/action-renderer.component';
+import {ChatlieuActionComponent} from './component/chatlieu/chat-lieu-action/chat-lieu-action.component';
 import {ActionCategoryRedererComponent} from './component/danhmuc/action-category-rederer/action-category-rederer.component';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatDialogModule} from '@angular/material/dialog';
@@ -143,7 +143,7 @@ import { PogupVoucherSCComponent } from './component/sales-counter/pogup-voucher
     SuaThuongHieuComponent,
     ThemSanPhamComponent,
     SuaSanPhamComponent,
-    ActionRendererComponent,
+    ChatlieuActionComponent,
     ActionCategoryRedererComponent,
     DeGiayActionComponent,
     KichCoActionComponent,
@@ -210,7 +210,7 @@ import { PogupVoucherSCComponent } from './component/sales-counter/pogup-voucher
   bootstrap: [AppComponent],
   providers: [{provide: JWT_OPTIONS, useValue: JWT_OPTIONS},
     JwtHelperService, ToastrService, DatePipe],
-  entryComponents: [ActionRendererComponent],
+  entryComponents: [ChatlieuActionComponent],
 })
 export class AppModule {
 }

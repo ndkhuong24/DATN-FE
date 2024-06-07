@@ -26,34 +26,35 @@ export class DegiayComponent implements OnInit {
         field: 'soleHeight',
         sortable: true,
         filter: true,
-        width: 130,
+        width: 125,
       },
       {
         headerName: 'Chất liệu đế',
         field: 'soleMaterial',
         sortable: true,
         filter: true,
-        width: 170,
+        width: 125,
       },
       {
         headerName: 'Ngày bắt đầu',
         field: 'createDate',
         sortable: true,
         filter: true,
-        width: 160,
+        width: 125,
       },
       {
         headerName: 'Ngày sửa ',
         field: 'updateDate',
         sortable: true,
         filter: true,
-        width: 160,
+        width: 125,
       },
       {
         headerName: 'Mô tả',
         field: 'description',
         sortable: true,
         filter: true,
+        with: 350,
       },
       {
         headerName: 'Trạng thái',
@@ -61,15 +62,15 @@ export class DegiayComponent implements OnInit {
         sortable: true,
         filter: true,
         valueGetter: (params) => {
-          return params.data.status === 0 ? 'Hoạt động' : 'Ngưng hoạt động';
+          return params.data.status === 0 ? 'Hoạt động' : 'Ngừng hoạt động';
         },
-        width: 160,
+        width: 125,
       },
       {
         headerName: 'Chức năng',
         field: '',
         cellRendererFramework: DeGiayActionComponent,
-        width: 130,
+        width: 125,
       },
     ];
   }

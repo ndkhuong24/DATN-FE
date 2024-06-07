@@ -1,17 +1,17 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { SuaDeGiayComponent } from '../sua-de-giay/sua-de-giay.component';
+import { SuaChatLieuComponent } from '../sua-chat-lieu/sua-chat-lieu.component';
 import { MatDialog } from '@angular/material/dialog';
-import { SoleService } from '../../../service/sole.service';
-import { DegiayComponent } from '../degiay.component';
+import { MaterialpostService } from '../../../service/materialpost.service';
+import { ChatlieuComponent } from '../chatlieu.component';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-de-giay-action',
-  templateUrl: './de-giay-action.component.html',
-  styleUrls: ['./de-giay-action.component.css'],
+  selector: 'app-chat-lieu-action',
+  templateUrl: './chat-lieu-action.component.html',
+  styleUrls: ['./chat-lieu-action.component.css'],
 })
-export class DeGiayActionComponent implements ICellRendererAngularComp, OnInit {
+export class ChatlieuActionComponent implements ICellRendererAngularComp, OnInit{
   params: any;
   rowData = [];
   agInit(params: any) {
@@ -24,34 +24,39 @@ export class DeGiayActionComponent implements ICellRendererAngularComp, OnInit {
 
   constructor(
     private matdialog: MatDialog,
-    private slsv: SoleService,
+    private mtsv: MaterialpostService,
     private cdr: ChangeDetectorRef,
-    private degiayComponent: DegiayComponent
+    private chatLieuComponent: ChatlieuComponent
   ) {}
 
   ngOnInit(): void {
-    this.getAllSole();
+    this.getAllMaterial();
   }
-  getAllSole() {
-    this.slsv.getAllSole().subscribe((result) => {
+
+  getAllMaterial() {
+    this.mtsv.getAllMaterial().subscribe((result) => {
+      // this.rowData = [...result];
+      // console.log(this.rowData);
       this.rowData = result;
     });
   }
-  openUpdate() {
-    const dialogref = this.matdialog.open(SuaDeGiayComponent, {
+
+  openUpdate(): void {
+    const dialogref = this.matdialog.open(SuaChatLieuComponent, {
       width: '65vh',
       height: '75vh',
       data: this.params,
     });
     dialogref.afterClosed().subscribe((result) => {
       console.log(result);
-      if (result === 'saveSole') {
-        this.degiayComponent.ngOnInit();
+      if (result === 'saveMaterial') {
+        this.chatLieuComponent.ngOnInit();
         this.cdr.detectChanges();
       }
     });
   }
-  deleteSole(sole?: any) {
+
+  deleteMaterial(material?: any) {
     Swal.fire({
       title: 'Bạn có chắc muốn xóa',
       text: 'Bạn sẽ không thể hoàn tác',
@@ -59,13 +64,12 @@ export class DeGiayActionComponent implements ICellRendererAngularComp, OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Xóa!',
+      confirmButtonText: 'Xóa',
     }).then((result) => {
       if (result.isConfirmed) {
-        sole = this.params.id;
-        console.log(sole);
-        this.slsv.DeleteSole(sole).subscribe(() => {
-          this.degiayComponent.ngOnInit();
+        material = this.params.id;
+        this.mtsv.DeleteMaterial(material).subscribe(() => {
+          this.chatLieuComponent.ngOnInit();
           this.cdr.detectChanges();
         });
         Swal.fire('Xóa', 'Xóa thành công', 'success');

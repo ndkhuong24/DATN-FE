@@ -1,7 +1,11 @@
 <h1 mat-dialog-title>Thêm đế giày</h1>
+
 <div mat-dialog-content class="example-container">
+
   <mat-form-field appearance="outline">
+
     <mat-label>Chiều cao đế</mat-label>
+
     <input matInput [(ngModel)]="SoleHeight" placeholder="Chiều cao đế" (keydown)="revoveInvalid(validSoleHeight)"
       (blur)="validateSoleHeight()">
     <div class="validate-input" *ngIf="!validSoleHeight.done">
@@ -9,6 +13,7 @@
       <p class="validate-input-label" *ngIf="validSoleHeight.maxLength">Chiều cao đế phải dưới 250 kí tự</p>
     </div>
   </mat-form-field>
+
   <mat-form-field appearance="outline">
     <mat-label>Chất liệu đế</mat-label>
     <input matInput [(ngModel)]="SoleMaterial" placeholder="Chất liệu đế" (keydown)="revoveInvalid(validSoleMaterial)"
@@ -18,6 +23,7 @@
       <p class="validate-input-label" *ngIf="validSoleMaterial.maxLength">Chất liệu đế phải dưới 250 kí tự</p>
     </div>
   </mat-form-field>
+
   <mat-form-field appearance="outline">
     <mat-label>Mô tả</mat-label>
     <input matInput [(ngModel)]="Description" placeholder="Mô tả" (keydown)="revoveInvalid(validDescription)"
@@ -26,6 +32,7 @@
       <p class="validate-input-label" *ngIf="validDescription.empty">Mô tả không được để trống</p>
     </div>
   </mat-form-field>
+  
   <mat-radio-group [(ngModel)]="Status">
     <mat-label style="margin-right: 10px;">Trạng thái</mat-label>
     <mat-radio-button [value]="0" style="margin-right: 5px;">Hoạt Động</mat-radio-button>
@@ -34,6 +41,6 @@
 </div>
 <br>
 <div mat-dialog-actions [align]="'end'">
-  <button mat-raised-button color="warn" mat-dialog-close>Đóng</button>
+  <button mat-raised-button color="warn" mat-dialog-close>Thoát</button>
   <button mat-raised-button color="primary" (click)="clickadd()">Thêm</button>
 </div>

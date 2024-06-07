@@ -40,8 +40,8 @@ export class ThemDeGiayComponent implements OnInit {
       return;
     }
     Swal.fire({
-      title: 'Bạn muốn thêm?',
-      text: 'Thao tác này sẽ không hoàn tác!',
+      title: 'Bạn muốn thêm',
+      text: 'Thao tác này sẽ không hoàn tác',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

@@ -4,11 +4,13 @@ import { SoleService } from '../../../service/sole.service';
 import { CommonFunction } from '../../../util/common-function';
 import { ValidateInput } from '../../model/validate-input';
 import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-sua-de-giay',
   templateUrl: './sua-de-giay.component.html',
   styleUrls: ['./sua-de-giay.component.css'],
 })
+
 export class SuaDeGiayComponent implements OnInit {
   validSoleHeight: ValidateInput = new ValidateInput();
   validSoleMaterial: ValidateInput = new ValidateInput();
@@ -59,8 +61,8 @@ export class SuaDeGiayComponent implements OnInit {
       return;
     }
     Swal.fire({
-      title: 'Bạn chắc muốn sửa?',
-      text: 'Bạn sẽ không thể hoàn tác!',
+      title: 'Bạn chắc muốn sửa',
+      text: 'Bạn sẽ không thể hoàn tác',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
