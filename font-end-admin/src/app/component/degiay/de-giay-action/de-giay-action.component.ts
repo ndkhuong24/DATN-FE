@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 export class DeGiayActionComponent implements ICellRendererAngularComp, OnInit {
   params: any;
   rowData = [];
+  
   agInit(params: any) {
     this.params = params.data;
   }

@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 export class ChatlieuActionComponent implements ICellRendererAngularComp, OnInit{
   params: any;
   rowData = [];
+
   agInit(params: any) {
     this.params = params.data;
   }
@@ -41,7 +42,7 @@ export class ChatlieuActionComponent implements ICellRendererAngularComp, OnInit
     });
   }
 
-  openUpdate(): void {
+  openUpdate() {
     const dialogref = this.matdialog.open(SuaChatLieuComponent, {
       width: '65vh',
       height: '75vh',

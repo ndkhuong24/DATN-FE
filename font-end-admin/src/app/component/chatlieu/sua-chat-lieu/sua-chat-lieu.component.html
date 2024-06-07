@@ -41,7 +41,7 @@
   <mat-form-field appearance="outline">
 
     <mat-label>Tên chất liệu</mat-label>
-    <input [(ngModel)]="data.Name" name="Name" matInput placeholder="Tên chất liệu" (keydown)="revoveInvalid(validName)"
+    <input [(ngModel)]="data.name" name="name" matInput placeholder="Tên chất liệu" (keydown)="revoveInvalid(validName)"
       (blur)="validateName()">
     <div class="validate-input" *ngIf="!validName.done">
       <p class="validate-input-label" *ngIf="validName.empty">Tên không được để trống</p>
@@ -51,14 +51,14 @@
 
   <mat-form-field appearance="outline">
     <mat-label>Mô tả</mat-label>
-    <input [(ngModel)]="data.Description" name="Description" matInput placeholder="Mô tả"
+    <input [(ngModel)]="data.description" name="description" matInput placeholder="Mô tả"
       (keydown)="revoveInvalid(validDescription)" (blur)="validateDescription()">
     <div class="validate-input" *ngIf="!validDescription.done">
       <p class="validate-input-label" *ngIf="validDescription.empty">Mô tả không được để trống</p>
     </div>
   </mat-form-field>
 
-  <mat-radio-group [(ngModel)]="data.Status" name="Status">
+  <mat-radio-group [(ngModel)]="data.status" name="status">
     <mat-label style="margin-right: 10px;">Trạng thái</mat-label>
     <mat-radio-button [value]="0" style="margin-right: 5px;">Hoạt Động</mat-radio-button>
     <mat-radio-button [value]="1" style="margin-left: 5px;">Ngừng Hoạt Động</mat-radio-button>

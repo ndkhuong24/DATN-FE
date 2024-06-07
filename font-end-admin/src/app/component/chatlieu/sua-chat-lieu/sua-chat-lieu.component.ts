@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MaterialpostService } from '../../../service/materialpost.service';
-// import * as _ from 'lodash';
 import { CommonFunction } from '../../../util/common-function';
 import { ValidateInput } from '../../model/validate-input';
 import Swal from 'sweetalert2';
@@ -12,9 +11,9 @@ import Swal from 'sweetalert2';
   styleUrls: ['./sua-chat-lieu.component.css'],
 })
 export class SuaChatLieuComponent implements OnInit {
-  // rowData = [];
   validName: ValidateInput = new ValidateInput();
   validDescription: ValidateInput = new ValidateInput();
+
   constructor(
     public dialogRef: MatDialogRef<SuaChatLieuComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -22,12 +21,15 @@ export class SuaChatLieuComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
+
   revoveInvalid(result) {
     result.done = true;
   }
+
   validateName() {
     this.validName = CommonFunction.validateInput(this.data.name, 250, null);
   }
+
   validateDescription() {
     this.validDescription = CommonFunction.validateInput(
       this.data.description,

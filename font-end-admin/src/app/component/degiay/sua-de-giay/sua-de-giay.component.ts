@@ -22,6 +22,7 @@ export class SuaDeGiayComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
+  
   revoveInvalid(result) {
     result.done = true;
   }

@@ -49,7 +49,7 @@ export class ChatlieuComponent implements OnInit {
         field: 'description',
         sortable: true,
         filter: true,
-        width: 350,
+        width: 500,
       },
       {
         headerName: 'Trạng thái',
