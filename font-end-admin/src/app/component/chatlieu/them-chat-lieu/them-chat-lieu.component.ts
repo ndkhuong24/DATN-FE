@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MaterialpostService } from '../../../service/materialpost.service';
-// import * as _ from 'lodash';
 import { ValidateInput } from '../../model/validate-input';
 import { CommonFunction } from '../../../util/common-function';
 import Swal from 'sweetalert2';
@@ -17,7 +16,6 @@ export class ThemChatLieuComponent implements OnInit {
   Status: number = 0;
   validName: ValidateInput = new ValidateInput();
   validDescription: ValidateInput = new ValidateInput();
-  // rowData = [];
 
   constructor(
     public dialogRef: MatDialogRef<ThemChatLieuComponent>,
@@ -25,11 +23,6 @@ export class ThemChatLieuComponent implements OnInit {
     private mtsv: MaterialpostService
   ) {}
 
-  // getMaterial() {
-  //   this.mtsv.getAllMaterial().subscribe((result) => {
-  //     this.rowData = result;
-  //   });
-  // }
   ngOnInit(): void {}
   clickadd() {
     this.Name = CommonFunction.trimText(this.Name);
@@ -47,6 +40,7 @@ export class ThemChatLieuComponent implements OnInit {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Thêm',
+      cancelButtonText: 'Thoát',
     }).then((result1) => {
       if (result1.isConfirmed) {
         const material = {

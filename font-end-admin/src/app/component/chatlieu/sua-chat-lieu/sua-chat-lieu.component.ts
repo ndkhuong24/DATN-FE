@@ -54,6 +54,7 @@ export class SuaChatLieuComponent implements OnInit {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Sửa',
+      cancelButtonText: 'Thoát',
     }).then((result1) => {
       if (result1.isConfirmed) {
         const material = {

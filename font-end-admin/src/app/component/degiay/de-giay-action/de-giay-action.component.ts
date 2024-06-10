@@ -62,7 +62,8 @@ export class DeGiayActionComponent implements ICellRendererAngularComp, OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Xóa!',
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Thoát',
     }).then((result) => {
       if (result.isConfirmed) {
         sole = this.params.id;

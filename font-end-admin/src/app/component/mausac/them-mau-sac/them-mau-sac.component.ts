@@ -44,6 +44,7 @@ export class ThemMauSacComponent implements OnInit {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Thêm',
+      cancelButtonText: 'Thoát',
     }).then((result) => {
       if (result.isConfirmed) {
         const color = {

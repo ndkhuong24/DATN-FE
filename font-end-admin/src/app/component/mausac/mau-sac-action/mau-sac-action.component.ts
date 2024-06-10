@@ -65,6 +65,7 @@ export class MauSacActionComponent implements ICellRendererAngularComp, OnInit {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Xóa',
+      cancelButtonText: 'Thoát',
     }).then((result) => {
       if (result.isConfirmed) {
         color = this.params.id;

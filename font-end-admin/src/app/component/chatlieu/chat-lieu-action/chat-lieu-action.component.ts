@@ -38,8 +38,6 @@ export class ChatlieuActionComponent
 
   getAllMaterial() {
     this.mtsv.getAllMaterial().subscribe((result) => {
-      // this.rowData = [...result];
-      // console.log(this.rowData);
       this.rowData = result;
     });
   }
@@ -68,6 +66,7 @@ export class ChatlieuActionComponent
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Xóa',
+      cancelButtonText: 'Thoát',
     }).then((result) => {
       if (result.isConfirmed) {
         material = this.params.id;
