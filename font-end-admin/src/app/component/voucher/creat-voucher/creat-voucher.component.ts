@@ -94,7 +94,7 @@ export class CreatVoucherComponent implements OnInit {
     ];
   }
 
-  public rowSelection: 'single' | 'multiple' = 'multiple'; // Chọn nhiều dòng
+  public rowSelection: 'single' | 'multiple' = 'multiple';
   isEndDateValid() {
     this.checkEndDateNull = false;
     if (this.voucher.endDate === '' || this.voucher.endDate === null

@@ -11,13 +11,16 @@ import Swal from 'sweetalert2';
 })
 export class ThemDeGiayComponent implements OnInit {
   SoleHeight: string;
-  SoleMaterial: string;
-  Description: string;
-  Status: number = 0;
   validSoleHeight: ValidateInput = new ValidateInput();
+
+  SoleMaterial: string;
   validSoleMaterial: ValidateInput = new ValidateInput();
+
+  Description: string;
   validDescription: ValidateInput = new ValidateInput();
 
+  Status: number = 0;
+  
   constructor(
     public dialogRef: MatDialogRef<ThemDeGiayComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -25,6 +28,7 @@ export class ThemDeGiayComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
+  
   clickadd() {
     this.SoleHeight = CommonFunction.trimText(this.SoleHeight);
     this.SoleMaterial = CommonFunction.trimText(this.SoleMaterial);

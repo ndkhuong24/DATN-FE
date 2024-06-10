@@ -25,7 +25,7 @@ export class VoucherShipComponent implements OnInit {
   dateFromCurrent = null;
   dateToCurrent = null;
   searchResults: any[] = [];
-  public rowSelection: 'single' | 'multiple' = 'multiple'; // Chọn nhiều dòng
+  public rowSelection: 'single' | 'multiple' = 'multiple';
   constructor(
     private matDialog: MatDialog,
     private apiService: VoucherShipService,

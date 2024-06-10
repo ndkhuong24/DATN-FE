@@ -84,7 +84,7 @@ export class CreatVoucherShipComponent implements OnInit {
       },
     ];
   }
-  public rowSelection: 'single' | 'multiple' = 'multiple'; // Chọn nhiều dòng
+  public rowSelection: 'single' | 'multiple' = 'multiple';
   isValidDateRange(): void {
     if (
       this.voucher.startDate &&

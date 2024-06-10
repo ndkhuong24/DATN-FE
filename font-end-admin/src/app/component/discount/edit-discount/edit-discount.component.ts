@@ -97,7 +97,7 @@ export class EditDiscountComponent implements OnInit {
     ];
   }
   currentDate: Date = new Date();
-  public rowSelection: 'single' | 'multiple' = 'multiple'; // Chọn nhiều dòng
+  public rowSelection: 'single' | 'multiple' = 'multiple';
   ngOnInit(): void {
     this.discountService.getProduct().subscribe((response) => {
       this.rowData = response;

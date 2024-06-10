@@ -25,7 +25,7 @@ export class SanphamComponent implements OnInit {
   products: any[];
   selectedProductId: number;
   productDetails: any[];
-  public rowSelection: 'single' | 'multiple' = 'multiple'; // Chọn nhiều dòng
+  public rowSelection: 'single' | 'multiple' = 'multiple';
   rowExpansion: boolean = false;
   searchProduct: string;
   productId: number;

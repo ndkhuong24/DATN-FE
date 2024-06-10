@@ -32,14 +32,17 @@
       <p class="validate-input-label" *ngIf="validDescription.empty">Mô tả không được để trống</p>
     </div>
   </mat-form-field>
-  
+
   <mat-radio-group [(ngModel)]="Status">
     <mat-label style="margin-right: 10px;">Trạng thái</mat-label>
     <mat-radio-button [value]="0" style="margin-right: 5px;">Hoạt Động</mat-radio-button>
     <mat-radio-button [value]="1" style="margin-left: 5px;">Ngừng Hoạt Động</mat-radio-button>
   </mat-radio-group>
+
 </div>
+
 <br>
+
 <div mat-dialog-actions [align]="'end'">
   <button mat-raised-button color="warn" mat-dialog-close>Thoát</button>
   <button mat-raised-button color="primary" (click)="clickadd()">Thêm</button>

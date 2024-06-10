@@ -14,7 +14,7 @@ export class DegiayComponent implements OnInit {
   columnDefs;
   headerHeight = 50;
   rowHeight = 40;
-  public rowSelection: 'single' | 'multiple' = 'multiple'; // Chọn nhiều dòng
+  public rowSelection: 'single' | 'multiple' = 'multiple';
   constructor(
     private matdialog: MatDialog,
     private slsv: SoleService,
@@ -26,35 +26,36 @@ export class DegiayComponent implements OnInit {
         field: 'soleHeight',
         sortable: true,
         filter: true,
-        width: 125,
+        flex: 1,
       },
       {
         headerName: 'Chất liệu đế',
         field: 'soleMaterial',
         sortable: true,
         filter: true,
-        width: 125,
+        flex: 1,
       },
       {
         headerName: 'Ngày bắt đầu',
         field: 'createDate',
         sortable: true,
         filter: true,
-        width: 125,
+        flex: 1,
       },
       {
         headerName: 'Ngày sửa ',
         field: 'updateDate',
         sortable: true,
         filter: true,
-        width: 125,
+        flex: 1,
       },
       {
         headerName: 'Mô tả',
         field: 'description',
         sortable: true,
         filter: true,
-        width: 400,
+        // width: 125,
+        flex: 2,
       },
       {
         headerName: 'Trạng thái',
@@ -64,13 +65,13 @@ export class DegiayComponent implements OnInit {
         valueGetter: (params) => {
           return params.data.status === 0 ? 'Hoạt động' : 'Ngừng hoạt động';
         },
-        width: 125,
+        flex: 1,
       },
       {
         headerName: 'Chức năng',
         field: '',
         cellRendererFramework: DeGiayActionComponent,
-        width: 125,
+        flex: 1,
       },
     ];
   }
@@ -87,7 +88,7 @@ export class DegiayComponent implements OnInit {
   openAdd() {
     const dialogref = this.matdialog.open(ThemDeGiayComponent, {
       width: '65vh',
-      height: '75vh',
+      height: '60vh',
     });
     dialogref.afterClosed().subscribe((result) => {
       if (result === 'addSole') {

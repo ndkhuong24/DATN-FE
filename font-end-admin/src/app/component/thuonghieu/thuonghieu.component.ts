@@ -15,7 +15,7 @@ export class ThuonghieuComponent implements OnInit {
   columnDefs;
   headerHeight = 50;
   rowHeight = 40;
-  public rowSelection: 'single' | 'multiple' = 'multiple'; // Chọn nhiều dòng
+  public rowSelection: 'single' | 'multiple' = 'multiple';
   constructor(private matdialog: MatDialog,
               private brsv: BrandService,
               private cdr: ChangeDetectorRef) {

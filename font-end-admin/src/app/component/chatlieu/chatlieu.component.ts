@@ -16,7 +16,7 @@ export class ChatlieuComponent implements OnInit {
   columnDefs;
   headerHeight = 50;
   rowHeight = 40;
-  public rowSelection: 'single' | 'multiple' = 'multiple'; // Chọn nhiều dòng
+  public rowSelection: 'single' | 'multiple' = 'multiple';
   constructor(
     private matdialog: MatDialog,
     private mtsv: MaterialpostService,
@@ -28,28 +28,28 @@ export class ChatlieuComponent implements OnInit {
         field: 'name',
         sortable: true,
         filter: true,
-        width: 125,
+        flex: 1,
       },
       {
         headerName: 'Ngày bắt đầu',
         field: 'createDate',
         sortable: true,
         filter: true,
-        width: 125,
+        flex: 1,
       },
       {
         headerName: 'Ngày Sửa ',
         field: 'updateDate',
         sortable: true,
         filter: true,
-        width: 125,
+        flex: 1,
       },
       {
         headerName: 'Mô tả',
         field: 'description',
         sortable: true,
         filter: true,
-        width: 500,
+        flex: 3,
       },
       {
         headerName: 'Trạng thái',
@@ -59,13 +59,13 @@ export class ChatlieuComponent implements OnInit {
         valueGetter: (params) => {
           return params.data.status === 0 ? 'Hoạt động' : 'Ngừng hoạt động';
         },
-        width: 125,
+        flex: 1,
       },
       {
         headerName: 'Chức năng',
         field: '',
         cellRendererFramework: ChatlieuActionComponent,
-        width: 125,
+        flex: 1,
       },
     ];
   }
@@ -83,7 +83,7 @@ export class ChatlieuComponent implements OnInit {
   openAdd() {
     const dialogref = this.matdialog.open(ThemChatLieuComponent, {
       width: '65vh',
-      height: '65vh',
+      height: '47vh',
     });
     dialogref.afterClosed().subscribe((result) => {
       if (result === 'addMaterial') {

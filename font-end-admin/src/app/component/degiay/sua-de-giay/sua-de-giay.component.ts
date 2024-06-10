@@ -15,6 +15,7 @@ export class SuaDeGiayComponent implements OnInit {
   validSoleHeight: ValidateInput = new ValidateInput();
   validSoleMaterial: ValidateInput = new ValidateInput();
   validDescription: ValidateInput = new ValidateInput();
+  
   constructor(
     public dialogRef: MatDialogRef<SuaDeGiayComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -22,7 +23,7 @@ export class SuaDeGiayComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
-  
+
   revoveInvalid(result) {
     result.done = true;
   }

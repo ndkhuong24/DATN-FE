@@ -14,7 +14,7 @@ import Swal from 'sweetalert2';
 export class DeGiayActionComponent implements ICellRendererAngularComp, OnInit {
   params: any;
   rowData = [];
-  
+
   agInit(params: any) {
     this.params = params.data;
   }
@@ -33,15 +33,17 @@ export class DeGiayActionComponent implements ICellRendererAngularComp, OnInit {
   ngOnInit(): void {
     this.getAllSole();
   }
+
   getAllSole() {
     this.slsv.getAllSole().subscribe((result) => {
       this.rowData = result;
     });
   }
+  
   openUpdate() {
     const dialogref = this.matdialog.open(SuaDeGiayComponent, {
       width: '65vh',
-      height: '75vh',
+      height: '60vh',
       data: this.params,
     });
     dialogref.afterClosed().subscribe((result) => {

@@ -15,7 +15,7 @@ import * as printJS from "print-js";
   styleUrls: ['./voucher.component.css'],
 })
 export class VoucherComponent implements OnInit {
-  public rowSelection: 'single' | 'multiple' = 'multiple'; // Chọn nhiều dòng
+  public rowSelection: 'single' | 'multiple' = 'multiple';
   rowData = [];
   rowData1 = [];
   rowData2 = [];
