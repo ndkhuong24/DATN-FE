@@ -1,5 +1,7 @@
 <h1 mat-dialog-title>Cập nhật thương hiệu</h1>
+
 <div mat-dialog-content class="example-container">
+
   <mat-form-field appearance="outline">
     <mat-label>Tên thương hiệu</mat-label>
     <input matInput [(ngModel)]="data.name" placeholder="Tên thương hiệu" (keydown)="revoveInvalid(validName)" (blur)="validateName()">
@@ -8,12 +10,16 @@
       <p class="validate-input-label" *ngIf="validName.maxLength">Tên màu sắc 250 kí tự</p>
     </div>
   </mat-form-field>
+
   <mat-radio-group [(ngModel)]="data.status">
-    <mat-label>Trạng thái</mat-label>
-    <mat-radio-button [value]="0">Hoạt Động</mat-radio-button>
-    <mat-radio-button [value]="1">Ngừng Hoạt Động</mat-radio-button>
+    <mat-label style="margin-right: 10px;">Trạng thái</mat-label>
+    <mat-radio-button [value]="0" style="margin-right: 5px;">Hoạt Động</mat-radio-button>
+    <mat-radio-button [value]="1" style="margin-left: 5px;">Ngừng Hoạt Động</mat-radio-button>
   </mat-radio-group>
 </div>
+
+<br>
+
 <div mat-dialog-actions [align]="'end'">
   <button mat-raised-button color="warn" mat-dialog-close>Đóng</button>
   <button mat-raised-button color="primary" (click)="clickUpdate(data.id)" >Cập nhật</button>

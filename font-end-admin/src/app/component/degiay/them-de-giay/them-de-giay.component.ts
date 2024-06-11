@@ -4,11 +4,13 @@ import { SoleService } from '../../../service/sole.service';
 import { ValidateInput } from '../../model/validate-input';
 import { CommonFunction } from '../../../util/common-function';
 import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-them-de-giay',
   templateUrl: './them-de-giay.component.html',
   styleUrls: ['./them-de-giay.component.css'],
 })
+
 export class ThemDeGiayComponent implements OnInit {
   SoleHeight: string;
   validSoleHeight: ValidateInput = new ValidateInput();
@@ -84,6 +86,7 @@ export class ThemDeGiayComponent implements OnInit {
       null
     );
   }
+
   validateSoleMaterial() {
     this.validSoleMaterial = CommonFunction.validateInput(
       this.SoleMaterial,
@@ -91,6 +94,7 @@ export class ThemDeGiayComponent implements OnInit {
       null
     );
   }
+  
   validateDescription() {
     this.validDescription = CommonFunction.validateInput(
       this.Description,

@@ -1,20 +1,21 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { SuaKichCoComponent } from '../sua-kich-co/sua-kich-co.component';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { MatDialog } from '@angular/material/dialog';
-import { SizeService } from '../../../service/size.service';
-import { KichcoComponent } from '../kichco.component';
+import { CategoryService } from '../../../service/category.service';
+import { DanhmucComponent } from '../danhmuc.component';
+import { SuaDanhMucComponent } from '../sua-danh-muc/sua-danh-muc.component';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-kich-co-action',
-  templateUrl: './kich-co-action.component.html',
-  styleUrls: ['./kich-co-action.component.css'],
+  selector: 'app-danh-muc-action',
+  templateUrl: './danh-muc-action.component.html',
+  styleUrls: ['./danh-muc-action.component.css'],
 })
-
-export class KichCoActionComponent implements ICellRendererAngularComp, OnInit {
-  rowData = [];
+export class DanhMucActionComponent
+  implements ICellRendererAngularComp, OnInit
+{
   params: any;
+  rowData = [];
   agInit(params: any): void {
     this.params = params.data;
   }
@@ -22,40 +23,29 @@ export class KichCoActionComponent implements ICellRendererAngularComp, OnInit {
   refresh(): boolean {
     return false;
   }
-
   constructor(
     private matdialog: MatDialog,
-    private szsv: SizeService,
+    private ctsv: CategoryService,
     private cdr: ChangeDetectorRef,
-    private kichcoComponent: KichcoComponent
+    private danhmucComponent: DanhmucComponent
   ) {}
 
-  ngOnInit(): void {
-    this.getAllSize();
-  }
-
+  ngOnInit(): void {}
   openUpdate() {
-    const dialogref = this.matdialog.open(SuaKichCoComponent, {
-      width: '65vh',
-      height: '37vh',
+    const dialogref = this.matdialog.open(SuaDanhMucComponent, {
+      width: '60vh',
+      height: '35vh',
       data: this.params,
     });
     dialogref.afterClosed().subscribe((result) => {
       console.log(result);
-      if (result === 'saveSize') {
-        this.kichcoComponent.ngOnInit();
+      if (result === 'saveCategory') {
+        this.danhmucComponent.ngOnInit();
         this.cdr.detectChanges();
       }
     });
   }
-
-  getAllSize() {
-    this.szsv.getAllSize().subscribe((result) => {
-      this.rowData = result;
-    });
-  }
-
-  deleteSize(size?: any) {
+  deleteCategory(category?: any) {
     Swal.fire({
       title: 'Bạn có chắc muốn xóa',
       text: 'Bạn sẽ không thể hoàn tác',
@@ -67,12 +57,12 @@ export class KichCoActionComponent implements ICellRendererAngularComp, OnInit {
       cancelButtonText: 'Thoát',
     }).then((result) => {
       if (result.isConfirmed) {
-        size = this.params.id;
-        this.szsv.DeleteSize(size).subscribe(() => {
-          this.kichcoComponent.ngOnInit();
+        category = this.params.id;
+        this.ctsv.DeleteCategory(category).subscribe(() => {
+          this.danhmucComponent.ngOnInit();
           this.cdr.detectChanges();
         });
-        Swal.fire('Xóa!', 'Xóa thành công', 'success');
+        Swal.fire('Xóa', 'Xóa thành công', 'success');
       }
     });
   }
