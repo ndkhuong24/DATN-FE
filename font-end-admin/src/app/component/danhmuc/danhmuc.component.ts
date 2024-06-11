@@ -49,7 +49,7 @@ export class DanhmucComponent implements OnInit {
         sortable: true,
         filter: true,
         valueGetter: (params) => {
-          return params.data.status === 0 ? 'Hoạt động' : 'Ngưng hoạt động';
+          return params.data.status === 0 ? 'Hoạt động' : 'Ngừng hoạt động';
         },
         flex: 1,
       },
