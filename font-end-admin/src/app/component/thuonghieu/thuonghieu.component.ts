@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ThemThuongHieuComponent } from './them-thuong-hieu/them-thuong-hieu.component';
 import { BrandService } from '../../service/brand.service';
 import { ThuongHieuActionComponent } from './thuong-hieu-action/thuong-hieu-action.component';
-// import { MauSacActionComponent } from '../mausac/mau-sac-action/mau-sac-action.component';
 
 @Component({
   selector: 'app-thuonghieu',

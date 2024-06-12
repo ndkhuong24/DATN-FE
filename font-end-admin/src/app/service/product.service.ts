@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {apiURL} from '../config/apiUrl';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { apiURL } from '../config/apiUrl';
 import * as moment from 'moment';
 
 @Injectable({
@@ -15,11 +15,12 @@ export class ProductService {
   getAllProduct(): Observable<any> {
     return this.http.get(`${apiURL}product/hien-thi`);
   }
-  getAllProductAll(): Observable<any> {
-    return this.http.get(`${apiURL}product/hien-thii`);
-  }
 
-  CreateProduct(product: any ): Observable<any> {
+  // getAllProductAll(): Observable<any> {
+  //   return this.http.get(`${apiURL}product/hien-thii`);
+  // }
+
+  CreateProduct(product: any): Observable<any> {
     return this.http.post(`${apiURL}product/add`, product);
   }
 
@@ -60,11 +61,11 @@ export class ProductService {
 
 
   exportExcelProduct(): Observable<Blob> {
-    return this.http.get(apiURL + `product/export-data`, {responseType: 'blob'});
+    return this.http.get(apiURL + `product/export-data`, { responseType: 'blob' });
   }
 
   exportExcelProductTemplate(): Observable<Blob> {
-    return this.http.get(apiURL + `product/export-data-template`, {responseType: 'blob'});
+    return this.http.get(apiURL + `product/export-data-template`, { responseType: 'blob' });
   }
 
   importExcelProduct(formData: FormData, typeImport) {
@@ -72,7 +73,7 @@ export class ProductService {
   }
 
   exportExcelProductErrors(listError: any): Observable<Blob> {
-    return this.http.post(`${apiURL}product/exportDataErrors`, listError, {responseType: 'blob'});
+    return this.http.post(`${apiURL}product/exportDataErrors`, listError, { responseType: 'blob' });
   }
 
   uploadImgProduct(formData: FormData, idProduct) {

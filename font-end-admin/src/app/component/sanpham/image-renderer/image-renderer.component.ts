@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {ICellRendererAngularComp} from 'ag-grid-angular';
+import { ICellRendererAngularComp } from 'ag-grid-angular';
 
 @Component({
   selector: 'app-image-renderer',
   templateUrl: './image-renderer.component.html',
-  styleUrls: ['./image-renderer.component.css']
+  styleUrls: ['./image-renderer.component.css'],
 })
-export class ImageRendererComponent implements OnInit, ICellRendererAngularComp {
+
+export class ImageRendererComponent
+  implements OnInit, ICellRendererAngularComp
+{
   params: any;
   agInit(params: any): void {
     this.params = params;
@@ -15,9 +18,7 @@ export class ImageRendererComponent implements OnInit, ICellRendererAngularComp 
   refresh(params: any): boolean {
     return false;
   }
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

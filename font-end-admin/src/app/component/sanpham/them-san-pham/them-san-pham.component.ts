@@ -1,5 +1,6 @@
 import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {ProductService} from '../../../service/product.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {BrandService} from '../../../service/brand.service';
 import {CategoryInterface} from '../../../interface/category-interface';
 import {CategoryService} from '../../../service/category.service';
@@ -88,7 +89,9 @@ export class ThemSanPhamComponent implements OnInit {
               private clsv: MausacService,
               private toaS: ToastrService,
               private szsv: SizeService,
-              private cdr: ChangeDetectorRef
+              private cdr: ChangeDetectorRef,
+              public dialogRef: MatDialogRef<ThemSanPhamComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
   }
 
@@ -150,6 +153,7 @@ export class ThemSanPhamComponent implements OnInit {
     console.log(this.imgLst);
     return;
   }
+
   clickaddProduct() {
     console.log('Chi tieest: ', this.productDetail);
     this.Name = CommonFunction.trimText(this.Name);
@@ -206,6 +210,7 @@ export class ThemSanPhamComponent implements OnInit {
             });
             this.router.navigate(['admin/san-pham']);
             console.log('Product add success', result);
+            this.dialogRef.close('addProduct');
           },
           error => {
             console.error('Product add error', error);
