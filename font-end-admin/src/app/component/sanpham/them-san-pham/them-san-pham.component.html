@@ -1,6 +1,9 @@
 <h1 mat-dialog-title>Thêm sản phẩm</h1>
-<div mat-dialog-content class="example-container" style="display: flex">
-  <div style="margin-right: 10px">
+
+<div mat-dialog-content class="example-container" style="display: flex; flex-wrap: wrap;">
+
+  <div style="padding-right: 10px">
+
     <mat-form-field appearance="outline">
       <mat-label>Tên sản phẩm</mat-label>
       <input [(ngModel)]="Name" name="Name" matInput placeholder="Tên" (keydown)="revoveInvalid(validName)"
@@ -10,10 +13,7 @@
         <p class="validate-input-label" *ngIf="validName.maxLength">Tên sản phẩm dưới 250 kí tự</p>
       </div>
     </mat-form-field>
-    <!--    <mat-form-field appearance="outline">-->
-    <!--      <mat-label>Tên người tạo</mat-label>-->
-    <!--      <input [(ngModel)]="CreateName" name="CreateName" matInput placeholder="Người tạo">-->
-    <!--    </mat-form-field>-->
+
     <mat-form-field appearance="outline">
       <mat-label>Mô tả</mat-label>
       <input [(ngModel)]="Description" name="Description" matInput placeholder="Mô tả"
@@ -22,23 +22,8 @@
         <p class="validate-input-label" *ngIf="validDescription.empty">Mô tả không được để trống</p>
       </div>
     </mat-form-field>
+
     <mat-form-field appearance="outline">
-      <mat-label>Giá</mat-label>
-      <input [(ngModel)]="Price" name="Price" matInput placeholder="Giá" (keydown)="revoveInvalid(validPrice)"
-        (blur)="validatePrice()">
-      <div class="validate-input" *ngIf="!validPrice.done">
-        <p class="validate-input-label" *ngIf="validPrice.empty">Giá không được để trống</p>
-        <p class="validate-input-label" *ngIf="validPrice.regex">Không đúng định dạng giá phải là số dương</p>
-      </div>
-    </mat-form-field>
-    <mat-radio-group [(ngModel)]="Status" name="Status">
-      <mat-label>Trạng thái</mat-label>
-      <mat-radio-button [value]="0">Hoạt động</mat-radio-button>
-      <mat-radio-button [value]="1">Ngừng hoạt động</mat-radio-button>
-    </mat-radio-group>
-  </div>
-  <div>
-    <mat-form-field>
       <mat-label>Thương hiệu</mat-label>
       <mat-select [(ngModel)]="IdBrand" (keydown)="revoveInvalid(validBrand)" (blur)="validateBrand()">
         <mat-option *ngFor="let br of brand" [value]="br.id">
@@ -49,7 +34,20 @@
         <p class="validate-input-label" *ngIf="validBrand.empty">Vui lòng chọn thương hiệu</p>
       </div>
     </mat-form-field>
-    <mat-form-field>
+
+    <!-- <mat-form-field appearance="outline">
+      <mat-label>Giá</mat-label>
+      <input [(ngModel)]="Price" name="Price" matInput placeholder="Giá" (keydown)="revoveInvalid(validPrice)"
+        (blur)="validatePrice()">
+      <div class="validate-input" *ngIf="!validPrice.done">
+        <p class="validate-input-label" *ngIf="validPrice.empty">Giá không được để trống</p>
+        <p class="validate-input-label" *ngIf="validPrice.regex">Không đúng định dạng giá phải là số dương</p>
+      </div>
+    </mat-form-field> -->
+  </div>
+
+  <div style="padding-left: 10px; flex: 1 1 45%;">
+    <mat-form-field appearance="outline">
       <mat-label>Danh mục</mat-label>
       <mat-select [(ngModel)]="IdCategory" (keydown)="revoveInvalid(validCategory)" (blur)="validateCategory()">
         <mat-option *ngFor="let cate of categories" [value]="cate.id">
@@ -60,7 +58,8 @@
         <p class="validate-input-label" *ngIf="validCategory.empty">Vui lòng chọn Danh mục</p>
       </div>
     </mat-form-field>
-    <mat-form-field>
+
+    <mat-form-field appearance="outline">
       <mat-label>Đế giày</mat-label>
       <mat-select [(ngModel)]="IdSole" (keydown)="revoveInvalid(validSole)" (blur)="validateSole()">
         <mat-option *ngFor="let sl of sole" [value]="sl.id">
@@ -71,7 +70,8 @@
         <p class="validate-input-label" *ngIf="validSole.empty">Vui lòng chọn Đế giày</p>
       </div>
     </mat-form-field>
-    <mat-form-field>
+
+    <mat-form-field appearance="outline">
       <mat-label>Chất liệu</mat-label>
       <mat-select [(ngModel)]="IdMaterial" (keydown)="revoveInvalid(validMaterial)" (blur)="validateMaterial()">
         <mat-option *ngFor="let mt of material" [value]="mt.id">
@@ -82,27 +82,47 @@
         <p class="validate-input-label" *ngIf="validMaterial.empty">Vui lòng chọn Chất liệu</p>
       </div>
     </mat-form-field>
+
+  </div>
+
+  <div style="padding-right: 10px; width: 55%;">
+    <mat-radio-group [(ngModel)]="Status" name="Status">
+      <mat-label style="padding-right: 10px;">Trạng thái</mat-label>
+      <mat-radio-button [value]="0" style="margin-right: 5px;">Hoạt động</mat-radio-button>
+      <mat-radio-button [value]="1" style="margin-left: 5px;">Ngừng hoạt động</mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <div style="padding-left: 10px; flex: 1 1 45%; width: 45%;">
     <div>
       <input type="file" (change)="OnChangeFile($event)" style="color: red">
       <p class="validate-input-label" *ngIf="validImage.empty">Ảnh không được để trống</p>
     </div>
+  </div>
+
+</div>
+
+<br>
+
+<div style="flex-basis: 100%; width: 55%;">
+  <div *ngIf="Name">
+    <h1 style="display: flex">Thêm Kích cỡ & Màu sắc</h1>
+    <ng-select [items]="size" bindLabel="sizeNumber" bindValue="id" [multiple]="true" (change)="OnChangSize($event)"
+      placeholder="Chọn kích thước">
+    </ng-select>
     <br>
-    <div *ngIf="Name">
-      <h1 style="display: flex">Thêm Kích cỡ & Màu sắc</h1>
-      <ng-select [items]="size" bindLabel="sizeNumber" bindValue="id" [multiple]="true" (change)="OnChangSize($event)"
-        placeholder="Chọn kích thước">
-      </ng-select>
-      <br>
-      <ng-select [items]="color" bindLabel="name" bindValue="id" [multiple]="true" (change)="OnChangColor($event)"
-        placeholder="Chọn màu sắc">
-      </ng-select>
-      <br>
-    </div>
+    <ng-select [items]="color" bindLabel="name" bindValue="id" [multiple]="true" (change)="OnChangColor($event)"
+      placeholder="Chọn màu sắc">
+    </ng-select>
+    <br>
   </div>
 </div>
-<div *ngIf="productDetail && productDetail.length > 0">
+
+<div mat-dialog-content class="example-container" *ngIf="productDetail && productDetail.length > 0">
   <h1> Chi tiết sản phẩm</h1>
+
   <table class="table">
+
     <thead>
       <tr>
         <th scope="col">Tên Sản Phẩm</th>
@@ -110,6 +130,7 @@
         <th scope="col">Màu sắc</th>
         <th scope="col">Số Lượng</th>
         <th scope="col">Cổ giày</th>
+        <th scope="col">Giắ</th>
         <th scope="col">Chức năng</th>
       </tr>
     </thead>
@@ -120,7 +141,10 @@
         <td>{{prdtl.colorDTO.name}}</td>
         <td>
           <div>
-            <input type="text" [(ngModel)]="productDetail[i].quantity" style="width: 50px">
+            <input type="number" [(ngModel)]="productDetail[i].quantity" style="width: 50px">
+            <!-- <div class="validate-input" *ngIf="!isValidQuantity(productDetail[i].quantity)">
+              <p class="validate-input-label">Số lượng không hợp lệ</p>
+            </div> -->
           </div>
         </td>
         <td>
@@ -130,13 +154,20 @@
             </ng-select>
           </div>
         </td>
-        <td><button mat-icon-button color="warn" (click)="deleteProductDetail(i)"><mat-icon>delete</mat-icon></button>
+        <td>
+          <div>
+            <input type="number" [(ngModel)]="productDetail[i].price" style="width: 150px">
+          </div>
+        </td>
+        <td>
+          <button mat-icon-button color="warn" (click)="deleteProductDetail(i)"><mat-icon>delete</mat-icon></button>
         </td>
       </tr>
     </tbody>
   </table>
 </div>
+
 <div mat-dialog-actions [align]="'end'">
-  <button mat-raised-button color="warn" routerLink="/admin/san-pham">Đóng</button>
-  <button mat-raised-button color="primary" (click)="clickaddProduct()">Thêm</button>
+  <button mat-raised-button color="warn" mat-dialog-close>Thoát</button>
+  <button mat-raised-button color="primary" (click)="clickadd()">Thêm</button>
 </div>

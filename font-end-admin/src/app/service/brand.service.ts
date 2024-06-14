@@ -8,6 +8,7 @@ import {apiURL} from '../config/apiUrl';
 export class BrandService {
 
   constructor(private http: HttpClient) { }
+  
   getAllBrand(): Observable<any>{
     return  this.http.get(`${apiURL}brand/hien-thi`);
   }

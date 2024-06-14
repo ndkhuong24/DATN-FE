@@ -103,7 +103,12 @@
     </mat-form-field>
   </div>
 </div>
+
 <div mat-dialog-actions [align]="'end'">
+  <button mat-raised-button color="warn" mat-dialog-close>Thoát</button>
+  <button mat-raised-button color="primary" (click)="clickUpdate(data.id)">Cập nhật</button>
+</div>
+<!-- <div mat-dialog-actions [align]="'end'">
   <button mat-raised-button color="warn" routerLink="/admin/san-pham">Đóng</button>
   <button mat-raised-button color="primary" (click)="clickUpdate(idProduct)">Cập nhật</button>
-</div>
+</div> -->

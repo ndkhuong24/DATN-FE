@@ -8,8 +8,7 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
 })
 
 export class ImageRendererComponent
-  implements OnInit, ICellRendererAngularComp
-{
+  implements OnInit, ICellRendererAngularComp {
   params: any;
   agInit(params: any): void {
     this.params = params;
@@ -18,7 +17,7 @@ export class ImageRendererComponent
   refresh(params: any): boolean {
     return false;
   }
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

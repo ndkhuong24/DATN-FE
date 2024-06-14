@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductService } from 'src/app/service/product.service';
 import { ThemSanPhamComponent } from './them-san-pham/them-san-pham.component';
+import { SanPhamActionComponent } from './san-pham-action/san-pham-action.component';
 
 @Component({
   selector: 'app-sanpham',
@@ -14,7 +15,7 @@ export class SanphamComponent implements OnInit {
   status1Products = [];
   columnDefs;
   headerHeight = 50;
-  rowHeight = 40;
+  rowHeight = 100;
   public rowSelection: 'single' | 'multiple' = 'multiple';
 
   constructor(
@@ -23,16 +24,16 @@ export class SanphamComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {
     this.columnDefs = [
-      { 
-        headerName: '', 
-        field: '', 
-        cellRenderer: 'expandRenderer', 
-        flex: 0.5 
-      },
+      // { 
+      //   headerName: '', 
+      //   field: '', 
+      //   cellRenderer: 'expandRenderer', 
+      //   flex: 0.5 
+      // },
       { 
         headerName: 'Ảnh', 
         field: 'imagesDTOList[0].imageName', 
-        cellRenderer: params => `<img width="60px" height="60px" src="${params.value}">`, 
+        cellRenderer: params => `<img height="100px" src="${params.data.imageURL}">`, 
         flex: 1 
       },
       { 
@@ -90,13 +91,20 @@ export class SanphamComponent implements OnInit {
         filter: true, 
         valueGetter: params => params.data.status === 0 ? 'Hoạt động' : 'Ngừng hoạt động', 
         flex: 1 
-      }
+      },
+      {
+        headerName: 'Chức năng',
+        field: '',
+        cellRendererFramework: SanPhamActionComponent,
+        flex: 1,
+      },
     ];
   }
 
   ngOnInit(): void {
     this.getAllProduct();
   }
+
   getAllProduct() {
     this.productsService.getAllProduct().subscribe((res) => {
       this.status0Products = res.filter(product => product.status === 0);
@@ -106,7 +114,7 @@ export class SanphamComponent implements OnInit {
 
   openAdd() {
     const dialogref = this.matdialog.open(ThemSanPhamComponent, {
-      width: '100%',
+      width: '250vh',
       height: '100vh',
     });
     dialogref.afterClosed().subscribe((result) => {

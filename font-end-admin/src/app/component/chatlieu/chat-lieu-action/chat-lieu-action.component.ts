@@ -3,7 +3,6 @@ import { SuaChatLieuComponent } from '../sua-chat-lieu/sua-chat-lieu.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MaterialpostService } from '../../../service/materialpost.service';
 import { ChatlieuComponent } from '../chatlieu.component';
-import { ICellRendererAngularComp } from 'ag-grid-angular';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -11,8 +10,9 @@ import Swal from 'sweetalert2';
   templateUrl: './chat-lieu-action.component.html',
   styleUrls: ['./chat-lieu-action.component.css'],
 })
+
 export class ChatlieuActionComponent
-  implements ICellRendererAngularComp, OnInit
+  implements OnInit
 {
   params: any;
   rowData = [];

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { apiURL } from '../config/apiUrl';
-import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -39,9 +38,6 @@ export class ProductService {
     return this.http.get<any[]>(`${apiURL}product-details/${productId}`);
   }
 
-  // AddProduct(): Observable<any>{
-  //   return  this.http.post(`${apiURL}product/add`);
-  // }
   searchProductNameOrCode(search: string): Observable<any> {
     const params = new HttpParams().set('search', search);
     return this.http.get(`${apiURL}product/hien-thii?` + params);
@@ -49,6 +45,7 @@ export class ProductService {
   searchProduct(param: string): Observable<any> {
     return this.http.get(`${apiURL}product/search/` + param);
   }
+  
   activateProduct(productId: number): Observable<any> {
     const url = `${apiURL}product/${productId}/activate`;
     return this.http.put(url, null);
@@ -76,8 +73,26 @@ export class ProductService {
     return this.http.post(`${apiURL}product/exportDataErrors`, listError, { responseType: 'blob' });
   }
 
-  uploadImgProduct(formData: FormData, idProduct) {
-    return this.http.post(`${apiURL}upload-img-file?idProduct=${idProduct}`, formData);
-  }
+  // uploadImgProduct(formData: FormData, idProduct) {
+  //   return this.http.post(`${apiURL}upload-img-file?idProduct=${idProduct}`, formData);
+  // }
 
+  // uploadImgProduct(file: File, idProduct: number): Observable<any> {
+  //   const formData: FormData = new FormData();
+  //   formData.append('image', file);
+  //   formData.append('idProduct', idProduct.toString());
+
+  //   const headers = new HttpHeaders();
+  //   headers.append('Content-Type', 'multipart/form-data');
+
+  //   return this.http.post(`http://localhost:8081/api/admin/images/upload`, formData, { headers });
+  // }
+
+  uploadImgProduct(file: File, idProduct: number): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('image', file);
+    formData.append('idProduct', idProduct.toString());
+
+    return this.http.post(`${apiURL}images/upload`, formData);
+  }
 }

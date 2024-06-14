@@ -1,232 +1,240 @@
-import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
-import {ProductService} from '../../../service/product.service';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ProductService } from '../../../service/product.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import {BrandService} from '../../../service/brand.service';
-import {CategoryInterface} from '../../../interface/category-interface';
-import {CategoryService} from '../../../service/category.service';
-import {BrandInterface} from '../../../interface/brand-interface';
-import {SoleService} from '../../../service/sole.service';
-import {MaterialpostService} from '../../../service/materialpost.service';
-import {SoleInterface} from '../../../interface/sole-interface';
-import {MaterialInterface} from '../../../interface/material-interface';
-import {Router} from '@angular/router';
-import {CommonFunction} from '../../../util/common-function';
-import {ValidateInput} from '../../model/validate-input';
-import {ImageService} from '../../../service/image.service';
-import {HttpClient} from '@angular/common/http';
+import { BrandService } from '../../../service/brand.service';
+import { CategoryInterface } from '../../../interface/category-interface';
+import { CategoryService } from '../../../service/category.service';
+import { BrandInterface } from '../../../interface/brand-interface';
+import { SoleService } from '../../../service/sole.service';
+import { MaterialpostService } from '../../../service/materialpost.service';
+import { SoleInterface } from '../../../interface/sole-interface';
+import { MaterialInterface } from '../../../interface/material-interface';
+import { CommonFunction } from '../../../util/common-function';
+import { ValidateInput } from '../../model/validate-input';
 import Swal from 'sweetalert2';
-import {ProductdetailService} from '../../../service/productdetail.service';
-import {MausacService} from '../../../service/mausac.service';
-import {SizeService} from '../../../service/size.service';
-import {SizeInterface} from '../../../interface/size-interface';
-import {ColorInterface} from '../../../interface/color-interface';
-import {FormControl} from '@angular/forms';
-import {ToastrService} from 'ngx-toastr';
+import { ProductdetailService } from '../../../service/productdetail.service';
+import { MausacService } from '../../../service/mausac.service';
+import { SizeService } from '../../../service/size.service';
+import { SizeInterface } from '../../../interface/size-interface';
+import { ColorInterface } from '../../../interface/color-interface';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-them-san-pham',
   templateUrl: './them-san-pham.component.html',
   styleUrls: ['./them-san-pham.component.css']
 })
+
 export class ThemSanPhamComponent implements OnInit {
-  image: File | null = null;
-  validName: ValidateInput = new ValidateInput();
-  validBrand: ValidateInput = new ValidateInput();
-  validCategory: ValidateInput = new ValidateInput();
-  validSole: ValidateInput = new ValidateInput();
-  validMaterial: ValidateInput = new ValidateInput();
-  validPrice: ValidateInput = new ValidateInput();
-  validDescription: ValidateInput = new ValidateInput();
-  validImage: ValidateInput = new ValidateInput();
   rowData = [];
+
   Code: string;
+
+  image: File | null = null;
+  validImage: ValidateInput = new ValidateInput();
+
   Name: string;
-  CreateName: string;
-  IdBrand: number;
-  IdCategory: number;
-  IdMaterial: number;
-  IdSole: number;
+  validName: ValidateInput = new ValidateInput();
+
   Price: number;
+  validPrice: ValidateInput = new ValidateInput();
+  featureEnabled: boolean = true;
+
   Description: string;
+  validDescription: ValidateInput = new ValidateInput();
+
   Status: number = 0;
+
   categories: CategoryInterface[] = [];
+  IdCategory: number;
+  validCategory: ValidateInput = new ValidateInput();
+
   brand: BrandInterface[] = [];
-  size: SizeInterface[] = [];
-  color: ColorInterface[] = [];
+  IdBrand: number;
+  validBrand: ValidateInput = new ValidateInput();
+
   sole: SoleInterface[] = [];
+  IdSole: number;
+  validSole: ValidateInput = new ValidateInput();
+
   material: MaterialInterface[] = [];
-  idnv: string;
-  imgLst;
-  image1;
-  lstPrdt;
-  idColor: number[];
+  IdMaterial: number;
+  validMaterial: ValidateInput = new ValidateInput();
+
+  size: SizeInterface[] = [];
   idSize: number[];
-  shoeCollar: number;
-  quantity: number;
-  productDetail = [];
-  keyword: string;
   listSizeChoice = [];
+
+  color: ColorInterface[] = [];
+  idColor: number[];
   listColorChoice = [];
+
+
+  shoeCollar: number;
   listShoeCollar = [
     {
       id: 0,
       name: 'Cổ thấp',
     },
     {
-      id: 1, name: 'Cổ cao'
+      id: 1,
+      name: 'Cổ cao'
     }
   ];
 
-  constructor(private prdsv: ProductService,
-              private brsv: BrandService,
-              private ctsv: CategoryService,
-              private slsv: SoleService,
-              private mtsv: MaterialpostService,
-              private router: Router,
-              private imageService: ImageService,
-              private http: HttpClient,
-              private prddtsv: ProductdetailService,
-              private clsv: MausacService,
-              private toaS: ToastrService,
-              private szsv: SizeService,
-              private cdr: ChangeDetectorRef,
-              public dialogRef: MatDialogRef<ThemSanPhamComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
+  quantity: number;
+
+  imageList: File;
+  // selectedFile: File;
+
+  productDetail = [];
+
+  constructor(
+    private productService: ProductService,
+    private brandService: BrandService,
+    private categoryService: CategoryService,
+    private soleService: SoleService,
+    private materialService: MaterialpostService,
+    private colorService: MausacService,
+    private toastr: ToastrService,
+    private sizeService: SizeService,
+    private cdr: ChangeDetectorRef,
+    public dialogRef: MatDialogRef<ThemSanPhamComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
   }
 
   ngOnInit(): void {
-    this.getALLBrand();
+    this.getAllBrand();
     this.getAllCategory();
     this.getAllMaterial();
     this.getAllSole();
-    this.getALLColor();
-    this.getALLSize();
+    this.getAllColor();
+    this.getAllSize();
   }
 
-  getALLSize() {
-    this.szsv.getAllSize().subscribe(res => {
+  getAllSize() {
+    this.sizeService.getAllSize().subscribe(res => {
       this.size = res;
     });
   }
 
-  getALLColor() {
-    this.clsv.getAllMauSac().subscribe(res => {
+  getAllColor() {
+    this.colorService.getAllMauSac().subscribe(res => {
       this.color = res;
     });
   }
 
-  getALLBrand() {
-    this.brsv.getAllBrand().subscribe(res => {
+  getAllBrand() {
+    this.brandService.getAllBrand().subscribe(res => {
       this.brand = res;
     });
   }
 
   getAllCategory() {
-    this.ctsv.getAllCategory().subscribe(res => {
+    this.categoryService.getAllCategory().subscribe(res => {
       this.categories = res;
     });
   }
 
   getAllSole() {
-    this.slsv.getAllSole().subscribe(res => {
+    this.soleService.getAllSole().subscribe(res => {
       this.sole = res;
     });
   }
 
   getAllMaterial() {
-    this.mtsv.getAllMaterial().subscribe(res => {
+    this.materialService.getAllMaterial().subscribe(res => {
       this.material = res;
     });
   }
 
   OnChangeFile(event: any) {
-    console.log(event);
-    this.imgLst = new FormData();
-    
-    // if (event.target.files.length > 0 && event.target.files.length === 3) {
-    //   for (let i = 0; i < event.target.files.length; i++) {
-         this.imgLst.append('file', event.target.files[0]);
-         console.log(event.target.files[0]);
-    //   }
-    // }
-    console.log(this.imgLst);
-    return;
+    this.imageList = event.target.files[0];
   }
 
-  clickaddProduct() {
-    console.log('Chi tieest: ', this.productDetail);
+  clickadd() {
     this.Name = CommonFunction.trimText(this.Name);
-    this.Description = CommonFunction.trimText(this.Description);
-    this.Price = CommonFunction.trimText(this.Price);
     this.validateName();
+
+    this.Description = CommonFunction.trimText(this.Description);
     this.validateDescription();
-    this.validatePrice();
+
     this.validateBrand();
     this.validateCategory();
     this.validateSole();
     this.validateMaterial();
     this.validateImage();
-    if (!this.validName.done || !this.validDescription.done || !this.validPrice.done || !this.validBrand
+
+    if (!this.validName.done || !this.validDescription.done || !this.validBrand
       || !this.validCategory.done || !this.validSole.done || !this.validMaterial.done
       || !this.validImage.done
     ) {
       return;
     }
+
     if (this.productDetail.some(c => c.quantity === null || c.quantity === '')) {
-      this.toaS.error('Vui long nhap day du so luong');
+      this.toastr.error('Vui lòng nhập đủ số lượng', 'Lỗi nhập liệu');
+      return;
+    }
+
+    if (this.productDetail.some(c => c.price === null || c.price === '')) {
+      this.toastr.error('Vui lòng nhập giá tiền', 'Lỗi nhập liệu');
       return;
     }
     Swal.fire({
-      title: 'Bạn muốn thêm?',
-      text: 'Thao tác này sẽ không hoàn tác!',
+      title: 'Bạn muốn thêm',
+      text: 'Thao tác này sẽ không hoàn tác',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#dd3333',
-      confirmButtonText: 'Thêm!'
+      confirmButtonText: 'Thêm',
+      cancelButtonText: 'Thoát'
     }).then((result1) => {
       if (result1.isConfirmed) {
-        this.idnv = localStorage.getItem('id');
         const products = {
-          code: this.Code,
           name: this.Name,
-          createName: this.CreateName,
           idBrand: this.IdBrand,
           idCategory: this.IdCategory,
           idMaterial: this.IdMaterial,
           idSole: this.IdSole,
           description: this.Description,
           status: this.Status,
-          price: this.Price,
-          idnv: this.idnv,
           productDetailAdminDTOList: this.productDetail
-        };
-        console.log(this.productDetail);
-        this.prdsv.CreateProduct(products).subscribe(
+        }
+
+        this.productService.CreateProduct(products).subscribe(
           result => {
-            this.prdsv.uploadImgProduct(this.imgLst, result.data.id).subscribe(res => {
-              console.log('đã vào đây');
-            });
-            this.router.navigate(['admin/san-pham']);
-            console.log('Product add success', result);
+            console.log(this.imageList);
+            console.log(result.data.id);
+
+            this.productService.uploadImgProduct(this.imageList, result.data.id).subscribe(
+              rsss => {
+                console.log(rsss);
+              }
+            );
+            console.log('Product add success');
             this.dialogRef.close('addProduct');
           },
           error => {
             console.error('Product add error', error);
           }
         );
+
         Swal.fire({
-          title: 'Thêm!',
+          title: 'Thêm',
           text: 'Thêm thành công',
           icon: 'success'
         });
       }
-    });
+    })
   }
-  revoveInvalid(result) {
+
+  revoveInvalid(result: ValidateInput) {
     result.done = true;
   }
+
   validateImageCount(files: any): boolean {
     return files.length === 3;
   }
@@ -260,7 +268,7 @@ export class ThemSanPhamComponent implements OnInit {
   }
 
   validateImage() {
-    this.validImage = CommonFunction.validateInput(this.imgLst, 250, null);
+    this.validImage = CommonFunction.validateInput(this.imageList, 250, null);
   }
 
   OnChangSize(event: any[]) {
@@ -285,10 +293,10 @@ export class ThemSanPhamComponent implements OnInit {
             sizeDTO: this.listSizeChoice[i],
             colorDTO: this.listColorChoice[j],
             quantity: 1,
-            shoeCollar: 0
+            shoeCollar: 0,
+            price: 1,
           };
           this.productDetail.push(obj);
-          console.log(obj);
         }
       }
     } else {
@@ -297,7 +305,6 @@ export class ThemSanPhamComponent implements OnInit {
   }
 
   deleteProductDetail(i: number) {
-    //xoas phan tu this.productDetail
     this.productDetail.splice(i, 1);
     this.cdr.detectChanges();
   }
