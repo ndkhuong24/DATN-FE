@@ -7,6 +7,13 @@ import { apiURL } from '../config/apiUrl';
   providedIn: 'root'
 })
 export class ProductService {
+  updateImgProduct(imageList: any, id: number) {
+    const formData: FormData = new FormData();
+    formData.append('image', imageList);
+    formData.append('idProduct', id.toString());
+
+    return this.http.post<any>(`${apiURL}images/update`, formData, { observe: 'response' });
+  }
 
   constructor(private http: HttpClient) {
   }

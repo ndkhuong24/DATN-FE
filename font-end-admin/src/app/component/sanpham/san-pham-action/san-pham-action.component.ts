@@ -47,13 +47,13 @@ export class SanPhamActionComponent implements OnInit {
   openUpdate() {
     const dialogref = this.matdialog.open(SuaSanPhamComponent, {
       width: '100%',
-      height: '100vh',
+      height: '60vh',
       data: this.params,
     });
     dialogref.afterClosed().subscribe((result) => {
       console.log(result);
       if (result === 'saveProduct') {
-        this.ngOnInit();
+        this.sanphamComponent.ngOnInit();
         this.cdr.detectChanges();
       }
     });
@@ -90,110 +90,7 @@ export class SanPhamActionComponent implements OnInit {
             )
           }
         })
-        // this.productsService.getProductStatus(id).subscribe(
-        //   (status) => {
-        //     if (status === 0) {
-        //       this.productsService.deactivateProduct(id).subscribe(
-        //         () => {
-        //           // Refresh component after update
-        //           this.ngOnInit();
-        //           this.cdr.detectChanges();
-        //           Swal.fire('Cập nhật', 'Cập nhật thành công', 'success');
-        //         },
-        //         (error) => {
-        //           console.error('Đã xảy ra lỗi khi cập nhật', error);
-        //           Swal.fire('Lỗi', 'Đã xảy ra lỗi khi cập nhật', 'error');
-        //         }
-        //       );
-        //     } else {
-        //       this.productsService.activateProduct(id).subscribe(
-        //         () => {
-        //           // Refresh component after update
-        //           this.ngOnInit();
-        //           this.cdr.detectChanges();
-        //           Swal.fire('Cập nhật', 'Cập nhật thành công', 'success');
-        //         },
-        //         (error) => {
-        //           console.error('Đã xảy ra lỗi khi cập nhật', error);
-        //           Swal.fire('Lỗi', 'Đã xảy ra lỗi khi cập nhật', 'error');
-        //         }
-        //       );
-        //     }
-        //   },
-        //   (error) => {
-        //     console.error('Đã xảy ra lỗi khi kiểm tra trạng thái', error);
-        //     Swal.fire('Lỗi', 'Đã xảy ra lỗi khi kiểm tra trạng thái', 'error');
-        //   }
-        // );
       }
     });
   }
-
 }
-
-// export class SanPhamActionComponent implements ICellRendererAngularComp, OnInit {
-//   idProduct: any;
-//   rowData = [];
-//   params: any;
-//   constructor(private matdialog: MatDialog,
-//     private prdsv: ProductService,
-//     private cdr: ChangeDetectorRef,
-//     private sanphamComponent: SanphamComponent) {
-//   }
-
-//   ngOnInit(): void {
-//     this.getAllProduct();
-//   }
-//   deleteProduct(product?: any) {
-//     Swal.fire({
-//       title: 'Bạn có chắc muốn xóa!',
-//       text: 'Bạn sẽ không thể hoàn tác!',
-//       icon: 'warning',
-//       showCancelButton: true,
-//       confirmButtonColor: '#3085d6',
-//       cancelButtonColor: '#d33',
-//       confirmButtonText: 'Xóa!'
-//     }).then((result) => {
-//       if (result.isConfirmed) {
-//         product = this.params.id;
-//         this.prdsv.DeleteProduct(product).subscribe(() => {
-//           this.sanphamComponent.ngOnInit();
-//           this.cdr.detectChanges();
-//         });
-//         Swal.fire(
-//           'Xóa!',
-//           'Xóa thành công',
-//           'success'
-//         );
-//       }
-//     });
-//   }
-//   openUpdate() {
-//     const dialogref = this.matdialog.open(SuaSanPhamComponent, {
-//       width: '100vh',
-//       height: '70vh',
-//       data: this.params
-//     });
-//     dialogref.afterClosed().subscribe(result => {
-//       if (result === 'saveProduct') {
-//         this.sanphamComponent.ngOnInit();
-//         this.cdr.detectChanges();
-//       }
-//     });
-//   }
-//   getAllProduct() {
-//     this.prdsv.getAllProduct().subscribe(res => {
-//       this.rowData = res;
-//     });
-//   }
-
-//   agInit(params: any): void {
-//     this.params = params.data;
-//     this.idProduct = params.data.id;
-//   }
-
-//   refresh(): boolean {
-//     return false;
-//   }
-
-// }

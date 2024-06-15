@@ -24,12 +24,6 @@ export class SanphamComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {
     this.columnDefs = [
-      // { 
-      //   headerName: '', 
-      //   field: '', 
-      //   cellRenderer: 'expandRenderer', 
-      //   flex: 0.5 
-      // },
       { 
         headerName: 'Ảnh', 
         field: 'imagesDTOList[0].imageName', 
@@ -69,7 +63,7 @@ export class SanphamComponent implements OnInit {
         field: 'soleAdminDTO', 
         valueGetter: params => {
           if (params.data.soleAdminDTO) {
-            return `${params.data.soleAdminDTO.soleHeight} + ${params.data.soleAdminDTO.soleMaterial}`;
+            return `${params.data.soleAdminDTO.soleHeight} - ${params.data.soleAdminDTO.soleMaterial}`;
           }
           return '';
         }, 

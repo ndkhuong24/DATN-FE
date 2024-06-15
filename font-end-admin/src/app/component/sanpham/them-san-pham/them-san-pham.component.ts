@@ -206,9 +206,6 @@ export class ThemSanPhamComponent implements OnInit {
 
         this.productService.CreateProduct(products).subscribe(
           result => {
-            console.log(this.imageList);
-            console.log(result.data.id);
-
             this.productService.uploadImgProduct(this.imageList, result.data.id).subscribe(
               rsss => {
                 console.log(rsss);
