@@ -16,7 +16,7 @@ export class OrderComponent implements OnInit {
   listStatus: any = [];
   status = 6;
   rowData;
-  columnDefs;
+  columnDefs = [];
   gridApi;
   gridColumnApi;
   user: any = {

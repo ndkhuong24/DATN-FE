@@ -5,10 +5,30 @@
   line-height: 10px;
   font-weight: 500;
 }
+
 .validate-input-label {
   margin: 5px 0 0 !important;
   color: red;
   font-size: 12px;
   line-height: 10px;
   font-weight: 500;
+}
+
+.example-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.column {
+  flex: 1;
+  min-width: 45%;
+  /* Đảm bảo các cột chiếm ít nhất 45% chiều rộng */
+  box-sizing: border-box;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.validate-input {
+  color: red;
 }

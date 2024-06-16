@@ -11,7 +11,7 @@ import { MauSacActionComponent } from './mau-sac-action/mau-sac-action.component
 })
 export class MausacComponent implements OnInit {
   rowData = [];
-  columnDefs;
+  columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
   public rowSelection: 'single' | 'multiple' = 'multiple';

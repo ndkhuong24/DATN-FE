@@ -17,7 +17,7 @@ export class CreatVoucherShipComponent implements OnInit {
   checkEndDate: boolean = false;
   checkEndDateNull = false;
   rowData = [];
-  columnDefs;
+  columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
   voucher: any = {

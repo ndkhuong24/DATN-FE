@@ -1,21 +1,20 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {ICellRendererAngularComp} from 'ag-grid-angular';
-import {MatDialog} from '@angular/material/dialog';
-import {CategoryService} from '../../../service/category.service';
-import {DanhmucComponent} from '../../danhmuc/danhmuc.component';
-import {ProductdetailService} from '../../../service/productdetail.service';
-import {ChitietsanphamComponent} from '../chitietsanpham.component';
-import {SuaDanhMucComponent} from '../../danhmuc/sua-danh-muc/sua-danh-muc.component';
-import {SuaChiTietSanPhamComponent} from '../sua-chi-tiet-san-pham/sua-chi-tiet-san-pham.component';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ProductdetailService } from '../../../service/productdetail.service';
+import { ChitietsanphamComponent } from '../chitietsanpham.component';
+import { SuaChiTietSanPhamComponent } from '../sua-chi-tiet-san-pham/sua-chi-tiet-san-pham.component';
 import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-chi-tiet-san-pham-action',
   templateUrl: './chi-tiet-san-pham-action.component.html',
   styleUrls: ['./chi-tiet-san-pham-action.component.css']
 })
-export class ChiTietSanPhamActionComponent implements ICellRendererAngularComp, OnInit {
+
+export class ChiTietSanPhamActionComponent implements OnInit {
   params: any;
   rowData = [];
+
   agInit(params: any): void {
     this.params = params.data;
   }
@@ -24,16 +23,20 @@ export class ChiTietSanPhamActionComponent implements ICellRendererAngularComp, 
     return false;
   }
 
-  constructor(private matdialog: MatDialog,
-              private prddtsv: ProductdetailService, private cdr: ChangeDetectorRef,
-              private chitietsanphamComponent: ChitietsanphamComponent) { }
+  constructor(
+    private matdialog: MatDialog,
+    private prddtsv: ProductdetailService,
+    private cdr: ChangeDetectorRef,
+    private chitietsanphamComponent: ChitietsanphamComponent
+  ) { }
 
   ngOnInit(): void {
   }
-  openUpdate(){
+
+  openUpdate() {
     const dialogref = this.matdialog.open(SuaChiTietSanPhamComponent, {
-      width: '60vh',
-      height: '60vh',
+      width: '80vh',
+      height: '58vh',
       data: this.params
     });
     dialogref.afterClosed().subscribe(result => {
@@ -44,29 +47,30 @@ export class ChiTietSanPhamActionComponent implements ICellRendererAngularComp, 
       }
     });
   }
-  deleteProductDetail(productDetail?: any) {
+  
+  deleteProductDetail(productDetailID?: any) {
     Swal.fire({
-      title: 'Bạn có chắc muốn xóa!',
-      text: 'Bạn sẽ không thể hoàn tác!',
+      title: 'Bạn có chắc muốn xóa',
+      text: 'Bạn sẽ không thể hoàn tác',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Xóa!'
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Thoát',
     }).then((result) => {
       if (result.isConfirmed) {
-    productDetail = this.params.id;
-    this.prddtsv.DeleteProductDetail(productDetail).subscribe(() => {
-      this.chitietsanphamComponent.ngOnInit();
-      this.cdr.detectChanges();
-    });
-    Swal.fire(
-          'Xóa!',
+        productDetailID = this.params.id;
+        this.prddtsv.DeleteProductDetail(productDetailID).subscribe(() => {
+          this.chitietsanphamComponent.ngOnInit();
+          this.cdr.detectChanges();
+        });
+        Swal.fire(
+          'Xóa',
           'Xóa thành công',
           'success'
         );
       }
     });
   }
-
 }

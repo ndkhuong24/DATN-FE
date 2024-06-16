@@ -19,7 +19,7 @@ export class VoucherShipComponent implements OnInit {
   rowData2 = [];
   role: '';
   loc = '0';
-  columnDefs;
+  columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
   dateFromCurrent = null;

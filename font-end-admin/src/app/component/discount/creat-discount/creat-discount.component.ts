@@ -37,7 +37,7 @@ export class CreatDiscountComponent implements OnInit {
   fullname = '';
   gridApi: any;
   rowData = [];
-  columnDefs;
+  columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
   disableCheckPriceProduct = false;

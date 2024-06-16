@@ -14,7 +14,7 @@ import {CommonFunction} from "../../../util/common-function";
 })
 export class CreatVoucherComponent implements OnInit {
   rowData = [];
-  columnDefs;
+  columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
   checkAllow: boolean = false;

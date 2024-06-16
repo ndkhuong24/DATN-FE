@@ -17,7 +17,7 @@ export class DiscountComponent implements OnInit {
   rowData: any = [];
   rowData1: any = [];
   rowData2: any = [];
-  columnDefs;
+  columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
   checkedIsdel = false;

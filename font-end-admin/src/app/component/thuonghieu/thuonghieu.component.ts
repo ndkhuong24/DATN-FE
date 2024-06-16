@@ -11,7 +11,7 @@ import { ThuongHieuActionComponent } from './thuong-hieu-action/thuong-hieu-acti
 })
 export class ThuonghieuComponent implements OnInit {
   rowData = [];
-  columnDefs;
+  columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
   public rowSelection: 'single' | 'multiple' = 'multiple';

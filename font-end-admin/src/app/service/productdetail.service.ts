@@ -8,6 +8,7 @@ import { apiURL } from '../config/apiUrl';
 })
 export class ProductdetailService {
 
+
   constructor(private http: HttpClient) {
   }
 
@@ -17,6 +18,10 @@ export class ProductdetailService {
 
   getProductDetails(idColor: number, idSize: number) {
     return this.http.get(`${apiURL}PrdDetail/details/${idColor}/${idSize}`);
+  }
+
+  getProductDetailByProductId(idPd: number) {
+    return this.http.get(`${apiURL}PrdDetail/${idPd}`);
   }
 
   CreateProductDetail(product: any): Observable<any> {

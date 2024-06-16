@@ -11,9 +11,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./chat-lieu-action.component.css'],
 })
 
-export class ChatlieuActionComponent
-  implements OnInit
-{
+export class ChatlieuActionComponent implements OnInit {
   params: any;
   rowData = [];
 
@@ -27,17 +25,17 @@ export class ChatlieuActionComponent
 
   constructor(
     private matdialog: MatDialog,
-    private mtsv: MaterialpostService,
+    private materialService: MaterialpostService,
     private cdr: ChangeDetectorRef,
     private chatLieuComponent: ChatlieuComponent
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getAllMaterial();
   }
 
   getAllMaterial() {
-    this.mtsv.getAllMaterial().subscribe((result) => {
+    this.materialService.getAllMaterial().subscribe((result) => {
       this.rowData = result;
     });
   }
@@ -70,7 +68,7 @@ export class ChatlieuActionComponent
     }).then((result) => {
       if (result.isConfirmed) {
         material = this.params.id;
-        this.mtsv.DeleteMaterial(material).subscribe(() => {
+        this.materialService.DeleteMaterial(material).subscribe(() => {
           this.chatLieuComponent.ngOnInit();
           this.cdr.detectChanges();
         });

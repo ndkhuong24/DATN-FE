@@ -11,7 +11,7 @@ import { DeGiayActionComponent } from './de-giay-action/de-giay-action.component
 })
 export class DegiayComponent implements OnInit {
   rowData = [];
-  columnDefs;
+  columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
   public rowSelection: 'single' | 'multiple' = 'multiple';
@@ -54,7 +54,6 @@ export class DegiayComponent implements OnInit {
         field: 'description',
         sortable: true,
         filter: true,
-        // width: 125,
         flex: 2,
       },
       {

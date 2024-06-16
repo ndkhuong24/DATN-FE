@@ -19,7 +19,7 @@ export class VoucherComponent implements OnInit {
   rowData = [];
   rowData1 = [];
   rowData2 = [];
-  columnDefs;
+  columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
   loc = '0';

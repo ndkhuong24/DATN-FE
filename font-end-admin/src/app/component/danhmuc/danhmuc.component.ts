@@ -12,7 +12,7 @@ import {DanhMucActionComponent} from './danh-muc-action/danh-muc-action.componen
 
 export class DanhmucComponent implements OnInit {
   rowData = [];
-  columnDefs;
+  columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
   public rowSelection: 'single' | 'multiple' = 'multiple';

@@ -11,7 +11,7 @@ import { KichCoActionComponent } from './kich-co-action/kich-co-action.component
 })
 export class KichcoComponent implements OnInit {
   rowData = [];
-  columnDefs;
+  columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
   public rowSelection: 'single' | 'multiple' = 'multiple';

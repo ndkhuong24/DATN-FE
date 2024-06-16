@@ -38,7 +38,7 @@ export class EditDiscountComponent implements OnInit {
   validMaxReduced: ValidateInput = new ValidateInput();
   gridApi: any;
   rowData = [];
-  columnDefs;
+  columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
   disableCheckPriceProduct = false;

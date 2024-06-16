@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ThemChatLieuComponent } from './them-chat-lieu/them-chat-lieu.component';
-// import { SuaChatLieuComponent } from './sua-chat-lieu/sua-chat-lieu.component';
 
 import { MaterialpostService } from '../../service/materialpost.service';
 import { ChatlieuActionComponent } from './chat-lieu-action/chat-lieu-action.component';
@@ -13,7 +12,7 @@ import { ChatlieuActionComponent } from './chat-lieu-action/chat-lieu-action.com
 })
 export class ChatlieuComponent implements OnInit {
   rowData = [];
-  columnDefs;
+  columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
   public rowSelection: 'single' | 'multiple' = 'multiple';

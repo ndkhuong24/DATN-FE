@@ -39,7 +39,7 @@ export class EditVoucherShipComponent implements OnInit {
   validconditionApply: ValidateInput = new ValidateInput();
   check: boolean;
   rowData = [];
-  columnDefs;
+  columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
   currentDate: Date = new Date();

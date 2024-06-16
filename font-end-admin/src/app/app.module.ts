@@ -102,6 +102,7 @@ import { ActionStaffComponent } from './component/staff/action-staff/action-staf
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { PogupVoucherSCComponent } from './component/sales-counter/pogup-voucher-sc/pogup-voucher-sc.component';
+import { ChiTietComponent } from './component/sanpham/chi-tiet/chi-tiet.component';
 
 @NgModule({
   declarations: [
@@ -176,6 +177,7 @@ import { PogupVoucherSCComponent } from './component/sales-counter/pogup-voucher
     DetailVoucherShipComponent,
     VoucherShipComponent,
     PogupVoucherSCComponent,
+    ChiTietComponent
   ],
   imports: [
     BrowserModule,

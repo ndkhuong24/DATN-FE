@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SanphamComponent } from '../sanpham.component';
 import { ProductService } from '../../../service/product.service';
 import Swal from 'sweetalert2';
+import { ChiTietComponent } from '../chi-tiet/chi-tiet.component';
 
 @Component({
   selector: 'app-san-pham-action',
@@ -59,6 +60,18 @@ export class SanPhamActionComponent implements OnInit {
     });
   }
 
+  clickDetail(id: number): void {
+    const dialogref = this.matdialog.open(ChiTietComponent, {
+      width: '80%',
+      height: '60vh',
+      data: { idPd: id },
+    });
+    dialogref.afterClosed().subscribe(() => {
+      this.sanphamComponent.ngOnInit();
+      this.cdr.detectChanges();
+    });
+  }
+
   clickReset(id: number): void {
     Swal.fire({
       title: 'Bạn có chắc muốn cập nhật trạng thái không?',
@@ -80,7 +93,7 @@ export class SanPhamActionComponent implements OnInit {
                 Swal.fire('Cập nhật', 'Cập nhật thành công', 'success');
               }
             )
-          }else{
+          } else {
             this.productsService.activateProduct(req1.data.id).subscribe(
               () => {
                 this.sanphamComponent.ngOnInit();

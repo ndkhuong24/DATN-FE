@@ -68,7 +68,7 @@ export class EditVoucherComponent implements OnInit {
   isHidden = true;
   gridApi: any;
   rowData = [];
-  columnDefs;
+  columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
   fullname = '';
