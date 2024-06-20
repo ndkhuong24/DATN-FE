@@ -50,7 +50,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Danh mục</mat-label>
       <mat-select [(ngModel)]="IdCategory" (keydown)="revoveInvalid(validCategory)" (blur)="validateCategory()">
-        <mat-option *ngFor="let cate of categories" [value]="cate.id">
+        <mat-option *ngFor="let cate of category" [value]="cate.id">
           {{cate.name}}
         </mat-option>
       </mat-select>

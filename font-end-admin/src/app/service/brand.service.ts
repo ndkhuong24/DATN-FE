@@ -12,12 +12,15 @@ export class BrandService {
   getAllBrand(): Observable<any>{
     return  this.http.get(`${apiURL}brand/hien-thi`);
   }
+
   AddBrand(brand: any): Observable<any>{
     return this.http.post(`${apiURL}brand/add`, brand);
   }
+
   UpdateBrand(id: number, brand: any): Observable<any>{
     return this.http.put(`${apiURL}brand/update/${id}`, brand);
   }
+  
   DeleteBrand(id: number): Observable<any>{
     return this.http.delete(`${apiURL}brand/delete/${id}`);
   }

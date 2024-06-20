@@ -28,8 +28,6 @@ import { ToastrService } from 'ngx-toastr';
 export class ThemSanPhamComponent implements OnInit {
   rowData = [];
 
-  Code: string;
-
   image: File | null = null;
   validImage: ValidateInput = new ValidateInput();
 
@@ -45,7 +43,7 @@ export class ThemSanPhamComponent implements OnInit {
 
   Status: number = 0;
 
-  categories: CategoryInterface[] = [];
+  category: CategoryInterface[] = [];
   IdCategory: number;
   validCategory: ValidateInput = new ValidateInput();
 
@@ -115,37 +113,37 @@ export class ThemSanPhamComponent implements OnInit {
 
   getAllSize() {
     this.sizeService.getAllSize().subscribe(res => {
-      this.size = res;
+      this.size = res.filter((size: { status: number; }) => size.status === 0);
     });
   }
 
   getAllColor() {
     this.colorService.getAllMauSac().subscribe(res => {
-      this.color = res;
+      this.color = res.filter((color: { status: number; }) => color.status === 0);
     });
   }
 
   getAllBrand() {
     this.brandService.getAllBrand().subscribe(res => {
-      this.brand = res;
+      this.brand = res.filter((brand: { status: number; }) => brand.status === 0);
     });
   }
 
   getAllCategory() {
     this.categoryService.getAllCategory().subscribe(res => {
-      this.categories = res;
+      this.category = res.filter((category: { status: number; }) => category.status === 0);
     });
   }
 
   getAllSole() {
     this.soleService.getAllSole().subscribe(res => {
-      this.sole = res;
+      this.sole = res.filter((sole: { status: number; }) => sole.status === 0);
     });
   }
 
   getAllMaterial() {
     this.materialService.getAllMaterial().subscribe(res => {
-      this.material = res;
+      this.material = res.filter((material: { status: number; }) => material.status === 0);
     });
   }
 
@@ -291,7 +289,7 @@ export class ThemSanPhamComponent implements OnInit {
             colorDTO: this.listColorChoice[j],
             quantity: 1,
             shoeCollar: 0,
-            price: 1,
+            price: 1000,
           };
           this.productDetail.push(obj);
         }

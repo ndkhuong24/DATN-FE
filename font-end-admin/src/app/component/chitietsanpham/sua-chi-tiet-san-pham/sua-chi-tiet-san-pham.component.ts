@@ -46,21 +46,39 @@ export class SuaChiTietSanPhamComponent implements OnInit {
 
   getAllSize() {
     this.sizeService.getAllSize().subscribe(res => {
-      this.size = res;
+      this.size = res.filter((size: { status: number; }) => size.status === 0);
     });
   }
 
   getAllColor() {
     this.colorService.getAllMauSac().subscribe(res => {
-      this.color = res;
+      this.color = res.filter((color: { status: number; }) => color.status === 0);
     });
   }
 
   getAllProduct() {
     this.productService.getAllProduct().subscribe(res => {
-      this.product = res;
+      this.product = res.filter((product: { status: number; }) => product.status === 0);
     });
   }
+
+  // getAllSize() {
+  //   this.sizeService.getAllSize().subscribe(res => {
+  //     this.size = res;
+  //   });
+  // }
+
+  // getAllColor() {
+  //   this.colorService.getAllMauSac().subscribe(res => {
+  //     this.color = res;
+  //   });
+  // }
+
+  // getAllProduct() {
+  //   this.productService.getAllProduct().subscribe(res => {
+  //     this.product = res;
+  //   });
+  // }
 
   revoveInvalid(result) {
     result.done = true;

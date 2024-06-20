@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
   templateUrl: './sua-chat-lieu.component.html',
   styleUrls: ['./sua-chat-lieu.component.css'],
 })
+
 export class SuaChatLieuComponent implements OnInit {
   validName: ValidateInput = new ValidateInput();
   validDescription: ValidateInput = new ValidateInput();
@@ -18,9 +19,9 @@ export class SuaChatLieuComponent implements OnInit {
     public dialogRef: MatDialogRef<SuaChatLieuComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private mtsv: MaterialpostService
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   revoveInvalid(result) {
     result.done = true;
@@ -43,9 +44,11 @@ export class SuaChatLieuComponent implements OnInit {
     this.data.description = CommonFunction.trimText(this.data.description);
     this.validateName();
     this.validateDescription();
+
     if (this.validName.done === false || !this.validDescription.done) {
       return;
     }
+    
     Swal.fire({
       title: 'Bạn chắc muốn sửa',
       text: 'Bạn sẽ không thể hoàn tác',
@@ -75,5 +78,5 @@ export class SuaChatLieuComponent implements OnInit {
       }
     });
   }
-  
+
 }

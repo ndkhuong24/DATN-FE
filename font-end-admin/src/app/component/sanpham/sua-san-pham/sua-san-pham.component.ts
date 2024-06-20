@@ -12,7 +12,6 @@ import { MaterialInterface } from '../../../interface/material-interface';
 import { ValidateInput } from '../../model/validate-input';
 import { CommonFunction } from '../../../util/common-function';
 import Swal from 'sweetalert2';
-import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-sua-san-pham',
@@ -72,25 +71,25 @@ export class SuaSanPhamComponent implements OnInit {
 
   getALLBrand() {
     this.brandService.getAllBrand().subscribe(res => {
-      this.brand = res;
+      this.brand = res.filter((brand: { status: number; }) => brand.status === 0);
     });
   }
 
   getAllCategory() {
     this.categoryService.getAllCategory().subscribe(res => {
-      this.category = res;
+      this.category = res.filter((category: { status: number; }) => category.status === 0);
     });
   }
 
   getAllSole() {
     this.soleService.getAllSole().subscribe(res => {
-      this.sole = res;
+      this.sole = res.filter((sole: { status: number; }) => sole.status === 0);
     });
   }
 
   getAllMaterial() {
     this.materialService.getAllMaterial().subscribe(res => {
-      this.material = res;
+      this.material = res.filter((material: { status: number; }) => material.status === 0);
     });
   }
 

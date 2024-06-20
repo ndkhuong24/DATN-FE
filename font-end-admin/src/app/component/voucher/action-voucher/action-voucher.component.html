@@ -1,7 +1,16 @@
-<button mat-button [matMenuTriggerFor]="menu"><i class="fa-solid fa-bars"></i></button>
-<mat-menu #menu="matMenu">
+<!-- <button mat-icon-button color="primary" (click)="editItem()" *ngIf="data.isUpdate === 0 && data.idel===0"><mat-icon>edit</mat-icon></button>
+<button mat-icon-button color="warn" (click)="detail()"><mat-icon>remove_red_eye</mat-icon></button>
+<button mat-icon-button color="secondary" (click)="delete()" *ngIf="data.isUpdate === 0 && data.idel===0"><mat-icon>delete</mat-icon></button> -->
 
-  <button mat-menu-item (click)="editItem()" *ngIf="data.isUpdate === 0 && data.idel===0 ">Sửa</button>
-  <button mat-menu-item (click)="detail()">Xem chi tiết</button>
-  <button mat-menu-item (click)="delete()"  *ngIf="data.isUpdate === 0 && data.idel===0 ">Xóa</button>
-</mat-menu>
+<button mat-icon-button color="primary" (click)="openUpdate(params.id)"
+  *ngIf="params.isUpdate === 0 && params.idel===0"><mat-icon>edit</mat-icon>
+</button>
+
+<button mat-icon-button color="secondary" (click)="clickDetail(params.id)">
+  <mat-icon>remove_red_eye</mat-icon>
+</button>
+
+<button mat-icon-button color="warn" *ngIf="params.isUpdate === 0 && params.idel===0"
+  (click)="deleteVoucher(params.id)">
+  <mat-icon>delete</mat-icon>
+</button>
