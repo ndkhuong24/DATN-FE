@@ -1,17 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {VoucherService} from "../../../service/voucher.service";
-import {VoucherShipService} from "../../../service/voucher-ship.service";
-import {UtilService} from "../../../util/util.service";
+import { Component, Inject, OnInit } from '@angular/core';
+import { VoucherShipService } from '../../../service/voucher-ship.service';
+import { UtilService } from '../../../util/util.service';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-detail-voucher-ship',
   templateUrl: './detail-voucher-ship.component.html',
-  styleUrls: ['./detail-voucher-ship.component.css']
+  styleUrls: ['./detail-voucher-ship.component.css'],
 })
 export class DetailVoucherShipComponent implements OnInit {
-
-  voucher: any = {
+  voucherShip: any = {
     name: '',
     startDate: '',
     endDate: '',
@@ -25,32 +23,43 @@ export class DetailVoucherShipComponent implements OnInit {
     optionCustomer: '',
     createName: localStorage.getItem('fullname'),
   };
-  constructor(private  activatedRoute: ActivatedRoute,
-              private voucherService: VoucherShipService,
-              public util: UtilService) { }
+
+  idVoucherShip: number;
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private voucherShipService: VoucherShipService,
+    public util: UtilService
+  ) {
+    this.idVoucherShip = data.idVoucherShip;
+  }
 
   ngOnInit(): void {
-    // Lấy thông tin khuyến mãi dựa trên id từ tham số URL
-    this.activatedRoute.params.subscribe((params) => {
-      const id = params.id;
-      console.log(id);
-      this.voucherService.getDetailVoucher(id).subscribe((response: any[]) => {
+    this.fillVoucherFreeShip(this.idVoucherShip);
+  }
+
+  fillVoucherFreeShip(idVoucherShip: number) {
+    this.voucherShipService
+      .getDetailVoucher(idVoucherShip)
+      .subscribe((response: any[]) => {
         const firstElement = Array.isArray(response) ? response[0] : response;
-        console.log(firstElement);
-        this.voucher.id = firstElement.id;
-        this.voucher.name = firstElement.name;
-        this.voucher.description = firstElement.description;
-        this.voucher.conditionApply = firstElement.conditionApply;
-        this.voucher.endDate = firstElement.endDate;
-        this.voucher.quantity = firstElement.quantity;
-        this.voucher.reducedValue = firstElement.reducedValue;
-        this.voucher.startDate = firstElement.startDate;
-        this.voucher.createDate = firstElement.createDate;
-        this.voucher.limitCustomer = firstElement.limitCustomer;
-        this.voucher.customerAdminDTOList = firstElement.customerAdminDTOList;
-        this.voucher.optionCustomer = firstElement.optionCustomer;
-        console.log(this.voucher);
+
+        this.voucherShip.id = firstElement.id;
+        this.voucherShip.name = firstElement.name;
+        this.voucherShip.description = firstElement.description;
+        this.voucherShip.startDate = firstElement.startDate;
+        this.voucherShip.endDate = firstElement.endDate;
+        this.voucherShip.conditionApply = firstElement.conditionApply;
+        this.voucherShip.reducedValue = firstElement.reducedValue;
+        this.voucherShip.quantity = firstElement.quantity;
+        this.voucherShip.createDate = firstElement.createDate;
+        this.voucherShip.limitCustomer = firstElement.limitCustomer;
+        this.voucherShip.customerAdminDTOList =
+          firstElement.customerAdminDTOList;
+        // this.voucher.voucherType = firstElement.voucherType;
+        // this.voucher.maxReduced = firstElement.maxReduced;
+        // this.voucher.allow = firstElement.allow;
+        // this.voucher.apply = firstElement.apply;
       });
-    });
   }
 }

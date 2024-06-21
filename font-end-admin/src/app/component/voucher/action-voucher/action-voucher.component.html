@@ -1,20 +1,3 @@
-<!-- <button mat-icon-button color="primary" (click)="openUpdate(params.id)"
-  *ngIf="params.isUpdate === 0 && params.idel===0"><mat-icon>edit</mat-icon>
-</button>
-
-<button mat-icon-button color="secondary" (click)="clickDetail(params.id)">
-  <mat-icon>remove_red_eye</mat-icon>
-</button>
-
-<button mat-icon-button color="warn" *ngIf="params.isUpdate === 0 && params.idel===0"
-  (click)="deleteVoucher(params.id)">
-  <mat-icon>delete</mat-icon>
-</button>
-
-<button mat-icon-button color="secondary">
-  <mat-icon>build</mat-icon>
-</button> -->
-
 <button mat-button [matMenuTriggerFor]="menu">
   <i class="fa-solid fa-bars"></i>
 </button>
@@ -37,14 +20,14 @@
   <button
     mat-menu-item
     (click)="updateIdel(params.id)"
-    *ngIf="params.idel === 0"
+    *ngIf="params.isUpdate === 0 && params.idel === 0 && params.status === 0"
   >
     Hiện thị
   </button>
   <button
     mat-menu-item
     (click)="updateIdel(params.id)"
-    *ngIf="params.idel === 1"
+    *ngIf="params.isUpdate === 0 && params.idel === 1 && params.status === 0"
   >
     Tắt hiện thị
   </button>

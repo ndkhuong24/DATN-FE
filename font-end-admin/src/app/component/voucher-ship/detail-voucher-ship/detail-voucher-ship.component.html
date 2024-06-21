@@ -9,61 +9,67 @@
           <div class="card-body">
             <table class="table">
               <tbody>
-              <tr>
-                <th scope="row">Tên</th>
-                <td>{{ voucher.name }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Nội dung</th>
-                <td>{{ voucher.description }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Ngày bắt đầu</th>
-                <td>{{ util.format(voucher.startDate )}}</td>
-              </tr>
-              <tr>
-                <th scope="row">Ngày kết thúc</th>
-                <td>{{ util.format(voucher.endDate )}}</td>
-              </tr>
-              <tr>
-                <th scope="row">Điều kiện áp dụng</th>
-                <td>{{ voucher.conditionApply }}</td>
-              </tr>
+                <tr>
+                  <th scope="row">Tên</th>
+                  <td>{{ voucherShip.name }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Nội dung</th>
+                  <td>{{ voucherShip.description }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Ngày bắt đầu</th>
+                  <td>{{ util.format(voucherShip.startDate) }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Ngày kết thúc</th>
+                  <td>{{ util.format(voucherShip.endDate) }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Điều kiện áp dụng</th>
+                  <td>{{ voucherShip.conditionApply }}</td>
+                </tr>
 
-              <tr>
-                <th scope="row">Giá trị giảm</th>
-                <td>{{ voucher.reducedValue }}</td>
-              </tr>
+                <tr>
+                  <th scope="row">Giá trị giảm</th>
+                  <td>{{ voucherShip.reducedValue }}</td>
+                </tr>
 
-              <tr>
-                <th scope="row">Số lượng</th>
-                <td>{{ voucher.quantity }}</td>
-              </tr>
-              <tr *ngIf="voucher.optionCustomer === 1">
-                <th scope="row" >Giới hạn số lần sử dụng của mỗi khách hàng</th>
-                <td>{{ voucher.limitCustomer }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Người tạo</th>
-                <td>{{ voucher.createName }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Ngày tạo</th>
-                <td>{{ util.formatDateTime(voucher.createDate) }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Khách hàng</th>
-                <td>
-                  <ul *ngIf="voucher.customerAdminDTOList && voucher.customerAdminDTOList.length > 0; else noCustomers">
-                    <li *ngFor="let c of voucher.customerAdminDTOList">
-                      {{ c.code }} - {{ c.fullname }}
-                    </li>
-                  </ul>
-                  <ng-template #noCustomers>
-                    Tất cả khách hàng
-                  </ng-template>
-                </td>
-              </tr>
+                <tr>
+                  <th scope="row">Số lượng</th>
+                  <td>{{ voucherShip.quantity }}</td>
+                </tr>
+                <tr *ngIf="voucherShip.optionCustomer === 1">
+                  <th scope="row">
+                    Giới hạn số lần sử dụng của mỗi khách hàng
+                  </th>
+                  <td>{{ voucherShip.limitCustomer }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Người tạo</th>
+                  <td>{{ voucherShip.createName }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Ngày tạo</th>
+                  <td>{{ util.formatDateTime(voucherShip.createDate) }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Khách hàng</th>
+                  <td>
+                    <ul
+                      *ngIf="
+                        voucherShip.customerAdminDTOList &&
+                          voucherShip.customerAdminDTOList.length > 0;
+                        else noCustomers
+                      "
+                    >
+                      <li *ngFor="let c of voucherShip.customerAdminDTOList">
+                        {{ c.code }} - {{ c.fullname }}
+                      </li>
+                    </ul>
+                    <ng-template #noCustomers> Tất cả khách hàng </ng-template>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>

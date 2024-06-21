@@ -1,14 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { VoucherService } from "../../../service/voucher.service";
-import { UtilService } from "../../../util/util.service";
+import { VoucherService } from '../../../service/voucher.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { UtilService } from 'src/app/util/util.service';
 
 @Component({
   selector: 'app-detail-voucher',
   templateUrl: './detail-voucher.component.html',
-  styleUrls: ['./detail-voucher.component.css']
+  styleUrls: ['./detail-voucher.component.css'],
 })
-
 export class DetailVoucherComponent implements OnInit {
   voucher: any = {
     name: '',
@@ -34,7 +33,7 @@ export class DetailVoucherComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private voucherService: VoucherService,
-    public util: UtilService
+    public util: UtilService,
   ) {
     this.idVoucher = data.idVoucher;
   }
@@ -44,24 +43,26 @@ export class DetailVoucherComponent implements OnInit {
   }
 
   fillVoucher(idVoucher: number) {
-    this.voucherService.getDetailVoucher(idVoucher).subscribe((response: any[]) => {
-      const firstElement = Array.isArray(response) ? response[0] : response;
-      this.voucher.id = firstElement.id;
-      this.voucher.name = firstElement.name;
-      this.voucher.description = firstElement.description;
-      this.voucher.conditionApply = firstElement.conditionApply;
-      this.voucher.voucherType = firstElement.voucherType;
-      this.voucher.endDate = firstElement.endDate;
-      this.voucher.quantity = firstElement.quantity;
-      this.voucher.reducedValue = firstElement.reducedValue;
-      this.voucher.maxReduced = firstElement.maxReduced;
-      this.voucher.startDate = firstElement.startDate;
-      this.voucher.allow = firstElement.allow;
-      this.voucher.apply = firstElement.apply;
-      this.voucher.createDate = firstElement.createDate;
-      this.voucher.limitCustomer = firstElement.limitCustomer;
-      this.voucher.customerAdminDTOList = firstElement.customerAdminDTOList;
-    });
+    this.voucherService
+      .getDetailVoucher(idVoucher)
+      .subscribe((response: any[]) => {
+        const firstElement = Array.isArray(response) ? response[0] : response;
+        this.voucher.id = firstElement.id;
+        this.voucher.name = firstElement.name;
+        this.voucher.description = firstElement.description;
+        this.voucher.conditionApply = firstElement.conditionApply;
+        this.voucher.voucherType = firstElement.voucherType;
+        this.voucher.endDate = firstElement.endDate;
+        this.voucher.quantity = firstElement.quantity;
+        this.voucher.reducedValue = firstElement.reducedValue;
+        this.voucher.maxReduced = firstElement.maxReduced;
+        this.voucher.startDate = firstElement.startDate;
+        this.voucher.allow = firstElement.allow;
+        this.voucher.apply = firstElement.apply;
+        this.voucher.createDate = firstElement.createDate;
+        this.voucher.limitCustomer = firstElement.limitCustomer;
+        this.voucher.customerAdminDTOList = firstElement.customerAdminDTOList;
+      });
   }
 
   getVoucherTypeText(): string {

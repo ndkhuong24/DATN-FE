@@ -1,70 +1,138 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {ICellRendererAngularComp} from "ag-grid-angular";
-import {MatDialog} from "@angular/material/dialog";
-import {Router} from "@angular/router";
-import {VoucherService} from "../../../service/voucher.service";
-import {ICellRendererParams} from "ag-grid-community";
-import {ToastrService} from "ngx-toastr";
-import Swal from "sweetalert2";
-import {VoucherShipService} from "../../../service/voucher-ship.service";
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
+import { VoucherShipService } from '../../../service/voucher-ship.service';
+import { VoucherShipComponent } from '../voucher-ship.component';
+import { DetailVoucherShipComponent } from '../detail-voucher-ship/detail-voucher-ship.component';
+import { EditVoucherShipComponent } from '../edit-voucher-ship/edit-voucher-ship.component';
 
 @Component({
   selector: 'app-action-voucher-ship',
-  templateUrl:  './action-voucher-ship.component.html',
-  styleUrls: ['./action-voucher-ship.component.css']
+  templateUrl: './action-voucher-ship.component.html',
+  styleUrls: ['./action-voucher-ship.component.css'],
 })
-export class ActionVoucherShipComponent implements OnInit, ICellRendererAngularComp {
+export class ActionVoucherShipComponent implements OnInit {
   isMenuOpen: boolean = false;
   data: any;
+  params: any;
+
   constructor(
-    private matDialog: MatDialog,
-    private router: Router,
-    private voucherService: VoucherShipService,
-    private toastr: ToastrService,
-    private cdr: ChangeDetectorRef
+    private matdialog: MatDialog,
+    private voucherShipService: VoucherShipService,
+    private cdr: ChangeDetectorRef,
+    private voucherShipComponent: VoucherShipComponent
   ) {}
-  ngOnInit(): void {
-    console.log(this.data.id);
-  }
-  agInit(params): void {
-    this.data = params.data;
+
+  ngOnInit(): void {}
+
+  agInit(params: any) {
+    this.params = params.data;
   }
 
-  refresh(params: ICellRendererParams): boolean {
+  refresh(): boolean {
     return false;
   }
 
-  editItem(): void {
-    console.log(this.data);
-    this.router.navigate(['/admin/edit-voucherFS', this.data.id]);
+  openUpdate(id: number): void {
+    const dialogref = this.matdialog.open(EditVoucherShipComponent, {
+      width: '250vh',
+      height: '98vh',
+      data: { idVoucherShip: id },
+    });
+    dialogref.afterClosed().subscribe((result) => {
+      if (result === 'saveVoucherShip') {
+        this.voucherShipComponent.ngOnInit();
+        this.cdr.detectChanges();
+      }
+    });
   }
 
-  delete(): void {
+  deleteVoucherShip(id?: number) {
     Swal.fire({
-      title: 'Bạn có muốn xóa voucher freeship không?',
-      icon: 'error',
+      title: 'Bạn có chắc muốn xóa',
+      text: 'Bạn sẽ không thể hoàn tác',
+      icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Xóa'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.voucherService.deleteVoucher(this.data.id).subscribe((response) => {
-            this.router.navigateByUrl('/admin/voucherFS');
-          },
-          error => {
-            this.toastr.error('Xóa voucher freeship thất bại');
-          });
-        location.reload();
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Thoát',
+    }).then((response) => {
+      if (response.isConfirmed) {
+        this.voucherShipService.deleteVoucher(id).subscribe(() => {
+          this.voucherShipComponent.ngOnInit();
+          this.cdr.detectChanges();
+        });
+        Swal.fire('Xóa', 'Xóa thành công', 'success');
       }
-      Swal.fire({
-        title: 'Xóa voucher freeship thành công!',
-        icon: 'success'
-      });
     });
   }
-  detail(): void {
-    this.router.navigate(['/admin/voucherFS', this.data.id]);
+
+  clickDetail(id: number): void {
+    const dialogref = this.matdialog.open(DetailVoucherShipComponent, {
+      width: '60%',
+      height: '85%',
+      data: { idVoucherShip: id },
+    });
+    dialogref.afterClosed().subscribe(() => {
+      this.voucherShipComponent.ngOnInit();
+      this.cdr.detectChanges();
+    });
+  }
+
+  updateIdel(id?: number) {
+    this.voucherShipService
+      .getDetailVoucher(id)
+      .subscribe((response: any[]) => {
+        let voucherCurrent;
+        if (Array.isArray(response) && response.length > 0) {
+          voucherCurrent = response[0];
+        } else if (response && typeof response === 'object') {
+          voucherCurrent = response;
+        } else {
+          console.log('Invalid response format');
+          return;
+        }
+
+        if (voucherCurrent.idel === 0) {
+          Swal.fire({
+            title: 'Bạn có chắc muốn kích hoạt voucher không',
+            text: 'Bạn sẽ không thể hoàn tác',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Kích hoạt',
+            cancelButtonText: 'Thoát',
+          }).then((response) => {
+            if (response.isConfirmed) {
+              this.voucherShipService.KichHoat(id).subscribe(() => {
+                this.voucherShipComponent.ngOnInit();
+                this.cdr.detectChanges();
+              });
+              Swal.fire('Kích hoạt', 'Kích hoạt thành công', 'success');
+            }
+          });
+        } else {
+          Swal.fire({
+            title: 'Bạn có chắc muốn hủy kích hoạt voucher không',
+            text: 'Bạn sẽ không thể hoàn tác',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Kích hoạt',
+            cancelButtonText: 'Thoát',
+          }).then((response) => {
+            if (response.isConfirmed) {
+              this.voucherShipService.KichHoat(id).subscribe(() => {
+                this.voucherShipComponent.ngOnInit();
+                this.cdr.detectChanges();
+              });
+              Swal.fire('Hủy kích hoạt', 'Hủy kích hoạt thành công', 'success');
+            }
+          });
+        }
+      });
   }
 }
-

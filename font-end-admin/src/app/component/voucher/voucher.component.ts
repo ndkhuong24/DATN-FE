@@ -2,10 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActionVoucherComponent } from './action-voucher/action-voucher.component';
 import { VoucherService } from 'src/app/service/voucher.service';
-import { formatDate, formatDateTime, formatDateYYYY_MM_dd, getFormattedDateCurrent } from '../../util/util';
-import { ToastrService } from "ngx-toastr";
-import * as FileSaver from 'file-saver';
-import * as printJS from "print-js";
+import { formatDate, formatDateTime } from '../../util/util';
 import { CreatVoucherComponent } from './creat-voucher/creat-voucher.component';
 
 @Component({
@@ -39,7 +36,7 @@ export class VoucherComponent implements OnInit {
     limitCustomer: '',
     customerAdminDTOList: '',
     appy: '',
-    optionCustomer: ''
+    optionCustomer: '',
   };
   gridOptions: any;
 
@@ -47,12 +44,19 @@ export class VoucherComponent implements OnInit {
     private matDialog: MatDialog,
     private voucherService: VoucherService,
     private cdr: ChangeDetectorRef,
-    private toastr: ToastrService,
   ) {
     const currentDate = new Date();
 
-    this.dateFromCurrent = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-    this.dateToCurrent = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+    this.dateFromCurrent = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      1
+    );
+    this.dateToCurrent = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      currentDate.getDate()
+    );
 
     this.columnDefs = [
       {
@@ -74,7 +78,7 @@ export class VoucherComponent implements OnInit {
         field: 'startDate',
         sortable: true,
         filter: true,
-        valueGetter: (params: { data: { startDate: string; }; }) => {
+        valueGetter: (params: { data: { startDate: string } }) => {
           return `${formatDateTime(params.data.startDate)}`;
         },
         maxWidth: 150,
@@ -84,7 +88,7 @@ export class VoucherComponent implements OnInit {
         field: 'endDate',
         sortable: true,
         filter: true,
-        valueGetter: (params: { data: { endDate: string; }; }) => {
+        valueGetter: (params: { data: { endDate: string } }) => {
           return `${formatDateTime(params.data.endDate)}`;
         },
         maxWidth: 150,
@@ -98,7 +102,9 @@ export class VoucherComponent implements OnInit {
       },
       {
         headerName: 'Sử dụng',
-        valueGetter(params: { data: { useVoucher: number; quantity: number; }; }) {
+        valueGetter(params: {
+          data: { useVoucher: number; quantity: number };
+        }) {
           const useVoucher = params.data.useVoucher || 0;
           const quantity = params.data.quantity || 1;
           return `${useVoucher} / ${quantity}`;
@@ -110,36 +116,11 @@ export class VoucherComponent implements OnInit {
         field: 'idel',
         sortable: true,
         filter: true,
-        valueGetter: (params: { data: { idel: number; }; }) => {
+        valueGetter: (params: { data: { idel: number } }) => {
           return params.data.idel === 1 ? 'Đang hiển thị' : 'Không hiển thị';
         },
         maxWidth: 125,
       },
-      // {
-      //   headerName: 'Hiển thị',
-      //   field: '',
-      //   cellRenderer: (params: { data: { idel: number; useVoucher: number; quantity: number; status: number; }; node: { rowIndex: any; }; }) => {
-      //     const isChecked = params.data.idel === 1;
-      //     const useVoucher = params.data.useVoucher || 0;
-      //     const quantity = params.data.quantity || 1;
-      //     const isDisabled = useVoucher === quantity || params.data.status === 1;
-
-      //     return `
-      //       <div>
-      //         <label class="switch1">
-      //           <input 
-      //             type="checkbox" 
-      //             ${isChecked ? 'checked' : ''} 
-      //             ${isDisabled ? 'disabled' : ''}
-      //             onchange="handleCheckboxChange(${params.node.rowIndex})"
-      //           >
-      //           <span class="slider round"></span>
-      //         </label>
-      //       </div>`;
-      //   },
-      //   editable: false,
-      //   maxWidth: 125,
-      // },
       {
         headerName: 'Nội dung',
         field: 'description',
@@ -152,7 +133,7 @@ export class VoucherComponent implements OnInit {
         field: 'status',
         sortable: true,
         filter: true,
-        valueGetter: (params: { data: { status: number; }; }) => {
+        valueGetter: (params: { data: { status: number } }) => {
           return params.data.status === 0 ? 'Còn hạn' : 'Hết hạn';
         },
         maxWidth: 125,
@@ -165,18 +146,6 @@ export class VoucherComponent implements OnInit {
         maxWidth: 100,
       },
     ];
-  }
-
-  handleCheckboxChange(rowIndex: any) {
-    const rowData = this.gridOptions.api.getDisplayedRowAtIndex(rowIndex).data;
-    const useVoucher = rowData.useVoucher || 0;
-    const quantity = rowData.quantity || 1;
-
-    if (useVoucher === quantity || rowData.status === 1) {
-      return;
-    }
-
-    this.checkIsdell(rowData, rowIndex);
   }
 
   ngOnInit(): void {
@@ -204,54 +173,17 @@ export class VoucherComponent implements OnInit {
 
       for (let i = 0; i < this.rowData.length; i++) {
         if (new Date(this.rowData[i].endDate) < new Date()) {
-          this.voucherService.setIdel(this.rowData[i].id).subscribe(res => {
+          this.voucherService.setIdel(this.rowData[i].id).subscribe((res) => {
             this.rowData[i] = {
               ...this.rowData[i],
-              idel: res.data.idel
+              idel: res.data.idel,
             };
           });
         }
       }
 
       this.searchResults = response;
-    })
-  }
-
-  checkIsdell(data: any, index: any) {
-    if (data.idel === 0) {
-      const userConfirmed = confirm('Bạn có muốn kích hoạt voucher không?');
-      if (!userConfirmed) {
-        return;
-      }
-      // Truyền dữ liệu thông qua HTTP PUT request
-      this.voucherService.KichHoat(data.id).subscribe(
-        (res) => {
-          location.reload();
-          this.toastr.success('Kích hoạt thành công');
-          if (res.data.idCustomer || res.data.idCustomer !== '' || res.data.idCustomer.length > 0) {
-            this.voucherService.sendEmail(res.data).subscribe(result => {
-            });
-          }
-        },
-        error => {
-          this.toastr.error('Kích hoạt thất bại');
-        });
-      this.cdr.detectChanges();
-    } else {
-      const userConfirmed = confirm('Bạn có muốn hủy bỏ kích hoạt voucher  không?');
-      if (!userConfirmed) {
-        return;
-      }
-      // Truyền dữ liệu thông qua HTTP PUT request
-      this.voucherService.KichHoat(data.id).subscribe(res => {
-        location.reload();
-        this.toastr.success('Hủy bỏ kích hoạt thành công');
-      },
-        error => {
-          this.toastr.error('Hủy bỏ kích hoạt thất bại');
-        });
-    }
-    this.cdr.detectChanges();
+    });
   }
 
   searchByCustomer(event: any) {
@@ -280,10 +212,10 @@ export class VoucherComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  searchByDate(obj: { dateFrom: any; dateTo: any; }) {
+  searchByDate(obj: { dateFrom: any; dateTo: any }) {
     const dateRange = {
       fromDate: obj.dateFrom,
-      toDate: obj.dateTo
+      toDate: obj.dateTo,
     };
 
     this.voucherService.searchByDate(dateRange).subscribe(
@@ -297,13 +229,13 @@ export class VoucherComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  getDater(data: { startDate: any; endDate: any; }) {
+  getDater(data: { startDate: any; endDate: any }) {
     if (data.startDate && data.endDate) {
       this.dateFromCurrent = data.startDate;
       this.dateToCurrent = data.endDate;
       const obj = {
         dateFrom: formatDate(this.dateFromCurrent),
-        dateTo: formatDate(this.dateToCurrent)
+        dateTo: formatDate(this.dateToCurrent),
       };
       this.searchByDate(obj);
     } else {
@@ -323,5 +255,4 @@ export class VoucherComponent implements OnInit {
       }
     });
   }
-
 }

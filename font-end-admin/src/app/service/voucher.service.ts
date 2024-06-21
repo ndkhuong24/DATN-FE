@@ -4,13 +4,12 @@ import { Observable } from 'rxjs';
 import { apiURL } from '../config/apiUrl';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class VoucherService {
   private apiUrl = 'http://localhost:8081/api/admin/voucher';
 
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getSomeData() {
     return this.http.get<any[]>(this.apiUrl);
@@ -21,10 +20,12 @@ export class VoucherService {
   }
 
   getCustomer() {
-    return this.http.get<any[]>('http://localhost:8081/api/admin/voucher/customer');
+    return this.http.get<any[]>(
+      'http://localhost:8081/api/admin/voucher/customer'
+    );
   }
 
-  updateVoucher(id, voucher: any) {
+  updateVoucher(id: number, voucher: any) {
     const url = `${this.apiUrl}/${id}`;
     return this.http.put(url, voucher);
   }
@@ -40,7 +41,10 @@ export class VoucherService {
   }
 
   exportExcel(): Observable<Blob> {
-    return this.http.get('http://localhost:8081/api/admin/voucher/export-data', { responseType: 'blob' });
+    return this.http.get(
+      'http://localhost:8081/api/admin/voucher/export-data',
+      { responseType: 'blob' }
+    );
   }
 
   createVoucher(voucher: any): Observable<any> {
@@ -63,19 +67,22 @@ export class VoucherService {
   }
 
   searchByDate(obj): Observable<any> {
-    return this.http.get<any>(`http://localhost:8081/api/admin/voucher/searchByDate?fromDate=${obj.fromDate}&toDate=${obj.toDate}`);
+    return this.http.get<any>(
+      `http://localhost:8081/api/admin/voucher/searchByDate?fromDate=${obj.fromDate}&toDate=${obj.toDate}`
+    );
   }
 
   searchByCustomer(search: string): Observable<any> {
-    const params = new HttpParams()
-      .set('search', search);
+    const params = new HttpParams().set('search', search);
     return this.http.get<any>(`${this.apiUrl}/searchByCustomer`, { params });
   }
 
   searchByVoucher(search: string): Observable<any> {
-    const params = new HttpParams()
-      .set('search', search);
-    return this.http.get<any>(`http://localhost:8081/api/admin/voucher/searchByVoucher`, { params });
+    const params = new HttpParams().set('search', search);
+    return this.http.get<any>(
+      `http://localhost:8081/api/admin/voucher/searchByVoucher`,
+      { params }
+    );
   }
 
   getVoucherKH() {
@@ -86,4 +93,3 @@ export class VoucherService {
     return this.http.get<any[]>('http://localhost:8081/api/admin/voucher/KKH');
   }
 }
-

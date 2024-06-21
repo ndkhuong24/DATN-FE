@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { VoucherService } from 'src/app/service/voucher.service';
 import { DetailVoucherComponent } from '../detail-voucher/detail-voucher.component';
-import { ICellRendererAngularComp } from 'ag-grid-angular';
 import Swal from 'sweetalert2';
 import { VoucherComponent } from '../voucher.component';
 import { EditVoucherComponent } from '../edit-voucher/edit-voucher.component';
@@ -12,9 +11,7 @@ import { EditVoucherComponent } from '../edit-voucher/edit-voucher.component';
   templateUrl: './action-voucher.component.html',
   styleUrls: ['./action-voucher.component.css'],
 })
-export class ActionVoucherComponent
-  implements OnInit, ICellRendererAngularComp
-{
+export class ActionVoucherComponent implements OnInit {
   isMenuOpen: boolean = false;
   data: any;
   params: any;
