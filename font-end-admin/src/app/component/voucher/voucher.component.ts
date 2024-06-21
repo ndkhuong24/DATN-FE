@@ -8,8 +8,6 @@ import * as FileSaver from 'file-saver';
 import * as printJS from "print-js";
 import { CreatVoucherComponent } from './creat-voucher/creat-voucher.component';
 
-
-
 @Component({
   selector: 'app-bangvoucher',
   templateUrl: './voucher.component.html',
@@ -108,30 +106,40 @@ export class VoucherComponent implements OnInit {
         maxWidth: 125,
       },
       {
-        headerName: 'Hiển thị',
-        field: '',
-        cellRenderer: (params: { data: { idel: number; useVoucher: number; quantity: number; status: number; }; node: { rowIndex: any; }; }) => {
-          const isChecked = params.data.idel === 1;
-          const useVoucher = params.data.useVoucher || 0;
-          const quantity = params.data.quantity || 1;
-          const isDisabled = useVoucher === quantity || params.data.status === 1;
-
-          return `
-            <div>
-              <label class="switch1">
-                <input 
-                  type="checkbox" 
-                  ${isChecked ? 'checked' : ''} 
-                  ${isDisabled ? 'disabled' : ''}
-                  onchange="handleCheckboxChange(${params.node.rowIndex})"
-                >
-                <span class="slider round"></span>
-              </label>
-            </div>`;
+        headerName: 'Hiện thị',
+        field: 'idel',
+        sortable: true,
+        filter: true,
+        valueGetter: (params: { data: { idel: number; }; }) => {
+          return params.data.idel === 1 ? 'Đang hiển thị' : 'Không hiển thị';
         },
-        editable: false,
         maxWidth: 125,
       },
+      // {
+      //   headerName: 'Hiển thị',
+      //   field: '',
+      //   cellRenderer: (params: { data: { idel: number; useVoucher: number; quantity: number; status: number; }; node: { rowIndex: any; }; }) => {
+      //     const isChecked = params.data.idel === 1;
+      //     const useVoucher = params.data.useVoucher || 0;
+      //     const quantity = params.data.quantity || 1;
+      //     const isDisabled = useVoucher === quantity || params.data.status === 1;
+
+      //     return `
+      //       <div>
+      //         <label class="switch1">
+      //           <input 
+      //             type="checkbox" 
+      //             ${isChecked ? 'checked' : ''} 
+      //             ${isDisabled ? 'disabled' : ''}
+      //             onchange="handleCheckboxChange(${params.node.rowIndex})"
+      //           >
+      //           <span class="slider round"></span>
+      //         </label>
+      //       </div>`;
+      //   },
+      //   editable: false,
+      //   maxWidth: 125,
+      // },
       {
         headerName: 'Nội dung',
         field: 'description',
@@ -144,7 +152,7 @@ export class VoucherComponent implements OnInit {
         field: 'status',
         sortable: true,
         filter: true,
-        valueGetter: (params) => {
+        valueGetter: (params: { data: { status: number; }; }) => {
           return params.data.status === 0 ? 'Còn hạn' : 'Hết hạn';
         },
         maxWidth: 125,
@@ -154,7 +162,7 @@ export class VoucherComponent implements OnInit {
         field: '',
         cellRendererFramework: ActionVoucherComponent,
         pinned: 'right',
-        maxWidth: 150,
+        maxWidth: 100,
       },
     ];
   }
@@ -210,83 +218,83 @@ export class VoucherComponent implements OnInit {
   }
 
   checkIsdell(data: any, index: any) {
-    // if (data.idel === 0) {
-    //   const userConfirmed = confirm('Bạn có muốn kích hoạt voucher không?');
-    //   if (!userConfirmed) {
-    //     return;
-    //   }
-    //   // Truyền dữ liệu thông qua HTTP PUT request
-    //   this.voucherService.KichHoat(data.id).subscribe(
-    //     (res) => {
-    //       location.reload();
-    //       this.toastr.success('Kích hoạt thành công');
-    //       if (res.data.idCustomer || res.data.idCustomer !== '' || res.data.idCustomer.length > 0) {
-    //         this.voucherService.sendEmail(res.data).subscribe(result => {
-    //         });
-    //       }
-    //     },
-    //     error => {
-    //       this.toastr.error('Kích hoạt thất bại');
-    //     });
-    //   this.cdr.detectChanges();
-    // } else {
-    //   const userConfirmed = confirm('Bạn có muốn hủy bỏ kích hoạt voucher  không?');
-    //   if (!userConfirmed) {
-    //     return;
-    //   }
-    //   // Truyền dữ liệu thông qua HTTP PUT request
-    //   this.voucherService.KichHoat(data.id).subscribe(res => {
-    //     location.reload();
-    //     this.toastr.success('Hủy bỏ kích hoạt thành công');
-    //   },
-    //     error => {
-    //       this.toastr.error('Hủy bỏ kích hoạt thất bại');
-    //     });
-    // }
-    // this.cdr.detectChanges();
+    if (data.idel === 0) {
+      const userConfirmed = confirm('Bạn có muốn kích hoạt voucher không?');
+      if (!userConfirmed) {
+        return;
+      }
+      // Truyền dữ liệu thông qua HTTP PUT request
+      this.voucherService.KichHoat(data.id).subscribe(
+        (res) => {
+          location.reload();
+          this.toastr.success('Kích hoạt thành công');
+          if (res.data.idCustomer || res.data.idCustomer !== '' || res.data.idCustomer.length > 0) {
+            this.voucherService.sendEmail(res.data).subscribe(result => {
+            });
+          }
+        },
+        error => {
+          this.toastr.error('Kích hoạt thất bại');
+        });
+      this.cdr.detectChanges();
+    } else {
+      const userConfirmed = confirm('Bạn có muốn hủy bỏ kích hoạt voucher  không?');
+      if (!userConfirmed) {
+        return;
+      }
+      // Truyền dữ liệu thông qua HTTP PUT request
+      this.voucherService.KichHoat(data.id).subscribe(res => {
+        location.reload();
+        this.toastr.success('Hủy bỏ kích hoạt thành công');
+      },
+        error => {
+          this.toastr.error('Hủy bỏ kích hoạt thất bại');
+        });
+    }
+    this.cdr.detectChanges();
   }
 
   searchByCustomer(event: any) {
-    // const searchTerm = event.target.value;
-    // this.voucherService.searchByCustomer(searchTerm).subscribe(
-    //   (data) => {
-    //     this.searchResults = data;
-    //   },
-    //   (error) => {
-    //     console.error(error);
-    //   }
-    // );
-    // this.cdr.detectChanges();
+    const searchTerm = event.target.value;
+    this.voucherService.searchByCustomer(searchTerm).subscribe(
+      (data) => {
+        this.searchResults = data;
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+    this.cdr.detectChanges();
   }
 
   searchByVoucher(event: any) {
-    // const searchTerm = event.target.value;
-    // this.voucherService.searchByVoucher(searchTerm).subscribe(
-    //   (data) => {
-    //     this.searchResults = data;
-    //   },
-    //   (error) => {
-    //     console.error(error);
-    //   }
-    // );
-    // this.cdr.detectChanges();
+    const searchTerm = event.target.value;
+    this.voucherService.searchByVoucher(searchTerm).subscribe(
+      (data) => {
+        this.searchResults = data;
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+    this.cdr.detectChanges();
   }
 
   searchByDate(obj: { dateFrom: any; dateTo: any; }) {
-    // const dateRange = {
-    //   fromDate: obj.dateFrom,
-    //   toDate: obj.dateTo
-    // };
+    const dateRange = {
+      fromDate: obj.dateFrom,
+      toDate: obj.dateTo
+    };
 
-    // this.voucherService.searchByDate(dateRange).subscribe(
-    //   (data) => {
-    //     this.searchResults = data;
-    //   },
-    //   (error) => {
-    //     console.error('Error occurred during date range search:', error);
-    //   }
-    // );
-    // this.cdr.detectChanges();
+    this.voucherService.searchByDate(dateRange).subscribe(
+      (data) => {
+        this.searchResults = data;
+      },
+      (error) => {
+        console.error('Error occurred during date range search:', error);
+      }
+    );
+    this.cdr.detectChanges();
   }
 
   getDater(data: { startDate: any; endDate: any; }) {
