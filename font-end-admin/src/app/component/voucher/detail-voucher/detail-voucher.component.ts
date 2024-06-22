@@ -25,7 +25,7 @@ export class DetailVoucherComponent implements OnInit {
     allow: '',
     apply: '',
     optionCustomer: '',
-    createName: localStorage.getItem('fullname'),
+    createName: '',
   };
 
   idVoucher: number;
@@ -62,6 +62,7 @@ export class DetailVoucherComponent implements OnInit {
         this.voucher.createDate = firstElement.createDate;
         this.voucher.limitCustomer = firstElement.limitCustomer;
         this.voucher.customerAdminDTOList = firstElement.customerAdminDTOList;
+        this.voucher.createName = firstElement.createName;
       });
   }
 

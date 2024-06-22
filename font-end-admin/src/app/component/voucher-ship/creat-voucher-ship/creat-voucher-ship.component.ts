@@ -1,25 +1,60 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
-import {VoucherShipService} from '../../../service/voucher-ship.service';
-import {ToastrService} from "ngx-toastr";
+import { VoucherShipService } from '../../../service/voucher-ship.service';
+import { ToastrService } from "ngx-toastr";
 import Swal from "sweetalert2";
-import {ValidateInput} from "../../model/validate-input";
-import {CommonFunction} from "../../../util/common-function";
+import { ValidateInput } from "../../model/validate-input";
+import { CommonFunction } from "../../../util/common-function";
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-creat-voucher-ship',
   templateUrl: './creat-voucher-ship.component.html',
   styleUrls: ['./creat-voucher-ship.component.css']
 })
+
 export class CreatVoucherShipComponent implements OnInit {
-  checkStartDate: boolean = false;
-  checkStartDateNull = false;
-  checkEndDate: boolean = false;
-  checkEndDateNull = false;
   rowData = [];
   columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
+
+  checkStartDate: boolean = false;
+  checkStartDateNull = false;
+  checkEndDate: boolean = false;
+  checkEndDateNull = false;
+  disableCheckLimitCustomer: boolean = false;
+
+  public rowSelection: 'single' | 'multiple' = 'multiple';
+
+  Name: string;
+  validName: ValidateInput = new ValidateInput();
+
+  StartDate: any;
+  EndDate: any;
+
+  Description: string;
+  validDescription: ValidateInput = new ValidateInput();
+
+  ConditionApply: number = 1;
+  validconditionApply: ValidateInput = new ValidateInput();
+
+  ReducedValue: number = 1;
+  validReducedValue: ValidateInput = new ValidateInput();
+
+  Quantity: number = 1;
+  validQuantity: ValidateInput = new ValidateInput();
+
+  OptionCustomer: number = 0;
+
+  LimitCustomer: number = 1;
+  validLimitCustomer: ValidateInput = new ValidateInput();
+
+  CustomerAdminDTOList: any;
+
+  currentDate: Date = new Date();
+
+  gridApi: any;
+
   voucher: any = {
     name: '',
     startDate: '',
@@ -33,17 +68,12 @@ export class CreatVoucherShipComponent implements OnInit {
     limitCustomer: '',
     createName: localStorage.getItem('fullname'),
   };
-  validName: ValidateInput = new ValidateInput();
-  validQuantity: ValidateInput = new ValidateInput();
-  validDescription: ValidateInput = new ValidateInput();
-  validReducedValue: ValidateInput = new ValidateInput();
-  validconditionApply: ValidateInput = new ValidateInput();
-  currentDate: Date = new Date();
-  gridApi: any;
-   disableCheckLimitCustomer: boolean = false;
-  constructor(private voucherService: VoucherShipService,
-              private  router: Router,
-              private toastr: ToastrService) {
+
+  constructor(
+    private voucherShipService: VoucherShipService,
+    private toastr: ToastrService,
+    public dialogRef: MatDialogRef<CreatVoucherShipComponent>,
+  ) {
     this.columnDefs = [
       {
         headerName: 'Mã Khách hàng',
@@ -53,6 +83,7 @@ export class CreatVoucherShipComponent implements OnInit {
         checkboxSelection: true,
         headerCheckboxSelection: true,
         editable: true,
+        flex: 1,
       },
       {
         headerName: 'Tên khách hàng',
@@ -60,6 +91,7 @@ export class CreatVoucherShipComponent implements OnInit {
         sortable: true,
         filter: true,
         editable: true,
+        flex: 1,
       },
       {
         headerName: 'Ngày sinh',
@@ -67,6 +99,7 @@ export class CreatVoucherShipComponent implements OnInit {
         sortable: true,
         filter: true,
         editable: true,
+        flex: 1,
       },
       {
         headerName: 'Giới tính',
@@ -74,6 +107,7 @@ export class CreatVoucherShipComponent implements OnInit {
         sortable: true,
         filter: true,
         editable: true,
+        flex: 1,
       },
       {
         headerName: 'Số lượt mua',
@@ -81,148 +115,182 @@ export class CreatVoucherShipComponent implements OnInit {
         sortable: true,
         filter: true,
         editable: true,
+        flex: 1,
       },
     ];
   }
-  public rowSelection: 'single' | 'multiple' = 'multiple';
-  isValidDateRange(): void {
-    if (
-      this.voucher.startDate &&
-      this.voucher.endDate &&
-      this.voucher.startDate > this.voucher.endDate
-    ) {
-      this.checkEndDate = true;
-      console.log('Date range is valid.');
-    } else {
-      this.checkEndDate = false;
-      // Cũng có thể thực hiện công việc khác nếu cần.
-      console.log('Date range is not valid.');
-    }
+
+  ngOnInit(): void {
+    this.voucherShipService.getCustomer().subscribe((response) => {
+      this.rowData = response;
+    });
   }
+
   isEndDateValid() {
     this.checkEndDateNull = false;
-    if (this.voucher.endDate === '' || this.voucher.endDate === null
-      || this.voucher.endDate === undefined){
+
+    if (this.EndDate === '' || this.EndDate === null
+      || this.EndDate === undefined) {
       this.checkEndDateNull = true;
       this.checkEndDate = false;
       return;
     }
+
     if (
-      this.voucher.startDate &&
-      this.voucher.endDate &&
-      this.voucher.startDate >= this.voucher.endDate
+      this.StartDate &&
+      this.EndDate &&
+      this.StartDate >= this.EndDate
     ) {
       this.checkEndDateNull = false;
       this.checkEndDate = true;
       return;
     }
+
     this.checkEndDate = false;
     this.checkEndDateNull = false;
   }
+
   isStartDateValid() {
     this.checkStartDateNull = false;
+
     const date = new Date();
-    if (this.voucher.startDate === '' || this.voucher.startDate === null
-      || this.voucher.startDate === undefined){
+
+    if (this.StartDate === '' || this.StartDate === null
+      || this.StartDate === undefined) {
       this.checkStartDateNull = true;
       this.checkStartDate = false;
       return;
     }
-    if (new Date(this.voucher.startDate).getTime() < date.getTime()){
+
+    if (new Date(this.StartDate).getTime() < date.getTime()) {
       this.checkStartDate = true;
       this.checkStartDateNull = false;
       return;
     }
+
     this.checkStartDateNull = false;
     this.checkStartDate = false;
   }
-  removeCheckStartDate(){
+
+  removeCheckStartDate() {
     this.checkStartDateNull = false;
     this.checkStartDate = false;
   }
-  removeCheckEndDate(){
+
+  removeCheckEndDate() {
     this.checkEndDateNull = false;
     this.checkEndDate = false;
   }
-  ngOnInit(): void {
-    this.voucherService.getCustomer().subscribe((response) => {
-      this.rowData = response;
-      console.log(response);
-    });
-  }
+
   onGridReady(params: any) {
     this.gridApi = params.api;
   }
-  addVoucher() {
-    this.validateQuantity();
-    this.isStartDateValid();
+
+  addVoucherFreeShip() {
     this.isEndDateValid();
+    this.isStartDateValid();
     this.validateName();
     this.validateReducedValue();
     this.validateDescription();
     this.validateConditionApply();
+    this.validateQuantity();
+    this.validateLimitCustomer();
+
     if (!this.validName.done || !this.validDescription.done || !this.validReducedValue.done
       || !this.validQuantity.done || !this.validconditionApply.done ||
       this.checkStartDate || this.checkStartDateNull || this.checkEndDate || this.checkEndDateNull) {
       return;
     }
-    if (this.voucher.optionCustomer == 1 && this.voucher.limitCustomer > this.voucher.quantity) {
+
+    if (this.OptionCustomer === 1 && !this.validLimitCustomer.done) {
+      return;
+    }
+
+    if (this.OptionCustomer == 1 && this.LimitCustomer > this.Quantity) {
       this.disableCheckLimitCustomer = true;
       this.toastr.error('Giới hạn sử dụng với mỗi khách hàng phải nhỏ hơn số lượng');
       return;
     }
-    const arrayCustomer = this.voucher.optionCustomer == '0' ? null : this.gridApi.getSelectedRows();
-    if (arrayCustomer && arrayCustomer.length <= 0 && this.voucher.optionCustomer == 1){
+
+    const arrayCustomer = this.OptionCustomer === 0 ? null : this.gridApi.getSelectedRows();
+
+    if (arrayCustomer && arrayCustomer.length <= 0 && this.OptionCustomer === 1) {
       this.disableCheckLimitCustomer = true;
       this.toastr.error('Không có khách hàng ');
       return;
     }
+
     Swal.fire({
-      title: 'Bạn có muốn thêm Voucher FreeShip không?',
-      icon: 'success',
+      title: 'Bạn muốn thêm',
+      text: 'Thao tác này sẽ không hoàn tác',
+      icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Thêm'
+      cancelButtonColor: '#dd3333',
+      confirmButtonText: 'Thêm',
+      cancelButtonText: 'Thoát'
     }).then((result) => {
       if (result.isConfirmed) {
-        const obj = {
-          ...this.voucher,
+        const voucherFreeShip = {
+          name: this.Name,
+          startDate: this.StartDate,
+          endDate: this.EndDate,
+          description: this.Description,
+          conditionApply: this.ConditionApply,
+
+          reducedValue: this.ReducedValue,
+          quantity: this.Quantity,
+          optionCustomer: this.OptionCustomer,
+
+          limitCustomer: this.LimitCustomer,
           customerAdminDTOList: arrayCustomer,
-        };
-        this.voucherService.createVoucher(obj).subscribe(
-          (response) => {
-            // Handle the response if needed, e.g., show a success message
-            this.router.navigateByUrl('/admin/voucherFS');
+
+          createName: localStorage.getItem('fullname'),
+        }
+
+        this.voucherShipService.createVoucher(voucherFreeShip).subscribe(
+          result => {
+            console.log('Product add success', result);
+            this.dialogRef.close('addVoucherFreeShip');
           },
-          (error) => {
-            // Handle errors if the discount creation fails
-            this.toastr.error('Thêm Voucher FreeShip thất bại');
+          (error: any) => {
+            console.error('Product add error', error);
           }
         );
         Swal.fire({
-          title: 'Thêm Voucher FreeShip thành công',
+          title: 'Thêm',
+          text: 'Thêm thành công',
           icon: 'success'
         });
       }
-    });
-  }
-  revoveInvalid(result) {
-    result.done = true;
-  }
-  validateName() {
-    this.validName = CommonFunction.validateInput(this.voucher.name, 50, null );
-  }
-  validateDescription() {this.validDescription = CommonFunction.validateInput(this.voucher.description, 50, null);
-  }
-  validateReducedValue() {
-    this.validReducedValue = CommonFunction.validateInput(this.voucher.reducedValue, 250, /^[1-9]\d*(\.\d+)?$/);
-  }
-  validateConditionApply() {
-    this.validconditionApply = CommonFunction.validateInput(this.voucher.conditionApply, 250, /^[0-9]\d*(\.\d+)?$/);
-  }
-  validateQuantity() {
-    this.validQuantity = CommonFunction.validateInput(this.voucher.quantity, 50, /^[1-9]\d*(\.\d+)?$/ );
+    })
   }
 
+  validateLimitCustomer() {
+    this.validLimitCustomer = CommonFunction.validateInput(this.LimitCustomer, 250, /^[1-9]\d*(\.\d+)?$/);
+  }
+
+  revoveInvalid(result: { done: boolean; }) {
+    result.done = true;
+  }
+
+  validateName() {
+    this.validName = CommonFunction.validateInput(this.Name, 50, null);
+  }
+
+  validateDescription() {
+    this.validDescription = CommonFunction.validateInput(this.Description, 250, null);
+  }
+
+  validateReducedValue() {
+    this.validReducedValue = CommonFunction.validateInput(this.ReducedValue, 250, /^[1-9]\d*(\.\d+)?$/);
+  }
+
+  validateConditionApply() {
+    this.validconditionApply = CommonFunction.validateInput(this.ConditionApply, 250, /^[0-9]\d*(\.\d+)?$/);
+  }
+
+  validateQuantity() {
+    this.validQuantity = CommonFunction.validateInput(this.Quantity, 50, /^[1-9]\d*(\.\d+)?$/);
+  }
 }

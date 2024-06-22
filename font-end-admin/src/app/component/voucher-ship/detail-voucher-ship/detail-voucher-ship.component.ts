@@ -21,7 +21,7 @@ export class DetailVoucherShipComponent implements OnInit {
     customerAdminDTOList: '',
     limitCustomer: '',
     optionCustomer: '',
-    createName: localStorage.getItem('fullname'),
+    createName: '',
   };
 
   idVoucherShip: number;
@@ -56,10 +56,7 @@ export class DetailVoucherShipComponent implements OnInit {
         this.voucherShip.limitCustomer = firstElement.limitCustomer;
         this.voucherShip.customerAdminDTOList =
           firstElement.customerAdminDTOList;
-        // this.voucher.voucherType = firstElement.voucherType;
-        // this.voucher.maxReduced = firstElement.maxReduced;
-        // this.voucher.allow = firstElement.allow;
-        // this.voucher.apply = firstElement.apply;
+        this.voucherShip.createName = firstElement.createName;
       });
   }
 }

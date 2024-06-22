@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { VoucherService } from '../../../service/voucher.service';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
@@ -8,7 +7,6 @@ import { CommonFunction } from '../../../util/common-function';
 import { DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SuaChatLieuComponent } from '../../chatlieu/sua-chat-lieu/sua-chat-lieu.component';
-import { any } from 'codelyzer/util/function';
 
 @Component({
   selector: 'app-edit-voucher',
@@ -64,7 +62,7 @@ export class EditVoucherComponent implements OnInit {
   public rowSelection: 'single' | 'multiple' = 'multiple';
 
   constructor(
-    public dialogRef: MatDialogRef<SuaChatLieuComponent>,
+    public dialogRef: MatDialogRef<EditVoucherComponent>,
     @Inject(MAT_DIALOG_DATA) public response: any,
     private voucherService: VoucherService,
     private datePipe: DatePipe,
@@ -82,6 +80,7 @@ export class EditVoucherComponent implements OnInit {
         checkboxSelection: true,
         headerCheckboxSelection: true,
         editable: true,
+        flex: 1,
       },
       {
         headerName: 'Tên khách hàng',
@@ -89,6 +88,7 @@ export class EditVoucherComponent implements OnInit {
         sortable: true,
         filter: true,
         editable: true,
+        flex: 1,
       },
       {
         headerName: 'Ngày sinh',
@@ -96,6 +96,7 @@ export class EditVoucherComponent implements OnInit {
         sortable: true,
         filter: true,
         editable: true,
+        flex: 1,
       },
       {
         headerName: 'Giới tính',
@@ -103,6 +104,7 @@ export class EditVoucherComponent implements OnInit {
         sortable: true,
         filter: true,
         editable: true,
+        flex: 1,
       },
       {
         headerName: 'Số lượt mua',
@@ -110,6 +112,7 @@ export class EditVoucherComponent implements OnInit {
         sortable: true,
         filter: true,
         editable: true,
+        flex: 1,
       },
     ];
   }
@@ -143,6 +146,7 @@ export class EditVoucherComponent implements OnInit {
 
   isEndDateValid() {
     this.checkEndDateNull = false;
+
     if (
       this.voucher.endDate === '' ||
       this.voucher.endDate === null ||
@@ -246,13 +250,13 @@ export class EditVoucherComponent implements OnInit {
     }
 
     Swal.fire({
-      title: 'Bạn muốn thêm',
+      title: 'Bạn muốn cập nhật không',
       text: 'Thao tác này sẽ không hoàn tác',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#dd3333',
-      confirmButtonText: 'Thêm',
+      confirmButtonText: 'cập nhật',
       cancelButtonText: 'Thoát'
     }).then((result) => {
       if (result.isConfirmed) {
@@ -294,70 +298,6 @@ export class EditVoucherComponent implements OnInit {
       }
     })
   }
-
-  // editVoucher() {
-  //   this.validateQuantity();
-  //   this.isEndDateValid();
-  //   this.isStartDateValid();
-  //   this.validateName();
-  //   this.validateReducedValue();
-  //   this.validateDescription();
-  //   this.validateMaxReducedValue();
-  //   this.validateConditionApply();
-
-  //   if (!this.validName.done || !this.validDescription.done || !this.validReducedValue.done
-  //     || !this.validQuantity.done || !this.validconditionApply.done ||
-  //     this.checkStartDate || this.checkStartDateNull || this.checkEndDate || this.checkEndDateNull) {
-  //     return;
-  //   }
-  //   if (this.voucher.voucherType === 1 && !this.validMaxReduced.done) {
-  //     return;
-  //   }
-  //   if (this.voucher.optionCustomer == 1 && this.voucher.limitCustomer > this.voucher.quantity) {
-  //     this.disableCheckLimitCustomer = true;
-  //     this.toastr.error('Giới hạn sử dụng với mỗi khách hàng phải nhỏ hơn số lượng');
-  //     return;
-  //   }
-  //   const arrayCustomer = this.voucher.optionCustomer == 0 ? null : this.gridApi?.getSelectedRows?.();
-
-  //   if (arrayCustomer && arrayCustomer.length <= 0 && this.voucher.optionCustomer == 1) {
-  //     this.disableCheckLimitCustomer = true;
-  //     this.toastr.error('Không có khách hàng');
-  //     return;
-  //   }
-
-  //   Swal.fire({
-  //     title: 'Bạn có muốn sửa Voucher không?',
-  //     icon: 'success',
-  //     showCancelButton: true,
-  //     confirmButtonColor: '#3085d6',
-  //     cancelButtonColor: '#d33',
-  //     confirmButtonText: 'Sửa'
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       const arrayCustomer = this.voucher.optionCustomer === '0' ? null : this.gridApi.getSelectedRows();
-  //       const obj = {
-  //         ...this.voucher,
-  //         allow: this.checkAllow === true ? 1 : 0,
-  //         customerAdminDTOList: arrayCustomer,
-  //       };
-  //       this.voucherService.updateVoucher(this.voucher.id, obj).subscribe(
-  //         (response) => {
-  //           this.router.navigateByUrl('/admin/voucher');
-  //         },
-  //         (error) => {
-  //           this.toastr.error('Sửa Voucher thất bại');
-  //           // Handle errors if the discount creation fails
-  //           console.error('Error adding discount', error);
-  //         }
-  //       );
-  //       Swal.fire({
-  //         title: 'Sửa Voucher thành công',
-  //         icon: 'success'
-  //       });
-  //     }
-  //   });
-  // }
 
   revoveInvalid(result: { done: boolean }) {
     result.done = true;

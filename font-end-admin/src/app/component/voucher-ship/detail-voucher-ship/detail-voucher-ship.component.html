@@ -56,13 +56,11 @@
                 <tr>
                   <th scope="row">Khách hàng</th>
                   <td>
-                    <ul
-                      *ngIf="
+                    <ul *ngIf="
                         voucherShip.customerAdminDTOList &&
                           voucherShip.customerAdminDTOList.length > 0;
                         else noCustomers
-                      "
-                    >
+                      ">
                       <li *ngFor="let c of voucherShip.customerAdminDTOList">
                         {{ c.code }} - {{ c.fullname }}
                       </li>

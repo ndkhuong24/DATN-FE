@@ -1,24 +1,7 @@
-.form-group {
-  margin-bottom: 15px;
-  padding: 10px;
+mat-form-field {
+  width: 100%;
 }
-input {
-  border: none;
-  border-bottom: 1px solid #f3dfdf;
-  outline: none;
-}
-input:focus {
-  border-bottom: 2px solid #fdfdfd;
-}
-.form-select{
-  border: none;
-  border-bottom: 1px solid #f3dfdf;
-  outline: none;
-}
-.img-thumbnail{
-  width: 200px;
-  height: 200px;
-}
+
 .validate-input {
   margin: 5px 0 0 !important;
   color: red;
@@ -26,6 +9,7 @@ input:focus {
   line-height: 10px;
   font-weight: 500;
 }
+
 .validate-input-label {
   margin: 5px 0 0 !important;
   color: red;
@@ -33,6 +17,3 @@ input:focus {
   line-height: 10px;
   font-weight: 500;
 }
-
-
-
