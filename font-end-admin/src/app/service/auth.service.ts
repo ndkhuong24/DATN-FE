@@ -11,10 +11,13 @@ import { SignUpRepquest } from '../component/model/SignUpRepquest';
 export class AuthService {
   private apiLogin = 'http://localhost:8081/admin/api/sign-in';
   private apiSignUp = 'http://localhost:8081/admin/api/sign-up';
+
   constructor(private httpClient: HttpClient) { }
+
   signIn(signInForm: SignForm): Observable<JwtResponse> {
     return this.httpClient.post<JwtResponse>(this.apiLogin, signInForm);
   }
+  
   signUp(signUpReuest: SignUpRepquest): Observable<any> {
     return this.httpClient.post(this.apiSignUp, signUpReuest);
   }

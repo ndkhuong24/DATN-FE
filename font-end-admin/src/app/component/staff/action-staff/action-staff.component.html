@@ -1,5 +1,7 @@
-<button mat-button [matMenuTriggerFor]="menu"><i class="fa-solid fa-bars"></i></button>
+<!-- <button mat-button [matMenuTriggerFor]="menu"><i class="fa-solid fa-bars"></i></button>
 <mat-menu #menu="matMenu">
   <button mat-menu-item (click)="editItem()">Edit</button>
   <button mat-menu-item (click)="openDialog()">Detail</button>
-</mat-menu>
+</mat-menu> -->
+<button mat-icon-button color="primary"><mat-icon>edit</mat-icon></button>
+<button mat-icon-button color="warn" (click)="clickDetail(params.id)"><mat-icon>remove_red_eye</mat-icon></button>
