@@ -2,20 +2,18 @@
   <div class="row">
     <div class="col-md-5">
       <div class="main-img">
-        <app-custom-carousel [images]="product.imagesDTOList" [height]="0"></app-custom-carousel>
+        <!-- <app-custom-carousel [images]="product.imagesDTOList" [height]="0"></app-custom-carousel>
         <div class="row my-3 previews" style="display: flex;justify-content: space-around;">
-        </div>
+        </div> -->
+        <img src="{{product.imagesDTOList[0].imageName}}" alt="">
       </div>
     </div>
     <div class="col-md-7">
       <div class="main-description px-2">
-        <div class="category text-bold" style="font-weight: 600;">
-          Loại: {{product?.categoryDTO?.name}}
-        </div>
         <div class="product-title text-bold my-3" style="font-weight: 700;">
           {{product?.name}}
         </div>
-        <div class="price-area my-4" *ngIf="product?.reducePrice != null && product?.percentageReduce != null">
+        <!-- <div class="price-area my-4" *ngIf="product?.reducePrice != null && product?.percentageReduce != null">
           <div class="old-price" style="font-size: 15px; margin-top: 10px"><div style="text-decoration: line-through; color: #757575">{{utilService.formatMoney(product.price)}}</div></div>
           <div class="new-price" style="font-size: 25px"><span>{{utilService.formatMoney(product.price - product.reducePrice)}}</span></div>
           <div  style="display: flex;text-align: center;align-items: center;background-color:red; color: #ffffff;margin-left: 20px;border-radius: 4px; height: 20px; margin-top: 10px">
@@ -23,9 +21,20 @@
         </div>
         <div class="price-area my-4" *ngIf="product?.reducePrice == null && product?.percentageReduce == null">
           <div class="new-price" style="font-size: 25px"><span>{{utilService.formatMoney(product?.price)}}</span></div>
-        </div>
+        </div> -->
 
-      </div>
+        <div class="new-price" style="font-size: 25px" *ngIf="minPrice == maxPrice">
+          <span>{{utilService.formatMoney(maxPrice)}}</span>
+        </div>
+        <!-- Initially display when minPrice !== maxPrice -->
+<div class="new-price" style="font-size: 25px" *ngIf="minPrice !== maxPrice && !bothSizeAndColorSelected==true">
+  <span>{{ utilService.formatMoney(minPrice) }} - {{ utilService.formatMoney(maxPrice) }}</span>
+</div>
+
+<!-- Display when bothSizeAndColorSelected is true -->
+<div class="new-price" style="font-size: 25px" *ngIf="minPrice !== maxPrice &&bothSizeAndColorSelected==true">
+  <span>{{utilService.formatMoney( (getProductDetailprice() == null) ? product?.totalQuantity : getProductDetailprice() )}}</span>
+</div>
 
 <!--      size-->
       <div class="product-details my-2">
@@ -69,7 +78,7 @@
           (ngModelChange)="checkQuantity()"
         />
         <button type="button"
-          class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m" [style.cursor]="quantityBuy < getProductDetailQuantity()? 'pointer':'not-allowed'" (click)="tangSoLuong();" [disabled]="quantityBuy >= getProductDetailQuantity()">
+          class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m" [style.cursor]="quantityBuy< getProductDetailQuantity()? 'pointer':'not-allowed'" (click)="tangSoLuong();" [disabled]="quantityBuy >= getProductDetailQuantity()">
           <i class="fa-solid fa-plus"></i>
         </button>
       </div>
@@ -80,30 +89,30 @@
         <button class = "add-cart-btn" style="border-radius: 5px" [disabled]="bothSizeAndColorSelected === false || this.validQuantityBuy" [style.opacity]="(bothSizeAndColorSelected === false || this.validQuantityBuy) ? '0.5': ''" (click)="addToCart(product.id)"><i class = "fas fa-shopping-cart"></i>Thêm vào giỏ hàng</button>
         <button class = "buy-now-btn" style="border-radius: 5px" [disabled]="bothSizeAndColorSelected === false || this.validQuantityBuy" [style.opacity]="(bothSizeAndColorSelected === false || this.validQuantityBuy) ? '0.5': ''" (click)="buyNow(product.id);"><i class = "fas fa-wallet"></i>Mua ngay</button>
       </div>
+      <div style="margin-top: 25px; width: 380px;">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button style="font-weight:500;" class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1"
+                    type="button" role="tab" aria-controls="tab1" aria-selected="true">Chi tiết sản phẩm</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button style="font-weight:500;" class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button"
+                    role="tab" aria-controls="tab2" aria-selected="false">Mô tả sản phẩm</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab" style="font-weight:500;margin-top: 20px;">
+              <label>Thương Hiệu : </label> {{product?.brandDTO?.name}} <br>
+              <label>Loại : </label> {{product?.categoryDTO?.name}} <br>
+              <label>Chất liệu: </label> {{product?.materialDTO?.name}} <br>
+              <label>Độ cao của đế giày: </label> {{product?.soleDTO?.soleHeight}} cm (Chất liệu: {{product?.soleDTO?.soleMaterial}}) <br>
+            </div>
+            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab" style="font-weight:500;margin-top: 20px;">
+              <label>Mô tả : </label> {{product?.description}} <br>
+            </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="row" style="margin-top: 50px;">
-    <div class="product-details my-2">
-      <p class="details-title text-color mb-1" style="font-weight: bold; color: black">Mô Tả</p>
-      <p class="description" style="margin-left: 10px">{{product?.description}}</p>
-    </div>
-    <div class="product-details my-2">
-      <p class="details-title text-color mb-2" style="font-weight: bold; color: black">Thông Tin Chi Tiết</p>
-      <ul>
-        <li style="margin-top: 10px">Hãng: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{product?.brandDTO?.name}}</li>
-        <li style="margin-top: 10px">Chất Liệu: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    {{product?.materialDTO?.name}} </li>
-        <li style="margin-top: 10px">Độ cao của đế: &nbsp;&nbsp;&nbsp;&nbsp;  {{product?.soleDTO?.soleHeight}} cm (Chất liệu: {{product?.soleDTO?.soleMaterial}})</li>
-<!--        <li>Cổ giày: &nbsp;&nbsp;&nbsp;&nbsp;       {{product?.brandDTO?.name}}</li>-->
-      </ul>
-    </div>
-<!--    <div class="product-details my-2">-->
-<!--      <p class="details-title text-color mb-2">Chất Liệu</p>-->
-<!--      <ul>-->
-<!--        <li>Cotton</li>-->
-<!--        <li>Machine-wash</li>-->
-<!--      </ul>-->
-<!--    </div>-->
   </div>
 </div>
 
@@ -120,7 +129,7 @@
           <img style="width: 220px; height: 220px"
             (mouseenter)="onMouseEnter(p)"
             (mouseleave)="onMouseLeave(p)"
-            [src]="isMouseOver[p?.id] ? p?.imagesDTOList[1]?.imageName : p?.imagesDTOList[0]?.imageName"
+            [src]=" p.imagesDTOList[0]?.imageName"
             class="card-img-top"
             alt="..."
           >

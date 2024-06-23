@@ -47,6 +47,8 @@ export class DetailsComponent implements OnInit {
   bothSizeAndColorSelected: boolean = false;
   validQuantityBuy: boolean = false;
   validQuantityBuyMess = null;
+  minPrice: number | null = null;
+  maxPrice: number | null = null;
 
   ngOnInit(): void {
     this.activeRoute.params.subscribe(params => {
@@ -86,6 +88,18 @@ export class DetailsComponent implements OnInit {
         this.listSize = this.listSize.filter(size => sizeIDsInProduct.includes(size.id));
         this.originalListSize = [...this.listSize];
       });
+    // Calculate min and max prices
+    const prices = this.product.productDetailDTOList
+    .filter(detail => detail.price != null)
+    .map(detail => detail.price);
+
+  if (prices.length > 0) {
+    this.minPrice = Math.min(...prices);
+    this.maxPrice = Math.max(...prices);
+  } else {
+    this.minPrice = null;
+    this.maxPrice = null;
+  }
     }
   }
 
@@ -187,6 +201,17 @@ export class DetailsComponent implements OnInit {
       );
       if (selectedProductDetail) {
         return selectedProductDetail.quantity;
+      }
+    }
+    return -1;
+  }
+  getProductDetailprice(): number {
+    if (this.sizeId !== null && this.colorId !== null) {
+      const selectedProductDetail = this.product.productDetailDTOList.find(
+        detail => detail.idSize === parseInt(String(this.sizeId), 10) && detail.idColor === parseInt(String(this.colorId), 10)
+      );
+      if (selectedProductDetail) {
+        return selectedProductDetail.price;
       }
     }
     return -1;
@@ -324,4 +349,5 @@ export class DetailsComponent implements OnInit {
     this.validQuantityBuy = false;
     this.validQuantityBuyMess = null;
   }
+  
 }
