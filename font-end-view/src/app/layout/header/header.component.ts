@@ -1,10 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {apiURL} from '../../config/apiURL';
-import {UsersDTO} from '../../component/model/UsersDTO';
-import {BehaviorSubject} from 'rxjs';
-import {CartService} from '../../service/cart.service';
-import {Router} from '@angular/router';
-import {AuthJwtService} from '../../service/authentication/auth-jwt.service';
+import { Component, OnInit } from '@angular/core';
+import { apiURL } from '../../config/apiURL';
+import { UsersDTO } from '../../component/model/UsersDTO';
+import { CartService } from '../../service/cart.service';
+import { Router } from '@angular/router';
+import { AuthJwtService } from '../../service/authentication/auth-jwt.service';
 
 @Component({
   selector: 'app-header',
@@ -24,14 +23,14 @@ export class HeaderComponent implements OnInit {
 
   api = apiURL;
 
-  updateInFor(infor: UsersDTO){
+  updateInFor(infor: UsersDTO) {
 
   }
 
   exLogin() {
-    if (this.istoken.isAuthenticated() === true){
+    if (this.istoken.isAuthenticated() === true) {
       this.isLoggedIn = true;
-    }else {
+    } else {
       this.isLoggedIn = false;
     }
   }
@@ -42,7 +41,8 @@ export class HeaderComponent implements OnInit {
     this.istoken.isAuthenticated();
     this.exLogin();
   }
-  logOut(){
+
+  logOut() {
     localStorage.removeItem('token');
     localStorage.removeItem('users');
     localStorage.removeItem('customer');

@@ -1,11 +1,11 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {ProductService} from '../../service/product.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ColorService} from '../../service/color.service';
-import {SizeService} from '../../service/size.service';
-import {CookieService} from 'ngx-cookie-service';
-import {UtilService} from '../../util/util.service';
-import {CartService} from '../../service/cart.service';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ProductService } from '../../service/product.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ColorService } from '../../service/color.service';
+import { SizeService } from '../../service/size.service';
+import { CookieService } from 'ngx-cookie-service';
+import { UtilService } from '../../util/util.service';
+import { CartService } from '../../service/cart.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -22,11 +22,12 @@ export class DetailsComponent implements OnInit {
   quantityBuy: number = 1;
 
   constructor(private productService: ProductService, private activeRoute: ActivatedRoute,
-              private colorService: ColorService, private sizeService: SizeService,
-              private cookieService: CookieService, private router: Router, public utilService: UtilService,
-              private cartService: CartService, private cdr: ChangeDetectorRef) {
-    // @ts-ignore
-    window.scrollTo(top, 0, 0);
+    private colorService: ColorService, private sizeService: SizeService,
+    private cookieService: CookieService, private router: Router, public utilService: UtilService,
+    private cartService: CartService, private cdr: ChangeDetectorRef) {
+
+    // window.scrollTo(top, 0, 0);
+
     if (this.cookieService.check('cart')) {
       const cartData = this.cookieService.get('cart');
       const entries = JSON.parse(cartData);
@@ -52,15 +53,17 @@ export class DetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeRoute.params.subscribe(params => {
+
       const id = params.idProduct;
+
       this.productService.getDetailProduct(id).subscribe(res => {
         this.product = res.data;
+
         this.productService.getProductTuongTu(res.data.id, res.data.categoryDTO.id).subscribe(res2 => {
           this.listProductTuongTu = res2;
-          console.log(this.listProductTuongTu);
           this.cdr.detectChanges();
         });
-        console.log(this.product);
+
         this.loadData();
       });
     });
@@ -72,8 +75,8 @@ export class DetailsComponent implements OnInit {
         this.listColor = res;
 
         const colorIDsInProduct = this.product.productDetailDTOList
-          .filter(detail => detail.idColor)
-          .map(detail => detail.idColor);
+          .filter((detail: { idColor: any; }) => detail.idColor)
+          .map((detail: { idColor: any; }) => detail.idColor);
 
         this.listColor = this.listColor.filter(color => colorIDsInProduct.includes(color.id));
         this.originalListColor = [...this.listColor];
@@ -82,31 +85,29 @@ export class DetailsComponent implements OnInit {
       this.sizeService.getAllSize().subscribe(res => {
         this.listSize = res;
         const sizeIDsInProduct = this.product.productDetailDTOList
-          .filter(detail => detail.idSize)
-          .map(detail => detail.idSize);
+          .filter((detail: { idSize: any; }) => detail.idSize)
+          .map((detail: { idSize: any; }) => detail.idSize);
 
         this.listSize = this.listSize.filter(size => sizeIDsInProduct.includes(size.id));
         this.originalListSize = [...this.listSize];
       });
-    // Calculate min and max prices
-    const prices = this.product.productDetailDTOList
-    .filter(detail => detail.price != null)
-    .map(detail => detail.price);
+      // Calculate min and max prices
+      const prices = this.product.productDetailDTOList
+        .filter((detail: { price: null; }) => detail.price != null)
+        .map((detail: { price: any; }) => detail.price);
 
-  if (prices.length > 0) {
-    this.minPrice = Math.min(...prices);
-    this.maxPrice = Math.max(...prices);
-  } else {
-    this.minPrice = null;
-    this.maxPrice = null;
-  }
+      if (prices.length > 0) {
+        this.minPrice = Math.min(...prices);
+        this.maxPrice = Math.max(...prices);
+      } else {
+        this.minPrice = null;
+        this.maxPrice = null;
+      }
     }
   }
 
 
-  selectSize(s) {
-    console.log(s);
-
+  selectSize(s: { isSelected: boolean; id: any; }) {
     if (s.isSelected) {
       this.listSize.forEach(size => {
         size.isSelected = false;
@@ -120,16 +121,10 @@ export class DetailsComponent implements OnInit {
       return; // Thoát khỏi hàm sớm
     }
 
-    // Xóa lựa chọn trước đó
-    // this.listSize.forEach(size => {
-    //   size.isSelected = false;
-    //   size.disabled = false;
-    // });
-
     const selectedSizeId = s.id;
     const colorIDsForSelectedSize = this.product.productDetailDTOList
-      .filter(detail => detail.idSize === parseInt(String(selectedSizeId), 10) && detail.idColor && detail.quantity > 0)
-      .map(detail => detail.idColor);
+      .filter((detail: { idSize: number; idColor: any; quantity: number; }) => detail.idSize === parseInt(String(selectedSizeId), 10) && detail.idColor && detail.quantity > 0)
+      .map((detail: { idColor: any; }) => detail.idColor);
 
     if (this.sizeId != null) {
       const previousSelectedSize = this.listSize.find(size => size.id === this.sizeId);
@@ -150,7 +145,7 @@ export class DetailsComponent implements OnInit {
   }
 
 
-  selectColor(c) {
+  selectColor(c: { isSelected: boolean; id: any; }) {
     if (c.isSelected) {
       this.listColor.forEach(color => {
         color.disabled = false;
@@ -164,15 +159,10 @@ export class DetailsComponent implements OnInit {
       return; // Thoát khỏi hàm sớm
     }
 
-    // this.listColor.forEach(color => {
-    //   color.disabled = false;
-    //   color.isSelected = false;
-    // });
-
     const selectedColorId = c.id;
     const colorIDsForSelectedSize = this.product.productDetailDTOList
-      .filter(detail => detail.idColor === parseInt(String(selectedColorId), 10) && detail.idColor && detail.quantity > 0)
-      .map(detail => detail.idSize);
+      .filter((detail: { idColor: number; quantity: number; }) => detail.idColor === parseInt(String(selectedColorId), 10) && detail.idColor && detail.quantity > 0)
+      .map((detail: { idSize: any; }) => detail.idSize);
 
     if (this.colorId != null) {
       const previousSelectedColor = this.listColor.find(color => color.id === this.colorId);
@@ -197,7 +187,7 @@ export class DetailsComponent implements OnInit {
   getProductDetailQuantity(): number {
     if (this.sizeId !== null && this.colorId !== null) {
       const selectedProductDetail = this.product.productDetailDTOList.find(
-        detail => detail.idSize === parseInt(String(this.sizeId), 10) && detail.idColor === parseInt(String(this.colorId), 10)
+        (detail: { idSize: number; idColor: number; }) => detail.idSize === parseInt(String(this.sizeId), 10) && detail.idColor === parseInt(String(this.colorId), 10)
       );
       if (selectedProductDetail) {
         return selectedProductDetail.quantity;
@@ -205,6 +195,7 @@ export class DetailsComponent implements OnInit {
     }
     return -1;
   }
+
   getProductDetailprice(): number {
     if (this.sizeId !== null && this.colorId !== null) {
       const selectedProductDetail = this.product.productDetailDTOList.find(
@@ -216,7 +207,6 @@ export class DetailsComponent implements OnInit {
     }
     return -1;
   }
-
 
   addToCart(product: number) {
     const productKey = product + '-' + this.colorId + '-' + this.sizeId;
@@ -349,5 +339,5 @@ export class DetailsComponent implements OnInit {
     this.validQuantityBuy = false;
     this.validQuantityBuyMess = null;
   }
-  
+
 }

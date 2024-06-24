@@ -40,7 +40,7 @@ export class SanphamComponent implements OnInit {
         flex: 1
       },
       {
-        headerName: 'Tên Sản phẩm',
+        headerName: 'Tên',
         field: 'name',
         sortable: true,
         filter: true,
