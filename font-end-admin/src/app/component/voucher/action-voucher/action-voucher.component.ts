@@ -11,6 +11,7 @@ import { EditVoucherComponent } from '../edit-voucher/edit-voucher.component';
   templateUrl: './action-voucher.component.html',
   styleUrls: ['./action-voucher.component.css'],
 })
+
 export class ActionVoucherComponent implements OnInit {
   isMenuOpen: boolean = false;
   data: any;
@@ -21,9 +22,9 @@ export class ActionVoucherComponent implements OnInit {
     private voucherService: VoucherService,
     private cdr: ChangeDetectorRef,
     private voucherComponent: VoucherComponent
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   agInit(params: any) {
     this.params = params.data;

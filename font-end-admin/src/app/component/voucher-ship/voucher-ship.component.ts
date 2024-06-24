@@ -137,11 +137,8 @@ export class VoucherShipComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllVoucherShip();
-
     this.getAllVoucherShipKH();
-
     this.getAllVoucherShipKKH();
-
     this.role = JSON.parse(localStorage.getItem('role'));
   }
 

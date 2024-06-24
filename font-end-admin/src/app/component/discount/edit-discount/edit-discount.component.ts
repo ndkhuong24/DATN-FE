@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DiscountService } from 'src/app/service/discount.service';
-import {ToastrService} from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
-import {ValidateInput} from "../../model/validate-input";
-import {CommonFunction} from "../../../util/common-function";
-import {DatePipe} from "@angular/common";
+import { ValidateInput } from "../../model/validate-input";
+import { CommonFunction } from "../../../util/common-function";
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: 'app-edit-discount',
@@ -13,7 +13,7 @@ import {DatePipe} from "@angular/common";
   styleUrls: ['./edit-discount.component.css'],
 })
 export class EditDiscountComponent implements OnInit {
-   isHidden = true;
+  isHidden = true;
   discount: any = {
     discountAdminDTO: {
       id: '',
@@ -45,10 +45,10 @@ export class EditDiscountComponent implements OnInit {
   iđStaff = '';
 
   constructor(private discountService: DiscountService,
-              private router: Router,
-              private activatedRoute: ActivatedRoute,
-              private toastr: ToastrService,
-              private datePipe: DatePipe) {
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private toastr: ToastrService,
+    private datePipe: DatePipe) {
     this.columnDefs = [
       {
         headerName: 'Mã sản phẩm',
@@ -131,7 +131,7 @@ export class EditDiscountComponent implements OnInit {
   isEndDateValid() {
     this.checkEndDateNull = false;
     if (this.discount.discountAdminDTO.endDate === '' || this.discount.discountAdminDTO.endDate === null
-      || this.discount.discountAdminDTO.endDate === undefined){
+      || this.discount.discountAdminDTO.endDate === undefined) {
       this.checkEndDateNull = true;
       this.checkEndDate = false;
       return;
@@ -152,12 +152,12 @@ export class EditDiscountComponent implements OnInit {
     this.checkStartDateNull = false;
     const date = new Date();
     if (this.discount.discountAdminDTO.startDate === '' || this.discount.discountAdminDTO.startDate === null
-      || this.discount.discountAdminDTO.startDate === undefined){
+      || this.discount.discountAdminDTO.startDate === undefined) {
       this.checkStartDateNull = true;
       this.checkStartDate = false;
       return;
     }
-    if (new Date(this.discount.discountAdminDTO.startDate).getTime() < date.getTime()){
+    if (new Date(this.discount.discountAdminDTO.startDate).getTime() < date.getTime()) {
       this.checkStartDate = true;
       this.checkStartDateNull = false;
       return;
@@ -165,11 +165,11 @@ export class EditDiscountComponent implements OnInit {
     this.checkStartDateNull = false;
     this.checkStartDate = false;
   }
-  removeCheckStartDate(){
+  removeCheckStartDate() {
     this.checkStartDateNull = false;
     this.checkStartDate = false;
   }
-  removeCheckEndDate(){
+  removeCheckEndDate() {
     this.checkEndDateNull = false;
     this.checkEndDate = false;
   }
@@ -186,10 +186,10 @@ export class EditDiscountComponent implements OnInit {
     this.validateMaxReducedValue();
     if (!this.validName.done || !this.validDescription.done ||
       !this.validReducedValue.done ||
-      this.checkStartDate || this.checkStartDateNull || this.checkEndDate || this.checkEndDateNull ) {
+      this.checkStartDate || this.checkStartDateNull || this.checkEndDate || this.checkEndDateNull) {
       return;
     }
-    if (this.discount.discountType === 1 && !this.validMaxReduced.done){
+    if (this.discount.discountType === 1 && !this.validMaxReduced.done) {
       return;
     }
     const arrayProduct = this.discount.spap === '0' ? this.rowData : this.gridApi.getSelectedRows();
@@ -198,9 +198,9 @@ export class EditDiscountComponent implements OnInit {
       this.disableCheckPriceProduct = true;
       this.toastr.error('Không có sản phẩm để giảm');
       return;
-    }else{
+    } else {
       for (let i = 0; i < arrayProduct.length; i++) {
-        if (this.discount.reducedValue > arrayProduct[i].price && this.discount.discountType === 0 ) {
+        if (this.discount.reducedValue > arrayProduct[i].price && this.discount.discountType === 0) {
           console.log('Array Product:', arrayProduct);
           console.log('Discount:', this.discount);
           this.disableCheckPriceProduct = true;
@@ -248,9 +248,10 @@ export class EditDiscountComponent implements OnInit {
     result.done = true;
   }
   validateName() {
-    this.validName = CommonFunction.validateInput(this.discount.discountAdminDTO.name, 50, null );
+    this.validName = CommonFunction.validateInput(this.discount.discountAdminDTO.name, 50, null);
   }
-  validateDescription() {this.validDescription = CommonFunction.validateInput(this.discount.discountAdminDTO.description, 50, null );
+  validateDescription() {
+    this.validDescription = CommonFunction.validateInput(this.discount.discountAdminDTO.description, 50, null);
   }
   validateReducedValue() {
     this.validReducedValue = CommonFunction.validateInput(this.discount.reducedValue, 250, /^[1-9]\d*(\.\d+)?$/);
@@ -260,4 +261,5 @@ export class EditDiscountComponent implements OnInit {
   }
   formatDate(date: Date): string {
     return this.datePipe.transform(date, 'yyyy-MM-ddTHH:mm') || '';
-  }}
+  }
+}

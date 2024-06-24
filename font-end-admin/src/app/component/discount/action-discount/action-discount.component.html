@@ -1,15 +1,27 @@
-<!--<div class="action-buttons">-->
-<!--  <div class="ellipsis" (click)="toggleMenu()">-->
-<!--    <i class="fas fa-ellipsis-h"></i>-->
-<!--  </div>-->
-<!--  <div class="menu" *ngIf="isMenuOpen">-->
-<!--    <button class="edit-button" (click)="editItem()">Edit</button>-->
-<!--    <button class="delete-button" (click)="deleteItem()">Delete</button>-->
-<!--  </div>-->
-<!--</div>-->
-<button mat-button [matMenuTriggerFor]="menu"><i class="fa-solid fa-bars"></i></button>
+<!-- <button mat-button [matMenuTriggerFor]="menu"><i class="fa-solid fa-bars"></i></button>
 <mat-menu #menu="matMenu">
   <button mat-menu-item (click)="editItem()" *ngIf="data.idel === 0 && data.isUpdate ===0 ">Sửa</button>
   <button mat-menu-item (click)="detail()">Xem chi tiết</button>
   <button mat-menu-item (click)="delete() " *ngIf="data.idel === 0 && data.isUpdate ===0 ">Xóa</button>
+</mat-menu> -->
+
+<button mat-button [matMenuTriggerFor]="menu">
+  <i class="fa-solid fa-bars"></i>
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="openUpdate(params.id)" *ngIf="params.isUpdate === 0 && params.idel === 0">
+    Cập nhật
+  </button>
+  <button mat-menu-item (click)="clickDetail(params.id)">Xem chi tiết</button>
+  <button mat-menu-item (click)="deleteVoucher(params.id)" *ngIf="params.isUpdate === 0 && params.idel === 0">
+    Xóa
+  </button>
+  <button mat-menu-item (click)="updateIdel(params.id)"
+    *ngIf="params.isUpdate === 0 && params.idel === 0 && params.status === 0">
+    Hiện thị
+  </button>
+  <button mat-menu-item (click)="updateIdel(params.id)"
+    *ngIf="params.isUpdate === 0 && params.idel === 1 && params.status === 0">
+    Tắt hiện thị
+  </button>
 </mat-menu>

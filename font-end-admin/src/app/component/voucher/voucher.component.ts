@@ -18,12 +18,15 @@ export class VoucherComponent implements OnInit {
   columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
-  loc = '0';
+
+  loc = '5';
   idStaff = '';
   role: '';
+
   dateFromCurrent = null;
   dateToCurrent = null;
   searchResults: any[] = [];
+
   voucher: any = {
     name: '',
     startDate: '',

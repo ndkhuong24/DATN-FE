@@ -218,4 +218,4 @@ import { ChiTietComponent } from './component/sanpham/chi-tiet/chi-tiet.componen
   ],
   entryComponents: [ChatlieuActionComponent],
 })
-export class AppModule {}
+export class AppModule { }

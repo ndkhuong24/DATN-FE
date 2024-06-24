@@ -2,33 +2,19 @@
   <i class="fa-solid fa-bars"></i>
 </button>
 <mat-menu #menu="matMenu">
-  <button
-    mat-menu-item
-    (click)="openUpdate(params.id)"
-    *ngIf="params.isUpdate === 0 && params.idel === 0"
-  >
+  <button mat-menu-item (click)="openUpdate(params.id)" *ngIf="params.isUpdate === 0 && params.idel === 0">
     Cập nhật
   </button>
   <button mat-menu-item (click)="clickDetail(params.id)">Xem chi tiết</button>
-  <button
-    mat-menu-item
-    (click)="deleteVoucher(params.id)"
-    *ngIf="params.isUpdate === 0 && params.idel === 0"
-  >
+  <button mat-menu-item (click)="deleteVoucher(params.id)" *ngIf="params.isUpdate === 0 && params.idel === 0">
     Xóa
   </button>
-  <button
-    mat-menu-item
-    (click)="updateIdel(params.id)"
-    *ngIf="params.isUpdate === 0 && params.idel === 0 && params.status === 0"
-  >
+  <button mat-menu-item (click)="updateIdel(params.id)"
+    *ngIf="params.isUpdate === 0 && params.idel === 0 && params.status === 0">
     Hiện thị
   </button>
-  <button
-    mat-menu-item
-    (click)="updateIdel(params.id)"
-    *ngIf="params.isUpdate === 0 && params.idel === 1 && params.status === 0"
-  >
+  <button mat-menu-item (click)="updateIdel(params.id)"
+    *ngIf="params.isUpdate === 0 && params.idel === 1 && params.status === 0">
     Tắt hiện thị
   </button>
 </mat-menu>
