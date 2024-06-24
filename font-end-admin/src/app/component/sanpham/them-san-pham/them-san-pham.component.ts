@@ -12,7 +12,6 @@ import { MaterialInterface } from '../../../interface/material-interface';
 import { CommonFunction } from '../../../util/common-function';
 import { ValidateInput } from '../../model/validate-input';
 import Swal from 'sweetalert2';
-import { ProductdetailService } from '../../../service/productdetail.service';
 import { MausacService } from '../../../service/mausac.service';
 import { SizeService } from '../../../service/size.service';
 import { SizeInterface } from '../../../interface/size-interface';

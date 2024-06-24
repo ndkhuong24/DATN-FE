@@ -1,8 +1,8 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {StaffService} from '../../../service/staff.service';
-import {ActivatedRoute} from '@angular/router';
-import {UsersDTO} from '../../model/UsersDTO';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { StaffService } from '../../../service/staff.service';
+import { ActivatedRoute } from '@angular/router';
+import { UsersDTO } from '../../model/UsersDTO';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-detail-staff',

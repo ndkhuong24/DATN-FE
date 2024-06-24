@@ -1,73 +1,55 @@
-import { Component, OnInit } from '@angular/core';
-import {GridApi, ICellRendererParams} from 'ag-grid-community';
-import {MatDialog} from '@angular/material/dialog';
-import {Router} from '@angular/router';
-import {DiscountService} from '../../../service/discount.service';
-import {ILoadingCellRendererAngularComp} from 'ag-grid-angular';
-import {StaffService} from '../../../service/staff.service';
-import {OrderDetailComponent} from '../../order/order-detail/order-detail.component';
-import {DetailStaffComponent} from '../detail-staff/detail-staff.component';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { StaffService } from '../../../service/staff.service';
+import { DetailStaffComponent } from '../detail-staff/detail-staff.component';
+import { StaffComponent } from '../staff.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-action-staff',
   templateUrl: './action-staff.component.html',
   styleUrls: ['./action-staff.component.css']
 })
-export class ActionStaffComponent implements OnInit, ILoadingCellRendererAngularComp {
+export class ActionStaffComponent implements OnInit {
+  params: any;
+  rowData1 = [];
+  rowData2 = [];
 
-  isMenuOpen: boolean = false;
-  data: any = {
-    // discountAdminDTO: {
-    //   id: '',
-    //   name: '',
-    //   startDateStr: '',
-    //   endDateStr: '',
-    //   description: '',
-    // },
-    // reducedValue: '',
-    // discountType: '',
-  };
-  gridApi: GridApi;
-  constructor(private matDialog: MatDialog, private router: Router,
-              private discountService: StaffService) {}
+  constructor(
+    private matdialog: MatDialog,
+    private staffService: StaffService,
+    private staffComponent: StaffComponent,
+    private cdr: ChangeDetectorRef,
+  ) { }
+
   ngOnInit(): void {
-    console.log(this.data.idDiscount);
+    this.getAllStaff();
   }
 
-  agInit(params): void {
-    this.data = params.data;
+  getAllStaff() {
+    this.staffService.getAllStaff().subscribe((response) => {
+      this.rowData1 = response.filter((staff: { idel: number; }) => staff.idel === 0);
+      this.rowData2 = response.filter((staff: { idel: number; }) => staff.idel === 1);
+    })
   }
 
-  refresh(params: ICellRendererParams): boolean {
+  agInit(params: any) {
+    this.params = params.data;
+  }
+
+  refresh(): boolean {
     return false;
   }
 
-  editItem(): void {
-    console.log(this.data);
-    this.router.navigate(['update-staff', this.data.id]);
+  clickDetail(id: number): void {
+    const dialogref = this.matdialog.open(DetailStaffComponent, {
+      width: '80vh',
+      height: '80vh',
+      data: { idStaff: id },
+    });
+    dialogref.afterClosed().subscribe(() => {
+      this.staffComponent.ngOnInit();
+      this.cdr.detectChanges();
+    });
   }
-  // detail(dataOrder) {
-  //   this.matDialog.open(OrderDetailComponent, {
-  //     width: '150vh',
-  //     height: '90vh',
-  //     data: {
-  //       data: dataOrder,
-  //       staff: this.user
-  //     }
-  //   }).afterClosed().subscribe(res => {
-  //     if (res === 'update-order') {
-  //       this.ngOnInit();
-  //     }
-  //   });
-  // }
-  openDialog(): void {
-      const dialogRef = this.matDialog.open(DetailStaffComponent, {
-        width: '1200px',
-        height: '600px',
-        data: {staffData: this.data}
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed');
-      });
-    }
 }

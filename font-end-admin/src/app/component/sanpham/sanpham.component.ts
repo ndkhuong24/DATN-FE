@@ -29,7 +29,7 @@ export class SanphamComponent implements OnInit {
       {
         headerName: 'Ảnh',
         field: 'imagesDTOList[0].imageName',
-        cellRenderer: params => `<img height="100px" src="${params.data.imageURL}">`,
+        cellRenderer: (params: { data: { imageURL: any; }; }) => `<img height="100px" src="${params.data.imageURL}">`,
         flex: 1
       },
       {
@@ -40,7 +40,7 @@ export class SanphamComponent implements OnInit {
         flex: 1
       },
       {
-        headerName: 'Tên Sản phẩm',
+        headerName: 'Tên',
         field: 'name',
         sortable: true,
         filter: true,
