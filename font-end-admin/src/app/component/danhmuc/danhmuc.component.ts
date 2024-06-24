@@ -18,7 +18,7 @@ export class DanhmucComponent implements OnInit {
   public rowSelection: 'single' | 'multiple' = 'multiple';
   constructor(
     private matdialog: MatDialog,
-    private ctsv: CategoryService,
+    private categoryService: CategoryService,
     private cdr: ChangeDetectorRef
   ) {
     this.columnDefs = [
@@ -35,20 +35,22 @@ export class DanhmucComponent implements OnInit {
         sortable: true,
         filter: true,
         flex: 1,
+        valueGetter: (params: { data: { createDate: string; }; }) => this.formatDate(params.data.createDate)
       },
       {
-        headerName: 'Ngày Sửa ',
+        headerName: 'Ngày sửa ',
         field: 'updateDate',
         sortable: true,
         filter: true,
         flex: 1,
+        valueGetter: (params: { data: { updateDate: string; }; }) => this.formatDate(params.data.updateDate)
       },
       {
         headerName: 'Trạng thái',
         field: 'status',
         sortable: true,
         filter: true,
-        valueGetter: (params) => {
+        valueGetter: (params: { data: { status: number; }; }) => {
           return params.data.status === 0 ? 'Hoạt động' : 'Ngừng hoạt động';
         },
         flex: 1,
@@ -67,7 +69,7 @@ export class DanhmucComponent implements OnInit {
   }
 
   getCategory() {
-    this.ctsv.getAllCategory().subscribe((data) => {
+    this.categoryService.getAllCategory().subscribe((data) => {
       this.rowData = data;
     });
   }
@@ -83,5 +85,11 @@ export class DanhmucComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  private formatDate(dateStr: string): string {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   }
 }

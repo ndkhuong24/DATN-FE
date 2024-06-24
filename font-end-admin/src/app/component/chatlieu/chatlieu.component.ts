@@ -35,6 +35,7 @@ export class ChatlieuComponent implements OnInit {
         sortable: true,
         filter: true,
         flex: 1,
+        valueGetter: (params: { data: { createDate: string; }; }) => this.formatDate(params.data.createDate)
       },
       {
         headerName: 'Ngày Sửa ',
@@ -42,6 +43,7 @@ export class ChatlieuComponent implements OnInit {
         sortable: true,
         filter: true,
         flex: 1,
+        valueGetter: (params: { data: { updateDate: string; }; }) => this.formatDate(params.data.updateDate)
       },
       {
         headerName: 'Mô tả',
@@ -90,5 +92,11 @@ export class ChatlieuComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  private formatDate(dateStr: string): string {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   }
 }
