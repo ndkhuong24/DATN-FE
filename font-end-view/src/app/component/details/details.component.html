@@ -2,9 +2,6 @@
   <div class="row">
     <div class="col-md-5">
       <div class="main-img">
-        <!-- <app-custom-carousel [images]="product.imagesDTOList" [height]="0"></app-custom-carousel>
-        <div class="row my-3 previews" style="display: flex;justify-content: space-around;">
-        </div> -->
         <img src="{{product.imageURL}}" alt="">
       </div>
     </div>
@@ -13,20 +10,11 @@
         <div class="product-title text-bold my-3" style="font-weight: 700;">
           {{product?.name}}
         </div>
-        <!-- <div class="price-area my-4" *ngIf="product?.reducePrice != null && product?.percentageReduce != null">
-          <div class="old-price" style="font-size: 15px; margin-top: 10px"><div style="text-decoration: line-through; color: #757575">{{utilService.formatMoney(product.price)}}</div></div>
-          <div class="new-price" style="font-size: 25px"><span>{{utilService.formatMoney(product.price - product.reducePrice)}}</span></div>
-          <div  style="display: flex;text-align: center;align-items: center;background-color:red; color: #ffffff;margin-left: 20px;border-radius: 4px; height: 20px; margin-top: 10px">
-            <div style="font-size: 10px; padding: 5px;font-weight: 700;">{{product?.percentageReduce}}% GIẢM</div></div>
-        </div>
-        <div class="price-area my-4" *ngIf="product?.reducePrice == null && product?.percentageReduce == null">
-          <div class="new-price" style="font-size: 25px"><span>{{utilService.formatMoney(product?.price)}}</span></div>
-        </div> -->
 
         <div class="new-price" style="font-size: 25px" *ngIf="minPrice == maxPrice">
           <span>{{utilService.formatMoney(maxPrice)}}</span>
         </div>
-        <!-- Initially display when minPrice !== maxPrice -->
+
         <div class="new-price" style="font-size: 25px" *ngIf="minPrice !== maxPrice && !bothSizeAndColorSelected==true">
           <span>{{ utilService.formatMoney(minPrice) }} - {{ utilService.formatMoney(maxPrice) }}</span>
         </div>
@@ -67,7 +55,7 @@
           <div class="details-title text-color mb-1" style="color: red" *ngIf="getProductDetailQuantity() === 0">Hết
             hàng</div>
         </div>
-        
+
         <div class="wrap-num-product flex-w m-r-20 m-tb-10 flex-w flex-r-m p-b-10"
           *ngIf="bothSizeAndColorSelected == true">
           <button type="button" class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m"
@@ -118,7 +106,7 @@
               <label>Chất liệu: </label> {{product?.materialDTO?.name}} <br>
               <label>Độ cao của đế giày: </label> {{product?.soleDTO?.soleHeight}} cm (Chất liệu:
               {{product?.soleDTO?.soleMaterial}}) <br>
-<!-- 
+              <!-- 
               <label>Cổ giày : </label>
               <span *ngIf="product?.productDetailDTOList?.length > 0">{{ product.productDetailDTOList[0]?.shoeCollar}}</span> -->
 
@@ -142,25 +130,17 @@
         <div class="card" style="width: 18rem;">
           <a [routerLink]="['/product-details',p?.id]">
             <img style="width: 220px; height: 220px" (mouseenter)="onMouseEnter(p)" (mouseleave)="onMouseLeave(p)"
-              [src]=" p.imagesDTOList[0]?.imageName" class="card-img-top" alt="...">
-            <span *ngIf="p?.reducePrice != null && p?.percentageReduce != null" class="percentage-badge">{{
-              p?.percentageReduce }}%</span>
+              [src]=" p.imageURL" class="card-img-top" alt="...">
           </a>
-
           <div class="card-body">
             <h5 class="card-title">{{p.name}}</h5>
-            <!--                <div *ngIf="p.reducePrice == null && p.percentageReduce == null"><span>{{p.price}}</span> đ</div>-->
-            <div class="price-area my-4" *ngIf="p?.reducePrice == null && p?.percentageReduce == null">
-              <div class="new-price" style="font-size: 25px"><span>{{utilService.formatMoney(p?.price)}}</span></div>
-            </div>
-            <!--                <div *ngIf="p.reducePrice != null && p.percentageReduce != null"> <del>{{utilService.formatMoney(p.price)}}</del>-->
-            <!--                  <span style="margin-left: 5px">{{utilService.formatMoney(p.price - p.reducePrice)}}</span></div>-->
-            <div class="price-area my-4" *ngIf="p?.reducePrice != null && p?.percentageReduce != null">
-              <div class="old-price" style="font-size: 15px; margin-top: 10px">
-                <div style="text-decoration: line-through; color: #757575">{{utilService.formatMoney(p.price)}}</div>
+            <div>
+              <div style="font-size: 18px;font-weight: 600;color: red;" *ngIf="p?.minPrice == p?.maxPrice">
+                <span>{{utilService.formatMoney(p?.minPrice)}}</span>
               </div>
-              <div class="new-price" style="font-size: 25px"><span>{{utilService.formatMoney(p.price -
-                  p.reducePrice)}}</span></div>
+              <div style="font-size: 18px;font-weight: 600;color: red;" *ngIf="p?.minPrice != p?.maxPrice">
+                <span>{{utilService.formatMoney(p?.minPrice)}}-{{utilService.formatMoney(p?.maxPrice)}}</span>
+              </div>
             </div>
           </div>
         </div>
