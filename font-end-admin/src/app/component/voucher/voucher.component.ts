@@ -41,6 +41,7 @@ export class VoucherComponent implements OnInit {
     appy: '',
     optionCustomer: '',
   };
+  
   gridOptions: any;
 
   constructor(

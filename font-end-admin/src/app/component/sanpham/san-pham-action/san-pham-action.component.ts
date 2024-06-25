@@ -29,8 +29,8 @@ export class SanPhamActionComponent implements OnInit {
 
   getAllProduct() {
     this.productsService.getAllProduct().subscribe((res) => {
-      this.status0Products = res.filter(product => product.status === 0);
-      this.status1Products = res.filter(product => product.status === 1);
+      this.status0Products = res.filter((product: { status: number; }) => product.status === 0);
+      this.status1Products = res.filter((product: { status: number; }) => product.status === 1);
     })
   }
 
@@ -47,8 +47,8 @@ export class SanPhamActionComponent implements OnInit {
 
   openUpdate() {
     const dialogref = this.matdialog.open(SuaSanPhamComponent, {
-      width: '100%',
-      height: '60vh',
+      width: '250vh',
+      height: '100vh',
       data: this.params,
     });
     dialogref.afterClosed().subscribe((result) => {
@@ -62,8 +62,8 @@ export class SanPhamActionComponent implements OnInit {
 
   clickDetail(id: number): void {
     const dialogref = this.matdialog.open(ChiTietComponent, {
-      width: '80%',
-      height: '60vh',
+      width: '100%',
+      height: '100vh',
       data: { idPd: id },
     });
     dialogref.afterClosed().subscribe(() => {

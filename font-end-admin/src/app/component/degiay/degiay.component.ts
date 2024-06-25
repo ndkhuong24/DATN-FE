@@ -36,11 +36,12 @@ export class DegiayComponent implements OnInit {
         flex: 1,
       },
       {
-        headerName: 'Ngày bắt đầu',
+        headerName: 'Ngày tạo',
         field: 'createDate',
         sortable: true,
         filter: true,
         flex: 1,
+        valueGetter: (params: { data: { createDate: string; }; }) => this.formatDate(params.data.createDate)
       },
       {
         headerName: 'Ngày sửa ',
@@ -48,6 +49,7 @@ export class DegiayComponent implements OnInit {
         sortable: true,
         filter: true,
         flex: 1,
+        valueGetter: (params: { data: { updateDate: string; }; }) => this.formatDate(params.data.updateDate)
       },
       {
         headerName: 'Mô tả',
@@ -61,7 +63,7 @@ export class DegiayComponent implements OnInit {
         field: 'status',
         sortable: true,
         filter: true,
-        valueGetter: (params) => {
+        valueGetter: (params: { data: { status: number; }; }) => {
           return params.data.status === 0 ? 'Hoạt động' : 'Ngừng hoạt động';
         },
         flex: 1,
@@ -95,5 +97,11 @@ export class DegiayComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  private formatDate(dateStr: string): string {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   }
 }

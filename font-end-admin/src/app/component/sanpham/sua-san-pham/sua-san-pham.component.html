@@ -36,7 +36,8 @@
   <div style="padding-left: 10px; flex: 1 1 45%;">
     <mat-form-field appearance="outline">
       <mat-label>Danh mục</mat-label>
-      <mat-select [(ngModel)]="products.idCategory" (keydown)="revoveInvalid(validCategory)" (blur)="validateCategory()">
+      <mat-select [(ngModel)]="products.idCategory" (keydown)="revoveInvalid(validCategory)"
+        (blur)="validateCategory()">
         <mat-option *ngFor="let cate of category" [value]="cate.id">
           {{cate.name}}
         </mat-option>
@@ -58,7 +59,8 @@
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Chất liệu</mat-label>
-      <mat-select [(ngModel)]="products.idMaterial" (keydown)="revoveInvalid(validMaterial)" (blur)="validateMaterial()">
+      <mat-select [(ngModel)]="products.idMaterial" (keydown)="revoveInvalid(validMaterial)"
+        (blur)="validateMaterial()">
         <mat-option *ngFor="let mt of material" [value]="mt.id">
           {{mt.name}}
         </mat-option>

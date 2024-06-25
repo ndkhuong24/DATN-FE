@@ -28,7 +28,7 @@ export class SanphamComponent implements OnInit {
     this.columnDefs = [
       {
         headerName: 'Ảnh',
-        field: 'imagesDTOList[0].imageName',
+        field: 'imageURL',
         cellRenderer: (params: { data: { imageURL: any; }; }) => `<img height="100px" src="${params.data.imageURL}">`,
         flex: 1
       },
@@ -47,32 +47,40 @@ export class SanphamComponent implements OnInit {
         flex: 1
       },
       {
+        headerName: 'SL SPCT',
+        field: 'productDetailAdminDTOList.size', // Original field for reference
+        valueGetter: (params: { data: { productDetailAdminDTOList: string | any[]; }; }) => params.data.productDetailAdminDTOList ? params.data.productDetailAdminDTOList.length : 0,
+        sortable: true,
+        filter: true,
+        flex: 1
+      },
+      {
         headerName: 'Hãng',
         field: 'brandAdminDTO.name',
         sortable: true,
         filter: true,
         flex: 1
       },
-      {
-        headerName: 'Chất liệu',
-        field: 'materialAdminDTO.name',
-        sortable: true,
-        filter: true,
-        flex: 1
-      },
-      {
-        headerName: 'Đế giày',
-        field: 'soleAdminDTO',
-        valueGetter: (params: { data: { soleAdminDTO: { soleHeight: any; soleMaterial: any; }; }; }) => {
-          if (params.data.soleAdminDTO) {
-            return `${params.data.soleAdminDTO.soleHeight} - ${params.data.soleAdminDTO.soleMaterial}`;
-          }
-          return '';
-        },
-        sortable: true,
-        filter: true,
-        flex: 1
-      },
+      // {
+      //   headerName: 'Chất liệu',
+      //   field: 'materialAdminDTO.name',
+      //   sortable: true,
+      //   filter: true,
+      //   flex: 1
+      // },
+      // {
+      //   headerName: 'Đế giày',
+      //   field: 'soleAdminDTO',
+      //   valueGetter: (params: { data: { soleAdminDTO: { soleHeight: any; soleMaterial: any; }; }; }) => {
+      //     if (params.data.soleAdminDTO) {
+      //       return `${params.data.soleAdminDTO.soleHeight} - ${params.data.soleAdminDTO.soleMaterial}`;
+      //     }
+      //     return '';
+      //   },
+      //   sortable: true,
+      //   filter: true,
+      //   flex: 1
+      // },
       {
         headerName: 'Danh mục',
         field: 'categoryAdminDTO.name',
@@ -92,7 +100,8 @@ export class SanphamComponent implements OnInit {
         headerName: 'Chức năng',
         field: '',
         cellRendererFramework: SanPhamActionComponent,
-        flex: 1.2,
+        pinned: 'right',
+        maxWidth: 100,
       },
     ];
   }

@@ -10,47 +10,26 @@
             <h2 class="mb-5 text-center">Sign in</h2>
             <form (ngSubmit)="login()">
               <div class="form-outline mb-4">
-                <mat-form-field
-                  appearance="fill"
-                  style="
+                <mat-form-field appearance="fill" style="
                     width: 428px !important;
                     background-color: white !important;
-                  "
-                >
+                  ">
                   <mat-label>Tên đăng nhập</mat-label>
-                  <input
-                    class="form-control form-control-lg"
-                    matInput
-                    [type]="'text'"
-                    [(ngModel)]="form.username"
-                    [ngModelOptions]="{ standalone: true }"
-                  />
+                  <input class="form-control form-control-lg" matInput [type]="'text'" [(ngModel)]="form.username"
+                    [ngModelOptions]="{ standalone: true }" />
                 </mat-form-field>
               </div>
 
               <div class="form-outline mb-4">
-                <mat-form-field
-                  appearance="fill"
-                  style="width: 428px !important"
-                >
+                <mat-form-field appearance="fill" style="width: 428px !important">
                   <mat-label>Mật Khẩu</mat-label>
-                  <input
-                    class="form-control form-control-lg"
-                    matInput
-                    [type]="hide ? 'password' : 'text'"
-                    [(ngModel)]="form.password"
-                    [ngModelOptions]="{ standalone: true }"
-                  />
-                  <a
-                    mat-icon-button
-                    matSuffix
-                    (click)="hide = !hide"
-                    [attr.aria-label]="'Hide password'"
-                    [attr.aria-pressed]="hide"
-                  >
+                  <input class="form-control form-control-lg" matInput [type]="hide ? 'password' : 'text'"
+                    [(ngModel)]="form.password" [ngModelOptions]="{ standalone: true }" />
+                  <a mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide">
                     <mat-icon>{{
                       hide ? "visibility_off" : "visibility"
-                    }}</mat-icon>
+                      }}</mat-icon>
                   </a>
                 </mat-form-field>
               </div>
@@ -62,11 +41,7 @@
               <!--              </div>-->
 
               <div>
-                <button
-                  class="btn btn-primary btn-lg btn-block"
-                  style="margin-left: 120px; width: 200px"
-                  type="submit"
-                >
+                <button class="btn btn-primary btn-lg btn-block" style="margin-left: 120px; width: 200px" type="submit">
                   <i class="bi bi-box-arrow-in-right"></i>
                   Đăng Nhập
                 </button>

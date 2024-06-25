@@ -2,7 +2,9 @@ label {
   display: block;
   margin-bottom: 5px;
 }
-input, select {
+
+input,
+select {
   width: 100%;
   padding: 8px;
   margin-bottom: 10px;
@@ -11,9 +13,12 @@ input, select {
   border-bottom: 1px solid #ced4da;
   outline: none;
 }
-input:focus, select:focus {
+
+input:focus,
+select:focus {
   border-bottom-color: #28a745;
 }
+
 button {
   background-color: #4CAF50;
   color: white;

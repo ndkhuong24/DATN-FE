@@ -7,19 +7,19 @@ import { apiURL } from '../config/apiUrl';
   providedIn: 'root'
 })
 export class ProductService {
+  constructor(private http: HttpClient) {
+  }
+
+  getAllProduct(): Observable<any> {
+    return this.http.get(`${apiURL}product/hien-thi`);
+  }
+
   updateImgProduct(imageList: any, id: number) {
     const formData: FormData = new FormData();
     formData.append('image', imageList);
     formData.append('idProduct', id.toString());
 
     return this.http.post<any>(`${apiURL}images/update`, formData, { observe: 'response' });
-  }
-
-  constructor(private http: HttpClient) {
-  }
-
-  getAllProduct(): Observable<any> {
-    return this.http.get(`${apiURL}product/hien-thi`);
   }
 
   // getAllProductAll(): Observable<any> {
@@ -52,7 +52,7 @@ export class ProductService {
   searchProduct(param: string): Observable<any> {
     return this.http.get(`${apiURL}product/search/` + param);
   }
-  
+
   activateProduct(productId: number): Observable<any> {
     const url = `${apiURL}product/${productId}/activate`;
     return this.http.put(url, null);

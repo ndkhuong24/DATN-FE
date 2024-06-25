@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ProductService } from 'src/app/service/product.service';
 import { ProductdetailService } from 'src/app/service/productdetail.service';
 
 @Component({
@@ -15,10 +16,13 @@ export class ChiTietComponent implements OnInit {
     columnDefs = [];
     headerHeight = 50;
     rowHeight = 40;
+    productDetail: any;
+
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
         private productDetailService: ProductdetailService,
+        private productService: ProductService
     ) {
         this.columnDefs = [
             {
@@ -54,7 +58,7 @@ export class ChiTietComponent implements OnInit {
                 field: 'shoeCollar',
                 sortable: true,
                 filter: true,
-                valueGetter: (params) => {
+                valueGetter: (params: { data: { shoeCollar: number; }; }) => {
                     return params.data.shoeCollar === 0 ? 'Cổ thấp' : 'Cổ cao';
                 },
                 flex: 1,
@@ -66,8 +70,14 @@ export class ChiTietComponent implements OnInit {
 
     ngOnInit(): void {
         this.getProductDetailByProductId(this.idPd);
+        this.getProductByProductId(this.idPd);
     }
 
+    getProductByProductId(idPd: number) {
+        this.productService.GetProduct(idPd).subscribe((res) => {
+            this.productDetail = res.data;
+        })
+    }
 
     getProductDetailByProductId(idPd: number) {
         this.productDetailService.getProductDetailByProductId(idPd).subscribe(

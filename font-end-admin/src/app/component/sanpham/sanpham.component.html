@@ -7,16 +7,16 @@
   <mat-tab-group>
     <mat-tab label="Đang hoạt động">
       <div class="grid">
-        <ag-grid-angular style="width: 100%; height: 550px" class="ag-theme-balham" [rowData]="status0Products"
+        <ag-grid-angular style="width: 100%; height: 600px" class="ag-theme-balham" [rowData]="status0Products"
           [columnDefs]="columnDefs" [rowSelection]="rowSelection" [headerHeight]="headerHeight" [rowHeight]="rowHeight"
-          [pagination]="true" [paginationPageSize]="10"></ag-grid-angular>
+          [pagination]="true" [paginationPageSize]="5"></ag-grid-angular>
       </div>
     </mat-tab>
     <mat-tab label="Ngừng hoạt động">
       <div class="grid">
-        <ag-grid-angular style="width: 100%; height: 550px" class="ag-theme-balham" [rowData]="status1Products"
+        <ag-grid-angular style="width: 100%; height: 600px" class="ag-theme-balham" [rowData]="status1Products"
           [columnDefs]="columnDefs" [rowSelection]="rowSelection" [headerHeight]="headerHeight" [rowHeight]="rowHeight"
-          [pagination]="true" [paginationPageSize]="10"></ag-grid-angular>
+          [pagination]="true" [paginationPageSize]="5"></ag-grid-angular>
       </div>
     </mat-tab>
   </mat-tab-group>

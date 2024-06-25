@@ -1,3 +1,13 @@
-<button mat-icon-button color="primary" (click)="openUpdate()"><mat-icon>edit</mat-icon></button>
+<!-- <button mat-icon-button color="primary" (click)="openUpdate()"><mat-icon>edit</mat-icon></button>
 <button mat-icon-button color="warn" (click)="clickReset(params.id)"><mat-icon>build</mat-icon></button>
-<button mat-icon-button color="secondary" (click)="clickDetail(params.id)"><mat-icon>remove_red_eye</mat-icon></button>
+<button mat-icon-button color="secondary" (click)="clickDetail(params.id)"><mat-icon>remove_red_eye</mat-icon></button> -->
+
+<button mat-button [matMenuTriggerFor]="menu">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="openUpdate()">Cập nhật</button>
+    <button mat-menu-item (click)="clickReset(params.id)">Thay đổi trạng thái</button>
+    <button mat-menu-item (click)="clickDetail(params.id)">Xem chi tiết</button>
+
+  </mat-menu>

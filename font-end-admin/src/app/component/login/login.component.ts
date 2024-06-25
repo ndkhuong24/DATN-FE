@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     private tokenService: TokenService,
     private jwt: AuthJwtService,
     private toas: ToastrService
-  ) {}
+  ) { }
   login() {
     this.signFrom = new SignForm(this.form.username, this.form.password);
     console.log(this.signFrom);
@@ -49,5 +49,5 @@ export class LoginComponent implements OnInit {
       }
     );
   }
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

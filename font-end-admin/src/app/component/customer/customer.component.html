@@ -8,14 +8,14 @@
         <div class="form-group">
           <label for="maKhachHang">Mã khách hàng:</label>
           <input type="text" class="form-control" id="maKhachHang" name="maKhachHang" placeholder="Mã mặc định"
-                 readonly>
+            readonly>
         </div>
 
         <div class="form-group">
           <label for="tenKhachHang">Tên khách hàng:</label>
           <input type="text" class="form-control" id="tenKhachHang" name="tenKhachHang" placeholder="Tên khách hàng"
-                 required (keydown)="revoveInvalid(validReceiver)" (blur)="validateReceiver()"
-                 [(ngModel)]="customer.fullname" [ngModelOptions]="{standalone: true}">
+            required (keydown)="revoveInvalid(validReceiver)" (blur)="validateReceiver()"
+            [(ngModel)]="customer.fullname" [ngModelOptions]="{standalone: true}">
           <div class="validate-input" *ngIf="!validReceiver.done">
             <p class="validate-input-label" *ngIf="validReceiver.empty">Tên khách hàng không để trống</p>
             <p class="validate-input-label" *ngIf="validReceiver.maxLength">Tên khách hàng tối đa 250 kí tự</p>
@@ -25,8 +25,8 @@
         <div class="form-group">
           <label for="dienThoai">Điện thoại:</label>
           <input type="tel" class="form-control" id="dienThoai" name="dienThoai" placeholder="Điện thoại"
-                 (keydown)="revoveInvalid(validReceiverPhone)" (blur)="validateReceiverPhone()" required
-                 [(ngModel)]="customer.phone">
+            (keydown)="revoveInvalid(validReceiverPhone)" (blur)="validateReceiverPhone()" required
+            [(ngModel)]="customer.phone">
           <div class="validate-input" *ngIf="!validReceiverPhone.done">
             <p class="validate-input-label" *ngIf="validReceiverPhone.empty">Số điện thoại không để trống</p>
             <p class="validate-input-label" *ngIf="validReceiverPhone.regex">số điện thoại không đúng</p>
@@ -36,7 +36,7 @@
         <div class="form-group">
           <label for="diaChi">Địa chỉ:</label>
           <input type="text" class="form-control" id="diaChi" name="diaChi" placeholder="Số nhà, tòa nhà, ngõ, đường"
-                 required>
+            required>
         </div>
 
         <div class="form-group">

@@ -1,11 +1,51 @@
 <div class="row">
   <div class="col">
-    <p>Chi tiết sản phẩm</p>
+    <h1>Chi tiết sản phẩm</h1>
 
-    <br>
+    <div class="row">
+      <div class="col-4">
+        <div class="row">
+          <!-- Cột 1 -->
+          <div class="col-12" *ngIf="productDetail">
+            <p>Mã sản phẩm: {{ productDetail.code }}</p>
+          </div>
+          <div class="col-12" *ngIf="productDetail">
+            <p>Tên sản phẩm: {{ productDetail.name }}</p>
+          </div>
+          <div class="col-12" *ngIf="productDetail">
+            <p>Mô tả: {{ productDetail.description }}</p>
+          </div>
+          <div class="col-12" *ngIf="productDetail">
+            <p>Thương hiệu: {{ productDetail.brandAdminDTO.name }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <!-- Cột 2 -->
+        <div class="row">
+          <div class="col-12" *ngIf="productDetail">
+            <p>Danh mục: {{ productDetail.categoryAdminDTO.name }}</p>
+          </div>
+          <div class="col-12" *ngIf="productDetail">
+            <p>Chất liệu: {{ productDetail.materialAdminDTO.name }}</p>
+          </div>
+          <div class="col-12" *ngIf="productDetail">
+            <p>Chất liệu đế giày: {{ productDetail.soleAdminDTO.soleMaterial }}</p>
+          </div>
+          <div class="col-12" *ngIf="productDetail">
+            <p>Chiều cao đế giày: {{ productDetail.soleAdminDTO.soleHeight }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <img src="{{ productDetail?.imageURL }}" alt="Product Image" style="height: 180px;">
+      </div>
+    </div>
 
     <div class="grid">
-      <ag-grid-angular style="width: 100%; height: 550px;" class="ag-theme-balham" [rowData]="rowData"
+      <ag-grid-angular style="width: 100%; height: 400px;" class="ag-theme-balham" [rowData]="rowData"
         [columnDefs]="columnDefs" [headerHeight]="headerHeight" [rowHeight]="rowHeight"></ag-grid-angular>
     </div>
 

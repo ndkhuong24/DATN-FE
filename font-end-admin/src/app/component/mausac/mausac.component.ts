@@ -41,6 +41,7 @@ export class MausacComponent implements OnInit {
         sortable: true,
         filter: true,
         flex: 1,
+        valueGetter: (params: { data: { createDate: string; }; }) => this.formatDate(params.data.createDate)
       },
       {
         headerName: 'Ngày sửa',
@@ -48,13 +49,14 @@ export class MausacComponent implements OnInit {
         sortable: true,
         filter: true,
         flex: 1,
+        valueGetter: (params: { data: { updateDate: string; }; }) => this.formatDate(params.data.updateDate)
       },
       {
         headerName: 'Trạng thái',
         field: 'status',
         sortable: true,
         filter: true,
-        valueGetter: (params) => {
+        valueGetter: (params: { data: { status: number; }; }) => {
           return params.data.status === 0 ? 'Hoạt động' : 'Ngừng hoạt động';
         },
         flex: 1,
@@ -71,7 +73,7 @@ export class MausacComponent implements OnInit {
   ngOnInit(): void {
     this.getAllColor();
   }
-  
+
   getAllColor() {
     this.mssv.getAllMauSac().subscribe((res) => {
       this.rowData = res;
@@ -88,5 +90,11 @@ export class MausacComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  private formatDate(dateStr: string): string {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   }
 }

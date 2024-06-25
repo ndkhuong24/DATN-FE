@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {UsersDTO} from '../model/UsersDTO';
-import {CustomerServiceService} from '../../service/customer-service.service';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {ToastrService} from 'ngx-toastr';
-import {CommonFunction} from '../../util/common-function';
-import {ValidateInput} from '../model/validate-input';
+import { UsersDTO } from '../model/UsersDTO';
+import { CustomerServiceService } from '../../service/customer-service.service';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
+import { CommonFunction } from '../../util/common-function';
+import { ValidateInput } from '../model/validate-input';
 
 @Component({
   selector: 'app-customer',
@@ -21,17 +21,17 @@ export class CustomerComponent implements OnInit {
   validReceiver: ValidateInput = new ValidateInput();
   validEmail: ValidateInput = new ValidateInput();
   validReceiverPhone: ValidateInput = new ValidateInput();
-  constructor(private customerService: CustomerServiceService ,private dialogRef: MatDialogRef<CustomerComponent>, private toastr: ToastrService) { }
-  addCustomerSC(){
+  constructor(private customerService: CustomerServiceService, private dialogRef: MatDialogRef<CustomerComponent>, private toastr: ToastrService) { }
+  addCustomerSC() {
     this.customer.fullname = CommonFunction.trimText(this.customer.fullname);
     this.customer.phone = CommonFunction.trimText(this.customer.phone);
     this.validateReceiver();
     this.validateReceiverPhone();
-    if (!this.validReceiver.done || !this.validReceiverPhone.done){
+    if (!this.validReceiver.done || !this.validReceiverPhone.done) {
       return;
     }
     this.customerService.addCustomerSC(this.customer).subscribe(data => {
-      if (data.message === 'The phone is existed'){
+      if (data.message === 'The phone is existed') {
         this.toastr.error('Số điện thoại đã tồn tại');
         return;
       }

@@ -62,7 +62,7 @@ export class ChitietsanphamComponent implements OnInit {
         field: 'shoeCollar',
         sortable: true,
         filter: true,
-        valueGetter: (params) => {
+        valueGetter: (params: { data: { shoeCollar: number; }; }) => {
           return params.data.shoeCollar === 0 ? 'Cổ thấp' : 'Cổ cao';
         },
         flex: 1,

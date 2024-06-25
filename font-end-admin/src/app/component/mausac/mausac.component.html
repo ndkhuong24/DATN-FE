@@ -3,17 +3,9 @@
     <a (click)="openAdd()" class="btn btn-primary" style="margin-bottom: 20px;">Thêm màu sắc</a>
 
     <div class="grid">
-      <ag-grid-angular
-        style="width: 100%; height: 550px;"
-        class="ag-theme-balham"
-        [rowData]="rowData"
-        [columnDefs]="columnDefs"
-        [rowSelection]="rowSelection"
-        [headerHeight]="headerHeight"
-        [rowHeight]="rowHeight"
-        [pagination]="true"
-        [paginationPageSize]="10"
-      ></ag-grid-angular>
+      <ag-grid-angular style="width: 100%; height: 550px;" class="ag-theme-balham" [rowData]="rowData"
+        [columnDefs]="columnDefs" [rowSelection]="rowSelection" [headerHeight]="headerHeight" [rowHeight]="rowHeight"
+        [pagination]="true" [paginationPageSize]="10"></ag-grid-angular>
     </div>
   </div>
 </div>

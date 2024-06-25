@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ThemDanhMucComponent } from './them-danh-muc/them-danh-muc.component';
 import { CategoryService } from '../../service/category.service';
 import { MatDialog } from '@angular/material/dialog';
-import {DanhMucActionComponent} from './danh-muc-action/danh-muc-action.component'
+import { DanhMucActionComponent } from './danh-muc-action/danh-muc-action.component'
 
 @Component({
   selector: 'app-danhmuc',
@@ -30,7 +30,7 @@ export class DanhmucComponent implements OnInit {
         flex: 1,
       },
       {
-        headerName: 'Ngày bắt đầu',
+        headerName: 'Ngày tạo',
         field: 'createDate',
         sortable: true,
         filter: true,
@@ -38,7 +38,7 @@ export class DanhmucComponent implements OnInit {
         valueGetter: (params: { data: { createDate: string; }; }) => this.formatDate(params.data.createDate)
       },
       {
-        headerName: 'Ngày sửa ',
+        headerName: 'Ngày sửa',
         field: 'updateDate',
         sortable: true,
         filter: true,

@@ -31,8 +31,6 @@ export class SuaSanPhamComponent implements OnInit {
     imageList: null,
   };
 
-
-
   category: CategoryInterface[] = [];
   brand: BrandInterface[] = [];
   sole: SoleInterface[] = [];
@@ -45,12 +43,10 @@ export class SuaSanPhamComponent implements OnInit {
   validMaterial: ValidateInput = new ValidateInput();
   validPrice: ValidateInput = new ValidateInput();
   validDescription: ValidateInput = new ValidateInput();
-  // validImage: ValidateInput = new ValidateInput();
 
   constructor(
     public dialogRef: MatDialogRef<SuaSanPhamComponent>,
     @Inject(MAT_DIALOG_DATA) public products: any,
-
     private productService: ProductService,
     private brandService: BrandService,
     private categoryService: CategoryService,
@@ -93,7 +89,7 @@ export class SuaSanPhamComponent implements OnInit {
     });
   }
 
-  revoveInvalid(result) {
+  revoveInvalid(result: { done: boolean; }) {
     result.done = true;
   }
 
@@ -120,10 +116,6 @@ export class SuaSanPhamComponent implements OnInit {
   validateMaterial() {
     this.validMaterial = CommonFunction.validateInput(this.products.idMaterial, 250, null);
   }
-
-  // validateImage() {
-  //   this.validImage = CommonFunction.validateInput(this.imageList, 250, null);
-  // }
 
   clickUpdate(id: number) {
     this.product.name = CommonFunction.trimText(this.products.name);
