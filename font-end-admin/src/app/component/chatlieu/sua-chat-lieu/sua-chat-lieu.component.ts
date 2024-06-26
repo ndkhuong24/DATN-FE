@@ -23,7 +23,7 @@ export class SuaChatLieuComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  revoveInvalid(result) {
+  revoveInvalid(result: { done: boolean; }) {
     result.done = true;
   }
 
@@ -48,7 +48,7 @@ export class SuaChatLieuComponent implements OnInit {
     if (this.validName.done === false || !this.validDescription.done) {
       return;
     }
-    
+
     Swal.fire({
       title: 'Bạn chắc muốn sửa',
       text: 'Bạn sẽ không thể hoàn tác',

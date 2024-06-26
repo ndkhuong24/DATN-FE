@@ -82,7 +82,6 @@ export class ThemSanPhamComponent implements OnInit {
   quantity: number;
 
   imageList: File;
-  // selectedFile: File;
 
   productDetail = [];
 
@@ -179,6 +178,7 @@ export class ThemSanPhamComponent implements OnInit {
       this.toastr.error('Vui lòng nhập giá tiền', 'Lỗi nhập liệu');
       return;
     }
+    
     Swal.fire({
       title: 'Bạn muốn thêm',
       text: 'Thao tác này sẽ không hoàn tác',

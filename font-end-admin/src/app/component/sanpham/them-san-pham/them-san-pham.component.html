@@ -119,10 +119,7 @@
 </div>
 
 <div mat-dialog-content class="example-container" *ngIf="productDetail && productDetail.length > 0">
-  <h1> Chi tiết sản phẩm</h1>
-
   <table class="table">
-
     <thead>
       <tr>
         <th scope="col">Tên Sản Phẩm</th>
@@ -142,9 +139,6 @@
         <td>
           <div>
             <input type="number" [(ngModel)]="productDetail[i].quantity" style="width: 50px">
-            <!-- <div class="validate-input" *ngIf="!isValidQuantity(productDetail[i].quantity)">
-              <p class="validate-input-label">Số lượng không hợp lệ</p>
-            </div> -->
           </div>
         </td>
         <td>

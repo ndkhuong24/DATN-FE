@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProductService } from '../../../service/product.service';
 import { BrandService } from '../../../service/brand.service';
@@ -12,6 +12,10 @@ import { MaterialInterface } from '../../../interface/material-interface';
 import { ValidateInput } from '../../model/validate-input';
 import { CommonFunction } from '../../../util/common-function';
 import Swal from 'sweetalert2';
+import { SizeService } from 'src/app/service/size.service';
+import { MausacService } from 'src/app/service/mausac.service';
+import { SizeInterface } from 'src/app/interface/size-interface';
+import { ColorInterface } from 'src/app/interface/color-interface';
 
 @Component({
   selector: 'app-sua-san-pham',
@@ -44,6 +48,28 @@ export class SuaSanPhamComponent implements OnInit {
   validPrice: ValidateInput = new ValidateInput();
   validDescription: ValidateInput = new ValidateInput();
 
+  size: SizeInterface[] = [];
+  idSize: number[];
+  listSizeChoice = [];
+
+  color: ColorInterface[] = [];
+  idColor: number[];
+  listColorChoice = [];
+
+  productDetail = [];
+
+  shoeCollar: number;
+  listShoeCollar = [
+    {
+      id: 0,
+      name: 'Cổ thấp',
+    },
+    {
+      id: 1,
+      name: 'Cổ cao'
+    }
+  ];
+
   constructor(
     public dialogRef: MatDialogRef<SuaSanPhamComponent>,
     @Inject(MAT_DIALOG_DATA) public products: any,
@@ -52,6 +78,9 @@ export class SuaSanPhamComponent implements OnInit {
     private categoryService: CategoryService,
     private soleService: SoleService,
     private materialService: MaterialpostService,
+    private sizeService: SizeService,
+    private colorService: MausacService,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -59,6 +88,41 @@ export class SuaSanPhamComponent implements OnInit {
     this.getAllCategory();
     this.getAllMaterial();
     this.getAllSole();
+    this.getAllColor();
+    this.getAllSize();
+    this.productDetail = this.products.productDetailAdminDTOList;
+    this.zenProductDetail1();
+  }
+
+  zenProductDetail1() {
+    if (this.listColorChoice.length > 0 && this.listSizeChoice.length > 0) {
+      for (let i = 0; i < this.listSizeChoice.length; i++) {
+        for (let j = 0; j < this.listColorChoice.length; j++) {
+          const obj = {
+            sizeDTO: this.listSizeChoice[i],
+            colorDTO: this.listColorChoice[j],
+            quantity: 1,
+            shoeCollar: 0,
+            price: 1000,
+          };
+          this.productDetail.push(obj);
+        }
+      }
+    } else {
+      return;
+    }
+  }
+
+  getAllSize() {
+    this.sizeService.getAllSize().subscribe(res => {
+      this.size = res.filter((size: { status: number; }) => size.status === 0);
+    });
+  }
+
+  getAllColor() {
+    this.colorService.getAllMauSac().subscribe(res => {
+      this.color = res.filter((color: { status: number; }) => color.status === 0);
+    });
   }
 
   OnChangeFile(event: any) {
@@ -137,6 +201,7 @@ export class SuaSanPhamComponent implements OnInit {
       || !this.validCategory.done || !this.validSole.done || !this.validMaterial.done) {
       return;
     }
+
     Swal.fire({
       title: 'Bạn chắc muốn sửa',
       text: 'Bạn sẽ không thể hoàn tác',
@@ -158,6 +223,7 @@ export class SuaSanPhamComponent implements OnInit {
             idCategory: this.product.idCategory,
             description: this.product.description,
             status: this.product.status,
+            productDetailAdminDTOList: this.productDetail,
           };
 
           this.productService.UpdateProduct(id, product).subscribe(
@@ -206,64 +272,45 @@ export class SuaSanPhamComponent implements OnInit {
               Swal.fire('Error', 'Failed to update image', 'error');
             }
           })
-
-
         }
       }
     })
+  }
 
+  OnChangSize(event: any[]) {
+    this.listSizeChoice = [];
+    this.listSizeChoice = event;
+    this.zenProductDetail();
+  }
 
+  OnChangColor(event: any[]) {
+    this.listColorChoice = [];
+    this.listColorChoice = event;
+    this.zenProductDetail();
+  }
 
-    // this.product.name = CommonFunction.trimText(this.product.name);
-    // this.product.description = CommonFunction.trimText(this.product.description);
-    // this.product.price = CommonFunction.trimText(this.product.price);
-    // this.validateName();
-    // this.validateDescription();
-    // this.validatePrice();
-    // this.validateBrand();
-    // this.validateCategory();
-    // this.validateSole();
-    // this.validateMaterial();
-    // if (!this.validName.done || !this.validDescription.done || !this.validPrice.done || !this.validBrand
-    //   || !this.validCategory.done || !this.validSole.done || !this.validMaterial.done) {
-    //   return;
-    // }
-    // Swal.fire({
-    //   title: 'Bạn chắc muốn sửa?',
-    //   text: 'Bạn sẽ không thể hoàn tác!',
-    //   icon: 'warning',
-    //   showCancelButton: true,
-    //   confirmButtonColor: '#3085d6',
-    //   cancelButtonColor: '#d33',
-    //   confirmButtonText: 'Sửa!'
-    // }).then((result1) => {
-    //   if (result1.isConfirmed) {
-    //     const product = {
-    //       code: this.product.code,
-    //       name: this.product.name,
-    //       idBrand: this.product.idBrand,
-    //       idMaterial: this.product.idMaterial,
-    //       idSole: this.product.idSole,
-    //       idCategory: this.product.idCategory,
-    //       description: this.product.description,
-    //       status: this.product.status,
-    //       price: this.product.price
-    //     };
-    //     this.prdsv.UpdateProduct(id, product).subscribe(
-    //       result => {
-    //         console.log('product add success', result);
-    //         this.router.navigateByUrl('admin/san-pham');
-    //       },
-    //       error => {
-    //         console.error('product add error', error);
-    //       }
-    //     );
-    //     Swal.fire(
-    //       'Sửa!',
-    //       'Sửa thành công',
-    //       'success'
-    //     );
-    //   }
-    // });
+  zenProductDetail() {
+    this.productDetail = [];
+    if (this.listColorChoice.length > 0 && this.listSizeChoice.length > 0) {
+      for (let i = 0; i < this.listSizeChoice.length; i++) {
+        for (let j = 0; j < this.listColorChoice.length; j++) {
+          const obj = {
+            sizeDTO: this.listSizeChoice[i],
+            colorDTO: this.listColorChoice[j],
+            quantity: 1,
+            shoeCollar: 0,
+            price: 1000,
+          };
+          this.productDetail.push(obj);
+        }
+      }
+    } else {
+      return;
+    }
+  }
+
+  deleteProductDetail(i: number) {
+    this.productDetail.splice(i, 1);
+    this.cdr.detectChanges();
   }
 }

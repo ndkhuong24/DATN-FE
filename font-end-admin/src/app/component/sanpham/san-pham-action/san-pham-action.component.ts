@@ -16,6 +16,9 @@ export class SanPhamActionComponent implements OnInit {
   status0Products = [];
   status1Products = [];
 
+  params: any;
+  rowData = [];
+
   constructor(
     private matdialog: MatDialog,
     private productsService: ProductService,
@@ -34,9 +37,6 @@ export class SanPhamActionComponent implements OnInit {
     })
   }
 
-  params: any;
-  rowData = [];
-
   agInit(params: any) {
     this.params = params.data;
   }
@@ -52,7 +52,6 @@ export class SanPhamActionComponent implements OnInit {
       data: this.params,
     });
     dialogref.afterClosed().subscribe((result) => {
-      console.log(result);
       if (result === 'saveProduct') {
         this.sanphamComponent.ngOnInit();
         this.cdr.detectChanges();

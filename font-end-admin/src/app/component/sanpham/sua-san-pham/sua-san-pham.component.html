@@ -82,9 +82,67 @@
   <div style="padding-left: 10px; flex: 1 1 45%; width: 45%;">
     <div>
       <input type="file" (change)="OnChangeFile($event)" style="color: red">
-      <!-- <p class="validate-input-label" *ngIf="validImage.empty">Ảnh không được để trống</p> -->
     </div>
   </div>
+</div>
+
+<br>
+
+<div style="flex-basis: 100%; width: 50%;">
+  <div *ngIf="products.name">
+    <h1 style="display: flex">Thêm Kích cỡ & Màu sắc</h1>
+    <ng-select [items]="size" bindLabel="sizeNumber" bindValue="id" [multiple]="true" placeholder="Chọn kích thước"
+      (change)="OnChangSize($event)">
+    </ng-select>
+    <br>
+    <ng-select [items]="color" bindLabel="name" bindValue="id" [multiple]="true" placeholder="Chọn màu sắc"
+      (change)="OnChangColor($event)">
+    </ng-select>
+    <br>
+  </div>
+</div>
+
+<br>
+
+<div mat-dialog-content class="example-container" *ngIf="productDetail && productDetail.length > 0">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Kích thước</th>
+        <th scope="col">Màu sắc</th>
+        <th scope="col">Số Lượng</th>
+        <th scope="col">Cổ giày</th>
+        <th scope="col">Giá</th>
+        <th scope="col">Chức năng</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+      <tr *ngFor="let prdtl of productDetail; let i = index">
+        <td>{{prdtl.sizeDTO.sizeNumber}}</td>
+        <td>{{prdtl.colorDTO.name}}</td>
+        <td>
+          <div>
+            <input type="number" [(ngModel)]="productDetail[i].quantity">
+          </div>
+        </td>
+        <td>
+          <div>
+            <ng-select [items]="listShoeCollar" bindLabel="name" bindValue="id"
+              [(ngModel)]="productDetail[i].shoeCollar" [clearable]="false">
+            </ng-select>
+          </div>
+        </td>
+        <td>
+          <div>
+            <input type="number" [(ngModel)]="productDetail[i].price">
+          </div>
+        </td>
+        <td>
+          <button mat-icon-button color="warn" (click)="deleteProductDetail(i)"><mat-icon>delete</mat-icon></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <br>

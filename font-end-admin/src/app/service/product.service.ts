@@ -22,10 +22,6 @@ export class ProductService {
     return this.http.post<any>(`${apiURL}images/update`, formData, { observe: 'response' });
   }
 
-  // getAllProductAll(): Observable<any> {
-  //   return this.http.get(`${apiURL}product/hien-thii`);
-  // }
-
   CreateProduct(product: any): Observable<any> {
     return this.http.post(`${apiURL}product/add`, product);
   }
@@ -41,6 +37,7 @@ export class ProductService {
   GetProduct(id: number): Observable<any> {
     return this.http.get(`${apiURL}product/detail/${id}`);
   }
+  
   getProductDetails(productId: number) {
     return this.http.get<any[]>(`${apiURL}product-details/${productId}`);
   }
@@ -79,21 +76,6 @@ export class ProductService {
   exportExcelProductErrors(listError: any): Observable<Blob> {
     return this.http.post(`${apiURL}product/exportDataErrors`, listError, { responseType: 'blob' });
   }
-
-  // uploadImgProduct(formData: FormData, idProduct) {
-  //   return this.http.post(`${apiURL}upload-img-file?idProduct=${idProduct}`, formData);
-  // }
-
-  // uploadImgProduct(file: File, idProduct: number): Observable<any> {
-  //   const formData: FormData = new FormData();
-  //   formData.append('image', file);
-  //   formData.append('idProduct', idProduct.toString());
-
-  //   const headers = new HttpHeaders();
-  //   headers.append('Content-Type', 'multipart/form-data');
-
-  //   return this.http.post(`http://localhost:8081/api/admin/images/upload`, formData, { headers });
-  // }
 
   uploadImgProduct(file: File, idProduct: number): Observable<any> {
     const formData: FormData = new FormData();
