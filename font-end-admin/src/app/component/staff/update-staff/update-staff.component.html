@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
   <h1 class="mb-4">Nhân Viên</h1>
   <form class="row g-3" (ngSubmit)="updateInfor()">
     <div class="col-md-6">
@@ -92,4 +92,86 @@
       <a href="/staff" class="btn btn-error">Hủy</a>
     </div>
   </form>
+</div> -->
+
+<h1 mat-dialog-title>Cập nhật nhân viên</h1>
+
+<div mat-dialog-content class="example-container" style="display: flex; flex-wrap: wrap;">
+
+  <div style="flex: 1 1 50%; padding-right: 10px;">
+    <mat-form-field appearance="outline">
+      <mat-label>Họ và tên</mat-label>
+      <input [(ngModel)]="data.fullname" name="fullname" matInput placeholder="Nhập họ và tên"
+        (keydown)="revoveInvalid(validFullName)" (blur)="validateFullName()">
+      <div class="validate-input" *ngIf="!validFullName.done">
+        <p class="validate-input-label" *ngIf="validFullName.empty">Họ và tên không được để trống</p>
+        <p class="validate-input-label" *ngIf="validFullName.maxLength">Họ và tên sản phẩm dưới 250 kí tự</p>
+      </div>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nhập số điện thoại</mat-label>
+      <input [(ngModel)]="data.phone" name="phone" matInput placeholder="Nhập số điện thoại"
+        (keydown)="revoveInvalid(validPhone)" (blur)="validatePhone()">
+      <div class="validate-input" *ngIf="!validPhone.done">
+        <p class="validate-input-label" *ngIf="validPhone.empty">Số điện thoại không để trống</p>
+        <p class="validate-input-label" *ngIf="validPhone.regex">số điện thoại không đúng</p>
+      </div>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nhập email</mat-label>
+      <input [(ngModel)]="data.email" name="email" matInput placeholder="Nhập email" (keydown)="revoveInvalid(validEmail)"
+        (blur)="validateEmail()">
+      <div class="validate-input" *ngIf="!validEmail.done">
+        <p class="validate-input-label" *ngIf="validEmail.empty">Email không để trống</p>
+        <p class="validate-input-label" *ngIf="validEmail.maxLength">Email tối đa 250 kí tự</p>
+        <p class="validate-input-label" *ngIf="validEmail.regex">Email Không đúng định dạng</p>
+      </div>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Tên đăng nhập</mat-label>
+      <input [(ngModel)]="data.username" name="username" matInput placeholder="Nhập tên đăng nhập"
+        (keydown)="revoveInvalid(validUserName)" (blur)="validateUserName()">
+      <div class="validate-input" *ngIf="!validUserName.done">
+        <p class="validate-input-label" *ngIf="validUserName.empty">Tên đăng nhập không để trống</p>
+        <p class="validate-input-label" *ngIf="validUserName.maxLength">Tên đăng nhập tối đa 50 kí tự</p>
+        <p class="validate-input-label" *ngIf="validUserName.regex">Tên đăng nhập bắt đầu bằng chữ thường
+          <br>và chỉ chứa các số nguyên dương và có ít nhất 6 kí tự
+        </p>
+        <p class="validate-input-label" *ngIf="validUserName.space">Tên đăng nhập không được chứa dấu cách</p>
+        <p class="validate-input-label" *ngIf="validUserName.UTF8">Tên đăng nhập bắt đầu bằng chữ thường không dấu</p>
+      </div>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Mật Khẩu</mat-label>
+      <input [(ngModel)]="password" name="password" matInput placeholder="Nhập mật khẩu"
+        (keydown)="revoveInvalid(validPassword)" (blur)="validatePassword()">
+      <div class="validate-input" *ngIf="!validPassword.done">
+        <p class="validate-input-label" *ngIf="validPassword.empty">Mật khẩu không để trống</p>
+        <p class="validate-input-label" *ngIf="validPassword.maxLength">Mật khẩu tối đa 50 kí tự</p>
+        <p class="validate-input-label" *ngIf="validPassword.regex">Mật khẩu bắt đầu bằng chữ có ít nhất một chứ cái in
+          hoa
+          <br> có ít nhất 1 số, <br>
+          có ít nhất 1 kí tự đặc biệt <br> và có ít nhất 8 ký tự
+        </p>
+        <p class="validate-input-label" *ngIf="validPassword.space">Mật khẩu không được chứa dấu cách</p>
+        <p class="validate-input-label" *ngIf="validPassword.UTF8">Mật khẩu bắt đầu bằng chữ thường không dấu</p>
+      </div>
+    </mat-form-field>
+  </div>
+
+  <div style="flex: 1 1 50%; padding-left: 10px;">
+    <mat-form-field>
+      <mat-label>Ngày sinh</mat-label>
+      <input type="date" [(ngModel)]="data.birthday" name="birthday" matInput (keydown)="removeCheckStartDate()"
+        (blur)="isStartDateValid()">
+      <div class="validate-input" *ngIf="checkStartDateNull">
+        <p class="validate-input-label">Vui lòng chọn ngày sinh</p>
+      </div>
+    </mat-form-field>
+  </div>
+
 </div>

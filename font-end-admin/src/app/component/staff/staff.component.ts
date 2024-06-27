@@ -1,8 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { StaffService } from '../../service/staff.service';
-import { UsersDTO } from '../model/UsersDTO';
 import { MatDialog } from '@angular/material/dialog';
-import { DetailStaffComponent } from './detail-staff/detail-staff.component';
 import { ActionStaffComponent } from './action-staff/action-staff.component';
 import { AddStaffComponent } from './add-staff/add-staff.component';
 
@@ -78,7 +76,8 @@ export class StaffComponent implements OnInit {
         field: 'birthday',
         sortable: true,
         filter: true,
-        flex: 1
+        flex: 1,
+        valueGetter: (params: { data: { birthday: string; }; }) => this.formatDate(params.data.birthday)
       },
       {
         headerName: 'Giới tính',
@@ -115,40 +114,17 @@ export class StaffComponent implements OnInit {
         maxWidth: 125,
       },
     ];
-
-    // this.rowData = [];
-    // const storedUserString = localStorage.getItem('users');
-
-    // if (storedUserString) {
-    //   const storedUser = JSON.parse(storedUserString);
-    //   this.user = {
-    //     id: storedUser.id,
-    //     code: storedUser.code,
-    //     fullname: storedUser.fullname,
-    //     phone: storedUser.phone,
-    //     email: storedUser.email,
-    //   };
-    // }
-
   }
 
   finbyStaffLike() {
-    // if (this.searchStaff === '') {
-    //   this.staffService.getAllStaff().subscribe(
-    //     data => {
-    //       this.listStaff = data;
-    //       this.rowData = this.listStaff;
-    //     }
-    //   );
-    // } else {
-    //   this.staffService.findByCodeOrPhoneLike(this.searchStaff).subscribe(
-    //     data => {
-    //       this.listStaff = data;
-    //       this.rowData = this.listStaff;
-    //       console.log(this.listStaff);
-    //     }
-    //   );
-    // }
+    if (this.searchStaff === '') {
+      this.getAllStart();
+    } else {
+      this.staffService.findByCodeOrPhoneLike(this.searchStaff).subscribe((response) => {
+        this.rowData1 = response.filter((staff: { idel: number; }) => staff.idel === 0);
+        this.rowData2 = response.filter((staff: { idel: number; }) => staff.idel === 1);
+      })
+    }
   }
 
   ngOnInit(): void {
@@ -173,6 +149,12 @@ export class StaffComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  private formatDate(dateStr: string): string {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   }
 
   // tabChanged(event: any) {

@@ -8,11 +8,14 @@ import {Router} from '@angular/router';
 })
 export class AppComponent {
   title = 'font-end-admin';
+  
   isToggled = true;
+  
   toggleSidebar() {
     this.isToggled = !this.isToggled;
   }
   constructor(private router: Router) {}
+
   isSalesPage(): boolean {
     if (this.router.url.includes('sales-counter') || this.router.url.includes('login')){
       return true;

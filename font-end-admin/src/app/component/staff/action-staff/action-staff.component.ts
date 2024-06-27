@@ -4,6 +4,7 @@ import { StaffService } from '../../../service/staff.service';
 import { DetailStaffComponent } from '../detail-staff/detail-staff.component';
 import { StaffComponent } from '../staff.component';
 import Swal from 'sweetalert2';
+import { UpdateStaffComponent } from '../update-staff/update-staff.component';
 
 @Component({
   selector: 'app-action-staff',
@@ -43,13 +44,28 @@ export class ActionStaffComponent implements OnInit {
 
   clickDetail(id: number): void {
     const dialogref = this.matdialog.open(DetailStaffComponent, {
-      width: '80vh',
-      height: '80vh',
+      width: '100vh',
+      height: '85vh',
       data: { idStaff: id },
     });
     dialogref.afterClosed().subscribe(() => {
       this.staffComponent.ngOnInit();
       this.cdr.detectChanges();
+    });
+  }
+
+  openUpdate() {
+    const dialogref = this.matdialog.open(UpdateStaffComponent, {
+      width: '100vh',
+      height: '80vh',
+      data: this.params,
+    });
+    dialogref.afterClosed().subscribe((result) => {
+      console.log(result);
+      if (result === 'saveStaff') {
+        this.staffComponent.ngOnInit();
+        this.cdr.detectChanges();
+      }
     });
   }
 }

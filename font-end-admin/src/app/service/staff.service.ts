@@ -9,6 +9,7 @@ import { UsersDTO } from '../component/model/UsersDTO';
 })
 export class StaffService {
   constructor(private http: HttpClient) { }
+  
   getAllStaff(): Observable<any> {
     return this.http.get(`${apiURL}staff-getall`);
   }
@@ -24,7 +25,7 @@ export class StaffService {
   updateStaff(id: string, staff: UsersDTO): Observable<any> {
     return this.http.put('http://localhost:8081/api/admin/staff-update/' + id, staff);
   }
-  
+
   findByCodeOrPhoneLike(param: string): Observable<any> {
     return this.http.get('http://localhost:8081/api/admin/staff-search/' + param);
   }

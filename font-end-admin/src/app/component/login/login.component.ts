@@ -13,22 +13,26 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class LoginComponent implements OnInit {
   hide = true;
+
   status = 'Dang nhap that bai';
+
   form: any = {
     username: '',
     password: '',
   };
+
   signFrom: SignForm;
   constructor(
     private authService: AuthService,
     private router: Router,
     private tokenService: TokenService,
     private jwt: AuthJwtService,
-    private toas: ToastrService
+    private toastr: ToastrService
   ) { }
+
   login() {
     this.signFrom = new SignForm(this.form.username, this.form.password);
-    console.log(this.signFrom);
+    // console.log(this.signFrom);
     this.authService.signIn(this.signFrom).subscribe(
       (data) => {
         if (!data.token) {
@@ -42,12 +46,14 @@ export class LoginComponent implements OnInit {
         }
       },
       (error) => {
-        this.toas.error(
-          'thông tin tài khoản hoặc mật khẩu không chính xác',
-          'Lỗi'
-        );
+        if (error.status === 400){
+          this.toastr.error('Mật khẩu sai ', 'Error');
+        }else if (error.status === 401){
+          this.toastr.error('Không tìm thấy Tên tài khoản ', 'Error');
+        }
       }
     );
   }
+  
   ngOnInit(): void { }
 }

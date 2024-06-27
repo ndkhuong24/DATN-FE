@@ -10,31 +10,71 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./detail-staff.component.css']
 })
 export class DetailStaffComponent implements OnInit {
-  id: string;
-  staff: UsersDTO;
-  constructor(private staffService: StaffService, private activeRoute: ActivatedRoute, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  idStaff: string;
+
+  staff = {
+    fullname: '',
+    phone: '',
+    email: '',
+    username: '',
+    birthday: '',
+    gender: '',
+    description: '',
+    role: '',
+    idel: 0
+  };
+
+  // staff: UsersDTO;
+
+  constructor(
+    private staffService: StaffService,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) { }
 
   ngOnInit(): void {
-    console.log(this.data);
-    this.staff = this.data.staffData;
-    this.formatBirthday();
-  }
-  private formatBirthday(): void {
-    if (this.staff && this.staff.birthday) {
-      const dateObject = new Date(this.staff.birthday);
-      const formattedDate = this.formatDate(dateObject);
-      this.staff.birthday = formattedDate;
-    }
+    this.idStaff = this.data.idStaff;
+
+    this.getStaffById(this.idStaff);
+    
+    
   }
 
-  private formatDate(date: Date): string {
+  getStaffById(idStaff: string) {
+    this.staffService.finById(idStaff).subscribe((response) => {
+      this.staff = response.data;
+
+      if (this.staff.birthday) {
+        this.staff.birthday = this.formatDate(this.staff.birthday);
+      }
+      
+      console.log(this.staff)
+    })
+  }
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = this.padZero(date.getMonth() + 1);
-    const day = this.padZero(date.getDate());
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
     return `${year}-${month}-${day}`;
   }
 
-  private padZero(value: number): string {
-    return value < 10 ? `0${value}` : `${value}`;
-  }
+  // private formatBirthday(): void {
+  //   if (this.staff && this.staff.birthday) {
+  //     const dateObject = new Date(this.staff.birthday);
+  //     const formattedDate = this.formatDate(dateObject);
+  //     this.staff.birthday = formattedDate;
+  //   }
+  // }
+
+  // private formatDate(date: Date): string {
+  //   const year = date.getFullYear();
+  //   const month = this.padZero(date.getMonth() + 1);
+  //   const day = this.padZero(date.getDate());
+  //   return `${year}-${month}-${day}`;
+  // }
+
+  // private padZero(value: number): string {
+  //   return value < 10 ? `0${value}` : `${value}`;
+  // }
 }

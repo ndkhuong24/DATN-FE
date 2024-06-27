@@ -3,5 +3,5 @@
   <button mat-menu-item (click)="editItem()">Edit</button>
   <button mat-menu-item (click)="openDialog()">Detail</button>
 </mat-menu> -->
-<button mat-icon-button color="primary"><mat-icon>edit</mat-icon></button>
+<button mat-icon-button color="primary" (click)="openUpdate()"><mat-icon>edit</mat-icon></button>
 <button mat-icon-button color="warn" (click)="clickDetail(params.id)"><mat-icon>remove_red_eye</mat-icon></button>
