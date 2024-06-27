@@ -22,7 +22,7 @@ export class StaffService {
     return this.http.post('http://localhost:8081/admin/api/sign-up', staff);
   }
 
-  updateStaff(id: string, staff: UsersDTO): Observable<any> {
+  updateStaff(id: number, staff: UsersDTO): Observable<any> {
     return this.http.put('http://localhost:8081/api/admin/staff-update/' + id, staff);
   }
 

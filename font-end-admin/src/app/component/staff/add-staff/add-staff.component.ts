@@ -70,7 +70,7 @@ export class AddStaffComponent implements OnInit {
     this.validateEmail();
     this.validateUserName();
     this.validatePassword();
-    this.isStartDateValid(); // Ensure this is called to set `checkStartDateNull`
+    this.isStartDateValid();
     this.validateDescription();
 
     if (!this.validFullName.done || !this.validPhone.done || !this.validEmail.done ||
@@ -116,10 +116,10 @@ export class AddStaffComponent implements OnInit {
           }
           if (response.message === 'Create Success') {
             this.dialogRef.close('addStaff');
+            this.cdr.detectChanges();
             Swal.fire({ title: 'Thêm', text: 'Thêm thành công', icon: 'success' });
           }
         })
-        // console.log(staff)
       }
     })
   }
@@ -131,11 +131,10 @@ export class AddStaffComponent implements OnInit {
   isStartDateValid() {
     this.checkStartDateNull = false;
 
-    if (!this.Birthday) { // Simplified check for null, undefined, or empty string
+    if (!this.Birthday) {
       this.checkStartDateNull = true;
     }
   }
-
 
   removeCheckStartDate() {
     this.checkStartDateNull = false;

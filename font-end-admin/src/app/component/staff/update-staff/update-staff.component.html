@@ -121,8 +121,8 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Nhập email</mat-label>
-      <input [(ngModel)]="data.email" name="email" matInput placeholder="Nhập email" (keydown)="revoveInvalid(validEmail)"
-        (blur)="validateEmail()">
+      <input [(ngModel)]="data.email" name="email" matInput placeholder="Nhập email"
+        (keydown)="revoveInvalid(validEmail)" (blur)="validateEmail()">
       <div class="validate-input" *ngIf="!validEmail.done">
         <p class="validate-input-label" *ngIf="validEmail.empty">Email không để trống</p>
         <p class="validate-input-label" *ngIf="validEmail.maxLength">Email tối đa 250 kí tự</p>
@@ -172,6 +172,46 @@
         <p class="validate-input-label">Vui lòng chọn ngày sinh</p>
       </div>
     </mat-form-field>
-  </div>
 
+    <mat-form-field appearance="outline">
+      <mat-label>Giới tính</mat-label>
+      <mat-select [(ngModel)]="data.gender">
+        <mat-option [value]="'Nam'">Nam</mat-option>
+        <mat-option [value]="'Nữ'">Nữ</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Quê quán</mat-label>
+      <input [(ngModel)]="data.description" name="description" matInput placeholder="Vui lòng nhập quên quán"
+        (keydown)="revoveInvalid(validDescription)" (blur)="validateDescription()">
+      <div class="validate-input">
+        <p class="validate-input-label" *ngIf="validDescription.empty">Họ và tên không được để trống</p>
+        <p class="validate-input-label" *ngIf="validDescription.maxLength">Họ và tên sản phẩm dưới 250 kí tự</p>
+      </div>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Chức vụ</mat-label>
+      <mat-select matInput [(ngModel)]="data.role">
+        <mat-option [value]="'STAFF'">Nhân viên</mat-option>
+        <mat-option [value]="'ADMIN'">Quản lý</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Trạng thái</mat-label>
+      <mat-select matInput [(ngModel)]="data.idel">
+        <mat-option [value]="0">Hoạt động</mat-option>
+        <mat-option [value]="1">Ngừng hoạt động</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+
+<br>
+
+<div mat-dialog-actions [align]="'end'">
+  <button mat-raised-button color="warn" mat-dialog-close>Thoát</button>
+  <button mat-raised-button color="primary" (click)="clickUpdate(data.id)">Cập nhật</button>
 </div>

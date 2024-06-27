@@ -77,7 +77,7 @@ export class StaffComponent implements OnInit {
         sortable: true,
         filter: true,
         flex: 1,
-        valueGetter: (params: { data: { birthday: string; }; }) => this.formatDate(params.data.birthday)
+        // valueGetter: (params: { data: { birthday: string; }; }) => this.formatDate(params.data.birthday)
       },
       {
         headerName: 'Giới tính',
@@ -151,11 +151,11 @@ export class StaffComponent implements OnInit {
     });
   }
 
-  private formatDate(dateStr: string): string {
-    if (!dateStr) return '';
-    const date = new Date(dateStr);
-    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-  }
+  // private formatDate(dateStr: string): string {
+  //   if (!dateStr) return '';
+  //   const date = new Date(dateStr);
+  //   return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+  // }
 
   // tabChanged(event: any) {
   //   const selectedTabIndex = event.index;

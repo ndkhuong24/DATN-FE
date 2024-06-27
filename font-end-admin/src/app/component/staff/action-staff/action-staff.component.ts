@@ -61,7 +61,6 @@ export class ActionStaffComponent implements OnInit {
       data: this.params,
     });
     dialogref.afterClosed().subscribe((result) => {
-      console.log(result);
       if (result === 'saveStaff') {
         this.staffComponent.ngOnInit();
         this.cdr.detectChanges();
