@@ -8,8 +8,11 @@ import {UsersDTO} from '../../component/model/UsersDTO';
 })
 export class HeaderComponent implements OnInit {
   user: UsersDTO = {};
+
   infor: string;
+
   constructor() { }
+  
   openedNewComponent = false;
 
   public openNewComponent() {

@@ -4,6 +4,7 @@ import { formatDate, formatDateTime } from '../../util/util';
 import { VoucherShipService } from '../../service/voucher-ship.service';
 import { ActionVoucherShipComponent } from './action-voucher-ship/action-voucher-ship.component';
 import { CreatVoucherShipComponent } from './creat-voucher-ship/creat-voucher-ship.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-voucher-ship',
@@ -19,7 +20,7 @@ export class VoucherShipComponent implements OnInit {
   rowHeight = 40;
   searchResults: any[] = [];
 
-  role: '';
+  role: 'ADMIN' | 'USER' | 'STAFF';
   loc = '0';
   dateFromCurrent = null;
   dateToCurrent = null;
@@ -29,7 +30,8 @@ export class VoucherShipComponent implements OnInit {
   constructor(
     private matDialog: MatDialog,
     private voucherShipService: VoucherShipService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private toastr: ToastrService,
   ) {
     const currentDate = new Date();
 
@@ -139,7 +141,10 @@ export class VoucherShipComponent implements OnInit {
     this.getAllVoucherShip();
     this.getAllVoucherShipKH();
     this.getAllVoucherShipKKH();
-    this.role = JSON.parse(localStorage.getItem('role'));
+
+    var userjson = localStorage.getItem("users");
+    var users = JSON.parse(userjson);
+    this.role = users.role;
   }
 
   getAllVoucherShip() {
@@ -232,16 +237,33 @@ export class VoucherShipComponent implements OnInit {
     }
   }
 
-  openAdd() {
-    const dialogref = this.matDialog.open(CreatVoucherShipComponent, {
-      width: '250vh',
-      height: '98vh',
-    });
-    dialogref.afterClosed().subscribe((result) => {
-      if (result === 'addVoucherFreeShip') {
-        this.ngOnInit();
-        this.cdr.detectChanges();
-      }
-    });
+  openAdd(): void {
+    if (this.role === 'ADMIN') {
+      const dialogRef = this.matDialog.open(CreatVoucherShipComponent, {
+        width: '250vh',
+        height: '98vh',
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result === 'addVoucherFreeShip') {
+          this.ngOnInit();
+          this.cdr.detectChanges();
+        }
+      });
+    } else if (this.role === 'STAFF') {
+      this.toastr.error('Bạn không có quyền thêm voucher freeship', 'Lỗi'); // Show error message
+    }
   }
+
+  // openAdd() {
+  //   const dialogref = this.matDialog.open(CreatVoucherShipComponent, {
+  //     width: '250vh',
+  //     height: '98vh',
+  //   });
+  //   dialogref.afterClosed().subscribe((result) => {
+  //     if (result === 'addVoucherFreeShip') {
+  //       this.ngOnInit();
+  //       this.cdr.detectChanges();
+  //     }
+  //   });
+  // }
 }

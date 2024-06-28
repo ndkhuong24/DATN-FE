@@ -4,6 +4,7 @@ import { ActionVoucherComponent } from './action-voucher/action-voucher.componen
 import { VoucherService } from 'src/app/service/voucher.service';
 import { formatDate, formatDateTime } from '../../util/util';
 import { CreatVoucherComponent } from './creat-voucher/creat-voucher.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-bangvoucher',
@@ -21,7 +22,6 @@ export class VoucherComponent implements OnInit {
 
   loc = '5';
   idStaff = '';
-  role: '';
 
   dateFromCurrent = null;
   dateToCurrent = null;
@@ -41,13 +41,16 @@ export class VoucherComponent implements OnInit {
     appy: '',
     optionCustomer: '',
   };
-  
+
   gridOptions: any;
+
+  role: 'ADMIN' | 'USER' | 'STAFF';
 
   constructor(
     private matDialog: MatDialog,
     private voucherService: VoucherService,
     private cdr: ChangeDetectorRef,
+    private toastr: ToastrService,
   ) {
     const currentDate = new Date();
 
@@ -156,7 +159,10 @@ export class VoucherComponent implements OnInit {
     this.getAllVoucher();
     this.getVoucherKH();
     this.getVoucherKKH();
-    this.role = JSON.parse(localStorage.getItem('role'));
+
+    var userjson = localStorage.getItem("users");
+    var users = JSON.parse(userjson);
+    this.role = users.role;
   }
 
   getVoucherKKH() {
@@ -247,16 +253,34 @@ export class VoucherComponent implements OnInit {
     }
   }
 
-  openAdd() {
-    const dialogref = this.matDialog.open(CreatVoucherComponent, {
-      width: '250vh',
-      height: '98vh',
-    });
-    dialogref.afterClosed().subscribe((result) => {
-      if (result === 'addVoucher') {
-        this.ngOnInit();
-        this.cdr.detectChanges();
-      }
-    });
+  openAdd(): void {
+    if (this.role === 'ADMIN') {
+      const dialogRef = this.matDialog.open(CreatVoucherComponent, {
+        width: '250vh',
+        height: '98vh',
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result === 'addVoucher') {
+          this.ngOnInit();
+          this.cdr.detectChanges();
+        }
+      });
+    } else if (this.role === 'STAFF') {
+      this.toastr.error('Bạn không có quyền thêm voucher', 'Lỗi'); // Show error message
+    }
   }
+
+
+  // openAdd() {
+  //   const dialogref = this.matDialog.open(CreatVoucherComponent, {
+  //     width: '250vh',
+  //     height: '98vh',
+  //   });
+  //   dialogref.afterClosed().subscribe((result) => {
+  //     if (result === 'addVoucher') {
+  //       this.ngOnInit();
+  //       this.cdr.detectChanges();
+  //     }
+  //   });
+  // }
 }

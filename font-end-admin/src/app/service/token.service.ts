@@ -6,6 +6,7 @@ const ROLE_KEY = 'role_key';
 @Injectable({
   providedIn: 'root'
 })
+
 export class TokenService {
   constructor() { }
 
@@ -13,7 +14,7 @@ export class TokenService {
     localStorage.removeItem(USER_KEY);
     localStorage.setItem(USER_KEY, user);
   }
-  public getUser(){
+  public getUser() {
     return localStorage.getItem(USER_KEY);
   }
   // token
@@ -21,7 +22,7 @@ export class TokenService {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.setItem(TOKEN_KEY, token);
   }
-  public getToken(){
+  public getToken() {
     return localStorage.getItem(TOKEN_KEY);
   }
   // role
@@ -29,7 +30,7 @@ export class TokenService {
     localStorage.removeItem(ROLE_KEY);
     localStorage.setItem(ROLE_KEY, role);
   }
-  public getRole(){
+  public getRole() {
     return localStorage.getItem(ROLE_KEY);
   }
 }

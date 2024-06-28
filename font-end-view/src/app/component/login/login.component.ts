@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('token', data.token);
         // localStorage.setItem('users', JSON.stringify(data.usersDTO));
         localStorage.setItem('customer', JSON.stringify(data.usersDTO));
+        
         this.router.navigate(['']).then(() => {
           location.reload();
           this.toastr.success('Đăng nhập thành công', 'Thông báo');

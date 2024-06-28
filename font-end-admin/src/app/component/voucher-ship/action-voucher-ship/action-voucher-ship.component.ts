@@ -5,6 +5,7 @@ import { VoucherShipService } from '../../../service/voucher-ship.service';
 import { VoucherShipComponent } from '../voucher-ship.component';
 import { DetailVoucherShipComponent } from '../detail-voucher-ship/detail-voucher-ship.component';
 import { EditVoucherShipComponent } from '../edit-voucher-ship/edit-voucher-ship.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-action-voucher-ship',
@@ -15,15 +16,21 @@ export class ActionVoucherShipComponent implements OnInit {
   isMenuOpen: boolean = false;
   data: any;
   params: any;
+  role: 'ADMIN' | 'USER' | 'STAFF';
 
   constructor(
     private matdialog: MatDialog,
     private voucherShipService: VoucherShipService,
     private cdr: ChangeDetectorRef,
-    private voucherShipComponent: VoucherShipComponent
-  ) {}
+    private voucherShipComponent: VoucherShipComponent,
+    private toastr: ToastrService,
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    var userjson = localStorage.getItem("users");
+    var users = JSON.parse(userjson);
+    this.role = users.role;
+  }
 
   agInit(params: any) {
     this.params = params.data;
@@ -34,38 +41,46 @@ export class ActionVoucherShipComponent implements OnInit {
   }
 
   openUpdate(id: number): void {
-    const dialogref = this.matdialog.open(EditVoucherShipComponent, {
-      width: '250vh',
-      height: '98vh',
-      data: { idVoucherShip: id },
-    });
-    dialogref.afterClosed().subscribe((result) => {
-      if (result === 'saveVoucherShip') {
-        this.voucherShipComponent.ngOnInit();
-        this.cdr.detectChanges();
-      }
-    });
+    if (this.role === 'ADMIN') {
+      const dialogref = this.matdialog.open(EditVoucherShipComponent, {
+        width: '250vh',
+        height: '98vh',
+        data: { idVoucherShip: id },
+      });
+      dialogref.afterClosed().subscribe((result) => {
+        if (result === 'saveVoucherShip') {
+          this.voucherShipComponent.ngOnInit();
+          this.cdr.detectChanges();
+        }
+      });
+    } else if (this.role === 'STAFF') {
+      this.toastr.error('Bạn không có quyền truy cập cập nhật', 'Lỗi');
+    }
   }
 
   deleteVoucherShip(id?: number) {
-    Swal.fire({
-      title: 'Bạn có chắc muốn xóa',
-      text: 'Bạn sẽ không thể hoàn tác',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Xóa',
-      cancelButtonText: 'Thoát',
-    }).then((response) => {
-      if (response.isConfirmed) {
-        this.voucherShipService.deleteVoucher(id).subscribe(() => {
-          this.voucherShipComponent.ngOnInit();
-          this.cdr.detectChanges();
-        });
-        Swal.fire('Xóa', 'Xóa thành công', 'success');
-      }
-    });
+    if (this.role === 'ADMIN') {
+      Swal.fire({
+        title: 'Bạn có chắc muốn xóa',
+        text: 'Bạn sẽ không thể hoàn tác',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Xóa',
+        cancelButtonText: 'Thoát',
+      }).then((response) => {
+        if (response.isConfirmed) {
+          this.voucherShipService.deleteVoucher(id).subscribe(() => {
+            this.voucherShipComponent.ngOnInit();
+            this.cdr.detectChanges();
+          });
+          Swal.fire('Xóa', 'Xóa thành công', 'success');
+        }
+      });
+    } else if (this.role === 'STAFF') {
+      this.toastr.error('Bạn không có quyền xóa', 'Lỗi');
+    }
   }
 
   clickDetail(id: number): void {

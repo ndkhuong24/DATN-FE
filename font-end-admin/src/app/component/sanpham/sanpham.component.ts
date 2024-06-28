@@ -108,6 +108,10 @@ export class SanphamComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllProduct();
+    // var userjson = localStorage.getItem("users");
+    // var users = JSON.parse(userjson);
+    // var role = users.role;
+    // console.log(role);
   }
 
   getAllProduct() {

@@ -7,9 +7,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent implements OnInit {
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   logOut(): void {
     const itemsToRemove = ['token', 'users', 'fullname', 'id', 'listOrder'];

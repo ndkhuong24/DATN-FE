@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { CanActivate, Router } from '@angular/router';
 import { AuthJwtService } from './auth-jwt.service';
 
 @Injectable({
@@ -8,9 +7,13 @@ import { AuthJwtService } from './auth-jwt.service';
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(public auth: AuthJwtService, public router: Router) { }
+  constructor(
+    public authJwtService: AuthJwtService, 
+    public router: Router
+  ) { }
+
   canActivate(): boolean {
-    if (this.auth.isAuthenticated()) {
+    if (this.authJwtService.isAuthenticated()) {
       return true;
     } else {
       localStorage.removeItem('token');
