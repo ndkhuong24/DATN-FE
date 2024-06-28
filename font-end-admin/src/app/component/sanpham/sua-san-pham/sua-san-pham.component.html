@@ -50,7 +50,7 @@
       <mat-label>Đế giày</mat-label>
       <mat-select [(ngModel)]="products.idSole" (keydown)="revoveInvalid(validSole)" (blur)="validateSole()">
         <mat-option *ngFor="let sl of sole" [value]="sl.id">
-          {{sl.soleMaterial}}
+          {{sl.soleMaterial}} - {{sl.soleHeight}}
         </mat-option>
       </mat-select>
       <div class="validate-input" *ngIf="!validSole.done">

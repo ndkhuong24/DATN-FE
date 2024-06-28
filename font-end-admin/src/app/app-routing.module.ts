@@ -41,87 +41,106 @@ import { EditVoucherShipComponent } from './component/voucher-ship/edit-voucher-
 
 const routes: Routes = [
   { path: '', redirectTo: 'thong-ke', pathMatch: 'full' },
+
   { path: 'admin/login', component: LoginComponent },
-  { path: 'admin/don-hang', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'admin/creat-discount', component: CreatDiscountComponent, canActivate: [AuthGuard] },
-  { path: 'admin/creat-voucherFS', component: CreatVoucherShipComponent, canActivate: [AuthGuard] },
-  { path: 'admin/creat-voucher', component: CreatVoucherComponent, canActivate: [AuthGuard] },
-  { path: 'admin/discount', component: DiscountComponent, canActivate: [AuthGuard] },
-  { path: 'admin/discount/:id', component: DetailDiscountComponent, canActivate: [AuthGuard] },
-  { path: 'admin/voucher/:id', component: DetailVoucherComponent, canActivate: [AuthGuard] },
-  { path: 'admin/voucherFS/:id', component: DetailVoucherShipComponent, canActivate: [AuthGuard] },
-  { path: 'admin/voucher', component: VoucherComponent, canActivate: [AuthGuard] },
-  { path: 'admin/sua-giam-gia', component: EditDiscountComponent, canActivate: [AuthGuard] },
-  { path: 'admin/sua-voucher', component: EditVoucherComponent, canActivate: [AuthGuard] },
-  // {path: 'degiay', component: DegiayComponent, canActivate: [RoleGuardService],
-  //   data: {
-  //     expectedRole: ['ADMIN']
-  //   } },
-  { path: 'admin/voucherFS', component: VoucherShipComponent, canActivate: [AuthGuard] },
-  {
-    path: 'admin/sua-giam-gia', component: EditDiscountComponent, canActivate: [RoleGuardService],
-    data: {
-      expectedRole: ['ADMIN']
-    }
-  },
-  {
-    path: 'admin/sua-voucher', component: EditVoucherComponent, canActivate: [RoleGuardService],
-    data: {
-      expectedRole: ['ADMIN']
-    }
-  },
-  {
-    path: 'admin/sua-voucherFS', component: EditVoucherShipComponent, canActivate: [RoleGuardService],
-    data: {
-      expectedRole: ['ADMIN']
-    }
-  },
-  { path: 'degiay', component: DegiayComponent },
-  {
-    path: 'admin/edit-discount/:id', component: EditDiscountComponent, canActivate: [RoleGuardService],
-    data: {
-      expectedRole: ['ADMIN']
-    }
-  },
-  {
-    path: 'admin/edit-voucher/:id', component: EditVoucherComponent, canActivate: [RoleGuardService],
-    data: {
-      expectedRole: ['ADMIN']
-    }
-  },
-  {
-    path: 'admin/edit-voucherFS/:id', component: EditVoucherShipComponent, canActivate: [RoleGuardService],
-    data: {
-      expectedRole: ['ADMIN']
-    }
-  },
-  {
-    path: 'degiay', component: DegiayComponent, canActivate: [RoleGuardService],
-    data: {
-      expectedRole: ['ADMIN']
-    }
-  },
-  { path: 'chatlieu', component: ChatlieuComponent, canActivate: [AuthGuard] },
-  { path: 'mausac', component: MausacComponent, canActivate: [AuthGuard] },
-  { path: 'kichco', component: KichcoComponent, canActivate: [AuthGuard] },
-  { path: 'thuonghieu', component: ThuonghieuComponent, canActivate: [AuthGuard] },
-  { path: 'admin/danh-muc', component: DanhmucComponent, canActivate: [AuthGuard] },
-  { path: 'admin/san-pham', component: SanphamComponent, canActivate: [AuthGuard] },
-  { path: 'admin/chi-tiet-san-pham', component: ChitietsanphamComponent, canActivate: [AuthGuard] },
-  { path: 'them-chi-tiet-san-pham', component: ThemChiTietSanPhamComponent, canActivate: [AuthGuard] },
-  { path: 'sua-chi-tiet-san-pham/:idProduct', component: SuaChiTietSanPhamComponent, canActivate: [AuthGuard] },
-  { path: 'them-san-pham', component: ThemSanPhamComponent, canActivate: [AuthGuard] },
-  { path: 'sua-san-pham/:idProduct', component: SuaSanPhamComponent, canActivate: [AuthGuard] },
+  { path: 'sign-up', component: SignUpComponent },
+
+  { path: 'don-hang', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'order-list', component: OrderComponent, canActivate: [AuthGuard] },
   { path: 'order-processing', component: OderProcessingComponent, canActivate: [AuthGuard] },
-  { path: 'staff', component: StaffComponent, canActivate: [AuthGuard] },
-  { path: 'sign-up', component: SignUpComponent },
-  // {path: 'order-detail', component: OrderDetailComponent},
-  { path: 'sales-counter', component: SalesCounterComponent, canActivate: [AuthGuard] },
-  { path: 'thong-ke', component: ThongKeComponent, canActivate: [AuthGuard] },
-  { path: 'add-staff', component: AddStaffComponent, canActivate: [AuthGuard] },
   { path: 'order-sales-counter', component: OrderSalesCounterComponent, canActivate: [AuthGuard] },
-  { path: 'update-staff/:id', component: UpdateStaffComponent, canActivate: [AuthGuard] },
+  { path: 'order-detail', component: OrderDetailComponent },
+
+  // { path: 'admin/creat-discount', component: CreatDiscountComponent, canActivate: [AuthGuard] },
+  // { path: 'admin/discount', component: DiscountComponent, canActivate: [AuthGuard] },
+  // { path: 'admin/discount/:id', component: DetailDiscountComponent, canActivate: [AuthGuard] },
+  // { path: 'admin/sua-giam-gia', component: EditDiscountComponent, canActivate: [AuthGuard] },
+  // {
+  //   path: 'admin/sua-giam-gia', component: EditDiscountComponent, canActivate: [RoleGuardService],
+  //   data: {
+  //     expectedRole: ['ADMIN']
+  //   }
+  // },
+  // {
+  //   path: 'admin/edit-discount/:id', component: EditDiscountComponent, canActivate: [RoleGuardService],
+  //   data: {
+  //     expectedRole: ['ADMIN']
+  //   }
+  // },
+
+  { path: 'voucherFS', component: VoucherShipComponent, canActivate: [AuthGuard] },
+  // { path: 'creat-voucherFS', component: CreatVoucherShipComponent, canActivate: [AuthGuard] },
+  // { path: 'voucherFS/:id', component: DetailVoucherShipComponent, canActivate: [AuthGuard] },
+  // {
+  //   path: 'sua-voucherFS', component: EditVoucherShipComponent, canActivate: [RoleGuardService],
+  //   data: {
+  //     expectedRole: ['ADMIN']
+  //   }
+  // },
+  // {
+  //   path: 'edit-voucherFS/:id', component: EditVoucherShipComponent, canActivate: [RoleGuardService],
+  //   data: {
+  //     expectedRole: ['ADMIN']
+  //   }
+  // },
+
+
+  // { path: 'creat-voucher', component: CreatVoucherComponent, canActivate: [AuthGuard] },
+  // { path: 'voucher/:id', component: DetailVoucherComponent, canActivate: [AuthGuard] },
+  { path: 'voucher', component: VoucherComponent, canActivate: [AuthGuard] },
+  // { path: 'sua-voucher', component: EditVoucherComponent, canActivate: [AuthGuard] },
+  // {
+  //   path: 'sua-voucher', component: EditVoucherComponent, canActivate: [RoleGuardService],
+  //   data: {
+  //     expectedRole: ['ADMIN']
+  //   }
+  // },
+  // {
+  //   path: 'edit-voucher/:id', component: EditVoucherComponent, canActivate: [RoleGuardService],
+  //   data: {
+  //     expectedRole: ['ADMIN']
+  //   }
+  // },
+
+
+  { path: 'degiay', component: DegiayComponent },
+  // {
+  //   path: 'degiay', component: DegiayComponent, canActivate: [RoleGuardService],
+  //   data: {
+  //     expectedRole: ['ADMIN']
+  //   }
+  // },
+
+  {
+    path: 'staff', component: StaffComponent, canActivate: [RoleGuardService],
+    data: {
+      expectedRole: ['ADMIN']
+    }
+  },
+  // { path: 'add-staff', component: AddStaffComponent, canActivate: [AuthGuard] },
+  // { path: 'update-staff/:id', component: UpdateStaffComponent, canActivate: [AuthGuard] },
+
+  { path: 'chatlieu', component: ChatlieuComponent, canActivate: [AuthGuard] },
+
+  { path: 'mausac', component: MausacComponent, canActivate: [AuthGuard] },
+
+  { path: 'kichco', component: KichcoComponent, canActivate: [AuthGuard] },
+
+  { path: 'thuonghieu', component: ThuonghieuComponent, canActivate: [AuthGuard] },
+
+  { path: 'danh-muc', component: DanhmucComponent, canActivate: [AuthGuard] },
+
+  { path: 'san-pham', component: SanphamComponent, canActivate: [AuthGuard] },
+  // { path: 'them-san-pham', component: ThemSanPhamComponent, canActivate: [AuthGuard] },
+  // { path: 'sua-san-pham/:idProduct', component: SuaSanPhamComponent, canActivate: [AuthGuard] },
+
+  { path: 'chi-tiet-san-pham', component: ChitietsanphamComponent, canActivate: [AuthGuard] },
+  // { path: 'them-chi-tiet-san-pham', component: ThemChiTietSanPhamComponent, canActivate: [AuthGuard] },
+  // { path: 'sua-chi-tiet-san-pham/:idProduct', component: SuaChiTietSanPhamComponent, canActivate: [AuthGuard] },
+
+  { path: 'sales-counter', component: SalesCounterComponent, canActivate: [AuthGuard] },
+
+  { path: 'thong-ke', component: ThongKeComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

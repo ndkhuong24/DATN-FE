@@ -8,27 +8,28 @@ import { UsersDTO } from '../component/model/UsersDTO';
 @Injectable({
   providedIn: 'root'
 })
+
 export class RoleGuardService implements CanActivate {
   constructor(
     public auth: AuthJwtService,
     public router: Router,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
-  roles: string;
-  
+  role: 'ADMIN' | 'USER' | 'STAFF';
+
   users: UsersDTO = {};
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
     const expectedRole = route.data.expectedRole;
 
-    const usersRole = localStorage.getItem('users');
+    var userjson = localStorage.getItem("users");
 
-    this.users = JSON.parse(usersRole);
+    var users = JSON.parse(userjson);
 
-    this.roles = this.users.role;
+    this.role = users.role;
 
-    if (!this.auth.isAuthenticated() || expectedRole.toString() !== this.roles) {
+    if (!this.auth.isAuthenticated() || expectedRole.toString() !== this.role) {
       this.toastr.error('Bạn không có quyền truy cập', 'Lỗi');
       return false;
     }
