@@ -1,43 +1,43 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {ProductService} from '../../service/product.service';
-import {CookieService} from 'ngx-cookie-service';
-import {UsersDTO} from '../model/UsersDTO';
-import {OrderService} from '../../service/order.service';
-import {OrderDetailService} from '../../service/order-detail.service';
-import {Order} from '../model/Order';
-import {OrderDetail} from '../model/OrderDetail';
-import {BehaviorSubject, forkJoin} from 'rxjs';
-import {ActivatedRoute, Router} from '@angular/router';
-import {MatTabChangeEvent} from '@angular/material/tabs';
-import {SizeService} from '../../service/size.service';
-import {MausacService} from '../../service/mausac.service';
-import {MatDialog} from '@angular/material/dialog';
-import {LoginComponent} from '../login/login.component';
-import {CustomerComponent} from '../customer/customer.component';
-import {CustomerServiceService} from '../../service/customer-service.service';
-import {CustomerSalesDTO} from '../model/CustomerSalesDTO';
-import {OrderSalesCounterComponent} from '../order-sales-counter/order-sales-counter.component';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ProductService } from '../../service/product.service';
+import { CookieService } from 'ngx-cookie-service';
+import { UsersDTO } from '../model/UsersDTO';
+import { OrderService } from '../../service/order.service';
+import { OrderDetailService } from '../../service/order-detail.service';
+import { Order } from '../model/Order';
+import { OrderDetail } from '../model/OrderDetail';
+import { ActivatedRoute } from '@angular/router';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { SizeService } from '../../service/size.service';
+import { MausacService } from '../../service/mausac.service';
+import { MatDialog } from '@angular/material/dialog';
+import { CustomerComponent } from '../customer/customer.component';
+import { CustomerServiceService } from '../../service/customer-service.service';
+import { OrderSalesCounterComponent } from '../order-sales-counter/order-sales-counter.component';
 import * as printJS from 'print-js';
-import {ToastrService} from 'ngx-toastr';
-import {ProductdetailService} from '../../service/productdetail.service';
-import {GiaoHangServiceService} from '../../service/giao-hang-service.service';
+import { ToastrService } from 'ngx-toastr';
+import { ProductdetailService } from '../../service/productdetail.service';
+import { GiaoHangServiceService } from '../../service/giao-hang-service.service';
 import Swal from 'sweetalert2';
-import {PaymentSalesService} from '../../service/payment-sales.service';
-import {UtilService} from '../../util/util.service';
-import {CommonFunction} from '../../util/common-function';
-import {ValidateInput} from '../model/validate-input';
-import {PogupVoucherSCComponent} from './pogup-voucher-sc/pogup-voucher-sc.component';
-import {SalesCouterVoucherService} from '../../service/sales-couter-voucher.service';
+import { PaymentSalesService } from '../../service/payment-sales.service';
+import { UtilService } from '../../util/util.service';
+import { CommonFunction } from '../../util/common-function';
+import { ValidateInput } from '../model/validate-input';
+import { PogupVoucherSCComponent } from './pogup-voucher-sc/pogup-voucher-sc.component';
+import { SalesCouterVoucherService } from '../../service/sales-couter-voucher.service';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-sales-counter',
   templateUrl: './sales-counter.component.html',
-  styleUrls: ['./sales-counter.component.scss'],
+  styleUrls: ['./sales-counter.component.css'],
+  providers: [CurrencyPipe]
 })
 
 export class SalesCounterComponent implements OnInit {
   public isProductListVisible: boolean = true;
   public isCustomerNull: boolean = true;
+
   isChecked: boolean = false;
   count = 0;
   searchTerm: string = '';
@@ -47,7 +47,7 @@ export class SalesCounterComponent implements OnInit {
   searcherCustomer: string = '';
   showCustomer: boolean = false;
   searchCustomerResults: any[] = [];
-  listProductPush: any[];
+  listProductPush: any[] = [];
   totalAllProducts: number = 0;
   priceCustomer: number = 0;
   priceVoucher: number = 0;
@@ -55,12 +55,15 @@ export class SalesCounterComponent implements OnInit {
   fullname: string;
   idStaff: string;
   currentOrderId = 1;
+
   listSizePR: any[];
   listColor: any[];
+
   listSizeFind: any[];
   lisColorFind: any[];
+
   name: string;
-  animal: string;
+  // animal: string;
   selectedOption: string = '1';
   selectedCustomer: any;
   idCustomer = null;
@@ -77,6 +80,7 @@ export class SalesCounterComponent implements OnInit {
   tryHarder = false;
   isdn: string;
   checkStatus: number = 0;
+
   listCart = [];
   observable: any = [];
   listProductDetail: any = [];
@@ -89,6 +93,7 @@ export class SalesCounterComponent implements OnInit {
     wardCode: undefined,
     specificAddress: undefined
   };
+
   shipFee = 0;
   shipFeeReduce = null;
   totalMoneyPay;
@@ -103,6 +108,7 @@ export class SalesCounterComponent implements OnInit {
     voucher: null,
     voucherShip: null
   };
+
   statusPayment: any;
   voucher: any;
   voucherShip: any;
@@ -115,20 +121,32 @@ export class SalesCounterComponent implements OnInit {
   validWard: ValidateInput = new ValidateInput();
   specificAddress: ValidateInput = new ValidateInput();
 
-  constructor(private productService: ProductService, private cookieService: CookieService,
-              private orderService: OrderService, private orderDetailService: OrderDetailService,
-              private router: Router, private sizeService: SizeService, private colorService: MausacService,
-              private dialog: MatDialog, private customerService: CustomerServiceService, private toastr: ToastrService, private cdr: ChangeDetectorRef,
-              private productDetailService: ProductdetailService, private giaoHangService: GiaoHangServiceService, private paymentService: PaymentSalesService,
-              public utilService: UtilService, private voucherService: SalesCouterVoucherService, private route: ActivatedRoute
+  constructor(
+    private productService: ProductService,
+    private cookieService: CookieService,
+    private orderService: OrderService,
+    private orderDetailService: OrderDetailService,
+    private sizeService: SizeService,
+    private colorService: MausacService,
+    private dialog: MatDialog,
+    private customerService: CustomerServiceService,
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef,
+    private productDetailService: ProductdetailService,
+    private giaoHangService: GiaoHangServiceService,
+    private paymentService: PaymentSalesService,
+    public utilService: UtilService,
+    private voucherService: SalesCouterVoucherService,
+    private route: ActivatedRoute,
   ) {
     this.statusPayment = this.route.snapshot.queryParamMap.get('vnp_TransactionStatus');
   }
 
+
   search() {
     this.isProductListVisible = true;
+
     if (this.searchTerm.trim() === '') {
-      console.log('mời nhập tên hoặc mã sản phẩm');
     } else {
       this.productService.searchProduct(this.searchTerm).subscribe(
         data => {
@@ -143,7 +161,6 @@ export class SalesCounterComponent implements OnInit {
     this.idCustomer = null;
     this.isCustomerNull = true;
     if (this.searcherCustomer.trim() === '') {
-      console.log('Mời nhập sdt khách hàng');
       this.isCustomerNull = false;
       this.idCustomer = null;
     } else {
@@ -161,26 +178,27 @@ export class SalesCounterComponent implements OnInit {
       this.toastr.error('Hóa đơn đã được tạo tối đa');
       return;
     }
+
     this.count++;
+
     let order = {
       id: this.count,
       name: 'Hóa Đơn ' + this.count,
       productList: []
     };
+
     this.listOder.push(order);
+
     localStorage.setItem('coutOrder', this.count.toString());
     localStorage.setItem('listOrder', JSON.stringify(this.listOder));
-    console.log(order);
   }
 
   removeOrder(order: any) {
     const index = this.listOder.indexOf(order);
-    console.log(order);
     if (this.count > 1) {
       if (index !== -1) {
         this.listOder.splice(index, 1);
         this.count--;
-        console.log(this.count);
       }
     }
     localStorage.setItem('coutOrder', this.count.toString());
@@ -192,35 +210,106 @@ export class SalesCounterComponent implements OnInit {
     if (!row.quantity) {
       row.quantity = 1;
     }
-    if (row.reducePrice != null && row.percentageReduce != null) {
-      this.reducePriceProduct = row.price - row.reducePrice;
-    } else {
-      this.reducePriceProduct = row.price;
+
+    if (!this.listProductPush) {
+      this.listProductPush = [];
     }
-    this.listProductPush.push(row);
-    this.listCart.push(
-      {
-        productId: row.id,
-        productDetailId: null,
-        sizeId: null,
-        size_number: null,
-        colorId: null,
-        nameColor: null,
+
+    // Check if the product already exists in the listProductPush array
+    let existingProductInPush = this.listProductPush.find(product => product.id === row.id);
+
+    if (existingProductInPush) {
+      // Increment the quantity in listProductPush
+      existingProductInPush.quantity += 1;
+    } else {
+      // If product does not exist, add it to the listProductPush array
+      this.listProductPush.push(row);
+    }
+
+    // Check if the product already exists in the listCart array
+    let existingProductInCart = this.listCart.find(cartItem => cartItem.productDetailId === row.id);
+
+    if (existingProductInCart) {
+      // Increment the quantity in listCart
+      existingProductInCart.quantity += 1;
+    } else {
+      // If product does not exist, add it to the listCart array
+      this.listCart.push({
+        productId: row.productDTO.id,
+        productDetailId: row.id,
+        sizeId: row.sizeDTO.id,
+        size_number: row.sizeDTO.sizeNumber,
+        colorId: row.colorDTO.id,
+        nameColor: row.colorDTO.name,
         quantity: 1,
-        price: this.reducePriceProduct,
-        quantityInstock: null
-      }
-    );
-    // this.listProductPush.push(row);
+        price: row.price,
+        quantityInstock: row.quantity
+      });
+    }
+
     this.cookieService.set('listProductPush', JSON.stringify(this.listProductPush));
-    const currentOrderProducts = this.listProductPush.map(product => ({...product}));
+
+    const currentOrderProducts = this.listProductPush.map(product => ({ ...product }));
+
     localStorage.setItem(`orderProducts_${this.currentOrderId}`, JSON.stringify(currentOrderProducts));
-    this.isProductListVisible = false;
+
     this.calculateTotalAllProducts();
+
+    this.isProductListVisible = false;
+
     this.clearSearchTerm();
     this.priceVouchers();
-    this.loadData();
   }
+
+
+  // addProductInOrder(row: any) {
+  //   if (!row.quantity) {
+  //     row.quantity = 1;
+  //   }
+
+  //   if (!this.listProductPush) {
+  //     this.listProductPush = [];
+  //   }
+
+  //   // this.listProductPush.push(row);
+  //   let existingProduct = this.listProductPush.find(product => product.id === row.id);
+
+  //   if (existingProduct) {
+  //     existingProduct.quantity += 1;
+  //     // this.listCart.quantity +=1;
+  //   } else {
+  //     // If product does not exist, add it to the listProductPush array
+  //     this.listProductPush.push(row);
+  //   }
+
+  //   this.listCart.push(
+  //     {
+  //       productId: row.productDTO.id,
+  //       productDetailId: row.id,
+  //       sizeId: row.sizeDTO.id,
+  //       size_number: row.sizeDTO.sizeNumber,
+  //       colorId: row.colorDTO.id,
+  //       nameColor: row.colorDTO.name,
+  //       quantity: 1,
+  //       price: row.price,
+  //       quantityInstock: null
+  //     }
+  //   );
+
+  //   this.cookieService.set('listProductPush', JSON.stringify(this.listProductPush));
+
+  //   const currentOrderProducts = this.listProductPush.map(product => ({ ...product }));
+
+  //   localStorage.setItem(`orderProducts_${this.currentOrderId}`, JSON.stringify(currentOrderProducts));
+
+  //   this.calculateTotalAllProducts();
+
+  //   this.isProductListVisible = false;
+
+  //   this.clearSearchTerm();
+  //   this.priceVouchers();
+  //   this.loadData();
+  // }
 
   addCustomer(row: any) {
     if (!row.quantity) {
@@ -230,7 +319,6 @@ export class SalesCounterComponent implements OnInit {
     this.selectedCustomer = row;
     this.isCustomerNull = false;
     this.idCustomer = this.selectedCustomer.id;
-    console.log(this.selectedCustomer);
   }
 
   clearSearchTerm(): void {
@@ -248,7 +336,7 @@ export class SalesCounterComponent implements OnInit {
 
   removeProduct(index: number): void {
     Swal.fire({
-      title: 'Bạn có xác nhận xóa sản phẩm ?',
+      title: 'Bạn có xác nhận xóa sản phẩm',
       text: '',
       icon: 'info',
       showCancelButton: true,
@@ -260,7 +348,6 @@ export class SalesCounterComponent implements OnInit {
         this.listCart.splice(index, 1);
         this.listCart = [...this.listCart];
 
-        console.log('Xóa: ', this.listCart);
         this.listProductPush.splice(index, 1);
         this.cdr.detectChanges();
         this.calculateTotalAllProducts();
@@ -279,15 +366,19 @@ export class SalesCounterComponent implements OnInit {
   // }
 
   calculateTotalAllProducts() {
+
     this.totalAllProducts = 0;
+
     for (let i = 0; i < this.listCart.length; i++) {
       if (this.listCart[i].quantity <= 0) {
         this.toastr.error('số lượng sản phẩm phải lớn hơn 0');
         return;
       }
+
       const totalPrice = this.listCart[i].quantity * this.listCart[i].price;
       this.totalAllProducts += totalPrice;
     }
+
     this.priceVouchers();
   }
 
@@ -300,95 +391,34 @@ export class SalesCounterComponent implements OnInit {
 
   }
 
-  onSizeChange(event: any, i): void {
-    console.log(event);
-    console.log(i);
-
-    if (event === undefined) {
-      this.listColor = [...this.lisColorFind];
-    } else {
-      this.listColor = [...this.lisColorFind];
-      const selectedSizeId = event.id;
-      const number_size = event.sizeNumber;
-      const detailsForSelectedSize = this.listProductPush[i].productDetailDTOList
-        .filter(detail => detail.idSize === selectedSizeId && detail.idColor);
-      const colorIDsForSelectedSize = detailsForSelectedSize.map(detail => detail.idColor);
-      this.listColor = this.listColor.filter(color => colorIDsForSelectedSize.includes(color.id));
-      this.listCart[i] = {
-        ...this.listCart[i],
-        sizeId: selectedSizeId,
-        size_number: number_size
-      };
-      this.getProductDetail(i);
-      console.log(this.listCart);
-    }
-  }
-
-  getProductDetail(index: any) {
-    if (this.listCart[index].sizeId !== null && this.listCart[index].colorId !== null) {
-      this.listProductPush[index].productDetailDTOList.filter(d => d.idSize === this.listCart[index].sizeId && d.idColor === this.listCart[index].colorId).map(pd => {
-        console.log(pd.id);
-        if (pd.quantity <= 0) {
-          this.toastr.error('sản phẩm đã hết hàng');
-        }
-        return this.listCart[index] = {
-          ...this.listCart[index],
-          productDetailId: pd.id,
-          quantityInstock: pd.quantity
-        };
-      });
-    } else {
-      return;
-    }
-  }
-
-  onColorChange(event: any, i: any): void {
-
-    if (event === undefined) {
-      this.listSizePR = [...this.listSizeFind];
-    } else {
-      this.listSizePR = [...this.listSizeFind];
-      const selectedColorId = event.id;
-      const colorName = event.name;
-      const detailsForSelectedColor = this.listProductPush[i].productDetailDTOList
-        .filter(detail => detail.idColor === selectedColorId && detail.idSize);
-
-      const sizeIDsForSelectedColor = detailsForSelectedColor.map(detail => detail.idSize);
-
-      this.listSizePR = this.listSizePR.filter(size => sizeIDsForSelectedColor.includes(size.id));
-      this.listCart[i] = {
-        ...this.listCart[i],
-        colorId: selectedColorId,
-        nameColor: colorName
-      };
-      this.getProductDetail(i);
-    }
-  }
-
   placeOrderSales() {
     this.receiver = CommonFunction.trimText(this.receiver);
     this.receiver_mail = CommonFunction.trimText(this.receiver_mail);
     this.receiver_phone = CommonFunction.trimText(this.receiver_phone);
+
     this.validateReceiver();
     this.validateReceiverPhone();
     this.validateEmail();
     this.validateProvince();
     this.validateDistrict();
     this.validateWard();
-    if (this.listProductPush.length === 0){
-      this.toastr.error('không có sản phẩm nào để thanh toán');
+
+    if (this.listProductPush.length === 0) {
+      this.toastr.error('Không có sản phẩm nào để thanh toán');
       return;
     }
+
     if (this.listCart.some(c => c.sizeId === null || c.colorId === null)) {
-      this.toastr.error('chưa chọn size và màu sắc của sản phẩm');
+      this.toastr.error('Chưa chọn size và màu sắc của sản phẩm');
       return;
     }
+
     this.user = JSON.parse(localStorage.getItem('users'));
-    this.isdn = this.user.isdn;
-    console.log(this.isdn);
+
     if (this.user === null) {
-      this.toastr.error('đã hết hạn đăng nhập');
+      this.toastr.error('Đã hết hạn đăng nhập');
     }
+
     if (this.isChecked === true) {
       this.typeOrder = 0;
       this.statusOrder = 1;
@@ -400,35 +430,42 @@ export class SalesCounterComponent implements OnInit {
       this.typeOrder = 1;
       this.statusOrder = 3;
     }
+
     for (let i = 0; i < this.listCart.length; i++) {
       const idProductDetail = this.listCart[i].quantityInstock;
+
       if (this.listCart[i].quantity <= 0) {
         this.toastr.error('Số lượng sản phẩm phải lớn hơn 0');
         return;
       }
+
       if (idProductDetail <= 0) {
         this.toastr.error('sản phẩm đã hết hàng');
         return;
+
       }
       if (this.listCart[i].quantity > this.listCart[i].quantityInstock) {
         this.toastr.error('Không đủ số lượng sản phẩm');
         return;
       }
     }
+
     Swal.fire({
-      title: 'Bạn có xác nhận thanh toán đơn hàng ?',
+      title: 'Bạn có xác nhận thanh toán đơn hàng',
       text: '',
       icon: 'info',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Đồng ý'
+      confirmButtonText: 'Thanh toán',
+      cancelButtonText: 'Thoát',
     }).then((result) => {
       if (result.isConfirmed) {
+
         let province = this.listProvince.find(c => c.ProvinceID === this.addressNotLogin.provinceId);
-        // console.log(province);
         let district = this.listDistrict.find(d => d.DistrictID === this.addressNotLogin.districtId);
         let ward = this.listWard.find(w => w.WardCode === this.addressNotLogin.wardCode);
+
         if (this.selectedOption === '1') {
           const order: Order = {
             paymentType: 1,
@@ -447,47 +484,44 @@ export class SalesCounterComponent implements OnInit {
             receiver: this.receiver,
             receiverPhone: this.receiver_phone
           };
-          this.orderService.createOrderSales(order).subscribe(
-            (response) => {
-              console.log('done', response);
-              const saveIdOrder = response.data.id;
-              console.log(this.listProductPush);
 
-              for (let i = 0; i < this.listCart.length; i++) {
-                const orderDetail: OrderDetail = {
-                  idOrder: saveIdOrder,
-                  idProductDetail: this.listCart[i].productDetailId,
-                  quantity: this.listCart[i].quantity,
-                  price: this.listCart[i].price,
-                };
-                console.log(orderDetail);
-                this.orderDetailService.createDetailSales(orderDetail).subscribe(res => {
-                  if (res.status === 'OK') {
-                    localStorage.removeItem('listProductPush');
-                    this.refreshData();
-                    this.removeOrder(order);
-                    this.calculateTotalAllProducts();
-                    localStorage.removeItem(`orderProducts_${this.currentOrderId}`);
-                    localStorage.setItem('coutOrder', this.count.toString());
-                    localStorage.removeItem('listOrder');
-                  } else {
-                    this.checkStatus = 1;
-                    console.log('Lỗi');
-                    return;
-                  }
-                });
-              }
-            }
-          );
+
+
           this.paymentService.createPayment(this.priceCustomer).subscribe(resPay => {
             if (resPay.status === 'OK') {
-              // sessionStorage.setItem('order', JSON.stringify(objCheckOut));
-              // setTimeout()
+
+              this.orderService.createOrderSales(order).subscribe(
+                (response) => {
+                  const saveIdOrder = response.data.id;
+
+                  for (let i = 0; i < this.listCart.length; i++) {
+                    const orderDetail: OrderDetail = {
+                      idOrder: saveIdOrder,
+                      idProductDetail: this.listCart[i].productDetailId,
+                      quantity: this.listCart[i].quantity,
+                      price: this.listCart[i].price,
+                    };
+                    this.orderDetailService.createDetailSales(orderDetail).subscribe(res => {
+                      if (res.status === 'OK') {
+                        localStorage.removeItem('listProductPush');
+                        this.refreshData();
+                        this.removeOrder(order);
+                        this.calculateTotalAllProducts();
+                        localStorage.removeItem(`orderProducts_${this.currentOrderId}`);
+                        localStorage.setItem('coutOrder', this.count.toString());
+                        localStorage.removeItem('listOrder');
+                      } else {
+                        this.checkStatus = 1;
+                        return;
+                      }
+                    });
+                  }
+                }
+              );
+
               window.location.href = resPay.url;
             }
           });
-          //   }
-          // });
         } else {
           const order: Order = {
             paymentType: 0,
@@ -506,11 +540,10 @@ export class SalesCounterComponent implements OnInit {
             receiver: this.receiver,
             receiverPhone: this.receiver_phone
           };
+
           this.orderService.createOrderSales(order).subscribe(
             (response) => {
-              console.log('done', response);
               const saveIdOrder = response.data.id;
-              console.log(this.listProductPush);
 
               for (let i = 0; i < this.listCart.length; i++) {
                 const orderDetail: OrderDetail = {
@@ -519,19 +552,16 @@ export class SalesCounterComponent implements OnInit {
                   quantity: this.listCart[i].quantity,
                   price: this.listCart[i].price,
                 };
-                console.log(orderDetail);
                 this.orderDetailService.createDetailSales(orderDetail).subscribe(res => {
                   if (res.status === 'OK') {
-                    console.log('thanh toán thành công');
                   } else {
                     this.checkStatus = 1;
-                    console.log('Lỗi');
                     return;
                   }
                 });
               }
               Swal.fire({
-                title: 'Thanh toán thành công !',
+                title: 'Thanh toán thành công',
                 text: '',
                 icon: 'success',
                 showCancelButton: false,
@@ -540,14 +570,18 @@ export class SalesCounterComponent implements OnInit {
               }).then(results => {
                 if (results.isConfirmed) {
                   this.printInvoice();
-                  localStorage.removeItem('listProductPush');
+
                   this.refreshData();
+
                   this.removeOrder(order);
+
                   this.calculateTotalAllProducts();
+
+                  localStorage.removeItem('listProductPush');
+
                   localStorage.removeItem('listOrder');
+
                   localStorage.removeItem(`orderProducts_${this.currentOrderId}`);
-                  // localStorage.setItem('coutOrder', this.count.toString());
-                  // localStorage.setItem('listOrder', JSON.stringify(this.listOder));
                 }
               });
             }
@@ -579,7 +613,7 @@ export class SalesCounterComponent implements OnInit {
   generateOrderHTML(): string {
     let orderHTML = `<div>`;
     orderHTML += `<h2>Hóa đơn</h2>`;
-    orderHTML += `<p>Tên nhân viên: ${this.fullname}</p>`;
+    orderHTML += `<p>Tên nhân viên: ${this.user.id}</p>`;
     orderHTML += `<p>Tên khách hàng: ${this.selectedCustomer ? this.selectedCustomer.fullname : 'Khách lẻ'}</p>`;
     orderHTML += `<p>Số điện thoại: ${this.selectedCustomer ? this.selectedCustomer.phone : ''}</p>`;
     orderHTML += `<h3>Chi tiết đơn hàng</h3>`;
@@ -597,19 +631,19 @@ export class SalesCounterComponent implements OnInit {
     orderHTML += `</thead>`;
     orderHTML += `<tbody>`;
     this.listProductPush.forEach(product => {
-      orderHTML += `<tr>`;
-      orderHTML += `<td>${product.code}</td>`;
-      orderHTML += `<td>${product.name}</td>`;
       this.listCart.forEach(details => {
-        if (product.id === details.productId) {
+        if (product.id === details.productDetailId) {
+          orderHTML += `<tr>`;
+          orderHTML += `<td>${product.productDTO.code}</td>`;
+          orderHTML += `<td>${product.productDTO.name}</td>`;
           orderHTML += `<td>${details.size_number}</td>`;
-          orderHTML += `<td>${details.nameColor}</td>`;
+          orderHTML += `<td>${product.colorDTO.code}</td>`;
           orderHTML += `<td>${details.quantity}</td>`;
           orderHTML += `<td>${details.price}</td>`;
           orderHTML += `<td>${details.quantity * details.price}</td>`;
+          orderHTML += `</tr>`;
         }
       });
-      orderHTML += `</tr>`;
     });
     orderHTML += `</tbody>`;
     orderHTML += `</table>`;
@@ -633,14 +667,13 @@ export class SalesCounterComponent implements OnInit {
       properties: ['name', 'quantity', 'price', 'total'],
       header: '<h3 class="custom-h3">Hóa đơn bán hàng</h3>',
       style: '.custom-h3 { color: red; }',
-      documentTitle: 'hoa don',
+      documentTitle: 'Hóa đơn',
     });
 
     document.body.removeChild(frame);
   }
 
   onTabChange(event: MatTabChangeEvent): void {
-    console.log('Tab: ', event);
     const selectedTabIndex = event.index;
     this.currentOrderId = this.listOder[selectedTabIndex].id;
     this.getProductListForCurrentOrder();
@@ -650,11 +683,10 @@ export class SalesCounterComponent implements OnInit {
     const dialogRef = this.dialog.open(CustomerComponent, {
       width: '1200px',
       height: '600px',
-      data: {name: this.name}
+      data: { name: this.name }
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.animal = result;
+      console.log(result)
     });
   }
 
@@ -662,20 +694,29 @@ export class SalesCounterComponent implements OnInit {
     const dialogRef = this.dialog.open(OrderSalesCounterComponent, {
       width: '1300px',
       height: '700px',
-      data: {name: this.name}
+      data: { name: this.name }
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.animal = result;
+      console.log(result)
     });
   }
 
   ngOnInit(): void {
-    if (this.statusPayment === '00'){
-      this.toastr.success('thanh toán thành công');
+    localStorage.removeItem('listOrder');
+    localStorage.removeItem('coutOrder');
+    localStorage.removeItem('orderProducts_1');
+    localStorage.removeItem('orderProducts_2');
+    localStorage.removeItem('orderProducts_3');
+    localStorage.removeItem('orderProducts_4');
+    localStorage.removeItem('orderProducts_5');
+
+    if (this.statusPayment === '00') {
+      this.toastr.success('Thanh toán thành công');
     }
+
     const listOrderCookie = localStorage.getItem('listOrder');
     const countOrderCookie = localStorage.getItem('coutOrder');
+
     if (countOrderCookie && listOrderCookie) {
       this.count = parseInt(countOrderCookie, 10);
       this.listOder = JSON.parse(listOrderCookie);
@@ -689,11 +730,15 @@ export class SalesCounterComponent implements OnInit {
       localStorage.setItem('coutOrder', this.count.toString());
       localStorage.setItem('listOrder', JSON.stringify(this.listOder));
     }
+
     this.getProductListForCurrentOrder();
+
     const users = JSON.parse(localStorage.getItem('users'));
+
     this.userDTO = users;
     this.fullname = users.fullname;
     this.idStaff = users.id;
+
     this.listOder.forEach(order => {
       const orderProductsKey = `orderProducts_${order.id}`;
       const storedOrderProducts = localStorage.getItem(orderProductsKey);
@@ -701,27 +746,13 @@ export class SalesCounterComponent implements OnInit {
         order.productList = JSON.parse(storedOrderProducts);
       }
     });
+
     this.selectedOption = '0';
-    this.loadData();
+
     this.giaoHangService.getAllProvince().subscribe(res => {
       this.listProvince = res.data;
     });
 
-  }
-
-  loadData() {
-    this.sizeService.getAllSize().subscribe(data => {
-      this.listSizePR = data;
-      this.listSizeFind = data;
-    });
-    this.colorService.getAllMauSac().subscribe(datams => {
-      this.listColor = datams;
-      this.lisColorFind = datams;
-    });
-    this.productDetailService.getAllProductDetail().subscribe(dataDT => {
-      this.listProductDetail = dataDT;
-      console.log(this.listProductDetail);
-    });
   }
 
   validateNullListProduct(): boolean {
@@ -735,15 +766,9 @@ export class SalesCounterComponent implements OnInit {
     this.qrResultString = null;
   }
 
-  onCamerasFound(devices: MediaDeviceInfo[]): void {
-    this.availableDevices = devices;
-    this.hasDevices = Boolean(devices && devices.length);
-  }
-
   onCodeResult(resultString: string) {
     this.searchTerm = resultString;
     if (this.searchTerm.trim() === '') {
-      console.log('Mời nhập tên hoặc mã sản phẩm');
     } else {
       this.productService.searchProduct(this.searchTerm).subscribe(
         data => {
@@ -753,11 +778,11 @@ export class SalesCounterComponent implements OnInit {
           if (existingProduct) {
             existingProduct.quantity += 1;
           } else {
-            const newProduct = {...this.searchResults[0], quantity: 1};
+            const newProduct = { ...this.searchResults[0], quantity: 1 };
             this.listProductPush.push(newProduct);
           }
           this.cookieService.set('listProductPush', JSON.stringify(this.listProductPush));
-          const currentOrderProducts = this.listProductPush.map(product => ({...product}));
+          const currentOrderProducts = this.listProductPush.map(product => ({ ...product }));
           localStorage.setItem(`orderProducts_${this.currentOrderId}`, JSON.stringify(currentOrderProducts));
           this.isProductListVisible = false;
           // this.calculateTotalPrice();
@@ -777,13 +802,13 @@ export class SalesCounterComponent implements OnInit {
     this.currentDevice = device || null;
   }
 
-  getDistrict(event) {
+  getDistrict(event: { ProvinceID: number; }) {
     this.giaoHangService.getAllDistrictByProvince(event.ProvinceID).subscribe(res => {
       this.listDistrict = res.data;
     });
   }
 
-  getWard(event) {
+  getWard(event: { DistrictID: number; }) {
     this.giaoHangService.getAllWardByDistrict(event.DistrictID).subscribe(res => {
       this.listWard = res.data;
     });
@@ -815,16 +840,14 @@ export class SalesCounterComponent implements OnInit {
     }
   }
 
-  //voucher
   openVoucherSC() {
     const originalTotalMoney = this.priceCustomer;
     const dialogRef = this.dialog.open(PogupVoucherSCComponent, {
       width: '45%',
       height: '90vh',
-      data: {total: originalTotalMoney, voucherChoice: this.voucherChoice}
+      data: { total: originalTotalMoney, voucherChoice: this.voucherChoice }
     }).afterClosed().subscribe(result => {
       if (result.event === 'saveVoucher') {
-        console.log(result.data);
         this.totalMoneyPay = originalTotalMoney;
         if (result.data.voucher !== null) {
           this.voucherService.getVoucherSales(result.data.voucher).subscribe(res => {
@@ -832,7 +855,6 @@ export class SalesCounterComponent implements OnInit {
             if (res.data.voucherType === 1) {
               const reducedVoucherPrice = parseFloat(((res.data.reducedValue / 100) * this.priceCustomer).toFixed(2));
 
-              console.log(reducedVoucherPrice);
               if (reducedVoucherPrice > res.data.maxReduced) {
                 this.priceCustomer = this.priceCustomer - this.voucher.maxReduced;
                 this.voucher.reducedValue = this.voucher.maxReduced;
@@ -844,7 +866,6 @@ export class SalesCounterComponent implements OnInit {
             }
             this.priceVoucher = this.voucher.reducedValue;
             this.voucherChoice.voucher = res.data.codess;
-            console.log(this.voucher.code);
             this.cdr.detectChanges();
           });
         }
@@ -866,8 +887,7 @@ export class SalesCounterComponent implements OnInit {
     });
   }
 
-// validate
-  revoveInvalid(result) {
+  revoveInvalid(result: { done: boolean; }) {
     result.done = true;
   }
 

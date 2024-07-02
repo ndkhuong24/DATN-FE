@@ -19,6 +19,7 @@ export class OrderComponent implements OnInit {
   columnDefs = [];
   gridApi;
   gridColumnApi;
+
   user: any = {
     id: null,
     code: null,
@@ -31,9 +32,14 @@ export class OrderComponent implements OnInit {
     dateFrom: null,
     dateTo: null
   };
+
   totalStatus: any;
 
-  constructor(private matDialog: MatDialog, private orderService: OrderService, private cdr: ChangeDetectorRef) {
+  constructor(
+    private matDialog: MatDialog, 
+    private orderService: OrderService, 
+    private cdr: ChangeDetectorRef
+  ) {
     const lst =
       [
         {name: 'Tất cả', id: 6},
@@ -43,7 +49,9 @@ export class OrderComponent implements OnInit {
         {name: 'Hoàn thành', id: 3},
         {name: 'Đã Hủy', id: 4},
       ];
+
     this.listStatus = lst;
+
     this.columnDefs = [
       {
         headerName: 'STT',
@@ -51,7 +59,7 @@ export class OrderComponent implements OnInit {
         suppressMovable: true,
         minWidth: 60,
         maxWidth: 60,
-        valueGetter: param => {
+        valueGetter: (param: { node: { rowIndex: number; }; }) => {
           return param.node.rowIndex + 1;
         },
       },
@@ -74,7 +82,7 @@ export class OrderComponent implements OnInit {
           // textAlign: 'center',
           'justify-content': 'center',
         },
-        onCellClicked: (params) => {
+        onCellClicked: (params: { data: any; }) => {
           return this.openXemChiTiet(params.data);
         }
       },
@@ -83,21 +91,18 @@ export class OrderComponent implements OnInit {
         field: 'createDate',
         sortable: true,
         suppressMovable: true,
-        valueFormatter: params => {
+        valueFormatter: (params: { data: { createDate: string; }; }) => {
           return formatDateTime(params.data.createDate);
         },
         cellStyle: {
-
           'font-weight': '500',
           'font-size': '12px',
           'align-items': 'center',
           color: '#101840',
           display: 'flex',
-          // top: '12px',
           'white-space': 'nowrap',
           'text-overflow': 'ellipsis',
           overflow: 'hidden',
-          // textAlign: 'center',
           'justify-content': 'center',
         },
       },
@@ -113,11 +118,9 @@ export class OrderComponent implements OnInit {
           'align-items': 'center',
           color: '#101840',
           display: 'flex',
-          // top: '12px',
           'white-space': 'nowrap',
           'text-overflow': 'ellipsis',
           overflow: 'hidden',
-          // textAlign: 'center',
           'justify-content': 'center',
         },
         valueFormatter: params => {
@@ -137,11 +140,9 @@ export class OrderComponent implements OnInit {
           'align-items': 'center',
           color: '#101840',
           display: 'flex',
-          // top: '12px',
           'white-space': 'nowrap',
           'text-overflow': 'ellipsis',
           overflow: 'hidden',
-          // textAlign: 'center',
           'justify-content': 'center',
         },
       }, {
@@ -158,11 +159,9 @@ export class OrderComponent implements OnInit {
           'align-items': 'center',
           color: '#101840',
           display: 'flex',
-          // top: '12px',
           'white-space': 'nowrap',
           'text-overflow': 'ellipsis',
           overflow: 'hidden',
-          // textAlign: 'center',
           'justify-content': 'center',
         },
       }, {
@@ -194,16 +193,16 @@ export class OrderComponent implements OnInit {
           'align-items': 'center',
           color: '#101840',
           display: 'flex',
-          // top: '12px',
           'white-space': 'nowrap',
           'text-overflow': 'ellipsis',
           overflow: 'hidden',
-          // textAlign: 'center',
           'justify-content': 'center',
         },
       }
     ];
+
     this.rowData = [];
+
     const storedUserString = localStorage.getItem('users');
 
     if (storedUserString) {
@@ -235,10 +234,12 @@ export class OrderComponent implements OnInit {
       dateTo: this.modelSearch.dateTo !== null ? formatDate(this.modelSearch.dateTo) : null,
       status: this.status
     };
+
     this.orderService.getAllOrderAdmin(obj).subscribe(res => {
+      console.log(res)
       this.rowData = res;
-      console.log(this.rowData);
     });
+
     this.cdr.detectChanges();
   }
 
@@ -249,7 +250,6 @@ export class OrderComponent implements OnInit {
     };
     this.orderService.totalStatusOrderAdmin(obj).subscribe(res => {
       this.totalStatus = res;
-      console.log(this.totalStatus);
     });
     this.cdr.detectChanges();
   }
@@ -277,7 +277,6 @@ export class OrderComponent implements OnInit {
   }
 
   searchOrder() {
-    console.log(this.modelSearch);
     this.getAllOrder();
     this.getTotalStatus();
     this.cdr.detectChanges();

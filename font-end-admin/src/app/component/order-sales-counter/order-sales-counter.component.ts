@@ -1,9 +1,9 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {OrderService} from '../../service/order.service';
-import {formatDate, formatDateTime, formatMoney} from '../../util/util';
-import {OrderDetailComponent} from '../order/order-detail/order-detail.component';
-import {OrderSalesDetailComponent} from './order-sales-detail/order-sales-detail.component';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { OrderService } from '../../service/order.service';
+import { formatDate, formatDateTime, formatMoney } from '../../util/util';
+import { OrderDetailComponent } from '../order/order-detail/order-detail.component';
+import { OrderSalesDetailComponent } from './order-sales-detail/order-sales-detail.component';
 
 @Component({
   selector: 'app-order-sales-counter',
@@ -11,14 +11,20 @@ import {OrderSalesDetailComponent} from './order-sales-detail/order-sales-detail
   styleUrls: ['./order-sales-counter.component.scss']
 })
 export class OrderSalesCounterComponent implements OnInit {
-
   active = 1;
+
   listStatus: any = [];
+
   status = 6;
+
   rowData;
+
   columnDefs = [];
+
   gridApi;
+
   gridColumnApi;
+
   user: any = {
     id: null,
     code: null,
@@ -26,17 +32,19 @@ export class OrderSalesCounterComponent implements OnInit {
     phone: '',
     email: '',
   };
+
   modelSearch: any = {
     code: null,
     dateFrom: null,
     dateTo: null
   };
+
   allOrder: any = [];
   sCOrder: any = [];
-  constructor( private matDialog: MatDialog, private orderService: OrderService, private cdr: ChangeDetectorRef) {
+  constructor(private matDialog: MatDialog, private orderService: OrderService, private cdr: ChangeDetectorRef) {
     const lst =
       [
-        {name: 'Hoàn thành', id: 3},
+        { name: 'Hoàn thành', id: 3 },
       ];
     this.listStatus = lst;
     this.columnDefs = [
@@ -46,7 +54,7 @@ export class OrderSalesCounterComponent implements OnInit {
         suppressMovable: true,
         minWidth: 60,
         maxWidth: 60,
-        valueGetter: param => {
+        valueGetter: (param: { node: { rowIndex: number; }; }) => {
           return param.node.rowIndex + 1;
         },
       },
@@ -60,15 +68,13 @@ export class OrderSalesCounterComponent implements OnInit {
           'align-items': 'center',
           color: '#36f',
           display: 'flex',
-          // top: '12px',
           'white-space': 'nowrap',
           'text-overflow': 'ellipsis',
           overflow: 'hidden',
           cursor: 'pointer',
-          // textAlign: 'center',
           'justify-content': 'center',
         },
-        onCellClicked: (params) => {
+        onCellClicked: (params: { data: any; }) => {
           return this.openXemChiTiet(params.data);
         }
       },
@@ -82,11 +88,9 @@ export class OrderSalesCounterComponent implements OnInit {
           'align-items': 'center',
           color: '#101840',
           display: 'flex',
-          // top: '12px',
           'white-space': 'nowrap',
           'text-overflow': 'ellipsis',
           overflow: 'hidden',
-          // textAlign: 'center',
           'justify-content': 'center',
         },
       },
@@ -98,17 +102,14 @@ export class OrderSalesCounterComponent implements OnInit {
           return formatDateTime(params.data.createDate);
         },
         cellStyle: {
-
           'font-weight': '500',
           'font-size': '12px',
           'align-items': 'center',
           color: '#101840',
           display: 'flex',
-          // top: '12px',
           'white-space': 'nowrap',
           'text-overflow': 'ellipsis',
           overflow: 'hidden',
-          // textAlign: 'center',
           'justify-content': 'center',
         },
       },
@@ -122,11 +123,9 @@ export class OrderSalesCounterComponent implements OnInit {
           'align-items': 'center',
           color: '#101840',
           display: 'flex',
-          // top: '12px',
           'white-space': 'nowrap',
           'text-overflow': 'ellipsis',
           overflow: 'hidden',
-          // textAlign: 'center',
           'justify-content': 'center',
         },
       },
@@ -196,11 +195,9 @@ export class OrderSalesCounterComponent implements OnInit {
           'align-items': 'center',
           color: '#101840',
           display: 'flex',
-          // top: '12px',
           'white-space': 'nowrap',
           'text-overflow': 'ellipsis',
           overflow: 'hidden',
-          // textAlign: 'center',
           'justify-content': 'center',
         },
       }
@@ -236,11 +233,12 @@ export class OrderSalesCounterComponent implements OnInit {
       dateTo: this.modelSearch.dateTo !== null ? formatDate(this.modelSearch.dateTo) : null,
       status: this.status,
     };
+
     this.orderService.getAllOrderSalesAdmin(obj).subscribe(res => {
       this.allOrder = res;
       this.rowData = this.allOrder;
-      console.log(this.rowData);
     });
+
     this.cdr.detectChanges();
   }
 
@@ -251,7 +249,7 @@ export class OrderSalesCounterComponent implements OnInit {
     this.getAllOrder();
   }
 
-  openXemChiTiet(dataOrder) {
+  openXemChiTiet(dataOrder: any) {
     this.matDialog.open(OrderSalesDetailComponent, {
       width: '150vh',
       height: '90vh',
@@ -265,10 +263,10 @@ export class OrderSalesCounterComponent implements OnInit {
       }
     });
   }
+
   searchOrder() {
     console.log(this.modelSearch);
     this.getAllOrder();
     this.cdr.detectChanges();
   }
-
 }

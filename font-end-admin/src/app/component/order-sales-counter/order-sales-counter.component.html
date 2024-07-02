@@ -25,12 +25,12 @@
         <div class="order-table">
           <div class="grid">
             <ag-grid-angular
-              style="width: 100%; height: 600px;"
+              style="width: 100%; height: 550px;"
               class="ag-theme-alpine"
               [rowData]="rowData"
               [columnDefs]="columnDefs"
-              [headerHeight]="70"
-              [rowHeight]="50"
+              [headerHeight]="50"
+              [rowHeight]="40"
               [pagination]="true"
               [paginationPageSize]="10"
               (gridReady)="onGridReady($event)">
