@@ -38,8 +38,11 @@ import { CreatVoucherShipComponent } from "./component/voucher-ship/creat-vouche
 import { DetailVoucherShipComponent } from "./component/voucher-ship/detail-voucher-ship/detail-voucher-ship.component";
 import { VoucherShipComponent } from "./component/voucher-ship/voucher-ship.component";
 import { EditVoucherShipComponent } from './component/voucher-ship/edit-voucher-ship/edit-voucher-ship.component';
+import { VnpayReturnComponent } from './component/sales-counter/vnpay-return/vnpay-return.component';
 
 const routes: Routes = [
+  { path: 'sales-counter/vnpay-payment', component: VnpayReturnComponent },
+
   { path: '', redirectTo: 'thong-ke', pathMatch: 'full' },
 
   { path: 'admin/login', component: LoginComponent },

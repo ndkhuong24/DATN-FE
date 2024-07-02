@@ -94,17 +94,19 @@ import { OrderSalesCounterComponent } from './component/order-sales-counter/orde
 import { UpdateStaffComponent } from './component/staff/update-staff/update-staff.component';
 import { DetailStaffComponent } from './component/staff/detail-staff/detail-staff.component';
 import { OrderSalesDetailComponent } from './component/order-sales-counter/order-sales-detail/order-sales-detail.component';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { ActionStaffComponent } from './component/staff/action-staff/action-staff.component';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { PogupVoucherSCComponent } from './component/sales-counter/pogup-voucher-sc/pogup-voucher-sc.component';
 import { ChiTietComponent } from './component/sanpham/chi-tiet/chi-tiet.component';
+import { VnpayReturnComponent } from './component/sales-counter/vnpay-return/vnpay-return.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    VnpayReturnComponent,
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
@@ -179,6 +181,7 @@ import { ChiTietComponent } from './component/sanpham/chi-tiet/chi-tiet.componen
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     AgGridModule.withComponents([]),

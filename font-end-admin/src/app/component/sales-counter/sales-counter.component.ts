@@ -126,13 +126,13 @@ export class SalesCounterComponent implements OnInit {
     private cookieService: CookieService,
     private orderService: OrderService,
     private orderDetailService: OrderDetailService,
-    private sizeService: SizeService,
-    private colorService: MausacService,
+    // private sizeService: SizeService,
+    // private colorService: MausacService,
     private dialog: MatDialog,
     private customerService: CustomerServiceService,
     private toastr: ToastrService,
     private cdr: ChangeDetectorRef,
-    private productDetailService: ProductdetailService,
+    // private productDetailService: ProductdetailService,
     private giaoHangService: GiaoHangServiceService,
     private paymentService: PaymentSalesService,
     public utilService: UtilService,
@@ -485,40 +485,44 @@ export class SalesCounterComponent implements OnInit {
             receiverPhone: this.receiver_phone
           };
 
-
+          const orderJson = JSON.stringify(order);
+          localStorage.setItem('order', orderJson);
 
           this.paymentService.createPayment(this.priceCustomer).subscribe(resPay => {
             if (resPay.status === 'OK') {
+              // this.orderService.createOrderSales(order).subscribe(
+              //   (response) => {
+              //     const saveIdOrder = response.data.id;
 
-              this.orderService.createOrderSales(order).subscribe(
-                (response) => {
-                  const saveIdOrder = response.data.id;
+              //     for (let i = 0; i < this.listCart.length; i++) {
 
-                  for (let i = 0; i < this.listCart.length; i++) {
-                    const orderDetail: OrderDetail = {
-                      idOrder: saveIdOrder,
-                      idProductDetail: this.listCart[i].productDetailId,
-                      quantity: this.listCart[i].quantity,
-                      price: this.listCart[i].price,
-                    };
-                    this.orderDetailService.createDetailSales(orderDetail).subscribe(res => {
-                      if (res.status === 'OK') {
-                        localStorage.removeItem('listProductPush');
-                        this.refreshData();
-                        this.removeOrder(order);
-                        this.calculateTotalAllProducts();
-                        localStorage.removeItem(`orderProducts_${this.currentOrderId}`);
-                        localStorage.setItem('coutOrder', this.count.toString());
-                        localStorage.removeItem('listOrder');
-                      } else {
-                        this.checkStatus = 1;
-                        return;
-                      }
-                    });
-                  }
-                }
-              );
+              //       const orderDetail: OrderDetail = {
+              //         idOrder: saveIdOrder,
+              //         idProductDetail: this.listCart[i].productDetailId,
+              //         quantity: this.listCart[i].quantity,
+              //         price: this.listCart[i].price,
+              //       };
 
+              //       this.orderDetailService.createDetailSales(orderDetail).subscribe(res => {
+              //         if (res.status === 'OK') {
+              //           localStorage.removeItem('listProductPush');
+              //           this.refreshData();
+              //           this.removeOrder(order);
+              //           this.calculateTotalAllProducts();
+              //           localStorage.removeItem(`orderProducts_${this.currentOrderId}`);
+              //           localStorage.setItem('coutOrder', this.count.toString());
+              //           localStorage.removeItem('listOrder');
+              //         } else {
+              //           this.checkStatus = 1;
+              //           return;
+              //         }
+              //       });
+              //     }
+              //   }
+              // );
+
+              const listCartJson = JSON.stringify(this.listCart);
+              localStorage.setItem('listCart', listCartJson);
               window.location.href = resPay.url;
             }
           });
