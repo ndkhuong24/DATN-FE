@@ -66,24 +66,6 @@ export class CreatVoucherComponent implements OnInit {
 
   gridApi: any;
 
-  // voucher: any = {
-  //   name: '',
-  //   startDate: '',
-  //   endDate: '',
-  //   description: '',
-  //   reducedValue: '',
-  //   voucherType: '0',
-  //   maxReduced: 0,
-  //   conditionApply: 0,
-  //   quantity: 1,
-  //   limitCustomer: '',
-  //   customerAdminDTOList: '',
-  //   apply: '2',
-  //   allow: '',
-  //   optionCustomer: '0',
-  //   createName: localStorage.getItem('fullname'),
-  // };
-
   constructor(
     private voucherService: VoucherService,
     private toastr: ToastrService,

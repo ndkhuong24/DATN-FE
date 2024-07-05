@@ -109,6 +109,8 @@ export class SalesCounterComponent implements OnInit {
     voucherShip: null
   };
 
+  selectCustomer: any;
+
   statusPayment: any;
   voucher: any;
   voucherShip: any;
@@ -160,6 +162,7 @@ export class SalesCounterComponent implements OnInit {
   searchCustomer() {
     this.idCustomer = null;
     this.isCustomerNull = true;
+
     if (this.searcherCustomer.trim() === '') {
       this.isCustomerNull = false;
       this.idCustomer = null;
@@ -261,7 +264,6 @@ export class SalesCounterComponent implements OnInit {
     this.priceVouchers();
   }
 
-
   // addProductInOrder(row: any) {
   //   if (!row.quantity) {
   //     row.quantity = 1;
@@ -315,6 +317,9 @@ export class SalesCounterComponent implements OnInit {
     if (!row.quantity) {
       row.quantity = 1;
     }
+
+    this.selectCustomer = row;
+
     this.searcherCustomer = `${row.fullname} - ${row.phone}`;
     this.selectedCustomer = row;
     this.isCustomerNull = false;
@@ -614,46 +619,90 @@ export class SalesCounterComponent implements OnInit {
     this.shipFee = 0;
   }
 
+  // generateOrderHTML(): string {
+  //   let orderHTML = `<div>`;
+  //   orderHTML += `<h2>Hóa đơn</h2>`;
+  //   orderHTML += `<p>Tên nhân viên: ${this.user.fullname}</p>`;
+  //   orderHTML += `<p>Tên khách hàng: ${this.selectedCustomer ? this.selectedCustomer.fullname : 'Khách lẻ'}</p>`;
+  //   orderHTML += `<p>Số điện thoại: ${this.selectedCustomer ? this.selectedCustomer.phone : ''}</p>`;
+  //   orderHTML += `<h3>Chi tiết đơn hàng</h3>`;
+  //   orderHTML += `<table border="1" cellpadding="10">`;
+  //   orderHTML += `<thead>`;
+  //   orderHTML += `<tr>`;
+  //   orderHTML += `<th>Mã</th>`;
+  //   orderHTML += `<th>Tên</th>`;
+  //   orderHTML += `<th>Size</th>`;
+  //   orderHTML += `<th>Màu Sắc</th>`;
+  //   orderHTML += `<th>Số lượng</th>`;
+  //   orderHTML += `<th>Đơn giá</th>`;
+  //   orderHTML += `<th>Thành tiền</th>`;
+  //   orderHTML += `</tr>`;
+  //   orderHTML += `</thead>`;
+  //   orderHTML += `<tbody>`;
+  //   this.listProductPush.forEach(product => {
+  //     this.listCart.forEach(details => {
+  //       if (product.id === details.productDetailId) {
+  //         orderHTML += `<tr>`;
+  //         orderHTML += `<td>${product.productDTO.code}</td>`;
+  //         orderHTML += `<td>${product.productDTO.name}</td>`;
+  //         orderHTML += `<td>${details.size_number}</td>`;
+  //         orderHTML += `<td>${product.colorDTO.code}</td>`;
+  //         orderHTML += `<td>${details.quantity}</td>`;
+  //         orderHTML += `<td>${details.price}</td>`;
+  //         orderHTML += `<td>${details.quantity * details.price}</td>`;
+  //         orderHTML += `</tr>`;
+  //       }
+  //     });
+  //   });
+  //   orderHTML += `</tbody>`;
+  //   orderHTML += `</table>`;
+  //   orderHTML += `<p>Giảm giá: ${this.priceVoucher} đ</p>`;
+  //   orderHTML += `<p>Tổng thanh toán: ${this.priceCustomer} đ</p>`;
+  //   orderHTML += `</div>`;
+  //   return orderHTML;
+  // }
+
   generateOrderHTML(): string {
-    let orderHTML = `<div>`;
-    orderHTML += `<h2>Hóa đơn</h2>`;
-    orderHTML += `<p>Tên nhân viên: ${this.user.id}</p>`;
-    orderHTML += `<p>Tên khách hàng: ${this.selectedCustomer ? this.selectedCustomer.fullname : 'Khách lẻ'}</p>`;
-    orderHTML += `<p>Số điện thoại: ${this.selectedCustomer ? this.selectedCustomer.phone : ''}</p>`;
-    orderHTML += `<h3>Chi tiết đơn hàng</h3>`;
-    orderHTML += `<table border="1" cellpadding="10">`;
-    orderHTML += `<thead>`;
-    orderHTML += `<tr>`;
-    orderHTML += `<th>Mã</th>`;
-    orderHTML += `<th>Tên</th>`;
-    orderHTML += `<th>Size</th>`;
-    orderHTML += `<th>Màu Sắc</th>`;
-    orderHTML += `<th>Số lượng</th>`;
-    orderHTML += `<th>Đơn giá</th>`;
-    orderHTML += `<th>Thành tiền</th>`;
-    orderHTML += `</tr>`;
-    orderHTML += `</thead>`;
-    orderHTML += `<tbody>`;
-    this.listProductPush.forEach(product => {
-      this.listCart.forEach(details => {
-        if (product.id === details.productDetailId) {
-          orderHTML += `<tr>`;
-          orderHTML += `<td>${product.productDTO.code}</td>`;
-          orderHTML += `<td>${product.productDTO.name}</td>`;
-          orderHTML += `<td>${details.size_number}</td>`;
-          orderHTML += `<td>${product.colorDTO.code}</td>`;
-          orderHTML += `<td>${details.quantity}</td>`;
-          orderHTML += `<td>${details.price}</td>`;
-          orderHTML += `<td>${details.quantity * details.price}</td>`;
-          orderHTML += `</tr>`;
-        }
-      });
-    });
-    orderHTML += `</tbody>`;
-    orderHTML += `</table>`;
-    orderHTML += `<p>Giảm giá: ${this.priceVoucher} đ</p>`;
-    orderHTML += `<p>Tổng thanh toán: ${this.priceCustomer} đ</p>`;
-    orderHTML += `</div>`;
+    const orderHTML = `
+      <div style="font-family: Arial, sans-serif; max-width: 800px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
+        <h2 style="text-align: center; color: #333;">Hóa đơn</h2>
+        <p><strong>Tên nhân viên:</strong> ${this.user.fullname}</p>
+        <p><strong>Tên khách hàng:</strong> ${this.selectedCustomer ? this.selectedCustomer.fullname : 'Khách lẻ'}</p>
+        <p><strong>Số điện thoại:</strong> ${this.selectedCustomer ? this.selectedCustomer.phone : 'N/A'}</p>
+        <h3 style="margin-top: 20px; color: #333;">Chi tiết đơn hàng</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+          <thead>
+            <tr style="background-color: #f2f2f2;">
+              <th style="padding: 10px; border: 1px solid #ddd;">Mã</th>
+              <th style="padding: 10px; border: 1px solid #ddd;">Tên</th>
+              <th style="padding: 10px; border: 1px solid #ddd;">Size</th>
+              <th style="padding: 10px; border: 1px solid #ddd;">Màu Sắc</th>
+              <th style="padding: 10px; border: 1px solid #ddd;">Số lượng</th>
+              <th style="padding: 10px; border: 1px solid #ddd;">Đơn giá</th>
+              <th style="padding: 10px; border: 1px solid #ddd;">Thành tiền</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${this.listProductPush.map(product =>
+      this.listCart.map(details =>
+        product.id === details.productDetailId ?
+          `<tr>
+                  <td style="padding: 10px; border: 1px solid #ddd;">${product.productDTO.code}</td>
+                  <td style="padding: 10px; border: 1px solid #ddd;">${product.productDTO.name}</td>
+                  <td style="padding: 10px; border: 1px solid #ddd;">${details.size_number}</td>
+                  <td style="padding: 10px; border: 1px solid #ddd;">${product.colorDTO.code}</td>
+                  <td style="padding: 10px; border: 1px solid #ddd;">${details.quantity}</td>
+                  <td style="padding: 10px; border: 1px solid #ddd;">${details.price}</td>
+                  <td style="padding: 10px; border: 1px solid #ddd;">${details.quantity * details.price}</td>
+                </tr>` : ''
+      ).join('')
+    ).join('')}
+          </tbody>
+        </table>
+        <p style="margin-top: 20px;"><strong>Giảm giá:</strong> ${this.priceVoucher} đ</p>
+        <p><strong>Tổng thanh toán:</strong> ${this.priceCustomer} đ</p>
+      </div>
+    `;
     return orderHTML;
   }
 
@@ -800,7 +849,6 @@ export class SalesCounterComponent implements OnInit {
     }
   }
 
-
   onDeviceSelectChange(selected: string) {
     const device = this.availableDevices.find(x => x.deviceId === selected);
     this.currentDevice = device || null;
@@ -846,17 +894,30 @@ export class SalesCounterComponent implements OnInit {
 
   openVoucherSC() {
     const originalTotalMoney = this.priceCustomer;
+
     const dialogRef = this.dialog.open(PogupVoucherSCComponent, {
       width: '45%',
       height: '90vh',
-      data: { total: originalTotalMoney, voucherChoice: this.voucherChoice }
-    }).afterClosed().subscribe(result => {
+      data: {
+        total: originalTotalMoney,
+        voucherChoice: this.voucherChoice,
+        // customer: this.searchCustomerResults,
+        customer: this.selectCustomer,
+      }
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
       if (result.event === 'saveVoucher') {
+
         this.totalMoneyPay = originalTotalMoney;
+        
         if (result.data.voucher !== null) {
           this.voucherService.getVoucherSales(result.data.voucher).subscribe(res => {
+
             this.voucher = res.data;
+
             if (res.data.voucherType === 1) {
+
               const reducedVoucherPrice = parseFloat(((res.data.reducedValue / 100) * this.priceCustomer).toFixed(2));
 
               if (reducedVoucherPrice > res.data.maxReduced) {
@@ -865,9 +926,11 @@ export class SalesCounterComponent implements OnInit {
               } else {
                 this.priceCustomer = this.priceCustomer - this.voucher.reducedValue;
               }
+
             } else {
               this.priceCustomer = this.priceCustomer - this.voucher.reducedValue;
             }
+
             this.priceVoucher = this.voucher.reducedValue;
             this.voucherChoice.voucher = res.data.codess;
             this.cdr.detectChanges();

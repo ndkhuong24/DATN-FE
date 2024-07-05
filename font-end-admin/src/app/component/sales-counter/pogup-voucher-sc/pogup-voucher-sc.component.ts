@@ -14,7 +14,7 @@ export class PogupVoucherSCComponent implements OnInit {
   listVoucher: any = [];
 
   listVoucherShip: any = [];
-  
+
   voucherChoice: any = {
     voucher: null,
     voucherShip: null
@@ -22,7 +22,9 @@ export class PogupVoucherSCComponent implements OnInit {
 
   codeSearch: any;
   idCustomer = null;
+
   checkConditionApply: boolean = false;
+
   checkStartDate: boolean = false;
 
   constructor(
@@ -35,7 +37,11 @@ export class PogupVoucherSCComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getVoucherSales();
+    if (this.data && this.data.customer && this.data.customer.id !== undefined) {
+      this.idCustomer = this.data.customer.id;
+    } else {
+      this.idCustomer = null;
+    }    
   }
 
   getVoucherSales() {
@@ -43,15 +49,17 @@ export class PogupVoucherSCComponent implements OnInit {
       code: this.codeSearch !== undefined && this.codeSearch !== null ? this.codeSearch : '',
       idCustomerLogin: this.idCustomer !== null ? this.idCustomer : null
     };
+    console.log(obj)
+
     this.voucherService.getAllVoucherSales(obj).subscribe(res => {
+      console.log(res)
       this.listVoucher = res;
-      console.log('data: ', res);
     });
+
     this.cdr.detectChanges();
   }
 
   xacNhan() {
-    console.log(this.voucherChoice);
     this.toastr.success('Áp dụng Voucher thành công', 'Thông báo');
     this.matDialogRef.close({ event: 'saveVoucher', data: this.voucherChoice });
   }
@@ -66,6 +74,7 @@ export class PogupVoucherSCComponent implements OnInit {
   }
 
   checkValidateVoucher(v: any) {
+
     this.checkConditionApply = false;
     this.checkStartDate = false;
     if (new Date(v.startDate) > new Date()) {

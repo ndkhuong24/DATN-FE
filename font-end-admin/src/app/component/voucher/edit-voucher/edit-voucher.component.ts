@@ -6,7 +6,6 @@ import { ValidateInput } from '../../model/validate-input';
 import { CommonFunction } from '../../../util/common-function';
 import { DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { SuaChatLieuComponent } from '../../chatlieu/sua-chat-lieu/sua-chat-lieu.component';
 
 @Component({
   selector: 'app-edit-voucher',
@@ -256,7 +255,7 @@ export class EditVoucherComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#dd3333',
-      confirmButtonText: 'cập nhật',
+      confirmButtonText: 'Cập nhật',
       cancelButtonText: 'Thoát'
     }).then((result) => {
       if (result.isConfirmed) {
