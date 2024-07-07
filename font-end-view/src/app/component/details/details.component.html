@@ -24,26 +24,26 @@
           <span>{{utilService.formatMoney( (getProductDetailprice() == null) ? product?.totalQuantity :
             getProductDetailprice() )}}</span>
         </div>
-
-        <!--size-->
+        <!-- size -->
         <div class="product-details my-2">
-          <div class="d-flex" style="display: flex; gap: 80px">
+          <div class="d-flex" style="display: flex; gap: 20px; align-items: center;">
             <p class="details-title text-color mb-1">Size : </p>
-            <ng-select style="width: 150px; " [items]="listSize" bindLabel="sizeNumber" bindValue="id"
-              placeholder="Chọn Size" [(ngModel)]="sizeId" [ngModelOptions]="{standalone: true}" [searchable]="false"
-              (change)="onSizeChange($event)">
-            </ng-select>
+            <div *ngFor="let size of listSize" >
+              <input class="custom-radio" type="radio" name="size" [id]="'size' + size.id" [value]="size.id"
+                     [(ngModel)]="sizeId" [disabled]="size.disabled" (change)="onSizeChange(size)">
+              <label class="custom-radio-label" [for]="'size' + size.id">{{ size.sizeNumber }}</label>
+            </div>
           </div>
         </div>
-
-        <!--màu sắc-->
+        <!-- color -->
         <div class="product-details my-2" style="margin-top: 10px !important;">
-          <div class="d-flex" style="display: flex; gap: 33px">
+          <div class="d-flex" style="display: flex; gap: 20px; align-items: center;">
             <p class="details-title text-color mb-1">Màu Sắc : </p>
-            <ng-select style="width: 150px" [items]="listColor" bindLabel="name" bindValue="id" placeholder="Chọn Màu"
-              [(ngModel)]="colorId" [ngModelOptions]="{standalone: true}" [searchable]="false"
-              (change)="onColorChange($event)">
-            </ng-select>
+            <div *ngFor="let color of listColor" >
+              <input class="custom-radio" type="radio" name="color" [id]="'color' + color.id" [value]="color.id"
+                     [(ngModel)]="colorId" [disabled]="color.disabled" (change)="onColorChange(color)">
+              <label class="custom-radio-label" [for]="'color' + color.id">{{ color.name }}</label>
+            </div>
           </div>
         </div>
 

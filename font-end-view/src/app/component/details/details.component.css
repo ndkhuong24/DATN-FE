@@ -360,3 +360,36 @@ input[type="number"] {
   line-height: 10px;
   font-weight: 500;
 }
+
+/* Ẩn radio button mặc định */
+.custom-radio {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Thiết lập giao diện cho radio button tùy chỉnh */
+.custom-radio-label {
+  display: inline-block;
+  cursor: pointer;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: #fff;
+  color: #333;
+  position: relative;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+/* Thiết lập giao diện khi radio button được chọn */
+.custom-radio:checked + .custom-radio-label {
+  background-color: #ff5722;
+  color: #fff;
+  border-color: #ff5722;
+}
+/* Thiết lập giao diện khi radio button được chọn */
+.custom-radio:disabled + .custom-radio-label {
+  background-color: #555;
+  color: #fff;
+  border-color: #555;
+}

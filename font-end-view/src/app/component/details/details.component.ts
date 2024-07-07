@@ -11,21 +11,26 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.css']
+  styleUrls: ['./details.component.css'],
 })
 export class DetailsComponent implements OnInit {
-
   cartData = new Map();
   productData = new Map();
   listProductTuongTu = [];
   isMouseOver: { [key: number]: boolean } = {};
   quantityBuy: number = 1;
 
-  constructor(private productService: ProductService, private activeRoute: ActivatedRoute,
-    private colorService: ColorService, private sizeService: SizeService,
-    private cookieService: CookieService, private router: Router, public utilService: UtilService,
-    private cartService: CartService, private cdr: ChangeDetectorRef) {
-
+  constructor(
+    private productService: ProductService,
+    private activeRoute: ActivatedRoute,
+    private colorService: ColorService,
+    private sizeService: SizeService,
+    private cookieService: CookieService,
+    private router: Router,
+    public utilService: UtilService,
+    private cartService: CartService,
+    private cdr: ChangeDetectorRef
+  ) {
     // window.scrollTo(top, 0, 0);
 
     if (this.cookieService.check('cart')) {
@@ -34,7 +39,6 @@ export class DetailsComponent implements OnInit {
       this.cartData = new Map(entries);
       this.cartService.updateTotalProducts(this.cartData.size);
     }
-
   }
 
   product: any;
@@ -52,17 +56,18 @@ export class DetailsComponent implements OnInit {
   maxPrice: number | null = null;
 
   ngOnInit(): void {
-    this.activeRoute.params.subscribe(params => {
-
+    this.activeRoute.params.subscribe((params) => {
       const id = params.idProduct;
 
-      this.productService.getDetailProduct(id).subscribe(res => {
+      this.productService.getDetailProduct(id).subscribe((res) => {
         this.product = res.data;
 
-        this.productService.getProductTuongTu(res.data.id, res.data.categoryDTO.id).subscribe(res2 => {
-          this.listProductTuongTu = res2;
-          this.cdr.detectChanges();
-        });
+        this.productService
+          .getProductTuongTu(res.data.id, res.data.categoryDTO.id)
+          .subscribe((res2) => {
+            this.listProductTuongTu = res2;
+            this.cdr.detectChanges();
+          });
 
         this.loadData();
       });
@@ -71,30 +76,34 @@ export class DetailsComponent implements OnInit {
 
   private loadData(): void {
     if (this.product && this.product.productDetailDTOList) {
-      this.colorService.getAllColor().subscribe(res => {
+      this.colorService.getAllColor().subscribe((res) => {
         this.listColor = res;
 
         const colorIDsInProduct = this.product.productDetailDTOList
-          .filter((detail: { idColor: any; }) => detail.idColor)
-          .map((detail: { idColor: any; }) => detail.idColor);
+          .filter((detail: { idColor: any }) => detail.idColor)
+          .map((detail: { idColor: any }) => detail.idColor);
 
-        this.listColor = this.listColor.filter(color => colorIDsInProduct.includes(color.id));
+        this.listColor = this.listColor.filter((color) =>
+          colorIDsInProduct.includes(color.id)
+        );
         this.originalListColor = [...this.listColor];
       });
 
-      this.sizeService.getAllSize().subscribe(res => {
+      this.sizeService.getAllSize().subscribe((res) => {
         this.listSize = res;
         const sizeIDsInProduct = this.product.productDetailDTOList
-          .filter((detail: { idSize: any; }) => detail.idSize)
-          .map((detail: { idSize: any; }) => detail.idSize);
+          .filter((detail: { idSize: any }) => detail.idSize)
+          .map((detail: { idSize: any }) => detail.idSize);
 
-        this.listSize = this.listSize.filter(size => sizeIDsInProduct.includes(size.id));
+        this.listSize = this.listSize.filter((size) =>
+          sizeIDsInProduct.includes(size.id)
+        );
         this.originalListSize = [...this.listSize];
       });
       // Calculate min and max prices
       const prices = this.product.productDetailDTOList
-        .filter((detail: { price: null; }) => detail.price != null)
-        .map((detail: { price: any; }) => detail.price);
+        .filter((detail: { price: null }) => detail.price != null)
+        .map((detail: { price: any }) => detail.price);
 
       if (prices.length > 0) {
         this.minPrice = Math.min(...prices);
@@ -106,14 +115,13 @@ export class DetailsComponent implements OnInit {
     }
   }
 
-
-  selectSize(s: { isSelected: boolean; id: any; }) {
+  selectSize(s: { isSelected: boolean; id: any }) {
     if (s.isSelected) {
-      this.listSize.forEach(size => {
+      this.listSize.forEach((size) => {
         size.isSelected = false;
         size.disabled = false;
       });
-      this.listColor.forEach(color => {
+      this.listColor.forEach((color) => {
         color.disabled = false;
       });
       this.sizeId = null;
@@ -123,11 +131,18 @@ export class DetailsComponent implements OnInit {
 
     const selectedSizeId = s.id;
     const colorIDsForSelectedSize = this.product.productDetailDTOList
-      .filter((detail: { idSize: number; idColor: any; quantity: number; }) => detail.idSize === parseInt(String(selectedSizeId), 10) && detail.idColor && detail.quantity > 0)
-      .map((detail: { idColor: any; }) => detail.idColor);
+      .filter(
+        (detail: { idSize: number; idColor: any; quantity: number }) =>
+          detail.idSize === parseInt(String(selectedSizeId), 10) &&
+          detail.idColor &&
+          detail.quantity > 0
+      )
+      .map((detail: { idColor: any }) => detail.idColor);
 
     if (this.sizeId != null) {
-      const previousSelectedSize = this.listSize.find(size => size.id === this.sizeId);
+      const previousSelectedSize = this.listSize.find(
+        (size) => size.id === this.sizeId
+      );
       if (previousSelectedSize) {
         // Bỏ chọn size trước đó
         previousSelectedSize.isSelected = false;
@@ -136,7 +151,7 @@ export class DetailsComponent implements OnInit {
     // Cập nhật kích thước đã chọn
     s.isSelected = true;
     // Vô hiệu hóa các màu không khả dụng cho kích thước đã chọn
-    this.listColor.forEach(color => {
+    this.listColor.forEach((color) => {
       color.disabled = !colorIDsForSelectedSize.includes(color.id);
     });
 
@@ -144,14 +159,13 @@ export class DetailsComponent implements OnInit {
     this.checkIfBothSizeAndColorSelected();
   }
 
-
-  selectColor(c: { isSelected: boolean; id: any; }) {
+  selectColor(c: { isSelected: boolean; id: any }) {
     if (c.isSelected) {
-      this.listColor.forEach(color => {
+      this.listColor.forEach((color) => {
         color.disabled = false;
         color.isSelected = false;
       });
-      this.listSize.forEach(size => {
+      this.listSize.forEach((size) => {
         size.disabled = false;
       });
       this.colorId = null;
@@ -161,11 +175,18 @@ export class DetailsComponent implements OnInit {
 
     const selectedColorId = c.id;
     const colorIDsForSelectedSize = this.product.productDetailDTOList
-      .filter((detail: { idColor: number; quantity: number; }) => detail.idColor === parseInt(String(selectedColorId), 10) && detail.idColor && detail.quantity > 0)
-      .map((detail: { idSize: any; }) => detail.idSize);
+      .filter(
+        (detail: { idColor: number; quantity: number }) =>
+          detail.idColor === parseInt(String(selectedColorId), 10) &&
+          detail.idColor &&
+          detail.quantity > 0
+      )
+      .map((detail: { idSize: any }) => detail.idSize);
 
     if (this.colorId != null) {
-      const previousSelectedColor = this.listColor.find(color => color.id === this.colorId);
+      const previousSelectedColor = this.listColor.find(
+        (color) => color.id === this.colorId
+      );
       if (previousSelectedColor) {
         // Bỏ chọn size trước đó
         previousSelectedColor.isSelected = false;
@@ -173,7 +194,7 @@ export class DetailsComponent implements OnInit {
     }
     c.isSelected = true;
 
-    this.listSize.forEach(size => {
+    this.listSize.forEach((size) => {
       size.disabled = !colorIDsForSelectedSize.includes(size.id);
     });
     this.colorId = selectedColorId;
@@ -181,13 +202,18 @@ export class DetailsComponent implements OnInit {
   }
 
   checkIfBothSizeAndColorSelected() {
-    this.bothSizeAndColorSelected = this.colorId !== null && this.sizeId !== null && this.getProductDetailQuantity() > 0;
+    this.bothSizeAndColorSelected =
+      this.colorId !== null &&
+      this.sizeId !== null &&
+      this.getProductDetailQuantity() > 0;
   }
 
   getProductDetailQuantity(): number {
     if (this.sizeId !== null && this.colorId !== null) {
       const selectedProductDetail = this.product.productDetailDTOList.find(
-        (detail: { idSize: number; idColor: number; }) => detail.idSize === parseInt(String(this.sizeId), 10) && detail.idColor === parseInt(String(this.colorId), 10)
+        (detail: { idSize: number; idColor: number }) =>
+          detail.idSize === parseInt(String(this.sizeId), 10) &&
+          detail.idColor === parseInt(String(this.colorId), 10)
       );
       if (selectedProductDetail) {
         return selectedProductDetail.quantity;
@@ -199,7 +225,9 @@ export class DetailsComponent implements OnInit {
   getProductDetailprice(): number {
     if (this.sizeId !== null && this.colorId !== null) {
       const selectedProductDetail = this.product.productDetailDTOList.find(
-        detail => detail.idSize === parseInt(String(this.sizeId), 10) && detail.idColor === parseInt(String(this.colorId), 10)
+        (detail) =>
+          detail.idSize === parseInt(String(this.sizeId), 10) &&
+          detail.idColor === parseInt(String(this.colorId), 10)
       );
       if (selectedProductDetail) {
         return selectedProductDetail.price;
@@ -215,22 +243,30 @@ export class DetailsComponent implements OnInit {
     if (this.cartData.has(productKey)) {
       const slHienTai = this.cartData.get(productKey);
       this.cartData.set(productKey, slHienTai + this.quantityBuy);
-      this.cookieService.set('cart', JSON.stringify(Array.from(this.cartData.entries())), expirationDate);
+      this.cookieService.set(
+        'cart',
+        JSON.stringify(Array.from(this.cartData.entries())),
+        expirationDate
+      );
       Swal.fire({
         icon: 'success',
         title: 'Thêm vào giỏ thành công',
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       });
       this.quantityBuy = 1;
     } else {
       this.cartData.set(productKey, this.quantityBuy);
-      this.cookieService.set('cart', JSON.stringify(Array.from(this.cartData.entries())), expirationDate);
+      this.cookieService.set(
+        'cart',
+        JSON.stringify(Array.from(this.cartData.entries())),
+        expirationDate
+      );
       Swal.fire({
         icon: 'success',
         title: 'Thêm vào giỏ thành công',
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       });
       this.quantityBuy = 1;
     }
@@ -245,14 +281,18 @@ export class DetailsComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Đồng ý'
+      confirmButtonText: 'Đồng ý',
     }).then((result) => {
       if (result.isConfirmed) {
         const productKey = productId + '-' + this.colorId + '-' + this.sizeId;
         const expirationDate = new Date();
         expirationDate.setTime(expirationDate.getTime() + 30 * 60 * 1000);
         this.productData.set(productKey, this.quantityBuy);
-        this.cookieService.set('checkout', JSON.stringify(Array.from(this.productData.entries())), expirationDate);
+        this.cookieService.set(
+          'checkout',
+          JSON.stringify(Array.from(this.productData.entries())),
+          expirationDate
+        );
         this.router.navigate(['cart/checkout']);
       }
     });
@@ -280,16 +320,32 @@ export class DetailsComponent implements OnInit {
 
   onSizeChange(event: any): void {
     // console.log("Size: ", event);
-    // const selectedSizeId = this.sizeId;
+    const selectedSizeId = this.sizeId;
     if (this.product && this.product.productDetailDTOList) {
       if (this.sizeId === null) {
         this.listColor = [...this.originalListColor];
       } else {
         this.listColor = [...this.originalListColor];
-        const detailsForSelectedSize = this.product.productDetailDTOList
-          .filter(detail => detail.idSize === this.sizeId && detail.idColor);
-        const colorIDsForSelectedSize = detailsForSelectedSize.map(detail => detail.idColor);
-        this.listColor = this.listColor.filter(color => colorIDsForSelectedSize.includes(color.id));
+        const detailsForSelectedSize = this.product.productDetailDTOList.filter(
+          (detail) => detail.idSize === this.sizeId && detail.idColor
+        );
+        const colorIDsForSelectedSize = detailsForSelectedSize.map(
+          (detail) => detail.idColor
+        );
+          
+          this.listColor = this.listColor.map(color => {
+            // Kiểm tra xem color.id có trong colorIDsForSelectedSize hay không
+            if (colorIDsForSelectedSize.includes(color.id)) {
+              // Nếu có, trả về color mà không có thay đổi
+              return color;
+            } else {
+              // Nếu không, thêm thuộc tính disabled vào color
+              return {
+                ...color,
+                disabled: true
+              };
+            }
+          });
       }
     }
     this.checkIfBothSizeAndColorSelected();
@@ -304,22 +360,59 @@ export class DetailsComponent implements OnInit {
         this.listSize = [...this.originalListSize];
       } else {
         this.listSize = [...this.originalListSize];
-        const detailsForSelectedColor = this.product.productDetailDTOList
-          .filter(detail => detail.idColor === this.colorId && detail.idSize);
+        const detailsForSelectedColor =
+          this.product.productDetailDTOList.filter(
+            (detail) => detail.idColor === this.colorId && detail.idSize
+          );
 
-        const sizeIDsForSelectedColor = detailsForSelectedColor.map(detail => detail.idSize);
+        const sizeIDsForSelectedColor = detailsForSelectedColor.map(
+          (detail) => detail.idSize
+        );
 
-        this.listSize = this.listSize.filter(size => sizeIDsForSelectedColor.includes(size.id));
+        this.listSize = this.listSize.map(size => {
+          if (sizeIDsForSelectedColor.includes(size.id)) {
+            return size;
+          } else {
+            return {
+              ...size,
+              disabled: true
+            };
+          }
+        });
       }
-
     }
     this.checkIfBothSizeAndColorSelected();
     this.cdr.detectChanges();
   }
 
+  toggleRadio(event: Event, type: string, id: number) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (type === 'size') {
+      if (this.sizeId === id) {
+        this.sizeId = null;
+      } else {
+        this.sizeId = id;
+      }
+    } else if (type === 'color') {
+      if (this.colorId === id) {
+        this.colorId = null;
+      } else {
+        this.colorId = id;
+      }
+    }
+
+    this.checkIfBothSizeAndColorSelected();
+  }
+
   checkQuantity() {
     const regex = /^\d+$/;
-    if (this.quantityBuy === undefined || this.quantityBuy === null || JSON.stringify(this.quantityBuy) === '') {
+    if (
+      this.quantityBuy === undefined ||
+      this.quantityBuy === null ||
+      JSON.stringify(this.quantityBuy) === ''
+    ) {
       this.validQuantityBuy = true;
       this.validQuantityBuyMess = 'Vui lòng nhập số lượng mua';
       return;
@@ -339,5 +432,4 @@ export class DetailsComponent implements OnInit {
     this.validQuantityBuy = false;
     this.validQuantityBuyMess = null;
   }
-
 }
