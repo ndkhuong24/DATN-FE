@@ -1,7 +1,7 @@
-import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ThongKeService} from '../../service/thong-ke.service';
-import {formatDateYYYY_MM_dd} from '../../util/util';
-import {UtilService} from '../../util/util.service';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ThongKeService } from '../../service/thong-ke.service';
+import { formatDateYYYY_MM_dd } from '../../util/util';
+import { UtilService } from '../../util/util.service';
 
 @Component({
     selector: 'app-thong-ke',
@@ -27,14 +27,18 @@ export class ThongKeComponent implements OnInit {
     checkDateRanges: boolean = false;
 
     public pieData = [
-        {category: 'Hoàn thành', value: 0.0933},
-        {category: 'Hủy', value: 0.2545},
-        {category: 'Đang xử lý', value: 0.1552},
-        {category: 'Đang giao', value: 0.4059},
-        {category: 'Chờ xác nhận', value: 0.0911}
+        { category: 'Hoàn thành', value: 0.0933 },
+        { category: 'Hủy', value: 0.2545 },
+        { category: 'Đang xử lý', value: 0.1552 },
+        { category: 'Đang giao', value: 0.4059 },
+        { category: 'Chờ xác nhận', value: 0.0911 }
     ];
 
-    constructor(private thongKeService: ThongKeService, private cdr: ChangeDetectorRef, public utilService: UtilService) {
+    constructor(
+        private thongKeService: ThongKeService,
+        private cdr: ChangeDetectorRef,
+        public utilService: UtilService
+    ) {
         const currentDate = new Date();
         this.dateFromCurrent = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
 
@@ -44,8 +48,8 @@ export class ThongKeComponent implements OnInit {
 
     ngOnInit(): void {
         this.getStatistical();
-        console.log(this.dateFromCurrent);
-        console.log(this.dateToCurrent);
+        // console.log(this.dateFromCurrent);
+        // console.log(this.dateToCurrent);
     }
 
     getStatistical() {
@@ -57,26 +61,26 @@ export class ThongKeComponent implements OnInit {
         this.categoriesRevenue = [];
         this.categoriesOrder = [];
         this.totalRevenueToday = 0;
+
         const obj = {
             dateFrom: formatDateYYYY_MM_dd(this.dateFromCurrent),
             dateTo: formatDateYYYY_MM_dd(this.dateToCurrent)
         };
+
         this.thongKeService.getStatisticalByYear(obj).subscribe(res => {
+            console.log(res)
             this.totalRevenue = res.totalRevenue;
             this.totalOrder = res.totalOrder;
             this.totalRevenueToday = res.totalRevenueToday;
             this.totalOrderToDay = res.totalOrderToday;
             this.totalQuantityProduct = res.totalQuantityProduct;
-            this.listProductBestSeller = res.listProductBestSeller;
+            this.listProductBestSeller = res.listProductDetailBestSeller;
             this.seriesDateStr = res.statisticalAdminDTOList.map((item: any) => item.dateStr);
             this.categoriesOrder = res.statisticalAdminDTOList.map((item: any) => item.quantityOrder);
             this.categoriesRevenue = res.statisticalAdminDTOList.map((item: any) => item.revenue);
             this.categoriesQuantityProduct = res.statisticalAdminDTOList.map((item: any) => item.quantityProduct);
-            console.log(this.seriesDateStr);
-            console.log(this.categoriesOrder);
-            console.log(this.categoriesRevenue);
         });
-      this.cdr.detectChanges();
+        this.cdr.detectChanges();
     }
 
     changeGetStatistical() {
@@ -98,7 +102,7 @@ export class ThongKeComponent implements OnInit {
         const index = this.seriesDateStr.indexOf(category);
         if (index !== -1) {
             return this.utilService.formatMoney(this.categoriesRevenue[index]);
-        }else {
+        } else {
             return this.utilService.formatMoney(0.00);
         }
     }
@@ -106,7 +110,7 @@ export class ThongKeComponent implements OnInit {
         const index = this.seriesDateStr.indexOf(category);
         if (index !== -1) {
             return this.utilService.padZero(this.categoriesQuantityProduct[index]);
-        }else {
+        } else {
             return 0;
         }
     }

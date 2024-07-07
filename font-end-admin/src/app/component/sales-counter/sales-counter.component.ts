@@ -218,7 +218,6 @@ export class SalesCounterComponent implements OnInit {
       this.listProductPush = [];
     }
 
-    // Check if the product already exists in the listProductPush array
     let existingProductInPush = this.listProductPush.find(product => product.id === row.id);
 
     if (existingProductInPush) {
@@ -619,49 +618,6 @@ export class SalesCounterComponent implements OnInit {
     this.shipFee = 0;
   }
 
-  // generateOrderHTML(): string {
-  //   let orderHTML = `<div>`;
-  //   orderHTML += `<h2>Hóa đơn</h2>`;
-  //   orderHTML += `<p>Tên nhân viên: ${this.user.fullname}</p>`;
-  //   orderHTML += `<p>Tên khách hàng: ${this.selectedCustomer ? this.selectedCustomer.fullname : 'Khách lẻ'}</p>`;
-  //   orderHTML += `<p>Số điện thoại: ${this.selectedCustomer ? this.selectedCustomer.phone : ''}</p>`;
-  //   orderHTML += `<h3>Chi tiết đơn hàng</h3>`;
-  //   orderHTML += `<table border="1" cellpadding="10">`;
-  //   orderHTML += `<thead>`;
-  //   orderHTML += `<tr>`;
-  //   orderHTML += `<th>Mã</th>`;
-  //   orderHTML += `<th>Tên</th>`;
-  //   orderHTML += `<th>Size</th>`;
-  //   orderHTML += `<th>Màu Sắc</th>`;
-  //   orderHTML += `<th>Số lượng</th>`;
-  //   orderHTML += `<th>Đơn giá</th>`;
-  //   orderHTML += `<th>Thành tiền</th>`;
-  //   orderHTML += `</tr>`;
-  //   orderHTML += `</thead>`;
-  //   orderHTML += `<tbody>`;
-  //   this.listProductPush.forEach(product => {
-  //     this.listCart.forEach(details => {
-  //       if (product.id === details.productDetailId) {
-  //         orderHTML += `<tr>`;
-  //         orderHTML += `<td>${product.productDTO.code}</td>`;
-  //         orderHTML += `<td>${product.productDTO.name}</td>`;
-  //         orderHTML += `<td>${details.size_number}</td>`;
-  //         orderHTML += `<td>${product.colorDTO.code}</td>`;
-  //         orderHTML += `<td>${details.quantity}</td>`;
-  //         orderHTML += `<td>${details.price}</td>`;
-  //         orderHTML += `<td>${details.quantity * details.price}</td>`;
-  //         orderHTML += `</tr>`;
-  //       }
-  //     });
-  //   });
-  //   orderHTML += `</tbody>`;
-  //   orderHTML += `</table>`;
-  //   orderHTML += `<p>Giảm giá: ${this.priceVoucher} đ</p>`;
-  //   orderHTML += `<p>Tổng thanh toán: ${this.priceCustomer} đ</p>`;
-  //   orderHTML += `</div>`;
-  //   return orderHTML;
-  // }
-
   generateOrderHTML(): string {
     const orderHTML = `
       <div style="font-family: Arial, sans-serif; max-width: 800px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
@@ -744,14 +700,14 @@ export class SalesCounterComponent implements OnInit {
   }
 
   openDialogBill(): void {
-    const dialogRef = this.dialog.open(OrderSalesCounterComponent, {
+    this.dialog.open(OrderSalesCounterComponent, {
       width: '1300px',
       height: '700px',
       data: { name: this.name }
     });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
-    });
+    //   dialogRef.afterClosed().subscribe(result => {
+    //     console.log(result)
+    //   });
   }
 
   ngOnInit(): void {
@@ -910,7 +866,7 @@ export class SalesCounterComponent implements OnInit {
       if (result.event === 'saveVoucher') {
 
         this.totalMoneyPay = originalTotalMoney;
-        
+
         if (result.data.voucher !== null) {
           this.voucherService.getVoucherSales(result.data.voucher).subscribe(res => {
 

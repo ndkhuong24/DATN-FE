@@ -20,7 +20,8 @@
             <mat-cell *matCellDef="let product"> {{ product?.sizeDTO?.sizeNumber }} </mat-cell>
           </ng-container>
           <ng-container matColumnDef="price">
-            <mat-cell *matCellDef="let product">{{ product?.price | currency:'VND':'symbol':'1.0-0' }}</mat-cell>
+            <!-- <mat-cell *matCellDef="let product">{{ product?.price | currency:'VND':'symbol':'1.0-0' }}</mat-cell> -->
+            <mat-cell *matCellDef="let product">{{utilService.formatMoney(product?.price)}}</mat-cell>
           </ng-container>
           <mat-row *matRowDef="let row; columns: ['image','name', 'color', 'size', 'price']"
             (click)="addProductInOrder(row)"></mat-row>
@@ -90,7 +91,7 @@
             </td> -->
             <td><input type="number" min="1" class="quantity" name="quantity" [(ngModel)]="listCart[i].quantity"
                 (ngModelChange)="calculateTotalAllProducts()" [ngModelOptions]="{standalone: true}"></td>
-            <td>{{product?.price | currency:'VND':'symbol'}}</td>
+            <td>{{utilService.formatMoney(product?.price)}}</td>
             <td>
               <button type="button" (click)="removeProduct(i)" class="remove-btn-order"><i
                   class="bi bi-trash3-fill"></i></button>

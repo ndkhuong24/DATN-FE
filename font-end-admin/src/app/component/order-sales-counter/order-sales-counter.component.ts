@@ -17,13 +17,13 @@ export class OrderSalesCounterComponent implements OnInit {
 
   status = 6;
 
-  rowData;
+  rowData = [];
 
   columnDefs = [];
 
-  gridApi;
+  gridApi: any;
 
-  gridColumnApi;
+  gridColumnApi: any;
 
   user: any = {
     id: null,
@@ -40,19 +40,20 @@ export class OrderSalesCounterComponent implements OnInit {
   };
 
   allOrder: any = [];
-  sCOrder: any = [];
+
   constructor(private matDialog: MatDialog, private orderService: OrderService, private cdr: ChangeDetectorRef) {
     const lst =
       [
         { name: 'Hoàn thành', id: 3 },
       ];
+
     this.listStatus = lst;
+
     this.columnDefs = [
       {
         headerName: 'STT',
         field: '',
         suppressMovable: true,
-        minWidth: 60,
         maxWidth: 60,
         valueGetter: (param: { node: { rowIndex: number; }; }) => {
           return param.node.rowIndex + 1;
@@ -76,7 +77,8 @@ export class OrderSalesCounterComponent implements OnInit {
         },
         onCellClicked: (params: { data: any; }) => {
           return this.openXemChiTiet(params.data);
-        }
+        },
+        flex: 1,
       },
       {
         headerName: 'Nhân Viên',
@@ -93,12 +95,13 @@ export class OrderSalesCounterComponent implements OnInit {
           overflow: 'hidden',
           'justify-content': 'center',
         },
+        flex: 1,
       },
       {
         headerName: 'Ngày Tạo',
         field: 'createDate',
         suppressMovable: true,
-        valueFormatter: params => {
+        valueFormatter: (params: { data: { createDate: string; }; }) => {
           return formatDateTime(params.data.createDate);
         },
         cellStyle: {
@@ -112,11 +115,18 @@ export class OrderSalesCounterComponent implements OnInit {
           overflow: 'hidden',
           'justify-content': 'center',
         },
+        flex: 1,
       },
       {
         headerName: 'Khách Hàng',
         field: 'customerAdminDTO.fullname',
         suppressMovable: true,
+        cellRenderer: params => {
+          if (!params.data.customerAdminDTO || !params.data.customerAdminDTO.fullname) {
+            return 'Khách Lẻ';
+          }
+          return params.data.customerAdminDTO.fullname;
+        },
         cellStyle: {
           'font-weight': '500',
           'font-size': '12px',
@@ -128,11 +138,12 @@ export class OrderSalesCounterComponent implements OnInit {
           overflow: 'hidden',
           'justify-content': 'center',
         },
+        flex: 1,
       },
       {
         headerName: 'Thanh Toán',
         field: 'paymentType',
-        valueFormatter: params => {
+        valueFormatter: (params: { data: { paymentType: number; }; }) => {
           return params.data.paymentType === 0 ? 'Tiền Mặt' : 'Chuyển Khoản';
         },
         cellStyle: {
@@ -141,18 +152,17 @@ export class OrderSalesCounterComponent implements OnInit {
           'align-items': 'center',
           color: '#101840',
           display: 'flex',
-          // top: '12px',
           'white-space': 'nowrap',
           'text-overflow': 'ellipsis',
           overflow: 'hidden',
-          // textAlign: 'center',
           'justify-content': 'center',
         },
+        flex: 1,
       }, {
         headerName: 'Tổng Tiền',
         field: 'totalPayment',
         suppressMovable: true,
-        valueFormatter: params => {
+        valueFormatter: (params: { data: { totalPayment: number; }; }) => {
           return formatMoney(params.data.totalPayment);
         },
         cellStyle: {
@@ -161,18 +171,17 @@ export class OrderSalesCounterComponent implements OnInit {
           'align-items': 'center',
           color: '#101840',
           display: 'flex',
-          // top: '12px',
           'white-space': 'nowrap',
           'text-overflow': 'ellipsis',
           overflow: 'hidden',
-          // textAlign: 'center',
           'justify-content': 'center',
         },
+        flex: 1,
       }, {
         headerName: 'Trạng Thái',
         field: 'status',
         suppressMovable: true,
-        valueGetter: (params) => {
+        valueGetter: (params: { data: { status: any; }; }) => {
           const status = params.data.status;
           switch (status) {
             case 0:
@@ -200,13 +209,17 @@ export class OrderSalesCounterComponent implements OnInit {
           overflow: 'hidden',
           'justify-content': 'center',
         },
+        flex: 1,
       }
     ];
+
     this.rowData = [];
+
     const storedUserString = localStorage.getItem('users');
 
     if (storedUserString) {
       const storedUser = JSON.parse(storedUserString);
+
       this.user = {
         id: storedUser.id,
         code: storedUser.code,
@@ -250,14 +263,15 @@ export class OrderSalesCounterComponent implements OnInit {
   }
 
   openXemChiTiet(dataOrder: any) {
-    this.matDialog.open(OrderSalesDetailComponent, {
+    const dialogref = this.matDialog.open(OrderSalesDetailComponent, {
       width: '150vh',
       height: '90vh',
       data: {
         data: dataOrder,
         staff: this.user
       }
-    }).afterClosed().subscribe(res => {
+    })
+    dialogref.afterClosed().subscribe(res => {
       if (res === 'update-order') {
         this.ngOnInit();
       }
@@ -265,7 +279,6 @@ export class OrderSalesCounterComponent implements OnInit {
   }
 
   searchOrder() {
-    console.log(this.modelSearch);
     this.getAllOrder();
     this.cdr.detectChanges();
   }
