@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { ValidateInput } from "../../model/validate-input";
 import { CommonFunction } from "../../../util/common-function";
 import { MatDialogRef } from '@angular/material/dialog';
+import { formatDate, formatDateTime } from 'src/app/util/util';
 
 
 @Component({
@@ -93,6 +94,17 @@ export class CreatVoucherComponent implements OnInit {
       {
         headerName: 'Ngày sinh',
         field: 'birthday',
+        sortable: true,
+        filter: true,
+        editable: true,
+        flex: 1,
+        valueGetter: (params: { data: { birthday: string; }; }) => {
+          return `${formatDate(params.data.birthday)}`;
+        },
+      },
+      {
+        headerName: 'Số điện thoại',
+        field: 'phone',
         sortable: true,
         filter: true,
         editable: true,

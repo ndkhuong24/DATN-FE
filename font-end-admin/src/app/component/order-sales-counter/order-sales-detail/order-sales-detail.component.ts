@@ -21,6 +21,7 @@ export class OrderSalesDetailComponent implements OnInit {
   gridColumnApi;
   status: any;
   totalQuantity: number = 0;
+  totalPriceCurrent: number = 0;
   noteOrder: string = null;
   listOrderHistoryAdmin: any = [];
   listOrderHistoryView: any = [];
@@ -29,10 +30,6 @@ export class OrderSalesDetailComponent implements OnInit {
     private orderDetailService: OrderDetailService,
     public matRef: MatDialogRef<OrderSalesDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private orderService: OrderService,
-    private cdr: ChangeDetectorRef,
-    private toastr: ToastrService,
-    private matDiaLog: MatDialog,
     public utilService: UtilService) {
     this.rowData = [];
     this.columnDefs = [
@@ -40,7 +37,6 @@ export class OrderSalesDetailComponent implements OnInit {
         headerName: 'STT',
         field: '',
         suppressMovable: true,
-        // minWidth: 60,
         maxWidth: 60,
         valueGetter: (param: { node: { rowIndex: number; }; }) => {
           return param.node.rowIndex + 1;
@@ -110,6 +106,12 @@ export class OrderSalesDetailComponent implements OnInit {
       this.listOrderHistoryView = res.orderHistoryView;
 
       this.totalQuantity = this.rowData.reduce((total, orderDetail) => total + (orderDetail.quantity || 0), 0);
+
+      this.totalPriceCurrent = this.rowData.reduce((totalPrice, orderDetail) => {
+        const price = orderDetail.price || 0;
+        const quantity = orderDetail.quantity || 0;
+        return totalPrice + (price * quantity);
+      }, 0);
     });
   }
 
@@ -117,6 +119,8 @@ export class OrderSalesDetailComponent implements OnInit {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
   }
+
+
 
   // cancelOrder() {
   //   this.matDiaLog.open(NoteOrderComponent, {

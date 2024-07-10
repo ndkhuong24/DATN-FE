@@ -128,13 +128,10 @@ export class SalesCounterComponent implements OnInit {
     private cookieService: CookieService,
     private orderService: OrderService,
     private orderDetailService: OrderDetailService,
-    // private sizeService: SizeService,
-    // private colorService: MausacService,
     private dialog: MatDialog,
     private customerService: CustomerServiceService,
     private toastr: ToastrService,
     private cdr: ChangeDetectorRef,
-    // private productDetailService: ProductdetailService,
     private giaoHangService: GiaoHangServiceService,
     private paymentService: PaymentSalesService,
     public utilService: UtilService,
@@ -143,7 +140,6 @@ export class SalesCounterComponent implements OnInit {
   ) {
     this.statusPayment = this.route.snapshot.queryParamMap.get('vnp_TransactionStatus');
   }
-
 
   search() {
     this.isProductListVisible = true;
@@ -174,6 +170,27 @@ export class SalesCounterComponent implements OnInit {
       );
       this.showCustomer = this.searcherCustomer.length > 0;
     }
+
+    if (this.searcherCustomer.trim() === '') {
+      this.clearSelectedCustomer();
+    }
+  }
+
+  clearSelectedCustomer() {
+    this.selectedCustomer = null;
+    this.isCustomerNull = false;
+    this.idCustomer = null;
+    this.clearVoucher();
+  }
+
+  clearInput() {
+    this.searcherCustomer = '';
+    this.clearSelectedCustomer();
+  }
+
+  clearVoucher() {
+    this.priceVoucher = 0;
+    this.priceCustomer = this.totalAllProducts;
   }
 
   addOrder() {
@@ -263,62 +280,12 @@ export class SalesCounterComponent implements OnInit {
     this.priceVouchers();
   }
 
-  // addProductInOrder(row: any) {
-  //   if (!row.quantity) {
-  //     row.quantity = 1;
-  //   }
-
-  //   if (!this.listProductPush) {
-  //     this.listProductPush = [];
-  //   }
-
-  //   // this.listProductPush.push(row);
-  //   let existingProduct = this.listProductPush.find(product => product.id === row.id);
-
-  //   if (existingProduct) {
-  //     existingProduct.quantity += 1;
-  //     // this.listCart.quantity +=1;
-  //   } else {
-  //     // If product does not exist, add it to the listProductPush array
-  //     this.listProductPush.push(row);
-  //   }
-
-  //   this.listCart.push(
-  //     {
-  //       productId: row.productDTO.id,
-  //       productDetailId: row.id,
-  //       sizeId: row.sizeDTO.id,
-  //       size_number: row.sizeDTO.sizeNumber,
-  //       colorId: row.colorDTO.id,
-  //       nameColor: row.colorDTO.name,
-  //       quantity: 1,
-  //       price: row.price,
-  //       quantityInstock: null
-  //     }
-  //   );
-
-  //   this.cookieService.set('listProductPush', JSON.stringify(this.listProductPush));
-
-  //   const currentOrderProducts = this.listProductPush.map(product => ({ ...product }));
-
-  //   localStorage.setItem(`orderProducts_${this.currentOrderId}`, JSON.stringify(currentOrderProducts));
-
-  //   this.calculateTotalAllProducts();
-
-  //   this.isProductListVisible = false;
-
-  //   this.clearSearchTerm();
-  //   this.priceVouchers();
-  //   this.loadData();
-  // }
-
   addCustomer(row: any) {
     if (!row.quantity) {
       row.quantity = 1;
     }
 
     this.selectCustomer = row;
-
     this.searcherCustomer = `${row.fullname} - ${row.phone}`;
     this.selectedCustomer = row;
     this.isCustomerNull = false;
@@ -619,46 +586,48 @@ export class SalesCounterComponent implements OnInit {
   }
 
   generateOrderHTML(): string {
-    const orderHTML = `
-      <div style="font-family: Arial, sans-serif; max-width: 800px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
-        <h2 style="text-align: center; color: #333;">Hóa đơn</h2>
-        <p><strong>Tên nhân viên:</strong> ${this.user.fullname}</p>
-        <p><strong>Tên khách hàng:</strong> ${this.selectedCustomer ? this.selectedCustomer.fullname : 'Khách lẻ'}</p>
-        <p><strong>Số điện thoại:</strong> ${this.selectedCustomer ? this.selectedCustomer.phone : 'N/A'}</p>
-        <h3 style="margin-top: 20px; color: #333;">Chi tiết đơn hàng</h3>
-        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-          <thead>
-            <tr style="background-color: #f2f2f2;">
-              <th style="padding: 10px; border: 1px solid #ddd;">Mã</th>
-              <th style="padding: 10px; border: 1px solid #ddd;">Tên</th>
-              <th style="padding: 10px; border: 1px solid #ddd;">Size</th>
-              <th style="padding: 10px; border: 1px solid #ddd;">Màu Sắc</th>
-              <th style="padding: 10px; border: 1px solid #ddd;">Số lượng</th>
-              <th style="padding: 10px; border: 1px solid #ddd;">Đơn giá</th>
-              <th style="padding: 10px; border: 1px solid #ddd;">Thành tiền</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${this.listProductPush.map(product =>
-      this.listCart.map(details =>
-        product.id === details.productDetailId ?
-          `<tr>
-                  <td style="padding: 10px; border: 1px solid #ddd;">${product.productDTO.code}</td>
-                  <td style="padding: 10px; border: 1px solid #ddd;">${product.productDTO.name}</td>
-                  <td style="padding: 10px; border: 1px solid #ddd;">${details.size_number}</td>
-                  <td style="padding: 10px; border: 1px solid #ddd;">${product.colorDTO.code}</td>
-                  <td style="padding: 10px; border: 1px solid #ddd;">${details.quantity}</td>
-                  <td style="padding: 10px; border: 1px solid #ddd;">${details.price}</td>
-                  <td style="padding: 10px; border: 1px solid #ddd;">${details.quantity * details.price}</td>
-                </tr>` : ''
-      ).join('')
-    ).join('')}
-          </tbody>
-        </table>
-        <p style="margin-top: 20px;"><strong>Giảm giá:</strong> ${this.priceVoucher} đ</p>
-        <p><strong>Tổng thanh toán:</strong> ${this.priceCustomer} đ</p>
-      </div>
-    `;
+    let orderHTML = `<div>`;
+    orderHTML += `<p>Thời gian: ${new Date().toLocaleString()}</p>`;
+    orderHTML += `<p>Tên nhân viên: ${this.user.fullname}</p>`;
+    orderHTML += `<p>Tên khách hàng: ${this.selectedCustomer ? this.selectedCustomer.fullname : 'Khách lẻ'}</p>`;
+    orderHTML += `<p>Số điện thoại: ${this.selectedCustomer ? this.selectedCustomer.phone : ''}</p>`;
+    orderHTML += `<h3>Chi tiết đơn hàng</h3>`;
+    orderHTML += `<table border="1" cellpadding="10">`;
+    orderHTML += `<thead>`;
+    orderHTML += `<tr>`;
+    orderHTML += `<th>Mã</th>`;
+    orderHTML += `<th>Tên</th>`;
+    orderHTML += `<th>Size</th>`;
+    orderHTML += `<th>Màu Sắc</th>`;
+    orderHTML += `<th>Số lượng</th>`;
+    orderHTML += `<th>Đơn giá</th>`;
+    orderHTML += `<th>Thành tiền</th>`;
+    orderHTML += `</tr>`;
+    orderHTML += `</thead>`;
+    orderHTML += `<tbody>`;
+
+    this.listProductPush.forEach(product => {
+      this.listCart.forEach(details => {
+        if (product.id === details.productDetailId) {
+          orderHTML += `<tr>`;
+          orderHTML += `<td>${product.productDTO.code}</td>`;
+          orderHTML += `<td>${product.productDTO.name}</td>`;
+          orderHTML += `<td>${details.size_number}</td>`;
+          orderHTML += `<td>${product.colorDTO.code}</td>`;
+          orderHTML += `<td>${details.quantity}</td>`;
+          orderHTML += `<td>${details.price}</td>`;
+          orderHTML += `<td>${details.quantity * details.price}</td>`;
+          orderHTML += `</tr>`;
+        }
+      });
+    });
+
+    orderHTML += `</tbody>`;
+    orderHTML += `</table>`;
+    orderHTML += `<p>Tổng tiền: ${this.totalAllProducts} đ</p>`;
+    orderHTML += `<p>Giảm giá: ${this.priceVoucher} đ</p>`;
+    orderHTML += `<p>Tổng thanh toán: ${this.priceCustomer} đ</p>`;
+    orderHTML += `</div>`;
     return orderHTML;
   }
 
@@ -670,15 +639,18 @@ export class SalesCounterComponent implements OnInit {
     frame.contentDocument.open();
     frame.contentDocument.write(invoiceHTML);
     frame.contentDocument.close();
+
+    // Dùng printJS để in
     printJS({
       printable: frame.contentDocument.body,
       type: 'html',
       properties: ['name', 'quantity', 'price', 'total'],
-      header: '<h3 class="custom-h3">Hóa đơn bán hàng</h3>',
-      style: '.custom-h3 { color: red; }',
+      header: '<h3 class="custom-h3">HÓA ĐƠN BÁN HÀNG</h3>',
+      style: '.custom-h3 { color: red; text-align: center; }',
       documentTitle: 'Hóa đơn',
     });
 
+    // Xóa iframe sau khi in
     document.body.removeChild(frame);
   }
 
@@ -705,9 +677,6 @@ export class SalesCounterComponent implements OnInit {
       height: '700px',
       data: { name: this.name }
     });
-    //   dialogRef.afterClosed().subscribe(result => {
-    //     console.log(result)
-    //   });
   }
 
   ngOnInit(): void {
@@ -849,7 +818,16 @@ export class SalesCounterComponent implements OnInit {
   }
 
   openVoucherSC() {
-    const originalTotalMoney = this.priceCustomer;
+    const originalTotalMoney = this.totalAllProducts;
+
+    let selectCustomerCurrent = null;
+
+    if (this.searcherCustomer.trim() === '') {
+      this.clearSelectedCustomer();
+      selectCustomerCurrent = null;
+    } else {
+      selectCustomerCurrent = this.selectCustomer;
+    }
 
     const dialogRef = this.dialog.open(PogupVoucherSCComponent, {
       width: '45%',
@@ -857,8 +835,7 @@ export class SalesCounterComponent implements OnInit {
       data: {
         total: originalTotalMoney,
         voucherChoice: this.voucherChoice,
-        // customer: this.searchCustomerResults,
-        customer: this.selectCustomer,
+        customer: selectCustomerCurrent,
       }
     })
 
@@ -874,21 +851,22 @@ export class SalesCounterComponent implements OnInit {
 
             if (res.data.voucherType === 1) {
 
-              const reducedVoucherPrice = parseFloat(((res.data.reducedValue / 100) * this.priceCustomer).toFixed(2));
+              const reducedVoucherPrice = parseFloat(((res.data.reducedValue / 100) * this.totalAllProducts).toFixed(2));
 
               if (reducedVoucherPrice > res.data.maxReduced) {
-                this.priceCustomer = this.priceCustomer - this.voucher.maxReduced;
+                this.priceCustomer = this.totalAllProducts - this.voucher.maxReduced;
                 this.voucher.reducedValue = this.voucher.maxReduced;
               } else {
-                this.priceCustomer = this.priceCustomer - this.voucher.reducedValue;
+                this.priceCustomer = this.totalAllProducts - this.voucher.reducedValue;
               }
 
             } else {
-              this.priceCustomer = this.priceCustomer - this.voucher.reducedValue;
+              this.priceCustomer = this.totalAllProducts - this.voucher.reducedValue;
             }
 
             this.priceVoucher = this.voucher.reducedValue;
             this.voucherChoice.voucher = res.data.codess;
+
             this.cdr.detectChanges();
           });
         }

@@ -20,7 +20,6 @@
             <mat-cell *matCellDef="let product"> {{ product?.sizeDTO?.sizeNumber }} </mat-cell>
           </ng-container>
           <ng-container matColumnDef="price">
-            <!-- <mat-cell *matCellDef="let product">{{ product?.price | currency:'VND':'symbol':'1.0-0' }}</mat-cell> -->
             <mat-cell *matCellDef="let product">{{utilService.formatMoney(product?.price)}}</mat-cell>
           </ng-container>
           <mat-row *matRowDef="let row; columns: ['image','name', 'color', 'size', 'price']"
@@ -118,6 +117,10 @@
             <ol>
               <a class="btn icon-add position-absolute top-0 end-0" (click)="openDialog()">
                 <i class="bi bi-plus-lg"></i>
+              </a>
+              <!-- Nút xóa nội dung của ô input -->
+              <a style="margin-right: 35px;" class="btn icon-clear position-absolute top-0 end-0" (click)="clearInput()">
+                <i class="bi bi-x-lg"></i>
               </a>
             </ol>
             <div class="search-results-kh" *ngIf="searchCustomerResults">

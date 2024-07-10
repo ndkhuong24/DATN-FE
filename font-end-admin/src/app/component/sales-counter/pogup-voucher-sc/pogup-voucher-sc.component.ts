@@ -3,6 +3,7 @@ import { SalesCouterVoucherService } from '../../../service/sales-couter-voucher
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { UtilService } from '../../../util/util.service';
+import { VoucherService } from 'src/app/service/voucher.service';
 
 @Component({
   selector: 'app-pogup-voucher-sc',
@@ -12,6 +13,7 @@ import { UtilService } from '../../../util/util.service';
 
 export class PogupVoucherSCComponent implements OnInit {
   listVoucher: any = [];
+  listVoucherCurrent: any = [];
 
   listVoucherShip: any = [];
 
@@ -24,11 +26,12 @@ export class PogupVoucherSCComponent implements OnInit {
   idCustomer = null;
 
   checkConditionApply: boolean = false;
-
+  checkQuanity: boolean = false;
   checkStartDate: boolean = false;
 
   constructor(
     private voucherService: SalesCouterVoucherService,
+    private voucherServicee: VoucherService,
     public matDialogRef: MatDialogRef<PogupVoucherSCComponent>,
     private toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -41,7 +44,9 @@ export class PogupVoucherSCComponent implements OnInit {
       this.idCustomer = this.data.customer.id;
     } else {
       this.idCustomer = null;
-    }    
+    }
+
+    this.getVoucherSales();
   }
 
   getVoucherSales() {
@@ -49,7 +54,6 @@ export class PogupVoucherSCComponent implements OnInit {
       code: this.codeSearch !== undefined && this.codeSearch !== null ? this.codeSearch : '',
       idCustomerLogin: this.idCustomer !== null ? this.idCustomer : null
     };
-    console.log(obj)
 
     this.voucherService.getAllVoucherSales(obj).subscribe(res => {
       console.log(res)
@@ -74,19 +78,51 @@ export class PogupVoucherSCComponent implements OnInit {
   }
 
   checkValidateVoucher(v: any) {
-
     this.checkConditionApply = false;
+    this.checkQuanity = false;
     this.checkStartDate = false;
+
     if (new Date(v.startDate) > new Date()) {
       this.checkStartDate = true;
       return true;
     } else if (v.conditionApply > this.data.total) {
       this.checkConditionApply = true;
       return true;
+    } else if (v.useVoucher >= v.quantity && v.quantity > 0) {
+      // Adjusted condition to check if useVoucher is greater than or equal to quantity
+      this.checkQuanity = true;
+      return true;
     } else {
       this.checkStartDate = false;
+      this.checkQuanity = false;
       this.checkConditionApply = false;
       return false;
     }
   }
+
+
+  // checkValidateVoucher(v: any) {
+  //   this.checkConditionApply = false;
+  //   this.checkQuanity = false
+  //   this.checkStartDate = false;
+
+  //   if (new Date(v.startDate) > new Date()) {
+  //     this.checkStartDate = true;
+  //     return true;
+  //   }
+  //   else if (v.conditionApply > this.data.total) {
+  //     this.checkConditionApply = true;
+  //     return true;
+  //   } 
+  //   else if (v.useVoucher >= v.quantity) {
+  //     this.checkQuanity = true;
+  //     return true
+  //   }
+  //   else {
+  //     this.checkStartDate = false;
+  //     this.checkQuanity = false
+  //     this.checkConditionApply = false;
+  //     return false;
+  //   }
+  // }
 }

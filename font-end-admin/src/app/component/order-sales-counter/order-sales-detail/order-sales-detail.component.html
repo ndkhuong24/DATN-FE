@@ -14,7 +14,7 @@
           <td></td>
           <td></td>
           <td></td>
-          <td>{{utilService.formatMoney(data.data?.totalPrice)}}</td>
+          <td>{{utilService.formatMoney(totalPriceCurrent)}}</td>
         </tr>
         <tr>
           <th scope="row">Tổng số lượng sản phẩm</th>
@@ -31,6 +31,13 @@
           <td>{{this.data.data?.codeVoucher}}</td>
         </tr>
         <tr>
+          <th scope="row">Số tiền được giảm</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{utilService.formatMoney(totalPriceCurrent - data.data?.totalPayment)}}</td>
+        </tr>
+        <tr>
           <th scope="row">Tổng thanh toán</th>
           <td></td>
           <td></td>
@@ -39,6 +46,13 @@
         </tr>
         <tr>
           <th scope="row">Hình thức thanh toán</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{ data.data?.paymentType === 0 ? 'Tiền Mặt' : 'Chuyển Khoản' }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Trạng thái thanh toán thanh toán</th>
           <td></td>
           <td></td>
           <td></td>

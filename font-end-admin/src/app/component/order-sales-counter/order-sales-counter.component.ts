@@ -13,7 +13,7 @@ import { OrderSalesDetailComponent } from './order-sales-detail/order-sales-deta
 export class OrderSalesCounterComponent implements OnInit {
   active = 1;
 
-  listStatus: any = [];
+  // listStatus: any = [];
 
   status = 6;
 
@@ -41,13 +41,17 @@ export class OrderSalesCounterComponent implements OnInit {
 
   allOrder: any = [];
 
-  constructor(private matDialog: MatDialog, private orderService: OrderService, private cdr: ChangeDetectorRef) {
-    const lst =
-      [
-        { name: 'Hoàn thành', id: 3 },
-      ];
+  constructor(
+    private matDialog: MatDialog,
+    private orderService: OrderService,
+    private cdr: ChangeDetectorRef
+  ) {
+    // const lst =
+    //   [
+    //     { name: 'Hoàn thành', id: 3 },
+    //   ];
 
-    this.listStatus = lst;
+    // this.listStatus = lst;
 
     this.columnDefs = [
       {
@@ -121,7 +125,7 @@ export class OrderSalesCounterComponent implements OnInit {
         headerName: 'Khách Hàng',
         field: 'customerAdminDTO.fullname',
         suppressMovable: true,
-        cellRenderer: params => {
+        cellRenderer: (params: { data: { customerAdminDTO: { fullname: any; }; }; }) => {
           if (!params.data.customerAdminDTO || !params.data.customerAdminDTO.fullname) {
             return 'Khách Lẻ';
           }
@@ -255,12 +259,12 @@ export class OrderSalesCounterComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  tabChanged(event: any) {
-    const selectedTabIndex = event.index;
-    const selectedTabId = this.listStatus[selectedTabIndex].id;
-    this.status = selectedTabId;
-    this.getAllOrder();
-  }
+  // tabChanged(event: any) {
+  //   const selectedTabIndex = event.index;
+  //   const selectedTabId = this.listStatus[selectedTabIndex].id;
+  //   this.status = selectedTabId;
+  //   this.getAllOrder();
+  // }
 
   openXemChiTiet(dataOrder: any) {
     const dialogref = this.matDialog.open(OrderSalesDetailComponent, {
