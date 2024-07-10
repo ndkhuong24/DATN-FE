@@ -1,5 +1,4 @@
-import {ValidateInput} from '../model/validate-input.model';
-
+import { ValidateInput } from '../model/validate-input.model';
 
 export class CommonFunction {
   static isEmpty(data: any): boolean {

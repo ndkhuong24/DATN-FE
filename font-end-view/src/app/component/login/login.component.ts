@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
     username: '',
     password: ''
   };
+
   signFrom: SignInFrom;
 
   constructor(
@@ -36,10 +37,9 @@ export class LoginComponent implements OnInit {
 
     this.signIn.signIn(this.signFrom).subscribe(data => {
         localStorage.setItem('token', data.token);
-        // localStorage.setItem('users', JSON.stringify(data.usersDTO));
         localStorage.setItem('customer', JSON.stringify(data.usersDTO));
         
-        this.router.navigate(['']).then(() => {
+        this.router.navigate(['/home']).then(() => {
           location.reload();
           this.toastr.success('Đăng nhập thành công', 'Thông báo');
         });
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
 
   logout(){
     localStorage.removeItem('token');
-    localStorage.removeItem('users');
+    localStorage.removeItem('customer');
   }
 
   togglePasswordVisibility(): void {

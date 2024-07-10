@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-5">
       <div class="main-img">
-        <img src="{{product.imageURL}}" alt="">
+        <img src="{{product?.imageURL}}">
       </div>
     </div>
     <div class="col-md-7">
@@ -24,25 +24,27 @@
           <span>{{utilService.formatMoney( (getProductDetailprice() == null) ? product?.totalQuantity :
             getProductDetailprice() )}}</span>
         </div>
+
         <!-- size -->
         <div class="product-details my-2">
           <div class="d-flex" style="display: flex; gap: 20px; align-items: center;">
             <p class="details-title text-color mb-1">Size : </p>
-            <div *ngFor="let size of listSize" >
+            <div *ngFor="let size of listSize">
               <input class="custom-radio" type="radio" name="size" [id]="'size' + size.id" [value]="size.id"
-                     [(ngModel)]="sizeId" [disabled]="size.disabled" (change)="onSizeChange(size)">
+                [(ngModel)]="sizeId" [disabled]="size.disabled" (change)="onSizeChange(size)">
               <label class="custom-radio-label" [for]="'size' + size.id">{{ size.sizeNumber }}</label>
             </div>
           </div>
         </div>
+
         <!-- color -->
         <div class="product-details my-2" style="margin-top: 10px !important;">
           <div class="d-flex" style="display: flex; gap: 20px; align-items: center;">
             <p class="details-title text-color mb-1">Màu Sắc : </p>
-            <div *ngFor="let color of listColor" >
+            <div *ngFor="let color of listColor">
               <input class="custom-radio" type="radio" name="color" [id]="'color' + color.id" [value]="color.id"
-                     [(ngModel)]="colorId" [disabled]="color.disabled" (change)="onColorChange(color)">
-              <label class="custom-radio-label" [for]="'color' + color.id">{{ color.name }}</label>
+                [(ngModel)]="colorId" [disabled]="color.disabled" (change)="onColorChange(color)">
+              <label class="custom-radio-label" [for]="'color' + color.id">{{ color.code }}</label>
             </div>
           </div>
         </div>

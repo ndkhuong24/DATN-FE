@@ -10,12 +10,18 @@ import { AuthJwtService } from '../../service/authentication/auth-jwt.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
+
 export class HeaderComponent implements OnInit {
   infoCustomer: UsersDTO;
   size: number;
   totalProducts: number = 0;
   isLoggedIn: boolean = false;
-  constructor(private cartService: CartService, private router: Router, private istoken: AuthJwtService) {
+
+  constructor(
+    private cartService: CartService,
+    private router: Router,
+    private istoken: AuthJwtService
+  ) {
     this.cartService.totalProducts$.subscribe((totalProducts) => {
       this.totalProducts = totalProducts;
     });
@@ -36,15 +42,14 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.infoCustomer = JSON.parse(localStorage.getItem('users'));
-    this.size = localStorage.getItem('users').length;
+    this.infoCustomer = JSON.parse(localStorage.getItem('customer'));
+    this.size = localStorage.getItem('customer').length;
     this.istoken.isAuthenticated();
     this.exLogin();
   }
 
   logOut() {
     localStorage.removeItem('token');
-    localStorage.removeItem('users');
     localStorage.removeItem('customer');
     this.isLoggedIn = false;
   }

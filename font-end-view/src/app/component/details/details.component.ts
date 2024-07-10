@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.css'],
 })
+
 export class DetailsComponent implements OnInit {
   cartData = new Map();
   productData = new Map();
@@ -31,8 +32,6 @@ export class DetailsComponent implements OnInit {
     private cartService: CartService,
     private cdr: ChangeDetectorRef
   ) {
-    // window.scrollTo(top, 0, 0);
-
     if (this.cookieService.check('cart')) {
       const cartData = this.cookieService.get('cart');
       const entries = JSON.parse(cartData);
@@ -238,8 +237,11 @@ export class DetailsComponent implements OnInit {
 
   addToCart(product: number) {
     const productKey = product + '-' + this.colorId + '-' + this.sizeId;
+
     const expirationDate = new Date();
+
     expirationDate.setTime(expirationDate.getTime() + 30 * 60 * 1000);
+
     if (this.cartData.has(productKey)) {
       const slHienTai = this.cartData.get(productKey);
       this.cartData.set(productKey, slHienTai + this.quantityBuy);
@@ -275,13 +277,14 @@ export class DetailsComponent implements OnInit {
 
   buyNow(productId: any) {
     Swal.fire({
-      title: 'Bạn có chắc mua ngay?',
+      title: 'Bạn có chắc mua ngay',
       text: '',
       icon: 'success',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Đồng ý',
+      cancelButtonText: 'Thoát'
     }).then((result) => {
       if (result.isConfirmed) {
         const productKey = productId + '-' + this.colorId + '-' + this.sizeId;
@@ -332,20 +335,20 @@ export class DetailsComponent implements OnInit {
         const colorIDsForSelectedSize = detailsForSelectedSize.map(
           (detail) => detail.idColor
         );
-          
-          this.listColor = this.listColor.map(color => {
-            // Kiểm tra xem color.id có trong colorIDsForSelectedSize hay không
-            if (colorIDsForSelectedSize.includes(color.id)) {
-              // Nếu có, trả về color mà không có thay đổi
-              return color;
-            } else {
-              // Nếu không, thêm thuộc tính disabled vào color
-              return {
-                ...color,
-                disabled: true
-              };
-            }
-          });
+
+        this.listColor = this.listColor.map(color => {
+          // Kiểm tra xem color.id có trong colorIDsForSelectedSize hay không
+          if (colorIDsForSelectedSize.includes(color.id)) {
+            // Nếu có, trả về color mà không có thay đổi
+            return color;
+          } else {
+            // Nếu không, thêm thuộc tính disabled vào color
+            return {
+              ...color,
+              disabled: true
+            };
+          }
+        });
       }
     }
     this.checkIfBothSizeAndColorSelected();

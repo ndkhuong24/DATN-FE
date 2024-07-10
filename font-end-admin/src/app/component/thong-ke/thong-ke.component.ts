@@ -48,8 +48,6 @@ export class ThongKeComponent implements OnInit {
 
     ngOnInit(): void {
         this.getStatistical();
-        // console.log(this.dateFromCurrent);
-        // console.log(this.dateToCurrent);
     }
 
     getStatistical() {
@@ -68,7 +66,6 @@ export class ThongKeComponent implements OnInit {
         };
 
         this.thongKeService.getStatisticalByYear(obj).subscribe(res => {
-            console.log(res)
             this.totalRevenue = res.totalRevenue;
             this.totalOrder = res.totalOrder;
             this.totalRevenueToday = res.totalRevenueToday;
@@ -80,6 +77,7 @@ export class ThongKeComponent implements OnInit {
             this.categoriesRevenue = res.statisticalAdminDTOList.map((item: any) => item.revenue);
             this.categoriesQuantityProduct = res.statisticalAdminDTOList.map((item: any) => item.quantityProduct);
         });
+        
         this.cdr.detectChanges();
     }
 

@@ -42,10 +42,10 @@ export class ProductService {
     return this.http.get<any[]>(`${apiURL}product-details/${productId}`);
   }
 
-  searchProductNameOrCode(search: string): Observable<any> {
-    const params = new HttpParams().set('search', search);
-    return this.http.get(`${apiURL}product/hien-thii?` + params);
+  searchProductNameOrCode(param: string): Observable<any> {
+    return this.http.get(`${apiURL}product/hien-thii/` + param);
   }
+
   searchProduct(param: string): Observable<any> {
     return this.http.get(`${apiURL}product/search/` + param);
   }
@@ -59,7 +59,6 @@ export class ProductService {
     const url = `${apiURL}product/${productId}/deactivate`;
     return this.http.put(url, null);
   }
-
 
   exportExcelProduct(): Observable<Blob> {
     return this.http.get(apiURL + `product/export-data`, { responseType: 'blob' });

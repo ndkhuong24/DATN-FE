@@ -20,8 +20,10 @@ export class VoucherComponent implements OnInit {
   headerHeight = 50;
   rowHeight = 40;
 
-  loc = '5';
+  loc: string = '0';
   idStaff = '';
+
+  filterOption: '0' | '1';
 
   dateFromCurrent = null;
   dateToCurrent = null;
@@ -198,27 +200,33 @@ export class VoucherComponent implements OnInit {
 
   searchByCustomer(event: any) {
     const searchTerm = event.target.value;
+
     this.voucherService.searchByCustomer(searchTerm).subscribe(
       (data) => {
         this.searchResults = data;
       },
       (error) => {
         console.error(error);
+        this.toastr.error('Đã xảy ra lỗi', 'Lỗi');
       }
     );
+
     this.cdr.detectChanges();
   }
 
   searchByVoucher(event: any) {
     const searchTerm = event.target.value;
+
     this.voucherService.searchByVoucher(searchTerm).subscribe(
       (data) => {
         this.searchResults = data;
       },
       (error) => {
         console.error(error);
+        this.toastr.error('Đã xảy ra lỗi', 'Lỗi');
       }
     );
+
     this.cdr.detectChanges();
   }
 
@@ -234,8 +242,10 @@ export class VoucherComponent implements OnInit {
       },
       (error) => {
         console.error('Error occurred during date range search:', error);
+        this.toastr.error('Đã xảy ra lỗi', 'Lỗi');
       }
     );
+
     this.cdr.detectChanges();
   }
 
@@ -266,21 +276,48 @@ export class VoucherComponent implements OnInit {
         }
       });
     } else if (this.role === 'STAFF') {
-      this.toastr.error('Bạn không có quyền thêm voucher', 'Lỗi'); // Show error message
+      this.toastr.error('Bạn không có quyền thêm voucher', 'Lỗi');
     }
   }
 
+  onLocChange(event: any) {
+    switch (this.loc) {
+      case '0':
+        this.getAllVoucher();
+        break;
+      default:
+        this.getAllVoucher();
+        break;
+    }
+  }
 
-  // openAdd() {
-  //   const dialogref = this.matDialog.open(CreatVoucherComponent, {
-  //     width: '250vh',
-  //     height: '98vh',
-  //   });
-  //   dialogref.afterClosed().subscribe((result) => {
-  //     if (result === 'addVoucher') {
-  //       this.ngOnInit();
-  //       this.cdr.detectChanges();
-  //     }
-  //   });
-  // }
+  handleFilterOptionChange(option: '0' | '1') {
+    this.filterOption = option;
+    if (option === '0') {
+      const search: number = 0;
+
+      this.voucherService.searchByVoucherType(search).subscribe(
+        (data) => {
+          this.searchResults = data;
+        },
+        (error) => {
+          console.error('Error occurred during date range search:', error);
+          this.toastr.error('Đã xảy ra lỗi', 'Lỗi');
+        }
+      );
+
+    } else if (option === '1') {
+      const search: number = 1;
+
+      this.voucherService.searchByVoucherType(search).subscribe(
+        (data) => {
+          this.searchResults = data;
+        },
+        (error) => {
+          console.error('Error occurred during date range search:', error);
+          this.toastr.error('Đã xảy ra lỗi', 'Lỗi');
+        }
+      );
+    }
+  }
 }

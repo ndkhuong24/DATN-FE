@@ -13,7 +13,9 @@ import { SanPhamActionComponent } from './san-pham-action/san-pham-action.compon
 export class SanphamComponent implements OnInit {
   status0Products = [];
   status1Products = [];
+  products = [];
   columnDefs = [];
+  searchProduct: string;
 
   headerHeight = 50;
   rowHeight = 100;
@@ -108,14 +110,11 @@ export class SanphamComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllProduct();
-    // var userjson = localStorage.getItem("users");
-    // var users = JSON.parse(userjson);
-    // var role = users.role;
-    // console.log(role);
   }
 
   getAllProduct() {
     this.productsService.getAllProduct().subscribe((res) => {
+      this.products = res;
       this.status0Products = res.filter((product: { status: number; }) => product.status === 0);
       this.status1Products = res.filter((product: { status: number; }) => product.status === 1);
     })
@@ -132,5 +131,17 @@ export class SanphamComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  finbyProductLike() {
+    if (this.searchProduct) {
+      this.productsService.searchProductNameOrCode(this.searchProduct).subscribe((response) => {
+        this.products = response;
+      })
+    } else {
+      this.productsService.getAllProduct().subscribe((response) => {
+        this.products = response;
+      })
+    }
   }
 }

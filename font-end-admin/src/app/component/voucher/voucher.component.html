@@ -5,6 +5,52 @@
 
   <mat-tab-group>
     <mat-tab label="Tất cả">
+      <div class="row">
+        <div class="search-from col-12" style="display: flex; margin-top: 30px; margin-bottom: 30px;">
+
+          <div class="form-group col-2 align-self-start">
+            <select class="form-control" name="loc" required [(ngModel)]="loc" (ngModelChange)="onLocChange($event)" style="border-radius: 5px;">
+              <option value="0">Điều kiện lọc</option>
+              <option value="1">Theo voucher</option>
+              <option value="2">Theo khách hàng</option>
+              <option value="3">Theo khoảng thời gian</option>
+              <option value="4">Theo loại voucher</option>
+            </select>
+          </div>
+
+          <div class="col-4 align-self-center">
+            <div class="search-box" *ngIf="loc === '1' ">
+              <input class="form-control border-end-0 border rounded-pill" type="search" id="searchByVoucher"
+                name="searchByVoucher" placeholder="Tên hoặc mã voucher" (input)="searchByVoucher($event)">
+            </div>
+            <div class="search-box" *ngIf="loc === '2' ">
+              <input class="form-control border-end-0 border rounded-pill" type="search" id="searchByCustomer"
+                name="searchByCustomer" placeholder="Tên hoặc mã hoặc sdt khách hàng"
+                (input)="searchByCustomer($event)">
+            </div>
+            <div class="search-box" *ngIf="loc === '3' " style="display: flex">
+              <div style="display: flex; justify-content: flex-end; margin-top: 10px">
+                <ejs-daterangepicker id='daterangepicker' name="daterangepicker" placeholder='Chọn thời gian'
+                  [startDate]='dateFromCurrent' [endDate]='dateToCurrent'
+                  (change)="getDater($event)"></ejs-daterangepicker>
+              </div>
+            </div>
+            <div class="search-box" *ngIf="loc === '4' ">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="filterAmount" name="filterOption" value="0"
+                  (click)="handleFilterOptionChange('0')">
+                <label class="form-check-label" for="filterAmount">Theo tiền</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="filterPercentage" name="filterOption" value="1"
+                  (click)="handleFilterOptionChange('1')">
+                <label class="form-check-label" for="filterPercentage">Theo %</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="grid">
         <ag-grid-angular style="width: 100%; height: 550px" class="ag-theme-balham" [rowData]="searchResults"
           [columnDefs]="columnDefs" [rowSelection]="rowSelection" [headerHeight]="headerHeight" [rowHeight]="rowHeight"
