@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { OrderDetailService } from 'src/app/service/order-detail.service';
 import { OrderService } from 'src/app/service/order.service';
 import { PaymentSalesService } from 'src/app/service/payment-sales.service';
+import { OrderDetail } from '../../model/OrderDetail';
 
 @Component({
     selector: 'app-vnpay-return',
@@ -50,45 +51,48 @@ export class VnpayReturnComponent implements OnInit {
                     this.paymentResult = 'success';
 
                     const orderJson = localStorage.getItem('order');
-                    const listCartJson = localStorage.getItem('listCart');
+                    const currentOrderIdJson = localStorage.getItem('currentOrderId');
 
                     if (orderJson) {
                         const order = JSON.parse(orderJson);
-                        const listCart = JSON.parse(listCartJson);
+                        const currentOrderId = JSON.parse(currentOrderIdJson);
 
                         this.orderService.createOrderSales(order).subscribe(
                             (response) => {
                                 const saveIdOrder = response.data.id;
 
-                                for (let i = 0; i < listCart.length; i++) {
+                                let listOrder = JSON.parse(localStorage.getItem('listOrder'));
 
-                                    const orderDetail = {
-                                        idOrder: saveIdOrder,
-                                        idProductDetail: listCart[i].productDetailId,
-                                        quantity: listCart[i].quantity,
-                                        price: listCart[i].price,
-                                    };
+                                if (listOrder) {
+                                    let currentOrder = listOrder.find((order: any) => order.id === currentOrderId);
 
-                                    this.orderDetailService.createDetailSales(orderDetail).subscribe(res => {
-                                        if (res.status === 'OK') {
-                                            localStorage.removeItem('listProductPush');
-                                            // this.refreshData();
-                                            // this.removeOrder(order);
-                                            // this.calculateTotalAllProducts();
-                                            localStorage.removeItem('orderProducts_1');
-                                            localStorage.removeItem('orderProducts_2');
-                                            localStorage.removeItem('orderProducts_3');
-                                            localStorage.removeItem('orderProducts_4');
-                                            localStorage.removeItem('orderProducts_5');
-                                            localStorage.removeItem('order');
-                                            localStorage.removeItem('coutOrder');
-                                            // localStorage.setItem('coutOrder', this.count.toString());
-                                            localStorage.removeItem('listOrder');
-                                            localStorage.removeItem('listCart');
-                                        } else {
-                                            return;
+                                    if (currentOrder) {
+                                        for (let product of currentOrder.productList) {
+                                            const orderDetail: OrderDetail = {
+                                                idOrder: saveIdOrder,
+                                                idProductDetail: product.id,
+                                                quantity: product.quantityInOrder,
+                                                price: product.price,
+                                            };
+
+                                            this.orderDetailService.createDetailSales(orderDetail).subscribe(res => {
+                                                if (res.status === 'OK') {
+                                                    // Xoá dữ liệu trong productList của đơn hàng có id bằng currentOrderId
+                                                    currentOrder.productList = [];
+
+                                                    // Cập nhật listOrder trong localStorage
+                                                    localStorage.setItem('listOrder', JSON.stringify(listOrder));
+
+                                                    localStorage.removeItem('currentOrderId');
+                                                    localStorage.removeItem('order');
+                                                }
+                                            });
                                         }
-                                    });
+                                    } else {
+                                        console.error('Current order not found');
+                                    }
+                                } else {
+                                    console.error('listOrder not found in localStorage');
                                 }
                             }
                         );

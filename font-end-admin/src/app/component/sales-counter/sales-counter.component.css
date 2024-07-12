@@ -32,13 +32,12 @@
  }
 
  .form-order {
-   border: 1px solid rgb(104, 219, 219);
+   border: 0.5px solid rgb(183, 181, 181);
    padding-left: 15px;
    padding-right: 10px;
-   border-radius: 10px;
+   border-radius: 5px;
    font-size: 16px;
-   box-shadow: 0px 2px 5px rgb(92, 95, 95);
-
+   box-shadow: 0.5px 0.5px 0.5px rgb(92, 95, 95);
  }
 
  .name-nv {

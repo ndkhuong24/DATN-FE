@@ -26,6 +26,7 @@ import { ValidateInput } from '../model/validate-input';
 import { PogupVoucherSCComponent } from './pogup-voucher-sc/pogup-voucher-sc.component';
 import { SalesCouterVoucherService } from '../../service/sales-couter-voucher.service';
 import { CurrencyPipe } from '@angular/common';
+import { CursorError } from '@angular/compiler/src/ml_parser/lexer';
 
 @Component({
   selector: 'app-sales-counter',
@@ -54,7 +55,7 @@ export class SalesCounterComponent implements OnInit {
   userDTO: string;
   fullname: string;
   idStaff: string;
-  currentOrderId = 1;
+  currentOrderId: number = 1;
 
   listSizePR: any[];
   listColor: any[];
@@ -145,6 +146,7 @@ export class SalesCounterComponent implements OnInit {
     this.isProductListVisible = true;
 
     if (this.searchTerm.trim() === '') {
+      this.searchResults = [];
     } else {
       this.productService.searchProduct(this.searchTerm).subscribe(
         data => {
@@ -152,6 +154,7 @@ export class SalesCounterComponent implements OnInit {
         }
       );
     }
+
     this.showResults = this.searchTerm.length > 0;
   }
 
@@ -207,14 +210,21 @@ export class SalesCounterComponent implements OnInit {
       productList: []
     };
 
-    this.listOder.push(order);
+    let listOrderCurrent = JSON.parse(localStorage.getItem('listOrder')) || [];
+
+    listOrderCurrent.push(order);
+
+    this.listOder = listOrderCurrent;
 
     localStorage.setItem('coutOrder', this.count.toString());
-    localStorage.setItem('listOrder', JSON.stringify(this.listOder));
+    localStorage.setItem('listOrder', JSON.stringify(listOrderCurrent));
+
+    this.toastr.success('Đã tạo hóa đơn mới');
   }
 
   removeOrder(order: any) {
     const index = this.listOder.indexOf(order);
+
     if (this.count > 1) {
       if (index !== -1) {
         this.listOder.splice(index, 1);
@@ -223,62 +233,205 @@ export class SalesCounterComponent implements OnInit {
     }
     localStorage.setItem('coutOrder', this.count.toString());
     localStorage.setItem('listOrder', JSON.stringify(this.listOder));
-    localStorage.removeItem(`orderProducts_${this.currentOrderId}`);
   }
 
   addProductInOrder(row: any) {
-    if (!row.quantity) {
-      row.quantity = 1;
-    }
-
-    if (!this.listProductPush) {
-      this.listProductPush = [];
-    }
-
-    let existingProductInPush = this.listProductPush.find(product => product.id === row.id);
-
-    if (existingProductInPush) {
-      // Increment the quantity in listProductPush
-      existingProductInPush.quantity += 1;
+    if (row.quantity <= 0) {
+      this.toastr.error('Số lượng sản phẩm trong kho đã hết');
     } else {
-      // If product does not exist, add it to the listProductPush array
-      this.listProductPush.push(row);
+      if (!row.quantity) {
+        row.quantity = 1;
+      }
+
+      let listOrder = JSON.parse(localStorage.getItem('listOrder'));
+
+      let currentOrder = listOrder.find((order: { id: number; }) => order.id === this.currentOrderId);
+
+      if (currentOrder) {
+        let existingProductInOrder = currentOrder.productList.find((product: { id: any; }) => product.id === row.id);
+
+        if (existingProductInOrder) {
+          existingProductInOrder.quantityInOrder += 1;
+        } else {
+          row.quantityInOrder = 1;
+          currentOrder.productList.push(row);
+        }
+
+        localStorage.setItem('listOrder', JSON.stringify(listOrder));
+
+        this.isProductListVisible = false;
+
+        this.priceVouchers();
+
+        this.fillProductInListOrder();
+
+        this.clearSearchTerm();
+
+        this.calculateTotalAllProducts();
+      } else {
+        this.toastr.error('Lỗi hóa đơn');
+      }
+    }
+  }
+
+  updateQuantityInOrder(product: any, newQuantity: number, index: number) {
+    // Kiểm tra newQuantity có hợp lệ hay không (ví dụ như không được âm)
+    if (newQuantity <= 0) {
+      this.toastr.error('Số lượng sản phẩm phải lớn hơn 0');
+      return;
     }
 
-    // Check if the product already exists in the listCart array
-    let existingProductInCart = this.listCart.find(cartItem => cartItem.productDetailId === row.id);
-
-    if (existingProductInCart) {
-      // Increment the quantity in listCart
-      existingProductInCart.quantity += 1;
+    // Kiểm tra nếu số lượng mới vượt quá số lượng trong kho
+    if (newQuantity > product.quantity) {
+      this.toastr.error('Không đủ số lượng trong kho');
+      newQuantity = product.quantity;
+      product.quantityInOrder = product.quantity;
+      // return;
     } else {
-      // If product does not exist, add it to the listCart array
-      this.listCart.push({
-        productId: row.productDTO.id,
-        productDetailId: row.id,
-        sizeId: row.sizeDTO.id,
-        size_number: row.sizeDTO.sizeNumber,
-        colorId: row.colorDTO.id,
-        nameColor: row.colorDTO.name,
-        quantity: 1,
-        price: row.price,
-        quantityInstock: row.quantity
-      });
+      // Cập nhật quantityInOrder trên sản phẩm
+      product.quantityInOrder = newQuantity;
     }
 
-    this.cookieService.set('listProductPush', JSON.stringify(this.listProductPush));
+    // Cập nhật lại trong listProductPush
+    this.listProductPush[index].quantityInOrder = newQuantity;
 
-    const currentOrderProducts = this.listProductPush.map(product => ({ ...product }));
+    // Cập nhật lại trong listOrder trong localStorage
+    let listOrder = JSON.parse(localStorage.getItem('listOrder'));
 
-    localStorage.setItem(`orderProducts_${this.currentOrderId}`, JSON.stringify(currentOrderProducts));
+    if (listOrder) {
+      let currentOrder = listOrder.find((order: { id: number }) => order.id === this.currentOrderId);
 
-    this.calculateTotalAllProducts();
+      if (currentOrder) {
+        let productList = currentOrder.productList || [];
+        // Tìm và cập nhật sản phẩm trong productList của đơn hàng hiện tại
+        let updatedProduct = productList.find((p: any) => p.id === product.id);
+        if (updatedProduct) {
+          updatedProduct.quantityInOrder = newQuantity;
+        }
 
-    this.isProductListVisible = false;
+        // Cập nhật lại listOrder trong localStorage
+        localStorage.setItem('listOrder', JSON.stringify(listOrder));
+      } else {
+        console.error('Current order not found');
+      }
 
-    this.clearSearchTerm();
+      // Sau khi cập nhật, tính lại tổng tiền của các sản phẩm
+      this.calculateTotalAllProducts();
+    } else {
+      console.error('listOrder not found in localStorage');
+    }
+  }
+
+  // updateQuantityInOrder(product: any, newQuantity: number, index: number) {
+  //   // Kiểm tra newQuantity có hợp lệ hay không (ví dụ như không được âm)
+  //   if (newQuantity <= 0) {
+  //     this.toastr.error('Số lượng sản phẩm phải lớn hơn 0');
+  //     return;
+  //   }
+
+  //   if (newQuantity > product.quantity) {
+  //     this.toastr.error('Không đủ số lượng trong kho');
+  //     return;
+  //   }
+
+  //   // Cập nhật quantityInOrder trên sản phẩm
+  //   product.quantityInOrder = newQuantity;
+
+  //   // Cập nhật lại trong listProductPush
+  //   this.listProductPush[index].quantityInOrder = newQuantity;
+
+  //   // Cập nhật lại trong listOrder trong localStorage
+  //   let listOrder = JSON.parse(localStorage.getItem('listOrder'));
+
+  //   if (listOrder) {
+  //     let currentOrder = listOrder.find((order: { id: number }) => order.id === this.currentOrderId);
+
+  //     if (currentOrder) {
+  //       let productList = currentOrder.productList || [];
+  //       // Tìm và cập nhật sản phẩm trong productList của đơn hàng hiện tại
+  //       let updatedProduct = productList.find((p: any) => p.id === product.id);
+  //       if (updatedProduct) {
+  //         updatedProduct.quantityInOrder = newQuantity;
+  //       }
+
+  //       // Cập nhật lại listOrder trong localStorage
+  //       localStorage.setItem('listOrder', JSON.stringify(listOrder));
+  //     } else {
+  //       console.error('Current order not found');
+  //     }
+
+  //     // Sau khi cập nhật, tính lại tổng tiền của các sản phẩm
+  //     this.calculateTotalAllProducts();
+  //   } else {
+  //     console.error('listOrder not found in localStorage');
+  //   }
+  // }
+
+  calculateTotalAllProducts() {
+    this.totalAllProducts = 0;
+
+    let listOrder = JSON.parse(localStorage.getItem('listOrder'));
+
+    let currentOrder = listOrder.find((order: { id: number; }) => order.id === this.currentOrderId);
+
+    if (currentOrder) {
+      // Lấy productList từ đơn hàng hiện tại
+      let productList = currentOrder.productList || [];
+
+      // Tính tổng tiền cho các sản phẩm trong đơn hàng hiện tại
+      for (let i = 0; i < productList.length; i++) {
+        if (productList[i].quantity <= 0) {
+          this.toastr.error('Số lượng sản phẩm phải lớn hơn 0');
+          return;
+        }
+
+        const totalPrice = productList[i].quantityInOrder * productList[i].price;
+        this.totalAllProducts += totalPrice;
+      }
+    } else {
+      console.error('Current order not found');
+    }
+
     this.priceVouchers();
   }
+
+  onTabChange(event: MatTabChangeEvent): void {
+    const selectedTabIndex = event.index;
+
+    this.currentOrderId = this.listOder[selectedTabIndex].id;
+
+    this.fillProductInListOrder();
+
+    this.calculateTotalAllProducts();
+  }
+
+  fillProductInListOrder() {
+    if (!this.currentOrderId) {
+      console.error('Current order ID is not set');
+      return;
+    }
+
+    let listOrder = JSON.parse(localStorage.getItem('listOrder')) || [];
+
+    let currentOrder = listOrder.find((order: { id: number; }) => order.id === this.currentOrderId);
+
+    if (currentOrder) {
+      let productList = currentOrder.productList || [];
+      this.listProductPush = productList;
+    } else {
+      console.error('Current order not found');
+    }
+  }
+
+  // getProductListForCurrentOrder() {
+  //   const currentOrder = this.listOder.find(order => order.id === this.currentOrderId);
+
+  //   this.listProductPush = [];
+
+  //   if (currentOrder) {
+  //     this.listProductPush = currentOrder.productList;
+  //   }
+  // }
 
   addCustomer(row: any) {
     if (!row.quantity) {
@@ -296,15 +449,6 @@ export class SalesCounterComponent implements OnInit {
     this.searchTerm = '';
   }
 
-  getProductListForCurrentOrder() {
-    const currentOrder = this.listOder.find(order => order.id === this.currentOrderId);
-    if (currentOrder) {
-      this.listProductPush = currentOrder.productList;
-      // this.calculateTotalPrice();
-      this.calculateTotalAllProducts();
-    }
-  }
-
   removeProduct(index: number): void {
     Swal.fire({
       title: 'Bạn có xác nhận xóa sản phẩm',
@@ -316,41 +460,27 @@ export class SalesCounterComponent implements OnInit {
       confirmButtonText: 'Đồng ý'
     }).then(result => {
       if (result.isConfirmed) {
-        this.listCart.splice(index, 1);
-        this.listCart = [...this.listCart];
-
         this.listProductPush.splice(index, 1);
+
+        // Lấy danh sách đơn hàng từ localStorage
+        let listOrder = JSON.parse(localStorage.getItem('listOrder')) || [];
+
+        // Tìm và cập nhật đơn hàng hiện tại
+        let currentOrder = listOrder.find((order: { id: number; }) => order.id === this.currentOrderId);
+
+        if (currentOrder) {
+          // Xóa sản phẩm khỏi productList của đơn hàng hiện tại
+          currentOrder.productList.splice(index, 1);
+
+          // Lưu lại danh sách đơn hàng vào localStorage
+          localStorage.setItem('listOrder', JSON.stringify(listOrder));
+        }
+
+        // Cập nhật giao diện
         this.cdr.detectChanges();
         this.calculateTotalAllProducts();
       }
     });
-  }
-
-  // calculateTotalPrice() {
-  //   this.totalPrice = this.listProductPush.reduce((total, product) => {
-  //     const productTotal = product.price * product.quantity;
-  //     product.total = productTotal;
-  //     return total + productTotal;
-  //   }, 0);
-  //   this.calculateTotalAllProducts();
-  //   this.priceVouchers();
-  // }
-
-  calculateTotalAllProducts() {
-
-    this.totalAllProducts = 0;
-
-    for (let i = 0; i < this.listCart.length; i++) {
-      if (this.listCart[i].quantity <= 0) {
-        this.toastr.error('số lượng sản phẩm phải lớn hơn 0');
-        return;
-      }
-
-      const totalPrice = this.listCart[i].quantity * this.listCart[i].price;
-      this.totalAllProducts += totalPrice;
-    }
-
-    this.priceVouchers();
   }
 
   priceVouchers() {
@@ -379,11 +509,6 @@ export class SalesCounterComponent implements OnInit {
       return;
     }
 
-    if (this.listCart.some(c => c.sizeId === null || c.colorId === null)) {
-      this.toastr.error('Chưa chọn size và màu sắc của sản phẩm');
-      return;
-    }
-
     this.user = JSON.parse(localStorage.getItem('users'));
 
     if (this.user === null) {
@@ -400,25 +525,6 @@ export class SalesCounterComponent implements OnInit {
     } else {
       this.typeOrder = 1;
       this.statusOrder = 3;
-    }
-
-    for (let i = 0; i < this.listCart.length; i++) {
-      const idProductDetail = this.listCart[i].quantityInstock;
-
-      if (this.listCart[i].quantity <= 0) {
-        this.toastr.error('Số lượng sản phẩm phải lớn hơn 0');
-        return;
-      }
-
-      if (idProductDetail <= 0) {
-        this.toastr.error('sản phẩm đã hết hàng');
-        return;
-
-      }
-      if (this.listCart[i].quantity > this.listCart[i].quantityInstock) {
-        this.toastr.error('Không đủ số lượng sản phẩm');
-        return;
-      }
     }
 
     Swal.fire({
@@ -457,46 +563,16 @@ export class SalesCounterComponent implements OnInit {
           };
 
           const orderJson = JSON.stringify(order);
+          const currentOrderId = JSON.stringify(this.currentOrderId);
           localStorage.setItem('order', orderJson);
+          localStorage.setItem('currentOrderId', currentOrderId);
 
           this.paymentService.createPayment(this.priceCustomer).subscribe(resPay => {
             if (resPay.status === 'OK') {
-              // this.orderService.createOrderSales(order).subscribe(
-              //   (response) => {
-              //     const saveIdOrder = response.data.id;
-
-              //     for (let i = 0; i < this.listCart.length; i++) {
-
-              //       const orderDetail: OrderDetail = {
-              //         idOrder: saveIdOrder,
-              //         idProductDetail: this.listCart[i].productDetailId,
-              //         quantity: this.listCart[i].quantity,
-              //         price: this.listCart[i].price,
-              //       };
-
-              //       this.orderDetailService.createDetailSales(orderDetail).subscribe(res => {
-              //         if (res.status === 'OK') {
-              //           localStorage.removeItem('listProductPush');
-              //           this.refreshData();
-              //           this.removeOrder(order);
-              //           this.calculateTotalAllProducts();
-              //           localStorage.removeItem(`orderProducts_${this.currentOrderId}`);
-              //           localStorage.setItem('coutOrder', this.count.toString());
-              //           localStorage.removeItem('listOrder');
-              //         } else {
-              //           this.checkStatus = 1;
-              //           return;
-              //         }
-              //       });
-              //     }
-              //   }
-              // );
-
-              const listCartJson = JSON.stringify(this.listCart);
-              localStorage.setItem('listCart', listCartJson);
               window.location.href = resPay.url;
             }
           });
+
         } else {
           const order: Order = {
             paymentType: 0,
@@ -518,23 +594,37 @@ export class SalesCounterComponent implements OnInit {
 
           this.orderService.createOrderSales(order).subscribe(
             (response) => {
+
               const saveIdOrder = response.data.id;
 
-              for (let i = 0; i < this.listCart.length; i++) {
-                const orderDetail: OrderDetail = {
-                  idOrder: saveIdOrder,
-                  idProductDetail: this.listCart[i].productDetailId,
-                  quantity: this.listCart[i].quantity,
-                  price: this.listCart[i].price,
-                };
-                this.orderDetailService.createDetailSales(orderDetail).subscribe(res => {
-                  if (res.status === 'OK') {
-                  } else {
-                    this.checkStatus = 1;
-                    return;
+              let listOrder = JSON.parse(localStorage.getItem('listOrder'));
+
+              if (listOrder) {
+                let currentOrder = listOrder.find((order: any) => order.id === this.currentOrderId);
+
+                if (currentOrder) {
+                  for (let product of currentOrder.productList) {
+                    const orderDetail: OrderDetail = {
+                      idOrder: saveIdOrder,
+                      idProductDetail: product.id,
+                      quantity: product.quantityInOrder,
+                      price: product.price,
+                    };
+
+                    this.orderDetailService.createDetailSales(orderDetail).subscribe(res => {
+                      if (res.status !== 'OK') {
+                        this.checkStatus = 1;
+                        return;
+                      }
+                    });
                   }
-                });
+                } else {
+                  console.error('Current order not found');
+                }
+              } else {
+                console.error('listOrder not found in localStorage');
               }
+
               Swal.fire({
                 title: 'Thanh toán thành công',
                 text: '',
@@ -552,11 +642,14 @@ export class SalesCounterComponent implements OnInit {
 
                   this.calculateTotalAllProducts();
 
-                  localStorage.removeItem('listProductPush');
+                  let listOrderCurrent = JSON.parse(localStorage.getItem('listOrder'));
 
-                  localStorage.removeItem('listOrder');
+                  // Xoá đơn hàng với id bằng currentOrderId khỏi listOrder
+                  listOrderCurrent = listOrderCurrent.filter((order: any) => order.id !== this.currentOrderId);
 
-                  localStorage.removeItem(`orderProducts_${this.currentOrderId}`);
+                  localStorage.setItem('listOrder', JSON.stringify(listOrder));
+
+                  // localStorage.removeItem('listOrder');
                 }
               });
             }
@@ -586,6 +679,11 @@ export class SalesCounterComponent implements OnInit {
   }
 
   generateOrderHTML(): string {
+    // Lấy danh sách đơn hàng từ localStorage
+    let listOrder = JSON.parse(localStorage.getItem('listOrder'));
+    let currentOrder = listOrder.find((order: { id: number }) => order.id === this.currentOrderId);
+
+    // Khởi tạo chuỗi HTML
     let orderHTML = `<div>`;
     orderHTML += `<p>Thời gian: ${new Date().toLocaleString()}</p>`;
     orderHTML += `<p>Tên nhân viên: ${this.user.fullname}</p>`;
@@ -606,21 +704,20 @@ export class SalesCounterComponent implements OnInit {
     orderHTML += `</thead>`;
     orderHTML += `<tbody>`;
 
-    this.listProductPush.forEach(product => {
-      this.listCart.forEach(details => {
-        if (product.id === details.productDetailId) {
-          orderHTML += `<tr>`;
-          orderHTML += `<td>${product.productDTO.code}</td>`;
-          orderHTML += `<td>${product.productDTO.name}</td>`;
-          orderHTML += `<td>${details.size_number}</td>`;
-          orderHTML += `<td>${product.colorDTO.code}</td>`;
-          orderHTML += `<td>${details.quantity}</td>`;
-          orderHTML += `<td>${details.price}</td>`;
-          orderHTML += `<td>${details.quantity * details.price}</td>`;
-          orderHTML += `</tr>`;
-        }
+    // Kiểm tra nếu có đơn hàng hiện tại
+    if (currentOrder) {
+      currentOrder.productList.forEach((product: any) => {
+        orderHTML += `<tr>`;
+        orderHTML += `<td>${product.productDTO.code}</td>`;
+        orderHTML += `<td>${product.productDTO.name}</td>`;
+        orderHTML += `<td>${product.sizeDTO.sizeNumber}</td>`;
+        orderHTML += `<td>${product.colorDTO.code}</td>`;
+        orderHTML += `<td>${product.quantityInOrder}</td>`;
+        orderHTML += `<td>${product.price}</td>`;
+        orderHTML += `<td>${product.quantityInOrder * product.price}</td>`;
+        orderHTML += `</tr>`;
       });
-    });
+    }
 
     orderHTML += `</tbody>`;
     orderHTML += `</table>`;
@@ -628,6 +725,7 @@ export class SalesCounterComponent implements OnInit {
     orderHTML += `<p>Giảm giá: ${this.priceVoucher} đ</p>`;
     orderHTML += `<p>Tổng thanh toán: ${this.priceCustomer} đ</p>`;
     orderHTML += `</div>`;
+
     return orderHTML;
   }
 
@@ -640,7 +738,6 @@ export class SalesCounterComponent implements OnInit {
     frame.contentDocument.write(invoiceHTML);
     frame.contentDocument.close();
 
-    // Dùng printJS để in
     printJS({
       printable: frame.contentDocument.body,
       type: 'html',
@@ -650,14 +747,7 @@ export class SalesCounterComponent implements OnInit {
       documentTitle: 'Hóa đơn',
     });
 
-    // Xóa iframe sau khi in
     document.body.removeChild(frame);
-  }
-
-  onTabChange(event: MatTabChangeEvent): void {
-    const selectedTabIndex = event.index;
-    this.currentOrderId = this.listOder[selectedTabIndex].id;
-    this.getProductListForCurrentOrder();
   }
 
   openDialog(): void {
@@ -680,18 +770,6 @@ export class SalesCounterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    localStorage.removeItem('listOrder');
-    localStorage.removeItem('coutOrder');
-    localStorage.removeItem('orderProducts_1');
-    localStorage.removeItem('orderProducts_2');
-    localStorage.removeItem('orderProducts_3');
-    localStorage.removeItem('orderProducts_4');
-    localStorage.removeItem('orderProducts_5');
-
-    if (this.statusPayment === '00') {
-      this.toastr.success('Thanh toán thành công');
-    }
-
     const listOrderCookie = localStorage.getItem('listOrder');
     const countOrderCookie = localStorage.getItem('coutOrder');
 
@@ -709,21 +787,15 @@ export class SalesCounterComponent implements OnInit {
       localStorage.setItem('listOrder', JSON.stringify(this.listOder));
     }
 
-    this.getProductListForCurrentOrder();
+    this.fillProductInListOrder();
+
+    this.calculateTotalAllProducts();
 
     const users = JSON.parse(localStorage.getItem('users'));
 
     this.userDTO = users;
     this.fullname = users.fullname;
     this.idStaff = users.id;
-
-    this.listOder.forEach(order => {
-      const orderProductsKey = `orderProducts_${order.id}`;
-      const storedOrderProducts = localStorage.getItem(orderProductsKey);
-      if (storedOrderProducts) {
-        order.productList = JSON.parse(storedOrderProducts);
-      }
-    });
 
     this.selectedOption = '0';
 
@@ -759,11 +831,10 @@ export class SalesCounterComponent implements OnInit {
             const newProduct = { ...this.searchResults[0], quantity: 1 };
             this.listProductPush.push(newProduct);
           }
-          this.cookieService.set('listProductPush', JSON.stringify(this.listProductPush));
+          // this.cookieService.set('listProductPush', JSON.stringify(this.listProductPush));
           const currentOrderProducts = this.listProductPush.map(product => ({ ...product }));
-          localStorage.setItem(`orderProducts_${this.currentOrderId}`, JSON.stringify(currentOrderProducts));
+          // localStorage.setItem(`orderProducts_${this.currentOrderId}`, JSON.stringify(currentOrderProducts));
           this.isProductListVisible = false;
-          // this.calculateTotalPrice();
           this.calculateTotalAllProducts();
           this.clearSearchTerm();
           this.priceVouchers();
