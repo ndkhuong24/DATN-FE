@@ -1,9 +1,9 @@
-import {ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
-import {CartService} from '../../service/cart.service';
-import {CookieService} from 'ngx-cookie-service';
-import {Router} from '@angular/router';
-import {UtilService} from '../../util/util.service';
-import {ToastrService} from 'ngx-toastr';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
+import { CartService } from '../../service/cart.service';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
+import { UtilService } from '../../util/util.service';
+import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -23,9 +23,14 @@ export class GiohangComponent implements OnInit {
   selectedProducts: any[] = [];
   disableCheckOut: boolean = false;
 
-
-  constructor(private cartService: CartService, private cookieService: CookieService, private route: Router,
-              private cdr: ChangeDetectorRef, public utilService: UtilService, private toastr: ToastrService) {
+  constructor(
+    private cartService: CartService,
+    private cookieService: CookieService,
+    private route: Router,
+    private cdr: ChangeDetectorRef,
+    public utilService: UtilService,
+    private toastr: ToastrService
+  ) {
     if (this.cookieService.check('cart')) {
       this.cookieService.delete('checkout');
       const cartData = this.cookieService.get('cart');
@@ -36,16 +41,13 @@ export class GiohangComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log(this.cartData);
     this.cartData.forEach((value, key) => {
       const idKey = key.split('-');
+
       this.cartService.getCart(idKey[0], idKey[1], idKey[2], value).subscribe(res => {
         this.listCart.push(res.data);
       });
-      console.log(idKey);
-      console.log(value, key);
     });
-    console.log(this.listCart);
   }
 
   calculateTotal(price: number, quantity: number): string {
@@ -53,32 +55,7 @@ export class GiohangComponent implements OnInit {
     return this.utilService.formatMoney(total);
   }
 
-  checkOut() {
-    Swal.fire({
-      title: 'Bạn có chắc thanh toán ?',
-      text: '',
-      icon: 'info',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Đồng ý'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const expirationDate = new Date();
-        expirationDate.setTime(expirationDate.getTime() + 30 * 60 * 1000);
-        this.cookieService.set('checkout', JSON.stringify(Array.from(this.selectedProducts)), expirationDate);
-        for (const c of this.selectedProducts) {
-          const key = c.productId + '-' + c.productDetailDTO.idColor + '-' + c.productDetailDTO.idSize;
-          this.checkOutData.set(key, c.quantity);
-        }
-        this.cookieService.set('checkout', JSON.stringify(Array.from(this.checkOutData.entries())), expirationDate);
-        this.route.navigate(['/cart/checkout']);
-      }
-    });
-  }
-
-
-  giamSoLuong(obj) {
+  giamSoLuong(obj: { productId: any; productDetailDTO: { idColor: any; idSize: any; }; }) {
     const cartKey = `${obj.productId}-${obj.productDetailDTO.idColor}-${obj.productDetailDTO.idSize}`;
     if (this.cartData.has(cartKey)) {
       const currentQuantity = this.cartData.get(cartKey);
@@ -114,7 +91,7 @@ export class GiohangComponent implements OnInit {
     }
   }
 
-  tangSoLuong(obj) {
+  tangSoLuong(obj: { productId: any; productDetailDTO: { idColor: any; idSize: any; }; }) {
     const cartKey = `${obj.productId}-${obj.productDetailDTO.idColor}-${obj.productDetailDTO.idSize}`;
     if (this.cartData.has(cartKey)) {
       const currentQuantity = this.cartData.get(cartKey);
@@ -129,7 +106,7 @@ export class GiohangComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  deleteItem(obj) {
+  deleteItem(obj: { productId: any; productDetailDTO: { idColor: any; idSize: any; }; }) {
     const cartKey = `${obj.productId}-${obj.productDetailDTO.idColor}-${obj.productDetailDTO.idSize}`;
     if (this.cartData.has(cartKey)) {
       Swal.fire({
@@ -168,9 +145,7 @@ export class GiohangComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  // Thay đổi trạng thái của checkbox dưới body và tính tổng lại khi có sự thay đổi
-  toggleCheckbox(obj) {
-    console.log(obj);
+  toggleCheckbox(obj: any) {
     this.selectAll = true;
     this.disableCheckOut = false;
     let countCheck = 0;
@@ -179,7 +154,6 @@ export class GiohangComponent implements OnInit {
       if (c.selected === true) {
         countCheck++;
         this.selectedProducts.push(c);
-        console.log(this.selectedProducts);
         this.disableCheckOut = true;
       } else {
         this.selectAll = false;
@@ -194,12 +168,47 @@ export class GiohangComponent implements OnInit {
 
   calculateTotalMoney() {
     this.totalMoney = 0;
-    this.totalSaveMoney = 0;
+    // this.totalSaveMoney = 0;
     for (const c of this.listCart) {
       if (c.selected) {
-        this.totalSaveMoney += c.productDTO.reducePrice * c.quantity;
-        this.totalMoney += (c.productDTO.price * c.quantity) - (c.productDTO.reducePrice * c.quantity);
+        // this.totalSaveMoney += c.productDTO.reducePrice * c.quantity;
+        this.totalMoney += (c.productDetailDTO.price * c.quantity);
       }
     }
+  }
+
+  checkOut() {
+    Swal.fire({
+      title: 'Bạn có chắc thanh toán',
+      text: '',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Đồng ý',
+      cancelButtonText: 'Thoát'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const expirationDate = new Date();
+
+        expirationDate.setTime(expirationDate.getTime() + 30 * 60 * 1000);
+
+        this.cookieService.set('checkout', JSON.stringify(Array.from(this.selectedProducts)), expirationDate);
+
+        // Lưu selectedProducts vào localStorage
+        // localStorage.setItem('checkoutSelectedProducts', JSON.stringify(Array.from(this.selectedProducts)));
+
+        for (const c of this.selectedProducts) {
+          const key = c.productId + '-' + c.productDetailDTO.idColor + '-' + c.productDetailDTO.idSize;
+          this.checkOutData.set(key, c.quantity);
+        }
+        this.cookieService.set('checkout', JSON.stringify(Array.from(this.checkOutData.entries())), expirationDate);
+
+        // Lưu checkOutData vào localStorage
+        // localStorage.setItem('checkoutData', JSON.stringify(Array.from(this.checkOutData.entries())));
+
+        this.route.navigate(['/cart/checkout']);
+      }
+    });
   }
 }

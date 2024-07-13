@@ -13,7 +13,7 @@ export class SignInService {
   private apiLogin = 'http://localhost:8081/view/api/sign-in';
   private apiSignUp = 'http://localhost:8081/view/api/sign-up';
 
-  private apiFindByID: string;
+  // private apiFindByID: string;
 
   constructor(
     private httpClient: HttpClient

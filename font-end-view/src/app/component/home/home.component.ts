@@ -34,7 +34,6 @@ export class HomeComponent implements OnInit {
   listProductNoiBat = [];
   listBrand = [];
   idBrand: number = null;
-  // isMouseOver: { [key: number]: boolean } = {};
 
   ngOnInit(): void {
     this.getProductNoiBat(0);
@@ -52,21 +51,10 @@ export class HomeComponent implements OnInit {
   getBrandTop() {
     this.brandService.getBrandTop().subscribe(res => {
       this.listBrand = res;
-      // console.log('DataBrand => ', this.listBrand);
     });
   }
 
-  // onMouseEnter(product: any) {
-  //   // Khi chuột di vào, cập nhật isMouseOver của sản phẩm này thành true
-  //   this.isMouseOver[product.id] = true;
-  // }
-
-  // onMouseLeave(product: any) {
-  //   this.isMouseOver[product.id] = false;
-  // }
-
   changeBrand(idBrand: number) {
-    console.log(idBrand)
     this.getProductNoiBat(idBrand);
     this.cdr.detectChanges();
   }

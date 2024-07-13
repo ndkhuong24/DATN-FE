@@ -4,9 +4,10 @@
   </div>
   <div style="display: flex;justify-content: space-between; border-bottom: 1px solid" *ngFor="let d of listAddress">
     <div style="max-width: 300px; display: flex">
-      <input type="radio" name="address" style="transform: scale(1.5);" [value]="d.id" [checked]="idAddress === d.id" [(ngModel)]="idAddress">
+      <input type="radio" name="address" style="transform: scale(1.5);" [value]="d.id" [checked]="idAddress === d.id"
+        [(ngModel)]="idAddress">
       <p style="margin-left: 10px; margin-top: 10px">{{d?.specificAddress + ', ' + d.wards + ', '
-      + d?.district + ', ' + d?.province}}</p>
+        + d?.district + ', ' + d?.province}}</p>
     </div>
     <div style="margin-top: 10px">
       <button type="button" class="button-capnhat" (click)="openPopupUpdate()">Cập nhật</button>

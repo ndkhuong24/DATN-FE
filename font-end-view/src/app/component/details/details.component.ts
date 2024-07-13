@@ -21,6 +21,20 @@ export class DetailsComponent implements OnInit {
   isMouseOver: { [key: number]: boolean } = {};
   quantityBuy: number = 1;
 
+  product: any;
+  listColor = [];
+  listSize = [];
+  originalListColor = [];
+  originalListSize = [];
+  sizeBefore: number;
+  colorId: number | null = null;
+  sizeId: number | null = null;
+  bothSizeAndColorSelected: boolean = false;
+  validQuantityBuy: boolean = false;
+  validQuantityBuyMess = null;
+  minPrice: number | null = null;
+  maxPrice: number | null = null;
+
   constructor(
     private productService: ProductService,
     private activeRoute: ActivatedRoute,
@@ -40,20 +54,6 @@ export class DetailsComponent implements OnInit {
     }
   }
 
-  product: any;
-  listColor = [];
-  listSize = [];
-  originalListColor = [];
-  originalListSize = [];
-  sizeBefore: number;
-  colorId: number | null = null;
-  sizeId: number | null = null;
-  bothSizeAndColorSelected: boolean = false;
-  validQuantityBuy: boolean = false;
-  validQuantityBuyMess = null;
-  minPrice: number | null = null;
-  maxPrice: number | null = null;
-
   ngOnInit(): void {
     this.activeRoute.params.subscribe((params) => {
       const id = params.idProduct;
@@ -61,9 +61,7 @@ export class DetailsComponent implements OnInit {
       this.productService.getDetailProduct(id).subscribe((res) => {
         this.product = res.data;
 
-        this.productService
-          .getProductTuongTu(res.data.id, res.data.categoryDTO.id)
-          .subscribe((res2) => {
+        this.productService.getProductTuongTu(res.data.id, res.data.categoryDTO.id).subscribe((res2) => {
             this.listProductTuongTu = res2;
             this.cdr.detectChanges();
           });
@@ -224,7 +222,7 @@ export class DetailsComponent implements OnInit {
   getProductDetailprice(): number {
     if (this.sizeId !== null && this.colorId !== null) {
       const selectedProductDetail = this.product.productDetailDTOList.find(
-        (detail) =>
+        (detail: { idSize: number; idColor: number; }) =>
           detail.idSize === parseInt(String(this.sizeId), 10) &&
           detail.idColor === parseInt(String(this.colorId), 10)
       );
@@ -356,8 +354,6 @@ export class DetailsComponent implements OnInit {
   }
 
   onColorChange(event: any): void {
-    console.log(event);
-    // const selectedColorId = this.colorId;
     if (this.product && this.product.productDetailDTOList) {
       if (this.colorId === null) {
         this.listSize = [...this.originalListSize];
@@ -365,11 +361,11 @@ export class DetailsComponent implements OnInit {
         this.listSize = [...this.originalListSize];
         const detailsForSelectedColor =
           this.product.productDetailDTOList.filter(
-            (detail) => detail.idColor === this.colorId && detail.idSize
+            (detail: { idColor: number; idSize: any; }) => detail.idColor === this.colorId && detail.idSize
           );
 
         const sizeIDsForSelectedColor = detailsForSelectedColor.map(
-          (detail) => detail.idSize
+          (detail: { idSize: any; }) => detail.idSize
         );
 
         this.listSize = this.listSize.map(size => {

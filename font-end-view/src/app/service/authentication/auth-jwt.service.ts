@@ -6,11 +6,17 @@ import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthJwtService {
-  constructor(public jwtHelper: JwtHelperService, private toastr: ToastrService, private router: Router) { }
+  constructor(
+    public jwtHelper: JwtHelperService,
+    private toastr: ToastrService,
+    private router: Router
+  ) { }
   public isAuthenticated(): boolean {
     const token = localStorage.getItem('token');
     const isExpired = this.jwtHelper.isTokenExpired(token);
+
     if (isExpired) {
       localStorage.removeItem('token');
       localStorage.removeItem('users');

@@ -1,6 +1,7 @@
 mat-form-field {
   width: 100%;
 }
+
 .validate-input {
   margin: 5px 0 0 !important;
   color: red;
@@ -8,6 +9,7 @@ mat-form-field {
   line-height: 10px;
   font-weight: 500;
 }
+
 .validate-input-label {
   margin: 5px 0 0 !important;
   color: red;

@@ -19,7 +19,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private cartService: CartService,
-    private router: Router,
+    // private router: Router,
     private istoken: AuthJwtService
   ) {
     this.cartService.totalProducts$.subscribe((totalProducts) => {
@@ -29,9 +29,9 @@ export class HeaderComponent implements OnInit {
 
   api = apiURL;
 
-  updateInFor(infor: UsersDTO) {
+  // updateInFor(infor: UsersDTO) {
 
-  }
+  // }
 
   exLogin() {
     if (this.istoken.isAuthenticated() === true) {

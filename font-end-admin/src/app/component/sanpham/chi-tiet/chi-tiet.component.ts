@@ -27,7 +27,7 @@ export class ChiTietComponent implements OnInit {
         this.columnDefs = [
             {
                 headerName: 'Màu sắc',
-                field: 'colorDTO.name',
+                field: 'colorDTO.code',
                 sortable: true,
                 filter: true,
                 flex: 1,

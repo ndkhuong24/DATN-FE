@@ -16,14 +16,13 @@ import {forkJoin} from 'rxjs';
 export class DetailCheckoutComponent implements OnInit {
 
   listCart: any = [];
+
   order: any;
-  // responsePayment: any = {
-  //   vnp_CardType: null,
-  //   vnp_BankCode: null,
-  //
-  // };
+
   statusPayment: any;
+
   email: any;
+
   user: any = {
     id: null,
     code: null,
@@ -32,13 +31,19 @@ export class DetailCheckoutComponent implements OnInit {
     email: '',
   };
 
-  constructor(private route: ActivatedRoute, private orderDetailService: OrderDetailService,
-              private cookieService: CookieService, private emailService: EmailService,
-              public utilService: UtilService, private cartService: CartService, private orderService: OrderService) {
+  constructor(
+    private route: ActivatedRoute, 
+    private orderDetailService: OrderDetailService,
+    private cookieService: CookieService, 
+    private emailService: EmailService,
+    public utilService: UtilService, 
+    private cartService: CartService, 
+    private orderService: OrderService
+  ) {
     const local = JSON.parse(localStorage.getItem('order-bill'));
     this.order = local.order;
     this.listCart = local.listCart;
-    // this.email = session.email;
+    this.email = this.order.email;
     this.statusPayment = this.route.snapshot.queryParamMap.get('vnp_TransactionStatus');
     // sessionStorage.removeItem('order');
 
@@ -58,9 +63,6 @@ export class DetailCheckoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.order);
-    console.log(this.listCart);
-
     if (this.statusPayment === '00' && this.order.paymentType === 1) {
       if (this.user.id === null && this.user.code === null) {
         this.orderService.createOrderNotLogin(this.order).subscribe(res => {
@@ -216,7 +218,6 @@ export class DetailCheckoutComponent implements OnInit {
     }
   }
 
-
   calculateTotal(price: number, quantity: number): string {
     const total = price * quantity;
     return this.utilService.formatMoney(total);
@@ -229,5 +230,4 @@ export class DetailCheckoutComponent implements OnInit {
 
   openHome() {
   }
-
 }

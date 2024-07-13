@@ -1,20 +1,20 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {GiaoHangService} from '../../service/giao-hang.service';
-import {CartService} from '../../service/cart.service';
-import {CookieService} from 'ngx-cookie-service';
-import {Router} from '@angular/router';
-import {OrderService} from '../../service/order.service';
-import {PaymentService} from '../../service/payment.service';
-import {MatDialog} from '@angular/material/dialog';
-import {AddressCheckoutComponent} from './address-checkout/address-checkout.component';
-import {PopupVoucherComponent} from './popup-voucher/popup-voucher.component';
-import {AddressService} from '../../service/address.service';
-import {VoucherService} from '../../service/voucher.service';
-import {UtilService} from '../../util/util.service';
-import {ValidateInput} from '../../model/validate-input.model';
-import {CommonFunction} from '../../util/common-function';
-import {VoucherShipService} from '../../service/voucher-ship.service';
-import {ToastrService} from 'ngx-toastr';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { GiaoHangService } from '../../service/giao-hang.service';
+import { CartService } from '../../service/cart.service';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
+import { OrderService } from '../../service/order.service';
+import { PaymentService } from '../../service/payment.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddressCheckoutComponent } from './address-checkout/address-checkout.component';
+import { PopupVoucherComponent } from './popup-voucher/popup-voucher.component';
+import { AddressService } from '../../service/address.service';
+import { VoucherService } from '../../service/voucher.service';
+import { UtilService } from '../../util/util.service';
+import { ValidateInput } from '../../model/validate-input.model';
+import { CommonFunction } from '../../util/common-function';
+import { VoucherShipService } from '../../service/voucher-ship.service';
+import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -23,7 +23,6 @@ import Swal from 'sweetalert2';
   styleUrls: ['./checkout.component.scss']
 })
 export class CheckoutComponent implements OnInit {
-
   listCart = [];
   cartData = new Map();
   totalMoney: any;
@@ -45,7 +44,7 @@ export class CheckoutComponent implements OnInit {
     voucherShip: null
   };
 
-  totalMoneyPay;
+  totalMoneyPay: number;
   voucher: any;
   voucherShip: any;
   order: any = {
@@ -53,7 +52,8 @@ export class CheckoutComponent implements OnInit {
     receiverPhone: '',
     description: ''
   };
-  email;
+
+  email: any;
 
   listProvince = [];
   listDistrict = [];
@@ -65,6 +65,7 @@ export class CheckoutComponent implements OnInit {
     phone: '',
     email: '',
   };
+
   validReceiver: ValidateInput = new ValidateInput();
   validEmail: ValidateInput = new ValidateInput();
   validReceiverPhone: ValidateInput = new ValidateInput();
@@ -72,19 +73,27 @@ export class CheckoutComponent implements OnInit {
   validDistrict: ValidateInput = new ValidateInput();
   validWard: ValidateInput = new ValidateInput();
 
-  constructor(private giaoHangService: GiaoHangService, private cartService: CartService,
-              private cookieService: CookieService, private route: Router, private orderService: OrderService,
-              private paymentService: PaymentService, private matDialog: MatDialog,
-              private addressService: AddressService, private voucherService: VoucherService, public utilService: UtilService,
-              private voucherShipService: VoucherShipService,
-              private cdr: ChangeDetectorRef,
-              private toaStr: ToastrService
+  constructor(
+    private giaoHangService: GiaoHangService,
+    private cartService: CartService,
+    private cookieService: CookieService,
+    private route: Router,
+    private orderService: OrderService,
+    private paymentService: PaymentService,
+    private matDialog: MatDialog,
+    private addressService: AddressService,
+    private voucherService: VoucherService,
+    public utilService: UtilService,
+    private voucherShipService: VoucherShipService,
+    private cdr: ChangeDetectorRef,
+    private toaStr: ToastrService
   ) {
     if (this.cookieService.check('checkout')) {
       const cartData = this.cookieService.get('checkout');
       const entries = JSON.parse(cartData);
       this.cartData = new Map(entries);
     }
+
     const storedUserString = localStorage.getItem('customer');
 
     if (storedUserString) {
@@ -108,18 +117,21 @@ export class CheckoutComponent implements OnInit {
     this.listCart = [];
     this.order.receiver = this.user.fullname;
     this.order.receiverPhone = this.user.phone;
+
     this.cartData.forEach((value, key) => {
       const idKey = key.split('-');
       this.cartService.getCart(idKey[0], idKey[1], idKey[2], value).subscribe(res => {
         this.listCart.push(res.data);
         // tslint:disable-next-line:max-line-length
-        this.totalSaveMoney += (res.data.productDTO.reducePrice * res.data.quantity);
-        this.totalMoney += (res.data.productDTO.price * res.data.quantity) - (res.data.productDTO.reducePrice * res.data.quantity);
+        // this.totalSaveMoney += (res.data.productDTO.reducePrice * res.data.quantity);
+        // this.totalMoney += (res.data.productDTO.price * res.data.quantity) - (res.data.productDTO.reducePrice * res.data.quantity);
+        this.totalMoney += (res.data.productDetailDTO.price * res.data.quantity);
         this.totalMoneyPay = this.totalMoney;
       });
     });
-    console.log(this.listCart);
+
     this.getAddress(this.user.id);
+
     this.giaoHangService.getAllProvince().subscribe(res => {
       this.listProvince = res.data;
     });
@@ -130,13 +142,13 @@ export class CheckoutComponent implements OnInit {
     return this.utilService.formatMoney(total);
   }
 
-  getDistrict(event) {
+  getDistrict(event: { ProvinceID: number; }) {
     this.giaoHangService.getAllDistrictByProvince(event.ProvinceID).subscribe(res => {
       this.listDistrict = res.data;
     });
   }
 
-  getWard(event) {
+  getWard(event: { DistrictID: number; }) {
     this.giaoHangService.getAllWardByDistrict(event.DistrictID).subscribe(res => {
       this.listWard = res.data;
     });
@@ -189,30 +201,34 @@ export class CheckoutComponent implements OnInit {
       this.order.receiver = CommonFunction.trimText(this.order.receiver);
       this.email = CommonFunction.trimText(this.email);
       this.order.receiverPhone = CommonFunction.trimText(this.order.receiverPhone);
+
       this.validateReceiver();
       this.validateReceiverPhone();
       this.validateEmail();
       this.validateProvince();
       this.validateDistrict();
       this.validateWard();
+
       if (!this.validReceiver.done || !this.validEmail.done || !this.validReceiverPhone.done || !this.validProvince.done
         || !this.validDistrict.done || !this.validWard.done) {
         return;
       }
+
       Swal.fire({
-        title: 'Bạn có xác nhận thanh toán đơn hàng ?',
+        title: 'Bạn có xác nhận thanh toán đơn hàng',
         text: '',
         icon: 'info',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Đồng ý'
+        confirmButtonText: 'Đồng ý',
+        cancelButtonText: 'Thoát'
       }).then((result) => {
         if (result.isConfirmed) {
           let province = this.listProvince.find(c => c.ProvinceID === this.addressNotLogin.provinceId);
-          // console.log(province);
           let district = this.listDistrict.find(d => d.DistrictID === this.addressNotLogin.districtId);
           let ward = this.listWard.find(w => w.WardCode === this.addressNotLogin.wardCode);
+
           if (this.checkChoicePay === 1) {
             const obj = {
               ...this.order,
@@ -226,21 +242,21 @@ export class CheckoutComponent implements OnInit {
               paymentType: 1,
               email: this.email
             };
-            // this.orderService.createOrderNotLogin(obj).subscribe(res => {
-            //   if (res.status === 'OK') {
+
             const objOrderBill = {
-                  order: obj,
-                  listCart: this.listCart
-                };
+              order: obj,
+              listCart: this.listCart
+            };
+
             localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
+
             this.paymentService.createPayment(this.totalMoneyPay).subscribe(resPay => {
-                  if (resPay.status === 'OK') {
-                    window.location.href = resPay.url;
-                  }
-                });
-            //   }
-            // });
-          } else {
+              if (resPay.status === 'OK') {
+                window.location.href = resPay.url;
+              }
+            });
+          } 
+          else {
             const obj = {
               ...this.order,
               totalPrice: this.totalMoney,
@@ -253,20 +269,19 @@ export class CheckoutComponent implements OnInit {
               paymentType: 0,
               email: this.email
             };
-            // this.orderService.createOrderNotLogin(obj).subscribe(res => {
-            //   if (res.status === 'OK') {
+
             const objOrderBill = {
-                  order: obj,
-                  listCart: this.listCart
-                };
+              order: obj,
+              listCart: this.listCart
+            };
             localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
             this.route.navigate(['cart/checkout-detail']);
-            //   }
-            // });
+
           }
         }
       });
-    } else {
+    }
+    else {
       this.order.receiver = CommonFunction.trimText(this.order.receiver);
       this.order.receiverPhone = CommonFunction.trimText(this.order.receiverPhone);
       this.validateReceiver();
@@ -317,12 +332,12 @@ export class CheckoutComponent implements OnInit {
             //       listCart: this.listCart,
             //     };
             this.paymentService.createPayment(this.totalMoneyPay).subscribe(resPay => {
-                  if (resPay.status === 'OK') {
-                    // sessionStorage.setItem('order', JSON.stringify(objCheckOut));
-                    // setTimeout()
-                    window.location.href = resPay.url;
-                  }
-                });
+              if (resPay.status === 'OK') {
+                // sessionStorage.setItem('order', JSON.stringify(objCheckOut));
+                // setTimeout()
+                window.location.href = resPay.url;
+              }
+            });
             //   }
             // });
           } else {
@@ -348,9 +363,9 @@ export class CheckoutComponent implements OnInit {
               listCart: this.listCart
             };
             localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
-                // sessionStorage.setItem('order', JSON.stringify(objCheckOut));
+            // sessionStorage.setItem('order', JSON.stringify(objCheckOut));
             this.route.navigate(['cart/checkout-detail']);
-              // }
+            // }
             // });
           }
         }
@@ -377,10 +392,9 @@ export class CheckoutComponent implements OnInit {
     this.matDialog.open(PopupVoucherComponent, {
       width: '45%',
       height: '90vh',
-      data: {total: originalTotalMoney, voucherChoice: this.voucherChoice}
+      data: { total: originalTotalMoney, voucherChoice: this.voucherChoice }
     }).afterClosed().subscribe(result => {
       if (result.event === 'saveVoucher') {
-        console.log(result.data);
         this.totalMoneyPay = originalTotalMoney;
         if (result.data.voucher !== null) {
           this.voucherService.getVoucher(result.data.voucher).subscribe(res => {
@@ -420,7 +434,7 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
-  revoveInvalid(result) {
+  revoveInvalid(result: { done: boolean; }) {
     result.done = true;
   }
 

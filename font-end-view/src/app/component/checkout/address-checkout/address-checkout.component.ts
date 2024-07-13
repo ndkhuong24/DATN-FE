@@ -1,8 +1,8 @@
-import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {UpdateAddressComponent} from './update-address/update-address.component';
-import {AddressService} from '../../../service/address.service';
-import {ToastrService} from 'ngx-toastr';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { UpdateAddressComponent } from './update-address/update-address.component';
+import { AddressService } from '../../../service/address.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-address-checkout',
@@ -15,8 +15,8 @@ export class AddressCheckoutComponent implements OnInit {
   idAddress: any;
 
   constructor(private dialog: MatDialog, private addressService: AddressService, private cdr: ChangeDetectorRef,
-              public matDialogRef: MatDialogRef<AddressCheckoutComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
-              private toastr: ToastrService) {
+    public matDialogRef: MatDialogRef<AddressCheckoutComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
+    private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
