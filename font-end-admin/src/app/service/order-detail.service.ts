@@ -10,6 +10,7 @@ import { OrderDetail } from '../component/model/OrderDetail';
 export class OrderDetailService {
 
   constructor(private http: HttpClient) { }
+  
   getAllOrderDetailByOrder(idOrder: number): Observable<any> {
     return this.http.get(`${apiURL}get-order-detail/by-order/${idOrder}`);
   }

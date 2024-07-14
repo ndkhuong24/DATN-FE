@@ -17,8 +17,8 @@ export class OrderDetailComponent implements OnInit {
 
   rowData: any;
   columnDefs: any;
-  gridApi;
-  gridColumnApi;
+  gridApi: any;
+  gridColumnApi: any;
   status: any;
   totalQuantity: number = 0;
   noteOrder: string = null;
@@ -36,7 +36,7 @@ export class OrderDetailComponent implements OnInit {
         suppressMovable: true,
         minWidth: 60,
         maxWidth: 60,
-        valueGetter: param => {
+        valueGetter: (param: { node: { rowIndex: number; }; }) => {
           return param.node.rowIndex + 1;
         }
       },
@@ -44,18 +44,19 @@ export class OrderDetailComponent implements OnInit {
         headerName: 'Tên Sản phẩm',
         field: '',
         suppressMovable: true,
-        cellRenderer: params => {
-          return `<div>
-        <img width="60px" height="60px" src="${params.data.productDetailDTO.productDTO.imagesDTOList[0].imageName}" alt="">
-        <span class="productName" title="${params.data.productDetailDTO.productDTO.name}">${params.data.productDetailDTO.productDTO.name}</span>
-</div>`;
+        cellRenderer: (params: { data: { productDetailDTO: { productDTO: { imageURL: any; name: any; }; }; }; }) => {
+          return `
+          <div>
+            <img width="60px" height="60px" src="${params.data.productDetailDTO.productDTO.imageURL}">
+            <span class="productName" title="${params.data.productDetailDTO.productDTO.name}">${params.data.productDetailDTO.productDTO.name}</span>
+          </div>`;
         },
       },
       {
         headerName: 'Phân Loại',
         field: '',
         suppressMovable: true,
-        cellRenderer: params => {
+        cellRenderer: (params: { data: { productDetailDTO: { colorDTO: { name: any; }; sizeDTO: { sizeNumber: any; }; }; }; }) => {
           return `<div style="height: 30px"><span style="font-weight: bold">Color:</span> ${params.data.productDetailDTO.colorDTO.name}</div>
             <div style="height: 30px"><span style="font-weight: bold">Size: </span> ${params.data.productDetailDTO.sizeDTO.sizeNumber}</div>`;
         }
@@ -72,7 +73,7 @@ export class OrderDetailComponent implements OnInit {
         headerName: 'Giá tiền',
         field: 'price',
         suppressMovable: true,
-        valueFormatter: params => {
+        valueFormatter: (params: { data: { price: number; }; }) => {
           return formatMoney(params.data.price);
         },
       },
@@ -80,7 +81,7 @@ export class OrderDetailComponent implements OnInit {
         headerName: 'Thành tiền',
         field: '',
         suppressMovable: true,
-        valueFormatter: params => {
+        valueFormatter: (params: { data: { price: number; quantity: number; }; }) => {
           return formatMoney(params.data.price * params.data.quantity);
         },
       }
@@ -89,8 +90,6 @@ export class OrderDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log(this.data);
-    console.log(this.data.data);
     this.orderDetailService.getAllOrderDetailByOrder(this.data.data.id).subscribe(res => {
       this.rowData = res.orderDetail;
       this.listOrderHistoryAdmin = res.orderHistoryAdmin;
@@ -118,7 +117,7 @@ export class OrderDetailComponent implements OnInit {
         };
         this.orderService.cancelOrder(obj).subscribe(result => {
           if (result.status === 'OK') {
-            this.toastr.success('Hủy đơn hàng thành công!', 'Thông báo', {
+            this.toastr.success('Hủy đơn hàng thành công', 'Thông báo', {
               positionClass: 'toast-top-right'
             });
           } else {
@@ -177,7 +176,7 @@ export class OrderDetailComponent implements OnInit {
         };
         this.orderService.shipOrder(obj).subscribe(result => {
           if (result.status === 'OK') {
-            this.toastr.success('Đơn hàng bắt đầu được giao!', 'Thông báo', {
+            this.toastr.success('Đơn hàng bắt đầu được giao', 'Thông báo', {
               positionClass: 'toast-top-right'
             });
           } else {
@@ -246,13 +245,14 @@ export class OrderDetailComponent implements OnInit {
 
   sendEmailFromCustomer() {
     Swal.fire({
-      title: 'Bạn có muốn gửi Email đến khách hàng ?',
+      title: 'Bạn có muốn gửi Email đến khách hàng',
       text: '',
       icon: 'info',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Đồng ý'
+      confirmButtonText: 'Đồng ý',
+      cancelButtonText: 'Thoát'
     }).then((result) => {
       if (result.isConfirmed) {
         this.orderDetailService.sendEmailFromCustomer(this.data.data).subscribe(res => {

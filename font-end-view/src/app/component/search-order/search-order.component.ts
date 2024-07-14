@@ -15,12 +15,16 @@ export class SearchOrderComponent implements OnInit {
   order: any = null;
   rowData = [];
   columnDefs: any;
-  gridApi;
-  gridColumnApi;
+  gridApi: any;
+  gridColumnApi: any;
   address = [];
 
-  constructor(public utilService: UtilService, private cdr: ChangeDetectorRef, private orderService: OrderService,
-    private toaService: ToastrService) {
+  constructor(
+    public utilService: UtilService,
+    private cdr: ChangeDetectorRef,
+    private orderService: OrderService,
+    private toaService: ToastrService
+  ) {
 
     this.rowData = [];
     this.columnDefs = [
@@ -28,9 +32,9 @@ export class SearchOrderComponent implements OnInit {
         headerName: 'STT',
         field: '',
         suppressMovable: true,
-        minWidth: 60,
+        // minWidth: 60,
         maxWidth: 60,
-        valueGetter: param => {
+        valueGetter: (param: { node: { rowIndex: number; }; }) => {
           return param.node.rowIndex + 1;
         }
       },
@@ -38,18 +42,22 @@ export class SearchOrderComponent implements OnInit {
         headerName: 'Tên Sản phẩm',
         field: '',
         suppressMovable: true,
-        cellRenderer: params => {
-          return `<div>
-        <img width="60px" height="60px" src="${params.data.productDetailDTO.productDTO.imagesDTOList[0].imageName}" alt="">
-        <span class="productName" title="${params.data.productDetailDTO.productDTO.name}">${params.data.productDetailDTO.productDTO.name}</span>
-</div>`;
+        flex: 1,
+        cellRenderer: (params: { data: { productDetailDTO: { productDTO: { imageURL: any; name: any; }; }; }; }) => {
+          return `
+          <div>
+            <img width="60px" height="60px" src="${params.data.productDetailDTO.productDTO.imageURL}">
+            <span class="productName" title="${params.data.productDetailDTO.productDTO.name}">${params.data.productDetailDTO.productDTO.name}</span>
+          </div>
+        `;
         },
       },
       {
         headerName: 'Phân Loại',
         field: '',
         suppressMovable: true,
-        cellRenderer: params => {
+        flex: 1,
+        cellRenderer: (params: { data: { productDetailDTO: { colorDTO: { name: any; }; sizeDTO: { sizeNumber: any; }; }; }; }) => {
           return `<div style="height: 30px"><span style="font-weight: bold">Color:</span> ${params.data.productDetailDTO.colorDTO.name}</div>
             <div style="height: 30px"><span style="font-weight: bold">Size: </span> ${params.data.productDetailDTO.sizeDTO.sizeNumber}</div>`;
         }
@@ -58,7 +66,8 @@ export class SearchOrderComponent implements OnInit {
         headerName: 'Số lượng',
         field: 'quantity',
         suppressMovable: true,
-        valueFormatter: params => {
+        flex: 1,
+        valueFormatter: (params: { data: { quantity: any; }; }) => {
           return padZero(params.data.quantity);
         },
       },
@@ -66,7 +75,8 @@ export class SearchOrderComponent implements OnInit {
         headerName: 'Giá tiền',
         field: 'price',
         suppressMovable: true,
-        valueFormatter: params => {
+        flex: 1,
+        valueFormatter: (params: { data: { price: number; }; }) => {
           return formatMoney(params.data.price);
         },
       },
@@ -74,7 +84,8 @@ export class SearchOrderComponent implements OnInit {
         headerName: 'Thành tiền',
         field: '',
         suppressMovable: true,
-        valueFormatter: params => {
+        flex: 1,
+        valueFormatter: (params: { data: { price: number; quantity: number; }; }) => {
           return formatMoney(params.data.price * params.data.quantity);
         },
       }
@@ -100,6 +111,7 @@ export class SearchOrderComponent implements OnInit {
     this.orderService.traCuuOrder({ code: this.codeOrderSearch }).subscribe(res => {
       if (res.status === 'OK') {
         this.order = res.data;
+        // console.log(this.order)
         this.address = res.data.addressReceived.split(',');
         this.rowData = res.data.orderDetailDTOList;
         this.toaService.success('Tra cứu đơn hàng thành công');

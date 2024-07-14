@@ -15,6 +15,7 @@ export class OrderService {
   getAllOrderAdmin(obj: { code: any; dateFrom: string; dateTo: string; status: number; }): Observable<any> {
     return this.http.post(`${apiURL}get-all-order`, obj);
   }
+
   totalStatusOrderAdmin(obj): Observable<any> {
     return this.http.post(`${apiURL}total-status-order`, obj);
   }

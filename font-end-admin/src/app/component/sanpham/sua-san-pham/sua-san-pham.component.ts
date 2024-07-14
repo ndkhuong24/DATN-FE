@@ -92,6 +92,8 @@ export class SuaSanPhamComponent implements OnInit {
     this.getAllSize();
     this.productDetail = this.products.productDetailAdminDTOList;
     this.zenProductDetail1();
+
+    console.log(this.products)
   }
 
   zenProductDetail1() {

@@ -1,10 +1,10 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {ColDef} from 'ag-grid-community';
-import {formatDate, formatDateTime, formatMoney} from '../../util/util';
-import {OrderService} from '../../service/order.service';
-import {ActionOrderComponent} from './action-order/action-order.component';
-import {OrderDetailComponent} from './order-detail/order-detail.component';
-import {MatDialog} from '@angular/material/dialog';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ColDef } from 'ag-grid-community';
+import { formatDate, formatDateTime, formatMoney } from '../../util/util';
+import { OrderService } from '../../service/order.service';
+import { ActionOrderComponent } from './action-order/action-order.component';
+import { OrderDetailComponent } from './order-detail/order-detail.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-order',
@@ -15,10 +15,10 @@ export class OrderComponent implements OnInit {
   active = 1;
   listStatus: any = [];
   status = 6;
-  rowData;
+  rowData: any[];
   columnDefs = [];
-  gridApi;
-  gridColumnApi;
+  gridApi: any;
+  gridColumnApi: any;
 
   user: any = {
     id: null,
@@ -27,6 +27,7 @@ export class OrderComponent implements OnInit {
     phone: '',
     email: '',
   };
+
   modelSearch: any = {
     code: null,
     dateFrom: null,
@@ -36,18 +37,18 @@ export class OrderComponent implements OnInit {
   totalStatus: any;
 
   constructor(
-    private matDialog: MatDialog, 
-    private orderService: OrderService, 
+    private matDialog: MatDialog,
+    private orderService: OrderService,
     private cdr: ChangeDetectorRef
   ) {
     const lst =
       [
-        {name: 'Tất cả', id: 6},
-        {name: 'Chờ xác nhận', id: 0},
-        {name: 'Chờ xử lý', id: 1},
-        {name: 'Đang giao hàng', id: 2},
-        {name: 'Hoàn thành', id: 3},
-        {name: 'Đã Hủy', id: 4},
+        { name: 'Tất cả', id: 6 },
+        { name: 'Chờ xác nhận', id: 0 },
+        { name: 'Chờ xử lý', id: 1 },
+        { name: 'Đang giao hàng', id: 2 },
+        { name: 'Hoàn thành', id: 3 },
+        { name: 'Đã Hủy', id: 4 },
       ];
 
     this.listStatus = lst;
@@ -74,12 +75,10 @@ export class OrderComponent implements OnInit {
           'align-items': 'center',
           color: '#36f',
           display: 'flex',
-          // top: '12px',
           'white-space': 'nowrap',
           'text-overflow': 'ellipsis',
           overflow: 'hidden',
           cursor: 'pointer',
-          // textAlign: 'center',
           'justify-content': 'center',
         },
         onCellClicked: (params: { data: any; }) => {
@@ -236,7 +235,6 @@ export class OrderComponent implements OnInit {
     };
 
     this.orderService.getAllOrderAdmin(obj).subscribe(res => {
-      console.log(res)
       this.rowData = res;
     });
 

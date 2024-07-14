@@ -12,8 +12,9 @@ export class EmailService {
   }
 
   sendEmail(obj): Observable<any> {
-    return this.http.post(`http://localhost:8081/view/api/send-email-completeOrder`, obj);
+    return this.http.post(`${apiURL}send-email-completeOrder`, obj);
   }
+
   sendEmailNotLogin(obj): Observable<any> {
     return this.http.post(`${apiURL}send-email-completeOrder/not-login`, obj);
   }
