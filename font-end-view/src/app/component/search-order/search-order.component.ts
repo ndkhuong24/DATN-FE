@@ -3,6 +3,11 @@ import { UtilService } from '../../util/util.service';
 import { OrderService } from '../../service/order.service';
 import { formatMoney, padZero } from '../../util/util';
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { NoteOrderComponent } from '../order/note-order/note-order.component';
+import { OrderDetailService } from 'src/app/service/order-detail.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-search-order',
@@ -10,7 +15,6 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./search-order.component.css']
 })
 export class SearchOrderComponent implements OnInit {
-
   codeOrderSearch: any;
   order: any = null;
   rowData = [];
@@ -18,12 +22,16 @@ export class SearchOrderComponent implements OnInit {
   gridApi: any;
   gridColumnApi: any;
   address = [];
+  noteOrder: string = null;
 
   constructor(
+    private route: ActivatedRoute,
     public utilService: UtilService,
     private cdr: ChangeDetectorRef,
     private orderService: OrderService,
-    private toaService: ToastrService
+    private toaService: ToastrService,
+    private toastr: ToastrService,
+    private matDiaLog: MatDialog,
   ) {
 
     this.rowData = [];
@@ -32,7 +40,6 @@ export class SearchOrderComponent implements OnInit {
         headerName: 'STT',
         field: '',
         suppressMovable: true,
-        // minWidth: 60,
         maxWidth: 60,
         valueGetter: (param: { node: { rowIndex: number; }; }) => {
           return param.node.rowIndex + 1;
@@ -93,6 +100,12 @@ export class SearchOrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.codeOrderSearch = params['code'] || null;
+      if (this.codeOrderSearch) {
+        this.searchOrder();
+      }
+    });
   }
 
   onGridReady(params: any) {
@@ -111,7 +124,6 @@ export class SearchOrderComponent implements OnInit {
     this.orderService.traCuuOrder({ code: this.codeOrderSearch }).subscribe(res => {
       if (res.status === 'OK') {
         this.order = res.data;
-        // console.log(this.order)
         this.address = res.data.addressReceived.split(',');
         this.rowData = res.data.orderDetailDTOList;
         this.toaService.success('Tra cứu đơn hàng thành công');
@@ -123,5 +135,35 @@ export class SearchOrderComponent implements OnInit {
         this.toaService.error('Tra cứu đơn hàng thất bại');
       }
     );
+  }
+
+  xacNhan() {
+    console.log(this.order)
+    this.matDiaLog.open(NoteOrderComponent, {
+      width: '90vh',
+      height: '32vh',
+    }).afterClosed().subscribe(res => {
+      if (res.event === 'close-note') {
+        this.noteOrder = res.data.note;
+        const obj = {
+          id: this.order.id,
+          idStaff: this.order.idStaff,
+          note: res.data.note
+        };
+
+        this.orderService.completeOrder(obj).subscribe(result => {
+          if (result.status === 'OK') {
+            Swal.fire('Đã nhận hàng thành công');
+            this.ngOnInit();
+          } else {
+            this.toastr.error(result.message, 'Thông báo', {
+              positionClass: 'toast-top-right'
+            });
+          }
+          this.cdr.detectChanges();
+        });
+
+      }
+    });
   }
 }

@@ -47,6 +47,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { SanphamComponent } from './component/sanpham/sanpham.component';
 import { MatTreeModule } from '@angular/material/tree';
+import { VnpayReturnComponent } from './component/checkout/vnpay-return/vnpay-return.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { MatTreeModule } from '@angular/material/tree';
     NoteOrderComponent,
     CustomCarouselComponent,
     SearchOrderComponent,
-    SanphamComponent
+    SanphamComponent,
+    VnpayReturnComponent
   ],
   imports: [
     BrowserModule,

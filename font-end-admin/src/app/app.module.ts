@@ -95,7 +95,6 @@ import { UpdateStaffComponent } from './component/staff/update-staff/update-staf
 import { DetailStaffComponent } from './component/staff/detail-staff/detail-staff.component';
 import { OrderSalesDetailComponent } from './component/order-sales-counter/order-sales-detail/order-sales-detail.component';
 import { CommonModule, DatePipe } from '@angular/common';
-
 import { ActionStaffComponent } from './component/staff/action-staff/action-staff.component';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';

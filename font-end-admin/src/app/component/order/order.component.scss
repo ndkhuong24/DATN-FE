@@ -1,14 +1,16 @@
-.title{
+.title {
   font-weight: normal;
   font-size: 30px;
   margin-left: 50px;
 }
-.btn-add-order{
+
+.btn-add-order {
   margin-left: 10px;
   height: 40px;
   border: #bbbec5 solid 1px;
 }
-.col-sm-2{
+
+.col-sm-2 {
   margin-left: 5px;
 }
 
@@ -32,11 +34,12 @@
     //color: #897AE3;
   }
 }
+
 :host ::ng-deep {
 
-.ag-header-cell-label {
+  .ag-header-cell-label {
 
-  display: flex;
-  justify-content: center;
-}
+    display: flex;
+    justify-content: center;
+  }
 }

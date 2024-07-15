@@ -7,6 +7,7 @@ import { apiURL } from '../config/apiURL';
   providedIn: 'root'
 })
 export class OrderService {
+  
 
   constructor(private http: HttpClient) { }
 
@@ -28,5 +29,9 @@ export class OrderService {
   
   traCuuOrder(obj): Observable<any> {
     return this.http.post(`${apiURL}tra-cuu-order`, obj);
+  }
+
+  completeOrder(obj: { id: any; idStaff: any; note: any; }): Observable<any> {
+    return this.http.post(`${apiURL}complete-order`, obj);
   }
 }

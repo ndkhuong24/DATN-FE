@@ -122,7 +122,7 @@ export class OrderComponent implements OnInit {
           overflow: 'hidden',
           'justify-content': 'center',
         },
-        valueFormatter: params => {
+        valueFormatter: (params: { data: { idCustomer: null; customerAdminDTO: { fullname: any; }; }; }) => {
           return params.data.idCustomer === null ? 'Khách ẩn danh' : params.data.customerAdminDTO.fullname;
         },
       },
@@ -130,7 +130,7 @@ export class OrderComponent implements OnInit {
         headerName: 'Thanh Toán',
         sortable: true,
         field: 'statusPayment',
-        valueFormatter: params => {
+        valueFormatter: (params: { data: { statusPayment: number; }; }) => {
           return params.data.statusPayment === 0 ? 'Đã thanh toán' : 'Chưa thanh toán';
         },
         cellStyle: {
@@ -169,7 +169,7 @@ export class OrderComponent implements OnInit {
         suppressMovable: true,
         filter: true,
         sortable: true,
-        valueGetter: (params) => {
+        valueGetter: (params: { data: { status: any; }; }) => {
           const status = params.data.status;
           switch (status) {
             case 0:
@@ -259,7 +259,7 @@ export class OrderComponent implements OnInit {
     this.getAllOrder();
   }
 
-  openXemChiTiet(dataOrder) {
+  openXemChiTiet(dataOrder: any) {
     this.matDialog.open(OrderDetailComponent, {
       width: '150vh',
       height: '90vh',

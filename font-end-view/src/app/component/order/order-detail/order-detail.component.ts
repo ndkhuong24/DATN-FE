@@ -63,7 +63,7 @@ export class OrderDetailComponent implements OnInit {
         headerName: 'Số lượng',
         field: 'quantity',
         suppressMovable: true,
-        valueFormatter: params => {
+        valueFormatter: (params: { data: { quantity: any; }; }) => {
           return padZero(params.data.quantity);
         },
       },
@@ -71,7 +71,7 @@ export class OrderDetailComponent implements OnInit {
         headerName: 'Giá tiền',
         field: 'price',
         suppressMovable: true,
-        valueFormatter: params => {
+        valueFormatter: (params: { data: { price: number; }; }) => {
           return formatMoney(params.data.price);
         },
       },
@@ -79,7 +79,7 @@ export class OrderDetailComponent implements OnInit {
         headerName: 'Thành tiền',
         field: '',
         suppressMovable: true,
-        valueFormatter: params => {
+        valueFormatter: (params: { data: { price: number; quantity: number; }; }) => {
           return formatMoney(params.data.price * params.data.quantity);
         },
       }
@@ -88,8 +88,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log(this.data);
-    console.log(this.data.data);
+    // console.log(this.data.data);
     this.orderDetailService.getAllOrderDetailByOrder(this.data.data.id).subscribe(res => {
       this.rowData = res.orderDetail;
       this.listOrderHistoryAdmin = res.orderHistoryAdmin;
@@ -115,7 +114,7 @@ export class OrderDetailComponent implements OnInit {
           note: res.data.note
         };
         this.orderService.cancelOrderView(obj).subscribe(res => {
-          this.toastr.success('Hủy đơn hàng Thanh Cong!', 'Thông báo', {
+          this.toastr.success('Hủy đơn hàng thành công', 'Thông báo', {
             positionClass: 'toast-top-right'
           });
           this.cdr.detectChanges();

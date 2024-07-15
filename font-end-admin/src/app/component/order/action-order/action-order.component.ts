@@ -1,9 +1,9 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {ICellRendererAngularComp} from 'ag-grid-angular';
-import {ICellRendererParams} from 'ag-grid-community';
-import {OrderDetailComponent} from '../order-detail/order-detail.component';
-import {MatDialog} from '@angular/material/dialog';
-import {OrderService} from '../../../service/order.service';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ICellRendererAngularComp } from 'ag-grid-angular';
+import { ICellRendererParams } from 'ag-grid-community';
+import { OrderDetailComponent } from '../order-detail/order-detail.component';
+import { MatDialog } from '@angular/material/dialog';
+import { OrderService } from '../../../service/order.service';
 
 @Component({
   selector: 'app-action-order',
@@ -29,10 +29,10 @@ export class ActionOrderComponent implements OnInit, ICellRendererAngularComp {
   }
 
   openXemChiTiet() {
-      this.matDialog.open(OrderDetailComponent, {
-        width: '150vh',
-        data: this.data
-      });
+    this.matDialog.open(OrderDetailComponent, {
+      width: '150vh',
+      data: this.data
+    });
   }
 
   cancelOrder() {

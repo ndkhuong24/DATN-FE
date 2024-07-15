@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { NoteOrderComponent } from '../note-order/note-order.component';
 import { UtilService } from '../../../util/util.service';
+import { ok } from 'assert';
 
 @Component({
   selector: 'app-order-detail',
@@ -14,7 +15,6 @@ import { UtilService } from '../../../util/util.service';
   styleUrls: ['./order-detail.component.scss']
 })
 export class OrderDetailComponent implements OnInit {
-
   rowData: any;
   columnDefs: any;
   gridApi: any;
@@ -25,9 +25,16 @@ export class OrderDetailComponent implements OnInit {
   listOrderHistoryAdmin: any = [];
   listOrderHistoryView: any = [];
 
-  constructor(private orderDetailService: OrderDetailService, public matRef: MatDialogRef<OrderDetailComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private orderService: OrderService, private cdr: ChangeDetectorRef, private toastr: ToastrService,
-    private matDiaLog: MatDialog, public utilService: UtilService) {
+  constructor(
+    private orderDetailService: OrderDetailService,
+    public matRef: MatDialogRef<OrderDetailComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private orderService: OrderService,
+    private cdr: ChangeDetectorRef,
+    private toastr: ToastrService,
+    private matDiaLog: MatDialog,
+    public utilService: UtilService
+  ) {
     this.rowData = [];
     this.columnDefs = [
       {
@@ -65,7 +72,7 @@ export class OrderDetailComponent implements OnInit {
         headerName: 'Số lượng',
         field: 'quantity',
         suppressMovable: true,
-        valueFormatter: params => {
+        valueFormatter: (params: { data: { quantity: any; }; }) => {
           return padZero(params.data.quantity);
         },
       },
@@ -106,19 +113,45 @@ export class OrderDetailComponent implements OnInit {
   cancelOrder() {
     this.matDiaLog.open(NoteOrderComponent, {
       width: '90vh',
-      height: '38vh',
+      height: '32vh',
     }).afterClosed().subscribe(res => {
       if (res.event === 'close-note') {
         this.noteOrder = res.data.note;
+
         const obj = {
           id: this.data.data.id,
           idStaff: this.data.staff.id,
           note: res.data.note
         };
+
         this.orderService.cancelOrder(obj).subscribe(result => {
           if (result.status === 'OK') {
             this.toastr.success('Hủy đơn hàng thành công', 'Thông báo', {
               positionClass: 'toast-top-right'
+            });
+
+            const orderCurrent = this.data.data;
+            orderCurrent.status = 4;
+
+            Swal.fire({
+              title: 'Bạn có muốn gửi Email thông báo đến khách hàng',
+              text: '',
+              icon: 'info',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Đồng ý',
+              cancelButtonText: 'Thoát'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.orderDetailService.sendEmailFromCustomer(orderCurrent).subscribe(res => {
+                  if (res.success) {
+                    this.toastr.success('Gửi email thành công');
+                  } else {
+                    this.toastr.error('Gửi email không thành công');
+                  }
+                });
+              }
             });
           } else {
             this.toastr.error(result.message, 'Thông báo', {
@@ -128,6 +161,7 @@ export class OrderDetailComponent implements OnInit {
           this.cdr.detectChanges();
           this.matRef.close('update-order');
         });
+
       }
     });
   }
@@ -135,19 +169,45 @@ export class OrderDetailComponent implements OnInit {
   xacNhanOrder() {
     this.matDiaLog.open(NoteOrderComponent, {
       width: '90vh',
-      height: '38vh',
+      height: '32vh',
     }).afterClosed().subscribe(res => {
       if (res.event === 'close-note') {
         this.noteOrder = res.data.note;
+
         const obj = {
           id: this.data.data.id,
           idStaff: this.data.staff.id,
           note: res.data.note
         };
+
         this.orderService.progressingOrder(obj).subscribe(result => {
           if (result.status === 'OK') {
-            this.toastr.success('Xác nhận thành công!', 'Thông báo', {
+            this.toastr.success('Xác nhận thành công', 'Thông báo', {
               positionClass: 'toast-top-right'
+            });
+
+            const orderCurrent = this.data.data;
+            orderCurrent.status = 1;
+
+            Swal.fire({
+              title: 'Bạn có muốn gửi Email thông báo đến khách hàng',
+              text: '',
+              icon: 'info',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Đồng ý',
+              cancelButtonText: 'Thoát'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.orderDetailService.sendEmailFromCustomer(orderCurrent).subscribe(res => {
+                  if (res.success) {
+                    this.toastr.success('Gửi email thành công');
+                  } else {
+                    this.toastr.error('Gửi email không thành công');
+                  }
+                });
+              }
             });
           } else {
             this.toastr.error(result.message, 'Thông báo', {
@@ -158,6 +218,7 @@ export class OrderDetailComponent implements OnInit {
           this.cdr.detectChanges();
           this.matRef.close('update-order');
         });
+
       }
     });
   }
@@ -165,7 +226,7 @@ export class OrderDetailComponent implements OnInit {
   giaoHangOrder() {
     this.matDiaLog.open(NoteOrderComponent, {
       width: '90vh',
-      height: '38vh',
+      height: '32vh',
     }).afterClosed().subscribe(res => {
       if (res.event === 'close-note') {
         this.noteOrder = res.data.note;
@@ -174,10 +235,35 @@ export class OrderDetailComponent implements OnInit {
           idStaff: this.data.staff.id,
           note: res.data.note
         };
+
         this.orderService.shipOrder(obj).subscribe(result => {
           if (result.status === 'OK') {
             this.toastr.success('Đơn hàng bắt đầu được giao', 'Thông báo', {
               positionClass: 'toast-top-right'
+            });
+
+            const orderCurrent = this.data.data;
+            orderCurrent.status = 2;
+
+            Swal.fire({
+              title: 'Bạn có muốn gửi Email thông báo đến khách hàng',
+              text: '',
+              icon: 'info',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Đồng ý',
+              cancelButtonText: 'Thoát'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.orderDetailService.sendEmailFromCustomer(orderCurrent).subscribe(res => {
+                  if (res.success) {
+                    this.toastr.success('Gửi email thành công');
+                  } else {
+                    this.toastr.error('Gửi email không thành công');
+                  }
+                });
+              }
             });
           } else {
             this.toastr.error(result.message, 'Thông báo', {
@@ -194,7 +280,7 @@ export class OrderDetailComponent implements OnInit {
   hoanThanhOrder() {
     this.matDiaLog.open(NoteOrderComponent, {
       width: '90vh',
-      height: '38vh',
+      height: '32vh',
     }).afterClosed().subscribe(res => {
       if (res.event === 'close-note') {
         this.noteOrder = res.data.note;
@@ -205,7 +291,7 @@ export class OrderDetailComponent implements OnInit {
         };
         this.orderService.completeOrder(obj).subscribe(result => {
           if (result.status === 'OK') {
-            this.toastr.success('Đơn hàng đã hoàn thành!', 'Thông báo', {
+            this.toastr.success('Đơn hàng đã hoàn thành', 'Thông báo', {
               positionClass: 'toast-top-right'
             });
           } else {

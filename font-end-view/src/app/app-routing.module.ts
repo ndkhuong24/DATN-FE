@@ -16,6 +16,7 @@ import { ResetPasswordComponent } from './component/reset-password/reset-passwor
 import { InfoUserComponent } from './component/info-user/info-user.component';
 import { OrderNotLoginComponent } from './component/order-not-login/order-not-login.component';
 import { SearchOrderComponent } from './component/search-order/search-order.component';
+import { VnpayReturnComponent } from './component/checkout/vnpay-return/vnpay-return.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: 'reset-pass', component: ResetPasswordComponent },
   { path: 'user-profile', component: InfoUserComponent, canActivate: [AuthService] },
   { path: 'tra-cuu-don-hang', component: SearchOrderComponent },
+  { path: 'cart/checkout/vnpay-payment', component: VnpayReturnComponent },
 ];
 
 @NgModule({

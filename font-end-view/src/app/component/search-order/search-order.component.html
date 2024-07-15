@@ -3,8 +3,7 @@
     <h2>Tra cứu đơn hàng</h2>
   </div>
   <div class="row">
-    <div style="display: flex;justify-content: center">
-
+    <div style="display: flex; justify-content: center">
       <mat-form-field appearance="outline" style="width: 550px">
         <mat-label>Mã đơn hàng</mat-label>
         <input matInput [(ngModel)]="codeOrderSearch" type="text">
@@ -27,7 +26,8 @@
             <p>Ngày tạo: {{order?.createDate ? utilService.formatDateTime(order?.createDate): '...'}}</p>
             <p>Tổng tiền: {{utilService.formatMoney(order?.totalPrice)}}</p>
             <p>Tiền ship: {{utilService.formatMoney(order?.shipPrice)}}</p>
-            <p>Tiền giảm giá: {{utilService.formatMoney(order?.totalPayment - order?.shipPrice - order?.totalPrice)}}</p>
+            <p>Tiền giảm giá: {{utilService.formatMoney(order?.totalPayment - order?.shipPrice - order?.totalPrice)}}
+            </p>
             <p>Tổng tiền thanh toán: {{utilService.formatMoney(order?.totalPayment)}}</p>
             <p>Hình thức thanh toán: {{order?.paymentType === 0 ? 'Thanh toán khi nhận hàng' : 'Thanh toán online'}}</p>
             <p>Trạng thái thanh toán: {{order?.statusPayment === 0 ? 'Đã thanh toán' : 'Chưa thanh toán'}} </p>
@@ -59,5 +59,12 @@
       </div>
     </div>
     <br>
+    <!-- <div class="button-container" style="display: flex; justify-content: center;" *ngIf="order?.status !== 3">
+      <button style="margin-bottom: 10px;" class="btn btn-success" (click)="xacNhan();">Đã nhận hàng</button>
+    </div> -->
+    <div class="button-container" style="display: flex; justify-content: center;" *ngIf="order?.status === 2">
+      <button style="margin-bottom: 10px;" class="btn btn-success" (click)="xacNhan();">Đã nhận hàng</button>
+    </div>
+    
   </div>
 </div>

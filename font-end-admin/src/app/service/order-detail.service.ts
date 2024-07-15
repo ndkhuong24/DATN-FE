@@ -14,9 +14,11 @@ export class OrderDetailService {
   getAllOrderDetailByOrder(idOrder: number): Observable<any> {
     return this.http.get(`${apiURL}get-order-detail/by-order/${idOrder}`);
   }
+
   createDetailSales(orderDetail: OrderDetail): Observable<any> {
     return this.http.post('http://localhost:8081/sales-counter/api/create-order-detail', orderDetail);
   }
+  
   sendEmailFromCustomer(obj): Observable<any> {
     return this.http.post(`http://localhost:8081/view/api/send-email-from-customer`, obj);
   }

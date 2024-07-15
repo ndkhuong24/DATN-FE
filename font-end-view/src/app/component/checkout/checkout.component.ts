@@ -158,6 +158,7 @@ export class CheckoutComponent implements OnInit {
     const obj = {
       idCustomer: id
     };
+    
     this.addressService.getAddress(obj).subscribe(res => {
       this.address = res.data;
       const addressInfo = {
