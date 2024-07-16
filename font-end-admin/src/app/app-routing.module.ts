@@ -42,14 +42,20 @@ import { VnpayReturnComponent } from './component/sales-counter/vnpay-return/vnp
 
 const routes: Routes = [
   { path: 'sales-counter/vnpay-payment', component: VnpayReturnComponent },
+
   { path: '', redirectTo: 'thong-ke', pathMatch: 'full' },
+
   { path: 'admin/login', component: LoginComponent },
+
   { path: 'sign-up', component: SignUpComponent },
+
   { path: 'don-hang', component: HomeComponent, canActivate: [AuthGuard] },
+
   { path: 'order-list', component: OrderComponent, canActivate: [AuthGuard] },
   { path: 'order-processing', component: OderProcessingComponent, canActivate: [AuthGuard] },
   { path: 'order-sales-counter', component: OrderSalesCounterComponent, canActivate: [AuthGuard] },
   { path: 'order-detail', component: OrderDetailComponent , canActivate: [AuthGuard]},
+
   // { path: 'admin/creat-discount', component: CreatDiscountComponent, canActivate: [AuthGuard] },
   // { path: 'admin/discount', component: DiscountComponent, canActivate: [AuthGuard] },
   // { path: 'admin/discount/:id', component: DetailDiscountComponent, canActivate: [AuthGuard] },
@@ -66,8 +72,8 @@ const routes: Routes = [
   //     expectedRole: ['ADMIN']
   //   }
   // },
+  
   // {
-
   //   path: 'voucherFS', component: VoucherShipComponent, canActivate: [RoleGuardService],
   //   data: {
   //     expectedRole: ['ADMIN']
@@ -113,7 +119,6 @@ const routes: Routes = [
   //   }
   // },
 
-
   { path: 'degiay', component: DegiayComponent, canActivate: [AuthGuard] },
   // {
   //   path: 'degiay', component: DegiayComponent, canActivate: [RoleGuardService],
@@ -122,7 +127,7 @@ const routes: Routes = [
   //   }
   // },
 
-  { path: 'staff', component: ChatlieuComponent, canActivate: [AuthGuard] },
+  { path: 'staff', component: StaffComponent, canActivate: [AuthGuard] },
   // {
   //   path: 'staff', component: StaffComponent, canActivate: [RoleGuardService],
   //   data: {
@@ -159,5 +164,6 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
+
 export class AppRoutingModule {
 }

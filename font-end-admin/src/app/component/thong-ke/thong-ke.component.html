@@ -88,7 +88,7 @@
             <td>{{p?.productDTO.code}}</td>
             <td><img width="60px" height="60px" [src]="p?.productDTO.imageURL"></td>
             <td>{{p?.productDTO.name}}</td>
-            <td>Màu sắc: {{p?.colorDTO.code}} - Kích thước: {{p?.sizeDTO.sizeNumber}}</td>
+            <td>Màu sắc: {{p?.colorDTO.name}} - Kích thước: {{p?.sizeDTO.sizeNumber}}</td>
             <td>{{utilService.formatMoney(p?.price)}}</td>
             <td>{{utilService.padZero(p?.totalBestSeller)}}</td>
           </tr>

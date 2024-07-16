@@ -18,7 +18,6 @@ export class ChiTietComponent implements OnInit {
     rowHeight = 40;
     productDetail: any;
 
-
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
         private productDetailService: ProductdetailService,
@@ -27,7 +26,7 @@ export class ChiTietComponent implements OnInit {
         this.columnDefs = [
             {
                 headerName: 'Màu sắc',
-                field: 'colorDTO.code',
+                field: 'colorDTO.name',
                 sortable: true,
                 filter: true,
                 flex: 1,

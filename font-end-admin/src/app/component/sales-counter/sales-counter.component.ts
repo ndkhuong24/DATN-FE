@@ -711,7 +711,7 @@ export class SalesCounterComponent implements OnInit {
         orderHTML += `<td>${product.productDTO.code}</td>`;
         orderHTML += `<td>${product.productDTO.name}</td>`;
         orderHTML += `<td>${product.sizeDTO.sizeNumber}</td>`;
-        orderHTML += `<td>${product.colorDTO.code}</td>`;
+        orderHTML += `<td>${product.colorDTO.name}</td>`;
         orderHTML += `<td>${product.quantityInOrder}</td>`;
         orderHTML += `<td>${product.price}</td>`;
         orderHTML += `<td>${product.quantityInOrder * product.price}</td>`;

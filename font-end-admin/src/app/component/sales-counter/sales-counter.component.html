@@ -15,7 +15,7 @@
             <mat-cell *matCellDef="let product"> {{ product?.productDTO?.name }} </mat-cell>
           </ng-container>
           <ng-container matColumnDef="color">
-            <mat-cell *matCellDef="let product"> {{ product?.colorDTO?.code }} </mat-cell>
+            <mat-cell *matCellDef="let product"> {{ product?.colorDTO?.name }} </mat-cell>
           </ng-container>
           <ng-container matColumnDef="size">
             <mat-cell *matCellDef="let product"> {{ product?.sizeDTO?.sizeNumber }} </mat-cell>
@@ -76,7 +76,7 @@
             <td><img width="60px" height="60px" src="{{ product?.productDTO?.imageURL }}"></td>
             <td>{{product?.productDTO?.name}}</td>
             <td>{{product?.sizeDTO?.sizeNumber}}</td>
-            <td>{{product?.colorDTO?.code}}</td>
+            <td>{{product?.colorDTO?.name}}</td>
             <td><input type="number" min="1" [max]="product.quantity" class="quantity" name="quantity" [(ngModel)]="product.quantityInOrder"
               (ngModelChange)="updateQuantityInOrder(product, $event, i)" [ngModelOptions]="{standalone: true}"></td>
             <!-- <td><input type="number" min="1" class="quantity" name="quantity" [(ngModel)]="product.quantityInOrder"

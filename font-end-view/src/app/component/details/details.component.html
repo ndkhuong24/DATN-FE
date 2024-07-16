@@ -44,7 +44,7 @@
             <div *ngFor="let color of listColor">
               <input class="custom-radio" type="radio" name="color" [id]="'color' + color.id" [value]="color.id"
                 [(ngModel)]="colorId" [disabled]="color.disabled" (change)="onColorChange(color)">
-              <label class="custom-radio-label" [for]="'color' + color.id">{{ color.code }}</label>
+              <label class="custom-radio-label" [for]="'color' + color.id">{{ color.name }}</label>
             </div>
           </div>
         </div>

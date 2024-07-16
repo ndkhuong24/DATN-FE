@@ -56,7 +56,7 @@ export class DegiayComponent implements OnInit {
         field: 'description',
         sortable: true,
         filter: true,
-        flex: 2,
+        flex: 1,
       },
       {
         headerName: 'Trạng thái',
