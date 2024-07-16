@@ -29,9 +29,25 @@ export class SidebarComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  phanQuyen(): void {
+  phanQuyenStaff(): void {
     if (this.role === 'ADMIN') {
       this.router.navigate(['/staff']);
+    } else {
+      this.toastr.error('Bạn không có quyền truy cập', 'Lỗi');
+    }
+  }
+
+  phanQuyenVoucherFreeShip(): void {
+    if (this.role === 'ADMIN') {
+      this.router.navigate(['/voucherFS']);
+    } else {
+      this.toastr.error('Bạn không có quyền truy cập', 'Lỗi');
+    }
+  }
+
+  phanQuyenVoucher(): void {
+    if (this.role === 'ADMIN') {
+      this.router.navigate(['/voucher']);
     } else {
       this.toastr.error('Bạn không có quyền truy cập', 'Lỗi');
     }

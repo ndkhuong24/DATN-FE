@@ -32,8 +32,10 @@ export class SuaSanPhamComponent implements OnInit {
     idMaterial: null,
     description: null,
     status: null,
-    imageList: null,
+    // imageList: null,
   };
+
+  imageList: File;
 
   category: CategoryInterface[] = [];
   brand: BrandInterface[] = [];
@@ -92,8 +94,6 @@ export class SuaSanPhamComponent implements OnInit {
     this.getAllSize();
     this.productDetail = this.products.productDetailAdminDTOList;
     this.zenProductDetail1();
-
-    console.log(this.products)
   }
 
   zenProductDetail1() {
@@ -128,7 +128,8 @@ export class SuaSanPhamComponent implements OnInit {
   }
 
   OnChangeFile(event: any) {
-    this.product.imageList = event.target.files[0];
+    this.imageList = event.target.files[0];
+    // console.log(this.imageList)
   }
 
   getALLBrand() {
@@ -215,7 +216,7 @@ export class SuaSanPhamComponent implements OnInit {
       cancelButtonText: 'Thoát',
     }).then((result1) => {
       if (result1.isConfirmed) {
-        if (this.product.imageList === null) {
+        if (this.imageList === null) {
           const product = {
             code: this.product.code,
             name: this.product.name,
@@ -230,22 +231,17 @@ export class SuaSanPhamComponent implements OnInit {
 
           this.productService.UpdateProduct(id, product).subscribe(
             result => {
-              console.log('product add success', result);
               this.dialogRef.close('saveProduct');
             },
             error => {
               console.error('product add error', error);
             }
           );
-          Swal.fire(
-            'Sửa',
-            'Sửa thành công',
-            'success'
-          );
+          Swal.fire('Sửa', 'Sửa thành công', 'success');
         } else {
-          this.productService.updateImgProduct(this.product.imageList, id).subscribe((res) => {
-            if (res.status === 200) {
-              const product = {
+          this.productService.updateImgProduct(this.imageList, id).subscribe((res) => {
+            if (res.ok) {
+              const productCurrent = {
                 code: this.product.code,
                 name: this.product.name,
                 idBrand: this.product.idBrand,
@@ -254,23 +250,20 @@ export class SuaSanPhamComponent implements OnInit {
                 idCategory: this.product.idCategory,
                 description: this.product.description,
                 status: this.product.status,
+                productDetailAdminDTOList: this.productDetail,
               };
 
-              this.productService.UpdateProduct(id, product).subscribe(
+              this.productService.UpdateProduct(id, productCurrent).subscribe(
                 result => {
-                  console.log('product add success', result);
                   this.dialogRef.close('saveProduct');
                 },
                 error => {
                   console.error('product add error', error);
                 }
               );
-              Swal.fire(
-                'Sửa',
-                'Sửa thành công',
-                'success'
-              );
-            } else {
+              Swal.fire('Sửa', 'Sửa thành công', 'success');
+            }
+            else {
               Swal.fire('Error', 'Failed to update image', 'error');
             }
           })

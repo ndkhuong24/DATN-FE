@@ -22,6 +22,7 @@
                 </li>
               </ul>
             </li>
+
             <!-- Thuộc tính sản phẩm -->
             <li class="nav-item dropdown">
               <a class="dropdown-toggle list-group-item list-group-item-action bg-transparent second-text fw-bold"
@@ -63,6 +64,7 @@
                 </li>
               </ul>
             </li>
+
             <!-- Khuyến Mại -->
             <li class="nav-item dropdown">
               <a class="dropdown-toggle list-group-item list-group-item-action bg-transparent second-text fw-bold"
@@ -76,45 +78,26 @@
                 </li> -->
                 <li>
                   <a class="dropdown-item list-group-item list-group-item-action bg-transparent second-text"
-                    href="/voucher">Voucher</a>
+                  (click)="phanQuyenVoucher()">Voucher</a>
+                  <!-- <a class="dropdown-item list-group-item list-group-item-action bg-transparent second-text"
+                    href="/voucher">Voucher</a> -->
                 </li>
                 <li>
                   <a class="dropdown-item list-group-item list-group-item-action bg-transparent second-text"
-                    href="/voucherFS">Voucher FreeShip</a>
+                  (click)="phanQuyenVoucherFreeShip()">Voucher FreeShip</a>
+                  <!-- <a class="dropdown-item list-group-item list-group-item-action bg-transparent second-text"
+                    href="/voucherFS">Voucher FreeShip</a> -->
                 </li>
               </ul>
             </li>
-            <!-- Loại Sản Phẩm -->
-            <!-- <li class="nav-item dropdown">
-              <a class="dropdown-toggle list-group-item list-group-item-action bg-transparent second-text fw-bold"
-                href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Loại Sản Phẩm
-              </a>
-              <ul class="dropdown-menu" style="border: none">
-                <li>
-                  <a class="dropdown-item list-group-item list-group-item-action bg-transparent second-text"
-                    href="/thuonghieu">Thương Hiệu</a>
-                </li>
-                <li>
-                  <a class="dropdown-item list-group-item list-group-item-action bg-transparent second-text"
-                    href="/admin/danh-muc">Danh Mục</a>
-                </li>
-                <li>
-                  <a class="dropdown-item list-group-item list-group-item-action bg-transparent second-text"
-                    href="/admin/san-pham">Sản phẩm</a>
-                </li>
-                <li>
-                  <a class="dropdown-item list-group-item list-group-item-action bg-transparent second-text"
-                    href="/admin/chi-tiet-san-pham">Chi tiết sản phẩm</a>
-                </li>
-              </ul>
-            </li> -->
+
             <!-- Báo Cáo Thông Kê -->
             <li class="nav-item">
               <a href="/thong-ke" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
                 Báo cáo thống kê
               </a>
             </li>
+
             <!-- Quản lý User -->
             <li class="nav-item dropdown">
               <a class="dropdown-toggle list-group-item list-group-item-action bg-transparent second-text fw-bold"
@@ -123,12 +106,13 @@
               </a>
               <ul class="dropdown-menu" style="border: none">
                 <li>
-                  <a class="btn dropdown-item list-group-item list-group-item-action bg-transparent second-text" (click)="phanQuyen()">Nhân Viên</a>
+                  <a class="btn dropdown-item list-group-item list-group-item-action bg-transparent second-text" (click)="phanQuyenStaff()">Nhân Viên</a>
                   <!-- <a class="dropdown-item list-group-item list-group-item-action bg-transparent second-text"
                     href="/staff">Nhân Viên</a> -->
                 </li>
               </ul>
             </li>
+
             <!-- Logout -->
             <li class="nav-item">
               <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"
