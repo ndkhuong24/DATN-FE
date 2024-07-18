@@ -14,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 export class LoginComponent implements OnInit {
   hide = true;
 
-  status = 'Dang nhap that bai';
+  status = 'Đăng nhập thất bại';
 
   form: any = {
     username: '',
@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
   };
 
   signFrom: SignForm;
+
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -32,7 +33,6 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.signFrom = new SignForm(this.form.username, this.form.password);
-    // console.log(this.signFrom);
     this.authService.signIn(this.signFrom).subscribe(
       (data) => {
         if (!data.token) {
@@ -47,9 +47,9 @@ export class LoginComponent implements OnInit {
       },
       (error) => {
         if (error.status === 400){
-          this.toastr.error('Mật khẩu sai ', 'Error');
+          this.toastr.error('Mật khẩu sai', 'Error');
         }else if (error.status === 401){
-          this.toastr.error('Không tìm thấy Tên tài khoản ', 'Error');
+          this.toastr.error('Không tìm thấy Tên tài khoản', 'Error');
         }
       }
     );

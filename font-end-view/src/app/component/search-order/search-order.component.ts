@@ -25,6 +25,7 @@ export class SearchOrderComponent implements OnInit {
   noteOrder: string = null;
 
   constructor(
+    // private SearchOrderComponent: SearchOrderComponent;
     private route: ActivatedRoute,
     public utilService: UtilService,
     private cdr: ChangeDetectorRef,
@@ -155,6 +156,7 @@ export class SearchOrderComponent implements OnInit {
           if (result.status === 'OK') {
             Swal.fire('Đã nhận hàng thành công');
             this.ngOnInit();
+            this.cdr.detectChanges();
           } else {
             this.toastr.error(result.message, 'Thông báo', {
               positionClass: 'toast-top-right'
@@ -162,7 +164,6 @@ export class SearchOrderComponent implements OnInit {
           }
           this.cdr.detectChanges();
         });
-
       }
     });
   }

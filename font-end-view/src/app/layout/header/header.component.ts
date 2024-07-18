@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { apiURL } from '../../config/apiURL';
 import { UsersDTO } from '../../component/model/UsersDTO';
 import { CartService } from '../../service/cart.service';
-import { Router } from '@angular/router';
 import { AuthJwtService } from '../../service/authentication/auth-jwt.service';
 
 @Component({
@@ -19,19 +17,12 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private cartService: CartService,
-    // private router: Router,
     private istoken: AuthJwtService
   ) {
     this.cartService.totalProducts$.subscribe((totalProducts) => {
       this.totalProducts = totalProducts;
     });
   }
-
-  api = apiURL;
-
-  // updateInFor(infor: UsersDTO) {
-
-  // }
 
   exLogin() {
     if (this.istoken.isAuthenticated() === true) {
@@ -43,6 +34,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.infoCustomer = JSON.parse(localStorage.getItem('customer'));
+    console.log(this.infoCustomer.id)
     this.size = localStorage.getItem('customer').length;
     this.istoken.isAuthenticated();
     this.exLogin();

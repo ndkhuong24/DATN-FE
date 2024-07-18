@@ -63,102 +63,102 @@ export class DetailCheckoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.order.paymentType === 1) {
-      if (this.user.id === null && this.user.code === null) {
-        this.orderService.createOrderNotLogin(this.order).subscribe(res => {
-          if (res.status === 'OK') {
-            this.order = res.data;
+    // if (this.order.paymentType === 1) {
+    //   if (this.user.id === null) {
+    //     this.orderService.createOrderNotLogin(this.order).subscribe(res => {
+    //       if (res.status === 'OK') {
+    //         this.order = res.data;
 
-            const orderDetailPromises = this.listCart.map((item: { productDetailDTO: { id: any; price: any; }; quantity: any; }) => {
-              const obj = {
-                idOrder: res.data.id,
-                idProductDetail: item.productDetailDTO.id,
-                quantity: item.quantity,
-                // price: item.productDTO?.reducePrice != null || item.productDTO?.percentageReduce != null ? (item.productDTO.price - item.productDTO.reducePrice) : item.productDTO.price,
-                price: item.productDetailDTO.price,
-                // codeDiscount: this.extractCodeDiscount(item.productDTO),
-              };
-              return this.orderDetailService.createOrderDetail(obj).toPromise();
-            });
+    //         const orderDetailPromises = this.listCart.map((item: { productDetailDTO: { id: any; price: any; }; quantity: any; }) => {
+    //           const obj = {
+    //             idOrder: res.data.id,
+    //             idProductDetail: item.productDetailDTO.id,
+    //             quantity: item.quantity,
+    //             // price: item.productDTO?.reducePrice != null || item.productDTO?.percentageReduce != null ? (item.productDTO.price - item.productDTO.reducePrice) : item.productDTO.price,
+    //             price: item.productDetailDTO.price,
+    //             // codeDiscount: this.extractCodeDiscount(item.productDTO),
+    //           };
+    //           return this.orderDetailService.createOrderDetail(obj).toPromise();
+    //         });
 
-            forkJoin(orderDetailPromises).subscribe(
-              orderDetailsResponses => {
-                this.emailService.sendEmailNotLogin(this.order).subscribe(result => {
-                  localStorage.removeItem('order-bill');
-                  this.cookieService.delete('cart', '/');
-                  this.cookieService.delete('checkout', '/');
-                });
+    //         forkJoin(orderDetailPromises).subscribe(
+    //           orderDetailsResponses => {
+    //             this.emailService.sendEmailNotLogin(this.order).subscribe(result => {
+    //               localStorage.removeItem('order-bill');
+    //               this.cookieService.delete('cart', '/');
+    //               this.cookieService.delete('checkout', '/');
+    //             });
 
-              },
-            );
-          }
-        });
-      }
-      // else {
-      //   this.orderService.createOrder(this.order).subscribe(res => {
-      //     if (res.status === 'OK') {
-      //       this.order = res.data;
-      //       const orderDetailsObservables = this.listCart.map(item => {
-      //         const obj = {
-      //           idOrder: res.data.id,
-      //           idProductDetail: item.productDetailDTO.id,
-      //           quantity: item.quantity,
-      //           price: item.productDTO?.reducePrice != null || item.productDTO?.percentageReduce != null ? (item.productDTO.price - item.productDTO.reducePrice) : item.productDTO.price,
-      //           codeDiscount: this.extractCodeDiscount(item.productDTO),
-      //         };
-      //         return this.orderDetailService.createOrderDetail(obj);
-      //       });
-      //       forkJoin(orderDetailsObservables).subscribe(
-      //         orderDetailsResponses => {
-      //           console.log(orderDetailsResponses);
-      //           this.emailService.sendEmail(this.order).subscribe(result => {
-      //             console.log('Send email thành công ');
-      //           });
-      //           localStorage.removeItem('order-bill');
-      //           this.cookieService.delete('cart', '/');
-      //           this.cookieService.delete('checkout', '/');
-      //         },
-      //         error => {
-      //         }
-      //       );
-      //     }
-      //   });
-      // }
+    //           },
+    //         );
+    //       }
+    //     });
+    //   }
+    //   // else {
+    //   //   this.orderService.createOrder(this.order).subscribe(res => {
+    //   //     if (res.status === 'OK') {
+    //   //       this.order = res.data;
+    //   //       const orderDetailsObservables = this.listCart.map(item => {
+    //   //         const obj = {
+    //   //           idOrder: res.data.id,
+    //   //           idProductDetail: item.productDetailDTO.id,
+    //   //           quantity: item.quantity,
+    //   //           price: item.productDTO?.reducePrice != null || item.productDTO?.percentageReduce != null ? (item.productDTO.price - item.productDTO.reducePrice) : item.productDTO.price,
+    //   //           codeDiscount: this.extractCodeDiscount(item.productDTO),
+    //   //         };
+    //   //         return this.orderDetailService.createOrderDetail(obj);
+    //   //       });
+    //   //       forkJoin(orderDetailsObservables).subscribe(
+    //   //         orderDetailsResponses => {
+    //   //           console.log(orderDetailsResponses);
+    //   //           this.emailService.sendEmail(this.order).subscribe(result => {
+    //   //             console.log('Send email thành công ');
+    //   //           });
+    //   //           localStorage.removeItem('order-bill');
+    //   //           this.cookieService.delete('cart', '/');
+    //   //           this.cookieService.delete('checkout', '/');
+    //   //         },
+    //   //         error => {
+    //   //         }
+    //   //       );
+    //   //     }
+    //   //   });
+    //   // }
 
-      // const orderDetailPromises = this.listCart.map(item => {
-      //   const obj = {
-      //     idOrder: this.order.id,
-      //     idProductDetail: item.productDetailDTO.id,
-      //     quantity: item.quantity,
-      //     price: item.productDTO?.reducePrice != null || item.productDTO?.percentageReduce != null ? (item.productDTO.price - item.productDTO.reducePrice) : item.productDTO.price,
-      //     codeDiscount: item.productDTO?.reducePrice != null || item.productDTO?.percentageReduce != null ? item.productDTO.codeDiscount : null,
-      //   };
-      //   return this.orderDetailService.createOrderDetail(obj).toPromise();
-      // });
+    //   // const orderDetailPromises = this.listCart.map(item => {
+    //   //   const obj = {
+    //   //     idOrder: this.order.id,
+    //   //     idProductDetail: item.productDetailDTO.id,
+    //   //     quantity: item.quantity,
+    //   //     price: item.productDTO?.reducePrice != null || item.productDTO?.percentageReduce != null ? (item.productDTO.price - item.productDTO.reducePrice) : item.productDTO.price,
+    //   //     codeDiscount: item.productDTO?.reducePrice != null || item.productDTO?.percentageReduce != null ? item.productDTO.codeDiscount : null,
+    //   //   };
+    //   //   return this.orderDetailService.createOrderDetail(obj).toPromise();
+    //   // });
 
-      // Promise.all(orderDetailPromises)
-      //   .then(() => {
-      //     if (this.email === null || this.email === undefined) {
-      //       this.emailService.sendEmail(this.order).subscribe(res => {
-      //       });
-      //     } else {
-      //       const obj = {
-      //         ...this.order,
-      //         email: this.email
-      //       };
-      //       this.emailService.sendEmailNotLogin(obj).subscribe(res => {
-      //       });
-      //     }
-      //   })
-      //   .catch(error => {
-      //     console.error('Error creating order details:', error);
-      //   })
-      //   .finally(() => {
-      //   });
-    }
+    //   // Promise.all(orderDetailPromises)
+    //   //   .then(() => {
+    //   //     if (this.email === null || this.email === undefined) {
+    //   //       this.emailService.sendEmail(this.order).subscribe(res => {
+    //   //       });
+    //   //     } else {
+    //   //       const obj = {
+    //   //         ...this.order,
+    //   //         email: this.email
+    //   //       };
+    //   //       this.emailService.sendEmailNotLogin(obj).subscribe(res => {
+    //   //       });
+    //   //     }
+    //   //   })
+    //   //   .catch(error => {
+    //   //     console.error('Error creating order details:', error);
+    //   //   })
+    //   //   .finally(() => {
+    //   //   });
+    // }
 
     if (this.order.paymentType === 0) {
-      if (this.user.id === null && this.user.code === null) {
+      if (this.user.id === null) {
         this.orderService.createOrderNotLogin(this.order).subscribe(res => {
           if (res.status === 'OK') {
             this.order = res.data;
@@ -188,36 +188,33 @@ export class DetailCheckoutComponent implements OnInit {
           }
         });
       }
-      // else {
-      //   this.orderService.createOrder(this.order).subscribe(res => {
-      //     if (res.status === 'OK') {
-      //       this.order = res.data;
-      //       const orderDetailPromises = this.listCart.map(item => {
-      //         const obj = {
-      //           idOrder: res.data.id,
-      //           idProductDetail: item.productDetailDTO.id,
-      //           quantity: item.quantity,
-      //           price: item.productDTO?.reducePrice != null || item.productDTO?.percentageReduce != null ? (item.productDTO.price - item.productDTO.reducePrice) : item.productDTO.price,
-      //           codeDiscount: this.extractCodeDiscount(item.productDTO),
-      //         };
-      //         return this.orderDetailService.createOrderDetail(obj).toPromise();
-      //       });
-      //       forkJoin(orderDetailPromises).subscribe(
-      //         orderDetailsResponses => {
-      //           console.log(orderDetailsResponses);
-      //           this.emailService.sendEmail(this.order).subscribe(result => {
-      //             console.log('Send email thành công ');
-      //           });
-      //           localStorage.removeItem('order-bill');
-      //           this.cookieService.delete('cart', '/');
-      //           this.cookieService.delete('checkout', '/');
-      //         },
-      //         error => {
-      //         }
-      //       );
-      //     }
-      //   });
-      // }
+      else {
+        this.orderService.createOrder(this.order).subscribe(res => {
+          if (res.status === 'OK') {
+            this.order = res.data;
+            const orderDetailPromises = this.listCart.map((item: { productDetailDTO: { id: any; price: any; }; quantity: any; }) => {
+              const obj = {
+                idOrder: res.data.id,
+                idProductDetail: item.productDetailDTO.id,
+                quantity: item.quantity,
+                // price: item.productDTO?.reducePrice != null || item.productDTO?.percentageReduce != null ? (item.productDTO.price - item.productDTO.reducePrice) : item.productDTO.price,
+                price: item.productDetailDTO.price,
+                // codeDiscount: this.extractCodeDiscount(item.productDTO),
+              };
+              return this.orderDetailService.createOrderDetail(obj).toPromise();
+            });
+            forkJoin(orderDetailPromises).subscribe(
+              orderDetailsResponses => {
+                this.emailService.sendEmail(this.order).subscribe(result => {
+                  localStorage.removeItem('order-bill');
+                  this.cookieService.delete('cart', '/');
+                  this.cookieService.delete('checkout', '/');
+                });
+              }
+            );
+          }
+        });
+      }
     }
   }
 
