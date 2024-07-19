@@ -1,33 +1,45 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { OrderDetailService } from '../../../service/order-detail.service';
-import { formatMoney, formatNumber, padZero } from '../../../util/util';
-import Swal from 'sweetalert2';
+import { formatMoney, padZero } from '../../../util/util';
 import { OrderService } from '../../../service/order.service';
 import { ToastrService } from 'ngx-toastr';
 import { NoteOrderComponent } from '../note-order/note-order.component';
 import { UtilService } from '../../../util/util.service';
+import { VoucherService } from 'src/app/service/voucher.service';
+import { VoucherShipService } from 'src/app/service/voucher-ship.service';
 
 @Component({
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
   styleUrls: ['./order-detail.component.css']
 })
-export class OrderDetailComponent implements OnInit {
 
-  rowData: any;
+export class OrderDetailComponent implements OnInit {
+  rowData = [];
   columnDefs: any;
-  gridApi;
-  gridColumnApi;
+  gridApi: any;
+  gridColumnApi: any;
   status: any;
   totalQuantity: number = 0;
   listOrderHistoryAdmin: any = [];
   listOrderHistoryView: any = [];
-  constructor(private orderDetailService: OrderDetailService,
+
+  voucherReduce: number = 0;
+  voucherShipReduce: number = 0;
+
+  constructor(
+    private orderDetailService: OrderDetailService,
     public matRef: MatDialogRef<OrderDetailComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private orderService: OrderService, private cdr: ChangeDetectorRef,
-    private toastr: ToastrService, private matDiaLog: MatDialog, public utilService: UtilService) {
-    this.rowData = [];
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private orderService: OrderService,
+    private cdr: ChangeDetectorRef,
+    private toastr: ToastrService,
+    private matDiaLog: MatDialog,
+    public utilService: UtilService,
+    private voucherService: VoucherService,
+    private voucherShipService: VoucherShipService
+  ) {
     this.columnDefs = [
       {
         headerName: 'STT',
@@ -35,7 +47,7 @@ export class OrderDetailComponent implements OnInit {
         suppressMovable: true,
         minWidth: 60,
         maxWidth: 60,
-        valueGetter: param => {
+        valueGetter: (param: { node: { rowIndex: number; }; }) => {
           return param.node.rowIndex + 1;
         }
       },
@@ -43,18 +55,20 @@ export class OrderDetailComponent implements OnInit {
         headerName: 'Tên Sản phẩm',
         field: '',
         suppressMovable: true,
-        cellRenderer: params => {
-          return `<div>
-        <img width="60px" height="60px" src="${params.data.productDetailDTO.productDTO.imagesDTOList[0].imageName}" alt="">
-        <span class="productName" title="${params.data.productDetailDTO.productDTO.name}">${params.data.productDetailDTO.productDTO.name}</span>
-</div>`;
+        cellRenderer: (params: { data: { productDetailDTO: { productDTO: { imageURL: any; name: any; }; }; }; }) => {
+          return `
+          <div>
+            <img width="60px" height="60px" src="${params.data.productDetailDTO.productDTO.imageURL}" alt="">
+            <span class="productName" title="${params.data.productDetailDTO.productDTO.name}">${params.data.productDetailDTO.productDTO.name}</span>
+          </div>
+          `;
         },
       },
       {
         headerName: 'Phân Loại',
         field: '',
         suppressMovable: true,
-        cellRenderer: params => {
+        cellRenderer: (params: { data: { productDetailDTO: { colorDTO: { name: any; }; sizeDTO: { sizeNumber: any; }; }; }; }) => {
           return `<div style="height: 30px"><span style="font-weight: bold">Color:</span> ${params.data.productDetailDTO.colorDTO.name}</div>
             <div style="height: 30px"><span style="font-weight: bold">Size: </span> ${params.data.productDetailDTO.sizeDTO.sizeNumber}</div>`;
         }
@@ -88,7 +102,6 @@ export class OrderDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log(this.data.data);
     this.orderDetailService.getAllOrderDetailByOrder(this.data.data.id).subscribe(res => {
       this.rowData = res.orderDetail;
       this.listOrderHistoryAdmin = res.orderHistoryAdmin;
@@ -105,7 +118,7 @@ export class OrderDetailComponent implements OnInit {
   cancelOrder() {
     this.matDiaLog.open(NoteOrderComponent, {
       width: '90vh',
-      height: '38vh',
+      height: '32vh',
     }).afterClosed().subscribe(res => {
       if (res.event === 'close-note') {
         const obj = {

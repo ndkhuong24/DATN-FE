@@ -35,7 +35,7 @@ export class SuaSanPhamComponent implements OnInit {
     // imageList: null,
   };
 
-  imageList: File;
+  imageList: File = null;
 
   category: CategoryInterface[] = [];
   brand: BrandInterface[] = [];
@@ -129,7 +129,6 @@ export class SuaSanPhamComponent implements OnInit {
 
   OnChangeFile(event: any) {
     this.imageList = event.target.files[0];
-    // console.log(this.imageList)
   }
 
   getALLBrand() {

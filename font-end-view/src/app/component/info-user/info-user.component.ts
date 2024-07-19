@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import {UsersDTO} from '../model/UsersDTO';
-import {CustomerInforService} from '../../service/customer-infor.service';
-import {ToastrService} from 'ngx-toastr';
-import {Router} from '@angular/router';
-import {ValidateInput} from '../../model/validate-input.model';
-import {CommonFunction} from '../../util/common-function';
+import { UsersDTO } from '../model/UsersDTO';
+import { CustomerInforService } from '../../service/customer-infor.service';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { ValidateInput } from '../../model/validate-input.model';
+import { CommonFunction } from '../../util/common-function';
 
 @Component({
   selector: 'app-info-user',
   templateUrl: './info-user.component.html',
   styleUrls: ['./info-user.component.css']
 })
+
 export class InfoUserComponent implements OnInit {
   infoCustomer: UsersDTO;
   rePass: string;
@@ -20,17 +21,33 @@ export class InfoUserComponent implements OnInit {
   validReceiverPassword: ValidateInput = new ValidateInput();
   validReceivernewPassword: ValidateInput = new ValidateInput();
   validConfirm: boolean = true;
-  constructor(private customerInforService: CustomerInforService, private toastr: ToastrService,private router: Router) { }
+  constructor(
+    private customerInforService: CustomerInforService,
+    private toastr: ToastrService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.loadUserInfo();
   }
+
   private loadUserInfo(): void {
-    const storedUsers = localStorage.getItem('users');
+    const storedUsers = localStorage.getItem('customer');
     if (storedUsers) {
       this.infoCustomer = JSON.parse(storedUsers);
-      this.formatBirthday();
     }
+
+    this.customerInforService.getInfo(this.infoCustomer.id).subscribe((res: any) => {
+      const birthday = new Date(res.birthday);
+      const formattedBirthday = birthday.toISOString().split('T')[0];
+      this.infoCustomer.birthday = formattedBirthday;
+      this.infoCustomer.fullname = res.fullname;
+      this.infoCustomer.username = res.username;
+      this.infoCustomer.phone = res.phone;
+      this.infoCustomer.gender = res.gender;
+    })
+
+    this.formatBirthday();
   }
 
   private formatBirthday(): void {
@@ -51,61 +68,64 @@ export class InfoUserComponent implements OnInit {
   private padZero(value: number): string {
     return value < 10 ? `0${value}` : `${value}`;
   }
-  updateInfor(){
+
+  updateInfor() {
     this.infoCustomer.fullname = CommonFunction.trimText(this.infoCustomer.fullname);
     this.infoCustomer.phone = CommonFunction.trimText(this.infoCustomer.phone);
     this.infoCustomer.username = CommonFunction.trimText(this.infoCustomer.username);
+    
     this.validateReceiver();
     this.validateEmail();
     this.validateReceiverPhone();
-    if (!this.validReceiver.done || !this.validEmail.done || !this.validReceiverPhone.done){
+    
+    if (!this.validReceiver.done || !this.validEmail.done || !this.validReceiverPhone.done) {
       return;
     }
+
     this.customerInforService.updateInfor(this.infoCustomer).subscribe(
       data => {
-        if (data.message === 'Phone existed'){
+        if (data.message === 'Phone existed') {
           this.toastr.error('Số điện thoại đã tồn tại');
           return;
         }
-        if (data.message === 'Email existed'){
+        if (data.message === 'Email existed') {
           this.toastr.error('Email đã tồn tại');
           return;
         }
-        console.log(data);
-        console.log(this.infoCustomer);
-        localStorage.removeItem('users');
-        localStorage.setItem('users', JSON.stringify(this.infoCustomer));
+        localStorage.removeItem('customer');
+        localStorage.setItem('customer', JSON.stringify(this.infoCustomer));
         this.loadUserInfo();
-        const toastrRef = this.toastr.success('Cập nhật thành công!', 'Success', { timeOut: 1000});
+        this.toastr.success('Cập nhật thành công', 'Success', { timeOut: 1000 });
         setTimeout(() => {
           this.handleReload();
         }, 1000);
       },
       error => {
         console.error(error);
-        this.toastr.error('Đã xảy ra lỗi khi cập nhật thông tin!', 'Error');
+        this.toastr.error('Đã xảy ra lỗi khi cập nhật thông tin', 'Error');
       }
     );
   }
+
   handleReload() {
     this.router.navigate(['/user-profile']).then(() => {
       location.reload();
     });
   }
-  changePass(){
+
+  changePass() {
     this.infoCustomer.password = CommonFunction.trimText(this.infoCustomer.password);
     this.infoCustomer.newPass = CommonFunction.trimText(this.infoCustomer.newPass);
     this.validateReceiverPassword();
     this.validateReceivernewPassword();
     this.validateConfirmPass();
-    if (!this.validReceiverPassword.done || !this.validReceivernewPassword.done){
+    if (!this.validReceiverPassword.done || !this.validReceivernewPassword.done) {
       return;
     }
     this.customerInforService.changePass(this.infoCustomer).subscribe(
       data => {
-        console.log(data);
-        if (data.status === 'BAD_REQUEST'){
-          this.toastr.error('Mật khẩu cũ không chính xác! ', 'Error');
+        if (data.status === 'BAD_REQUEST') {
+          this.toastr.error('Mật khẩu cũ không chính xác', 'Error');
           return;
         }
         this.toastr.success('Cập nhật thành công! ', 'Success');
@@ -115,13 +135,15 @@ export class InfoUserComponent implements OnInit {
       },
       error => {
         console.error(error);
-        this.toastr.error('Đã xảy ra lỗi khi cập nhật thông tin!', 'Error');
+        this.toastr.error('Đã xảy ra lỗi khi cập nhật thông tin', 'Error');
       }
     );
   }
+
   revoveInvalid(result) {
     result.done = true;
   }
+
   validateReceiver() {
     this.validReceiver = CommonFunction.validateInput(this.infoCustomer.fullname, 250, null);
   }
@@ -129,16 +151,20 @@ export class InfoUserComponent implements OnInit {
   validateEmail() {
     this.validEmail = CommonFunction.validateInput(this.infoCustomer.email, 250, /^[^\s@]+@[^\s@]+\.[^\s@]+$/);
   }
+
   validateReceiverPhone() {
     this.validReceiverPhone = CommonFunction.validateInput(this.infoCustomer.phone, null, /^(0[2-9]|1[2-9]|2[2-9]|3[2-9]|4[2-9]|5[2-9]|6[2-9]|7[2-9]|8[2-9]|9[2-9])\d{8}$/);
   }
-  validateReceiverPassword(){
+
+  validateReceiverPassword() {
     this.validReceiverPassword = CommonFunction.validateInput(this.infoCustomer.password, 50, /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/);
   }
-  validateReceivernewPassword(){
+
+  validateReceivernewPassword() {
     this.validReceivernewPassword = CommonFunction.validateInput(this.infoCustomer.newPass, 50, /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/);
   }
-  validateConfirmPass(){
+  
+  validateConfirmPass() {
     this.validConfirm = this.infoCustomer.newPass === this.rePass;
   }
 }

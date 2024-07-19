@@ -7,8 +7,6 @@ import { apiURL } from '../config/apiURL';
   providedIn: 'root'
 })
 export class OrderService {
-  
-
   constructor(private http: HttpClient) { }
 
   createOrder(obj): Observable<any> {

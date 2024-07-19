@@ -46,8 +46,11 @@ export class CheckoutComponent implements OnInit {
   };
 
   totalMoneyPay: number;
+
   voucher: any;
+
   voucherShip: any;
+
   order: any = {
     receiver: '',
     receiverPhone: '',
@@ -236,9 +239,11 @@ export class CheckoutComponent implements OnInit {
               ...this.order,
               totalPrice: this.totalMoney,
               totalPayment: this.totalMoneyPay,
-              shipPrice: this.voucherShip ? this.shipFeeReduce : this.shipFee,
+              shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
               codeVoucher: this.voucher ? this.voucher?.code : null,
               codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
+              voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
+              voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
               addressReceived: (this.addressNotLogin.specificAddress === null ? '...' : this.addressNotLogin.specificAddress) + ', ' + ward.WardName + ', '
                 + district.DistrictName + ', ' + province.ProvinceName,
               paymentType: 1,
@@ -263,9 +268,14 @@ export class CheckoutComponent implements OnInit {
               ...this.order,
               totalPrice: this.totalMoney,
               totalPayment: this.totalMoneyPay,
-              shipPrice: this.voucherShip ? this.shipFeeReduce : this.shipFee,
+              shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
               codeVoucher: this.voucher ? this.voucher?.code : null,
               codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
+              voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
+              voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
+              // shipPrice: this.voucherShip ? this.shipFeeReduce : this.shipFee,
+              // codeVoucher: this.voucher ? this.voucher?.code : null,
+              // codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
               addressReceived: this.addressNotLogin.specificAddress + ', ' + ward.WardName + ', '
                 + district.DistrictName + ', ' + province.ProvinceName,
               paymentType: 0,
@@ -312,41 +322,50 @@ export class CheckoutComponent implements OnInit {
         .then((result) => {
           if (result.isConfirmed) {
             if (this.checkChoicePay === 1) {
-              console.log("bạn chọn thanh toán online");
-              // const obj = {
-              //   ...this.order,
-              //   customerDTO: {
-              //     code: this.user.code,
-              //   },
-              //   totalPrice: this.totalMoney,
-              //   totalPayment: this.totalMoneyPay,
-              //   shipPrice: this.voucherShip ? this.shipFeeReduce : this.shipFee,
-              //   codeVoucher: this.voucher ? this.voucher?.code : null,
-              //   codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
-              //   addressReceived: (this.addressNotLogin.specificAddress === null ? '...' : this.addressNotLogin.specificAddress) + ', ' + this.address.wards + ', '
-              //     + this.address.district + ', ' + this.address.province,
-              //   paymentType: 1,
-              //   email: this.user.email
-              // };
-              // const objOrderBill = {
-              //   order: obj,
-              //   listCart: this.listCart
-              // };
-              // localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
-              // this.paymentService.createPayment(this.totalMoneyPay).subscribe(resPay => {
-              //   if (resPay.status === 'OK') {
-              //     window.location.href = resPay.url;
-              //   }
-              // });
+              const obj = {
+                ...this.order,
+                totalPrice: this.totalMoney,
+                totalPayment: this.totalMoneyPay,
+                shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
+                codeVoucher: this.voucher ? this.voucher?.code : null,
+                codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
+                voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
+                voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
+                // shipPrice: this.voucherShip ? this.shipFeeReduce : this.shipFee,
+                // codeVoucher: this.voucher ? this.voucher?.code : null,
+                // codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
+                addressReceived: this.address.specificAddress + ', ' + this.address.wards + ', ' + this.address.district + ', ' + this.address.province,
+                paymentType: 1,
+                email: this.user.email,
+                idCustomer: this.user.id,
+              };
+
+              const objOrderBill = {
+                order: obj,
+                listCart: this.listCart
+              };
+
+              localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
+
+              this.paymentService.createPayment(this.totalMoneyPay).subscribe(resPay => {
+                if (resPay.status === 'OK') {
+                  window.location.href = resPay.url;
+                }
+              });
             }
             else {
               const obj = {
                 ...this.order,
                 totalPrice: this.totalMoney,
                 totalPayment: this.totalMoneyPay,
-                shipPrice: this.voucherShip ? this.shipFeeReduce : this.shipFee,
+                shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
                 codeVoucher: this.voucher ? this.voucher?.code : null,
                 codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
+                voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
+                voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
+                // shipPrice: this.voucherShip ? this.shipFeeReduce : this.shipFee,
+                // codeVoucher: this.voucher ? this.voucher?.code : null,
+                // codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
                 addressReceived: this.address.specificAddress + ', ' + this.address.wards + ', ' + this.address.district + ', ' + this.address.province,
                 paymentType: 0,
                 email: this.user.email,
@@ -364,22 +383,8 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  openPopupAddress() {
-    this.matDialog.open(AddressCheckoutComponent, {
-      width: '40%',
-      height: '65vh',
-      data: this.user.id
-    }).afterClosed().subscribe(res => {
-      if (res === 'close-address') {
-        this.ngOnInit();
-        this.cdr.detectChanges();
-      }
-    });
-  }
-
   openVoucher() {
     const originalTotalMoney = this.totalMoney + this.shipFee;
-    // this.totalMoneyPay = this.totalMoney;
     this.matDialog.open(PopupVoucherComponent, {
       width: '45%',
       height: '90vh',
@@ -392,16 +397,16 @@ export class CheckoutComponent implements OnInit {
             this.voucher = res.data;
             if (res.data.voucherType === 1) {
               const reducedVoucherPrice = parseFloat(((res.data.reducedValue / 100) * this.totalMoney).toFixed(2));
-
-              console.log(reducedVoucherPrice);
               if (reducedVoucherPrice > res.data.maxReduced) {
-                this.totalMoneyPay = this.totalMoneyPay - this.voucher.maxReduced;
-                this.voucher.reducedValue = this.voucher.maxReduced;
+                this.totalMoneyPay = this.totalMoneyPay - res.data.maxReduced;
+                this.voucher.reducedValue = res.data.maxReduced;
               } else {
-                this.totalMoneyPay = this.totalMoneyPay - this.voucher.reducedValue;
+                this.totalMoneyPay = this.totalMoneyPay - reducedVoucherPrice;
+                this.voucher.reducedValue = reducedVoucherPrice;
               }
             } else {
-              this.totalMoneyPay = this.totalMoneyPay - this.voucher.reducedValue;
+              this.totalMoneyPay = this.totalMoneyPay - res.data.reducedValue;
+              this.voucher.reducedValue = res.data.reducedValue;
             }
             this.voucherChoice.voucher = res.data.code;
             this.cdr.detectChanges();
@@ -421,6 +426,19 @@ export class CheckoutComponent implements OnInit {
             this.cdr.detectChanges();
           });
         }
+      }
+    });
+  }
+
+  openPopupAddress() {
+    this.matDialog.open(AddressCheckoutComponent, {
+      width: '40%',
+      height: '65vh',
+      data: this.user.id
+    }).afterClosed().subscribe(res => {
+      if (res === 'close-address') {
+        this.ngOnInit();
+        this.cdr.detectChanges();
       }
     });
   }

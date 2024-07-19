@@ -13,14 +13,15 @@ import {UtilService} from '../../util/util.service';
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.scss']
 })
+
 export class OrderComponent implements OnInit {
   active = 1;
   listStatus: any = [];
   status = 6;
-  rowData;
+  rowData=[];
   columnDefs = [];
-  gridApi;
-  gridColumnApi;
+  gridApi: any;
+  gridColumnApi: any;
   user: any = {
     id: null,
     code: null,
@@ -33,8 +34,12 @@ export class OrderComponent implements OnInit {
     dateTo: null,
     code: null,
   };
-  constructor(private matDialog: MatDialog, private orderService: OrderService, private cdr: ChangeDetectorRef,
-              private utilService: UtilService) {
+  constructor(
+    private matDialog: MatDialog, 
+    private orderService: OrderService, 
+    private cdr: ChangeDetectorRef,
+    private utilService: UtilService
+  ) {
     const lst =
       [
         {name: 'Tất cả', id: 6},
@@ -50,9 +55,8 @@ export class OrderComponent implements OnInit {
         headerName: 'STT',
         field: '',
         suppressMovable: true,
-        minWidth: 60,
         maxWidth: 60,
-        valueGetter: param => {
+        valueGetter: (param: { node: { rowIndex: number; }; }) => {
           return param.node.rowIndex + 1;
         },
       },
@@ -67,15 +71,13 @@ export class OrderComponent implements OnInit {
           'align-items': 'center',
           color: '#36f',
           display: 'flex',
-          // top: '12px',
           'white-space': 'nowrap',
           'text-overflow': 'ellipsis',
           overflow: 'hidden',
           cursor: 'pointer',
-          // textAlign: 'center',
           'justify-content': 'center',
         },
-        onCellClicked: (params) => {
+        onCellClicked: (params: { data: any; }) => {
           return this.openXemChiTiet(params.data);
         }
       },
@@ -84,7 +86,7 @@ export class OrderComponent implements OnInit {
         field: 'createDate',
         sortable: true,
         suppressMovable: true,
-        valueFormatter: params => {
+        valueFormatter: (params: { data: { createDate: string; }; }) => {
           return formatDateTime(params.data.createDate);
         },
         cellStyle: {
@@ -94,11 +96,9 @@ export class OrderComponent implements OnInit {
           'align-items': 'center',
           color: '#101840',
           display: 'flex',
-          // top: '12px',
           'white-space': 'nowrap',
           'text-overflow': 'ellipsis',
           overflow: 'hidden',
-          // textAlign: 'center',
           'justify-content': 'center',
         },
       },
@@ -106,7 +106,7 @@ export class OrderComponent implements OnInit {
         headerName: 'Thanh Toán',
         field: 'statusPayment',
         sortable: true,
-        valueFormatter: params => {
+        valueFormatter: (params: { data: { statusPayment: number; }; }) => {
           return params.data.statusPayment === 0 ? 'Đã thanh toán' : 'Chưa thanh toán';
         },
         cellStyle: {
@@ -115,11 +115,9 @@ export class OrderComponent implements OnInit {
           'align-items': 'center',
           color: '#101840',
           display: 'flex',
-          // top: '12px',
           'white-space': 'nowrap',
           'text-overflow': 'ellipsis',
           overflow: 'hidden',
-          // textAlign: 'center',
           'justify-content': 'center',
         },
       }, {
@@ -127,7 +125,7 @@ export class OrderComponent implements OnInit {
         field: 'totalPayment',
         sortable: true,
         suppressMovable: true,
-        valueFormatter: params => {
+        valueFormatter: (params: { data: { totalPayment: number; }; }) => {
           return formatMoney(params.data.totalPayment);
         },
         cellStyle: {
@@ -136,11 +134,9 @@ export class OrderComponent implements OnInit {
           'align-items': 'center',
           color: '#101840',
           display: 'flex',
-          // top: '12px',
           'white-space': 'nowrap',
           'text-overflow': 'ellipsis',
           overflow: 'hidden',
-          // textAlign: 'center',
           'justify-content': 'center',
         },
       }, {
@@ -149,7 +145,7 @@ export class OrderComponent implements OnInit {
         filter: true,
         sortable: true,
         suppressMovable: true,
-        valueGetter: (params) => {
+        valueGetter: (params: { data: { status: any; }; }) => {
           const status = params.data.status;
           switch (status) {
             case 0:
@@ -172,18 +168,15 @@ export class OrderComponent implements OnInit {
           'align-items': 'center',
           color: '#101840',
           display: 'flex',
-          // top: '12px',
           'white-space': 'nowrap',
           'text-overflow': 'ellipsis',
           overflow: 'hidden',
-          // textAlign: 'center',
           'justify-content': 'center',
         },
       }
     ];
-    this.rowData = [];
-    const storedUserString = localStorage.getItem('customer');
 
+    const storedUserString = localStorage.getItem('customer');
     if (storedUserString) {
       const storedUser = JSON.parse(storedUserString);
       this.user = {
@@ -215,7 +208,6 @@ export class OrderComponent implements OnInit {
     };
     this.orderService.getAllOrder(obj).subscribe(res => {
       this.rowData = res;
-      console.log(this.rowData);
     });
     this.cdr.detectChanges();
   }
@@ -227,7 +219,7 @@ export class OrderComponent implements OnInit {
     this.getAllOrder();
   }
 
-  openXemChiTiet(dataOrder) {
+  openXemChiTiet(dataOrder: any) {
     this.matDialog.open(OrderDetailComponent, {
       width: '150vh',
       height: '90vh',

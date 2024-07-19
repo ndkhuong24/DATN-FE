@@ -179,9 +179,9 @@
         </div>
         <br>
         <div>
-          <label class="form-check-label">Phí ship: </label> <input style="margin-left: 180px" type="text"
-            value="{{utilService.formatMoney(shipFee)}}" disabled><span *ngIf="voucherShip">-
-            {{utilService.formatMoney(shipFeeReduce)}}</span>
+          <label class="form-check-label">Phí ship: </label> 
+          <input style="margin-left: 180px" type="text"value="{{utilService.formatMoney(shipFee)}}" disabled>
+          <span style="color: red;" *ngIf="voucherShip">-{{utilService.formatMoney(shipFeeReduce)}}</span>
         </div>
         <div style="margin-top: 10px;">
           <label class="form-check-label">Voucher giảm: </label> <input style="margin-left: 135px" type="text"

@@ -23,6 +23,7 @@ export class SearchOrderComponent implements OnInit {
   gridColumnApi: any;
   address = [];
   noteOrder: string = null;
+  infoCustomer: any;
 
   constructor(
     // private SearchOrderComponent: SearchOrderComponent;
@@ -139,16 +140,21 @@ export class SearchOrderComponent implements OnInit {
   }
 
   xacNhan() {
-    console.log(this.order)
     this.matDiaLog.open(NoteOrderComponent, {
       width: '90vh',
       height: '32vh',
     }).afterClosed().subscribe(res => {
       if (res.event === 'close-note') {
+        const storedUsers = localStorage.getItem('customer');
+        if (storedUsers) {
+          this.infoCustomer = JSON.parse(storedUsers);
+        }
+
         this.noteOrder = res.data.note;
         const obj = {
           id: this.order.id,
           idStaff: this.order.idStaff,
+          idCustomer: this.infoCustomer ? this.infoCustomer.id : null,
           note: res.data.note
         };
 

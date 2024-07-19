@@ -12,7 +12,6 @@ import Swal from 'sweetalert2';
   styleUrls: ['./giohang.component.scss']
 })
 export class GiohangComponent implements OnInit {
-
   selectAll = false; // Trạng thái của ô checkbox header
   checkboxStatus: boolean[] = []; // Mảng trạng thái của các ô checkbox item
   listCart = [];

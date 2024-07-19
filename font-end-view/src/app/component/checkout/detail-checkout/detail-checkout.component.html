@@ -97,7 +97,6 @@
         <div>
           <h3 style="margin-left: 70px">Đặt Hàng thành công</h3>
           <p style="margin-left: -30px">Đơn hàng của bạn chắc chắn đã được chuyển tới hệ thống xử lý đơn hàng.</p>
-          <!-- <p>Ngoài ra T2 STORE cũng sẽ có gửi xác nhận đơn hàng bằng Email lại cho bạn </p> -->
         </div>
       </div>
     </div>
@@ -149,7 +148,7 @@
                 <td>
                   <div>
                     <span
-                      style="color: red; margin-left: 5px">{{utilService.formatMoney(c.productDetailDTO.price)}}</span>
+                      style="margin-left: 5px">{{c.productDetailDTO.price | number:'1.0-0'}}</span>
                   </div>
                   <!-- <div *ngIf="c.productDTO.reducePrice != null && c.productDTO.percentageReduce != null">
                   <del>{{utilService.formatMoney(c.productDTO.price)}}</del>
@@ -162,9 +161,8 @@
                 </div> -->
                 </td>
                 <td> {{c.quantity}}</td>
-                <th style="color: red">
-                  <div><span style="color: red; margin-left: 5px">{{calculateTotal(c.productDetailDTO.price,
-                      c.quantity)}}</span></div>
+                <th>
+                  <div><span style="margin-left: 5px">{{calculateTotal(c.productDetailDTO.price,c.quantity)}}</span></div>
                   <!-- <div *ngIf="c.productDTO.reducePrice != null && c.productDTO.percentageReduce != null">
                     <span style="color: red; margin-left: 5px">{{calculateTotal(c.productDTO.price -
                       c.productDTO.reducePrice, c.quantity)}}</span>
@@ -176,10 +174,11 @@
               </tr>
             </tbody>
           </table>
-          <p>Tổng cộng: {{utilService.formatMoney(order?.totalPrice)}}</p>
-          <p>Tiền ship: {{utilService.formatMoney(order?.shipPrice)}}</p>
-          <p>Tiền giảm giá: {{utilService.formatMoney(order?.totalPrice + order?.shipPrice - order?.totalPayment)}}</p>
-          <p>Tổng cộng thanh toán: {{utilService.formatMoney(order?.totalPayment)}}</p>
+          <p>Tổng cộng: {{order?.totalPrice | number:'1.0-0'}} đ</p>
+          <p>Tiền ship: {{order?.shipPrice + order?.voucherFreeshipReduct | number:'1.0-0'}} đ</p>
+          <p>Tiền giảm giá: -{{order?.voucherReduct | number:'1.0-0'}} đ</p>
+          <p>Tiền giảm giá ship: -{{order?.voucherFreeshipReduct | number:'1.0-0'}} đ</p>
+          <p>Tổng cộng thanh toán: {{order?.totalPayment | number:'1.0-0'}} đ</p>
         </div>
       </div>
     </div>

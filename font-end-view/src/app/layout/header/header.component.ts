@@ -34,7 +34,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.infoCustomer = JSON.parse(localStorage.getItem('customer'));
-    console.log(this.infoCustomer.id)
+    // console.log(this.infoCustomer.id)
     this.size = localStorage.getItem('customer').length;
     this.istoken.isAuthenticated();
     this.exLogin();
