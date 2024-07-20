@@ -39,11 +39,18 @@ export class ThongKeComponent implements OnInit {
         private cdr: ChangeDetectorRef,
         public utilService: UtilService
     ) {
+        // const currentDate = new Date();
+
+        // this.dateFromCurrent = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+
+        // this.dateToCurrent = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+
         const currentDate = new Date();
-        this.dateFromCurrent = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        const sixDaysAgo = new Date();
+        sixDaysAgo.setDate(currentDate.getDate() - 6);
 
-        this.dateToCurrent = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
-
+        this.dateFromCurrent = sixDaysAgo;
+        this.dateToCurrent = currentDate;
     }
 
     ngOnInit(): void {
@@ -77,7 +84,7 @@ export class ThongKeComponent implements OnInit {
             this.categoriesRevenue = res.statisticalAdminDTOList.map((item: any) => item.revenue);
             this.categoriesQuantityProduct = res.statisticalAdminDTOList.map((item: any) => item.quantityProduct);
         });
-        
+
         this.cdr.detectChanges();
     }
 
@@ -86,7 +93,6 @@ export class ThongKeComponent implements OnInit {
     }
 
     getDater(data) {
-        console.log(data);
         if (data.startDate && data.endDate) {
             this.getStatistical();
         }
@@ -99,9 +105,15 @@ export class ThongKeComponent implements OnInit {
     getRevenue(category: any) {
         const index = this.seriesDateStr.indexOf(category);
         if (index !== -1) {
-            return this.utilService.formatMoney(this.categoriesRevenue[index]);
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+                .format(this.categoriesRevenue[index])
+                .replace('₫', '') + 'đ';
+            // return this.utilService.formatMoney(this.categoriesRevenue[index]);
         } else {
-            return this.utilService.formatMoney(0.00);
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+                .format(0)
+                .replace('₫', '') + 'đ';
+            // return this.utilService.formatMoney(0.00);
         }
     }
     getQuantityProduct(category: any) {

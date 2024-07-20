@@ -56,6 +56,11 @@ export class ChitietsanphamComponent implements OnInit {
         sortable: true,
         filter: true,
         flex: 1,
+        valueFormatter: (params) => {
+          return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+            .format(params.value)
+            .replace('₫', '') + 'đ';
+        },
       },
       {
         headerName: 'Cổ giày ',

@@ -35,12 +35,17 @@
   width: 100px;
   height: 100px;
 }
+
 .percentage-badge {
   position: absolute;
   top: 0;
   right: 13px;
-  background-color: #ff0000; /* Màu nền của phần % */
-  color: #ffffff; /* Màu chữ của phần % */
-  padding: 5px; /* Khoảng cách padding cho phần % */
-  border-radius: 5px; /* Bo góc cho phần % */
+  background-color: #ff0000;
+  /* Màu nền của phần % */
+  color: #ffffff;
+  /* Màu chữ của phần % */
+  padding: 5px;
+  /* Khoảng cách padding cho phần % */
+  border-radius: 5px;
+  /* Bo góc cho phần % */
 }

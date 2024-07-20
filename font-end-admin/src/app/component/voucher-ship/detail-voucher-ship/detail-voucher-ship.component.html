@@ -27,12 +27,12 @@
                 </tr>
                 <tr>
                   <th scope="row">Điều kiện áp dụng</th>
-                  <td>{{ voucherShip.conditionApply }}</td>
+                  <td>{{ voucherShip.conditionApply | number:'1.0-0' }} đ</td>
                 </tr>
 
                 <tr>
                   <th scope="row">Giá trị giảm</th>
-                  <td>{{ voucherShip.reducedValue }}</td>
+                  <td> {{ voucherShip.reducedValue | number:'1.0-0' }} đ</td>
                 </tr>
 
                 <tr>

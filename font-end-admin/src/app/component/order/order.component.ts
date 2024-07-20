@@ -150,7 +150,9 @@ export class OrderComponent implements OnInit {
         sortable: true,
         suppressMovable: true,
         valueFormatter: params => {
-          return formatMoney(params.data.totalPayment);
+          return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+            .format(params.data.totalPayment)
+            .replace('₫', '') + 'đ';
         },
         cellStyle: {
           'font-weight': '500',

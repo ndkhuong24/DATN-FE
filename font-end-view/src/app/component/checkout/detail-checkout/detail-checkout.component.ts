@@ -178,7 +178,10 @@ export class DetailCheckoutComponent implements OnInit {
 
   calculateTotal(price: number, quantity: number): string {
     const total = price * quantity;
-    return this.utilService.formatMoney(total);
+    // return this.utilService.formatMoney(total);
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+            .format(total)
+            .replace('₫', '') + 'đ';
   }
 
   // extractCodeDiscount(productDTO): string | null {

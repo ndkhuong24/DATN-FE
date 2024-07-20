@@ -7,7 +7,6 @@
       <table class="table">
         <thead>
           <tr>
-            <!--          <th scope="col"><input type="checkbox" name="" [(ngModel)]="selectAll" (click)="toggleSelectAll()"></th>-->
             <th scope="col"><mat-checkbox color="primary" value="{{selectAll}}" [checked]="selectAll"
                 (change)="selectAll = ! selectAll;toggleSelectAll()"></mat-checkbox></th>
             <th scope="col">Sản Phẩm</th>
@@ -32,7 +31,8 @@
             </td>
             <td>
               <div>
-                <span style="color: red; margin-left: 5px">{{utilService.formatMoney(c.productDetailDTO.price)}}</span>
+                <span style="color: red; margin-left: 5px">{{c.productDetailDTO.price | number:'1.0-0'}} đ</span>
+                <!-- <span style="color: red; margin-left: 5px">{{utilService.formatMoney(c.productDetailDTO.price)}}</span> -->
               </div>
               <!-- <div *ngIf="c.productDTO.reducePrice != null && c.productDTO.percentageReduce != null">
                 <del>{{utilService.formatMoney(c.productDTO.price)}}</del>
@@ -88,7 +88,8 @@
         </thead>
         <tbody>
           <tr>
-            <th scope="row">{{utilService.formatMoney(totalMoney)}}</th>
+            <th scope="row">{{totalMoney | number:'1.0-0'}} đ</th>
+            <!-- <th scope="row">{{utilService.formatMoney(totalMoney)}}</th> -->
             <!-- <td>{{utilService.formatMoney(totalSaveMoney)}}</td> -->
             <td><button class="btn btn-success" [disabled]="!disableCheckOut" (click)="checkOut()">Thanh toán</button>
             </td>

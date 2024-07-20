@@ -4,15 +4,6 @@
       <div class="row ">
         <div class="col-12">
           <div class="img-nav9">
-            <!-- <div class="card">
-              <img src="assets/image/banners1.png" class="card-img" alt="...">
-              <div class="card-img-overlay" style="margin-left: 60px; margin-top: 100px;">
-                <h6 class="card-title" style="font-weight: bold;font-size: x-large; color: rgb(45, 112, 201);">Giày Thể Thao Nam Nữ</h6>
-                <h1 style="font-weight: bold;" class="card-title">Chính Hãng <br> Giá rẻ</h1>
-
-                <p class="card-text" style="color: #2f7476;"><small>Nhiều Mẫu Mã</small></p>
-              </div>
-            </div> -->
             <br>
             <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
               <div class="carousel-inner">
@@ -73,11 +64,11 @@
                 <div *ngIf="p?.reducePrice == null && p?.percentageReduce == null">
 
                   <div style="font-size: 18px;font-weight: 600;color: red;" *ngIf="p?.minPrice == p?.maxPrice">
-                    <span>{{utilService.formatMoney(p?.minPrice)}}</span>
+                    <span>{{p?.minPrice| number:'1.0-0'}} đ</span>
                   </div>
 
                   <div style="font-size: 18px;font-weight: 600;color: red;" *ngIf="p?.minPrice != p?.maxPrice">
-                    <span>{{utilService.formatMoney(p?.minPrice)}}-{{utilService.formatMoney(p?.maxPrice)}}</span>
+                    <span>{{p?.minPrice| number:'1.0-0'}} đ - {{p?.maxPrice| number:'1.0-0'}} đ</span>
                   </div>
 
                 </div>

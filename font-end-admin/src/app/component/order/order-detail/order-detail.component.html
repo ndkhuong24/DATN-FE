@@ -32,7 +32,7 @@
         <td></td>
         <td></td>
         <td></td>
-        <td>{{utilService.formatMoney(data.data?.totalPrice)}}</td>
+        <td>{{data.data?.totalPrice | number:'1.0-0'}} đ</td>
       </tr>
       <tr>
         <th scope="row">Tổng số lượng sản phẩm</th>
@@ -60,14 +60,14 @@
         <td></td>
         <td></td>
         <td></td>
-        <td>{{utilService.formatMoney(data.data?.shipPrice)}}</td>
+        <td>{{data.data?.shipPrice | number:'1.0-0'}} đ</td>
       </tr>
       <tr>
         <th scope="row">Tổng thanh toán</th>
         <td></td>
         <td></td>
         <td></td>
-        <td>{{ data.data?.totalPayment !== null ? utilService.formatMoney(data.data?.totalPayment) : 0 }}</td>
+        <td>{{data.data?.totalPayment | number:'1.0-0'}} đ</td>
       </tr>
       <tr>
         <th scope="row">Hình thức thanh toán</th>

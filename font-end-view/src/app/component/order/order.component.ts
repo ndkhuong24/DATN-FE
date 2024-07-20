@@ -125,9 +125,14 @@ export class OrderComponent implements OnInit {
         field: 'totalPayment',
         sortable: true,
         suppressMovable: true,
-        valueFormatter: (params: { data: { totalPayment: number; }; }) => {
-          return formatMoney(params.data.totalPayment);
+        valueFormatter: (params) => {
+          return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+            .format(params.data.totalPayment)
+            .replace('₫', '') + 'đ';
         },
+        // valueFormatter: (params: { data: { totalPayment: number; }; }) => {
+        //   return formatMoney(params.data.totalPayment);
+        // },
         cellStyle: {
           'font-weight': '500',
           'font-size': '12px',

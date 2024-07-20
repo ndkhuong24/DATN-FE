@@ -51,7 +51,10 @@ export class GiohangComponent implements OnInit {
 
   calculateTotal(price: number, quantity: number): string {
     const total = price * quantity;
-    return this.utilService.formatMoney(total);
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+            .format(total)
+            .replace('₫', '') + 'đ';
+    // return this.utilService.formatMoney(total);
   }
 
   giamSoLuong(obj: { productId: any; productDetailDTO: { idColor: any; idSize: any; }; }) {
@@ -120,7 +123,7 @@ export class GiohangComponent implements OnInit {
           this.cookieService.set('cart', JSON.stringify([...this.cartData]));
           this.cartService.updateTotalProducts(this.cartData.size);
           window.location.reload();
-          this.toastr.success('Xoa Thanh Cong!', 'Remove', {
+          this.toastr.success('Xóa thành công', 'Remove', {
             positionClass: 'toast-top-right'
           });
         }

@@ -31,15 +31,26 @@
                 </tr>
                 <tr>
                   <th scope="row">Điều kiện áp dụng</th>
-                  <td>{{ voucher.conditionApply }}</td>
+                  <td>{{ voucher.conditionApply | number:'1.0-0' }} đ</td>
                 </tr>
                 <tr>
                   <th scope="row">Giá trị giảm</th>
-                  <td>{{ voucher.reducedValue }}</td>
+                  <td>
+                    <span *ngIf="voucher.voucherType === 1">
+                      {{ voucher.reducedValue }} %
+                    </span>
+                    <span *ngIf="voucher.voucherType === 0">
+                      {{ voucher.reducedValue | number:'1.0-0' }} đ
+                    </span>
+                  </td>
                 </tr>
+                <!-- <tr>
+                  <th scope="row">Giá trị giảm</th>
+                  <td>{{ voucher.reducedValue | number:'1.0-0' }} đ</td>
+                </tr> -->
                 <tr *ngIf="voucher.voucherType == 1">
                   <th scope="row">Giá trị giảm tối đa</th>
-                  <td>{{ voucher.maxReduced }}</td>
+                  <td>{{ voucher.maxReduced| number:'1.0-0' }} đ</td>
                 </tr>
                 <tr>
                   <th scope="row">Nơi áp dụng</th>

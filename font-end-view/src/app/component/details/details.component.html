@@ -12,11 +12,12 @@
         </div>
 
         <div class="new-price" style="font-size: 25px" *ngIf="minPrice == maxPrice">
-          <span>{{utilService.formatMoney(maxPrice)}}</span>
+          <span>{{maxPrice| number:'1.0-0'}} đ</span>
         </div>
 
         <div class="new-price" style="font-size: 25px" *ngIf="minPrice !== maxPrice && !bothSizeAndColorSelected==true">
-          <span>{{ utilService.formatMoney(minPrice) }} - {{ utilService.formatMoney(maxPrice) }}</span>
+          <span>{{minPrice| number:'1.0-0'}} đ - {{maxPrice| number:'1.0-0'}} đ</span>
+          <!-- <span>{{ utilService.formatMoney(minPrice) }} - {{ utilService.formatMoney(maxPrice) }}</span> -->
         </div>
 
         <!-- Display when bothSizeAndColorSelected is true -->
@@ -138,10 +139,10 @@
             <h5 class="card-title">{{p.name}}</h5>
             <div>
               <div style="font-size: 18px;font-weight: 600;color: red;" *ngIf="p?.minPrice == p?.maxPrice">
-                <span>{{utilService.formatMoney(p?.minPrice)}}</span>
+                <span>{{p?.minPrice| number:'1.0-0'}} đ</span>
               </div>
               <div style="font-size: 18px;font-weight: 600;color: red;" *ngIf="p?.minPrice != p?.maxPrice">
-                <span>{{utilService.formatMoney(p?.minPrice)}}-{{utilService.formatMoney(p?.maxPrice)}}</span>
+                <span>{{p?.minPrice| number:'1.0-0'}} đ - {{p?.maxPrice| number:'1.0-0'}} đ</span>
               </div>
             </div>
           </div>

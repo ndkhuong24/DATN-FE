@@ -21,7 +21,8 @@
             <mat-cell *matCellDef="let product"> {{ product?.sizeDTO?.sizeNumber }} </mat-cell>
           </ng-container>
           <ng-container matColumnDef="price">
-            <mat-cell *matCellDef="let product">{{utilService.formatMoney(product?.price)}}</mat-cell>
+            <mat-cell *matCellDef="let product">{{product?.price | number:'1.0-0'}} đ</mat-cell>
+            <!-- <mat-cell *matCellDef="let product">{{utilService.formatMoney(product?.price)}}</mat-cell> -->
           </ng-container>
           <mat-row *matRowDef="let row; columns: ['image','name', 'color', 'size', 'price']"
             (click)="addProductInOrder(row)"></mat-row>
@@ -81,7 +82,8 @@
               (ngModelChange)="updateQuantityInOrder(product, $event, i)" [ngModelOptions]="{standalone: true}"></td>
             <!-- <td><input type="number" min="1" class="quantity" name="quantity" [(ngModel)]="product.quantityInOrder"
                 (ngModelChange)="calculateTotalAllProducts()" [ngModelOptions]="{standalone: true}"></td> -->
-            <td>{{utilService.formatMoney(product?.price)}}</td>
+            <!-- <td>{{utilService.formatMoney(product?.price)}}</td> -->
+            <td>{{product?.price| number:'1.0-0'}} đ</td>
             <td>
               <button type="button" (click)="removeProduct(i)" class="remove-btn-order"><i
                   class="bi bi-trash3-fill"></i></button>
@@ -132,15 +134,15 @@
         <div class="row mb-1">
           <label class="col-sm-6 col-form-label">Tổng Tiền:</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control custom-input" name="sumPrice" readonly
-              value="{{utilService.formatMoney(totalAllProducts)}}">
+            <input type="text" class="form-control custom-input" name="sumPrice" readonly value="{{totalAllProducts| number:'1.0-0'}} đ">
+            <!-- <input type="text" class="form-control custom-input" name="sumPrice" readonly value="{{utilService.formatMoney(totalAllProducts)}}"> -->
           </div>
         </div>
         <div class="row mb-2">
           <label class="col-sm-6 col-form-label">Giảm giá:</label>
           <div class="col-sm-6 position-relative">
-            <input type="text" min="0" class="form-control custom-input" name="priceVoucher" (change)="priceVouchers() "
-              value="{{utilService.formatMoney(priceVoucher)}}" readonly>
+            <input type="text" min="0" class="form-control custom-input" name="priceVoucher" (change)="priceVouchers() " value="{{priceVoucher| number:'1.0-0'}} đ" readonly>
+            <!-- <input type="text" min="0" class="form-control custom-input" name="priceVoucher" (change)="priceVouchers() " value="{{utilService.formatMoney(priceVoucher)}}" readonly> -->
             <a class="btn icon-add position-absolute top-0 end-0" (click)="openVoucherSC()">
               <i class="bi bi-plus-lg"></i>
             </a>
@@ -262,8 +264,8 @@
           <div class="row mb-2">
             <label class="col-sm-6 col-form-label">Khách cần trả:</label>
             <div class="col-sm-6">
-              <input type="text" class="form-control custom-input" readonly name="priceCustomer"
-                value="{{utilService.formatMoney(priceCustomer)}}">
+              <input type="text" class="form-control custom-input" readonly name="priceCustomer" value="{{priceCustomer| number:'1.0-0'}} đ">
+              <!-- <input type="text" class="form-control custom-input" readonly name="priceCustomer" value="{{utilService.formatMoney(priceCustomer)}}"> -->
             </div>
           </div>
         </div>

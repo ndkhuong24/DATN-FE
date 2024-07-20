@@ -7,7 +7,6 @@ import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { NoteOrderComponent } from '../note-order/note-order.component';
 import { UtilService } from '../../../util/util.service';
-import { ok } from 'assert';
 
 @Component({
   selector: 'app-order-detail',
@@ -81,7 +80,10 @@ export class OrderDetailComponent implements OnInit {
         field: 'price',
         suppressMovable: true,
         valueFormatter: (params: { data: { price: number; }; }) => {
-          return formatMoney(params.data.price);
+          // return formatMoney(params.data.price);
+          return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+              .format(params.data.price)
+              .replace('₫', '') + 'đ';
         },
       },
       {
@@ -89,7 +91,10 @@ export class OrderDetailComponent implements OnInit {
         field: '',
         suppressMovable: true,
         valueFormatter: (params: { data: { price: number; quantity: number; }; }) => {
-          return formatMoney(params.data.price * params.data.quantity);
+          // return formatMoney(params.data.price * params.data.quantity);
+          return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+              .format(params.data.price * params.data.quantity)
+              .replace('₫', '') + 'đ';
         },
       }
     ];

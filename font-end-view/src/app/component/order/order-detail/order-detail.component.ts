@@ -45,7 +45,7 @@ export class OrderDetailComponent implements OnInit {
         headerName: 'STT',
         field: '',
         suppressMovable: true,
-        minWidth: 60,
+        // minWidth: 60,
         maxWidth: 60,
         valueGetter: (param: { node: { rowIndex: number; }; }) => {
           return param.node.rowIndex + 1;
@@ -63,6 +63,7 @@ export class OrderDetailComponent implements OnInit {
           </div>
           `;
         },
+        flex: 1,
       },
       {
         headerName: 'Phân Loại',
@@ -71,7 +72,8 @@ export class OrderDetailComponent implements OnInit {
         cellRenderer: (params: { data: { productDetailDTO: { colorDTO: { name: any; }; sizeDTO: { sizeNumber: any; }; }; }; }) => {
           return `<div style="height: 30px"><span style="font-weight: bold">Color:</span> ${params.data.productDetailDTO.colorDTO.name}</div>
             <div style="height: 30px"><span style="font-weight: bold">Size: </span> ${params.data.productDetailDTO.sizeDTO.sizeNumber}</div>`;
-        }
+        },
+        flex: 1,
       },
       {
         headerName: 'Số lượng',
@@ -80,22 +82,35 @@ export class OrderDetailComponent implements OnInit {
         valueFormatter: (params: { data: { quantity: any; }; }) => {
           return padZero(params.data.quantity);
         },
+        flex: 1,
       },
       {
         headerName: 'Giá tiền',
         field: 'price',
         suppressMovable: true,
-        valueFormatter: (params: { data: { price: number; }; }) => {
-          return formatMoney(params.data.price);
+        valueFormatter: (params) => {
+          return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+            .format(params.data.price)
+            .replace('₫', '') + 'đ';
         },
+        flex: 1,
+        // valueFormatter: (params: { data: { price: number; }; }) => {
+        //   return formatMoney(params.data.price);
+        // },
       },
       {
         headerName: 'Thành tiền',
         field: '',
         suppressMovable: true,
-        valueFormatter: (params: { data: { price: number; quantity: number; }; }) => {
-          return formatMoney(params.data.price * params.data.quantity);
+        valueFormatter: (params) => {
+          return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+            .format(params.data.price * params.data.quantity)
+            .replace('₫', '') + 'đ';
         },
+        flex: 1,
+        // valueFormatter: (params: { data: { price: number; quantity: number; }; }) => {
+        //   return formatMoney(params.data.price * params.data.quantity);
+        // },
       }
     ];
     this.status = this.data.data.status;
