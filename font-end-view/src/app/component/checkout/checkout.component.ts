@@ -143,7 +143,6 @@ export class CheckoutComponent implements OnInit {
 
   calculateTotal(price: number, quantity: number): string {
     const total = price * quantity;
-    // return this.utilService.formatMoney(total);
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
             .format(total)
             .replace('₫', '') + 'đ';

@@ -56,7 +56,6 @@ export class PogupVoucherSCComponent implements OnInit {
     };
 
     this.voucherService.getAllVoucherSales(obj).subscribe(res => {
-      console.log(res)
       this.listVoucher = res;
     });
 

@@ -20,7 +20,7 @@ export class DetailsComponent implements OnInit {
   listProductTuongTu = [];
   isMouseOver: { [key: number]: boolean } = {};
   quantityBuy: number = 1;
-
+  infoCustomer: any;
   product: any;
   listColor = [];
   listSize = [];
@@ -62,13 +62,15 @@ export class DetailsComponent implements OnInit {
         this.product = res.data;
 
         this.productService.getProductTuongTu(res.data.id, res.data.categoryDTO.id).subscribe((res2) => {
-            this.listProductTuongTu = res2;
-            this.cdr.detectChanges();
-          });
+          this.listProductTuongTu = res2;
+          this.cdr.detectChanges();
+        });
 
         this.loadData();
       });
     });
+
+    this.infoCustomer = JSON.parse(localStorage.getItem('customer'));
   }
 
   private loadData(): void {
@@ -234,43 +236,84 @@ export class DetailsComponent implements OnInit {
   }
 
   addToCart(product: number) {
+    if (this.infoCustomer) {
+      this.cartService.addToCartCustomer(product, this.colorId, this.sizeId, this.quantityBuy, this.infoCustomer.id)
+        .subscribe((res: any) => {
+          // console.log(res.data)
+          this.handleServerResponse(res)
+        }
+        );
+    } else {
+      this.handleLocalCart(product);
+    }
+  }
+
+  handleServerResponse(res: any): void {
+    if (res && res.success) {
+      if (Array.isArray(res.data)) {
+        res.data.forEach((item: { quantity: any; }) => {
+          if (item && item.quantity !== undefined) {
+            this.updateCookieWithServerCart(item);
+          } else {
+            this.showErrorNotification('Dữ liệu không hợp lệ.');
+          }
+        });
+      } 
+      else {
+        this.showErrorNotification('Dữ liệu trả về không hợp lệ.');
+      }
+    } 
+    // else {
+    //   this.showErrorNotification(res.message || 'Có lỗi xảy ra khi thêm vào giỏ hàng.');
+    // }
+  }
+
+  updateCookieWithServerCart(data: any) {
+    const productKey = data.idProduct + '-' + data.idColor + '-' + data.idSize;
+
+    this.cartData.set(productKey, data.quantity);
+
+    this.cookieService.set('cart', JSON.stringify(Array.from(this.cartData.entries())));
+
+    this.showSuccessNotification('Thêm vào giỏ thành công');
+
+    this.cartService.updateTotalProducts(this.cartData.size);
+  }
+
+  handleLocalCart(product: number) {
     const productKey = product + '-' + this.colorId + '-' + this.sizeId;
-
     const expirationDate = new Date();
-
-    expirationDate.setTime(expirationDate.getTime() + 30 * 60 * 1000);
+    expirationDate.setTime(expirationDate.getTime() + 30 * 60 * 1000); // 30 phút
 
     if (this.cartData.has(productKey)) {
-      const slHienTai = this.cartData.get(productKey);
-      this.cartData.set(productKey, slHienTai + this.quantityBuy);
-      this.cookieService.set(
-        'cart',
-        JSON.stringify(Array.from(this.cartData.entries())),
-        expirationDate
-      );
-      Swal.fire({
-        icon: 'success',
-        title: 'Thêm vào giỏ thành công',
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      this.quantityBuy = 1;
+      const currentQuantity = this.cartData.get(productKey);
+      this.cartData.set(productKey, currentQuantity + this.quantityBuy);
     } else {
       this.cartData.set(productKey, this.quantityBuy);
-      this.cookieService.set(
-        'cart',
-        JSON.stringify(Array.from(this.cartData.entries())),
-        expirationDate
-      );
-      Swal.fire({
-        icon: 'success',
-        title: 'Thêm vào giỏ thành công',
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      this.quantityBuy = 1;
     }
+
+    this.cookieService.set('cart', JSON.stringify(Array.from(this.cartData.entries())), expirationDate);
+
+    this.showSuccessNotification('Thêm vào giỏ thành công');
+    this.quantityBuy = 1;
     this.cartService.updateTotalProducts(this.cartData.size);
+  }
+
+  showSuccessNotification(message: string) {
+    Swal.fire({
+      icon: 'success',
+      title: message,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+
+  showErrorNotification(message: string) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Có lỗi xảy ra',
+      text: message,
+    });
   }
 
   buyNow(productId: any) {

@@ -15,6 +15,8 @@ import { forkJoin } from 'rxjs';
 })
 export class DetailCheckoutComponent implements OnInit {
   listCart: any = [];
+  cartData1 = new Map();
+  cartData2 = new Map();
   order: any;
   orderCurrent: any;
   statusPayment: any;
@@ -61,7 +63,7 @@ export class DetailCheckoutComponent implements OnInit {
       if (this.user.id === null) {
         this.orderService.createOrderNotLogin(this.order).subscribe(res => {
           if (res.status === 'OK') {
-            this.order.code=res.data.code
+            this.order.code = res.data.code
             this.orderCurrent = res.data;
             const orderDetailPromises = this.listCart.map((item: { productDetailDTO: { id: any; price: any; }; quantity: any; }) => {
               const obj = {
@@ -78,7 +80,22 @@ export class DetailCheckoutComponent implements OnInit {
               orderDetailsResponses => {
                 this.emailService.sendEmailNotLogin(this.orderCurrent).subscribe(result => {
                   localStorage.removeItem('order-bill');
-                  this.cookieService.delete('cart', '/');
+                  // this.cookieService.delete('cart', '/');
+                  const cartData1 = this.cookieService.get('checkout');
+                  const entries1 = JSON.parse(cartData1);
+                  this.cartData1 = new Map(entries1);
+
+                  const cartData2 = this.cookieService.get('cart');
+                  const entries = JSON.parse(cartData2);
+                  this.cartData2 = new Map(entries);
+
+                  this.cartData1.forEach((value, key) => {
+                    const idKey = key.split('-');
+                    const cartKey = `${idKey[0]}-${idKey[1]}-${idKey[2]}`;
+                    this.cartData2.delete(cartKey);
+                    this.cookieService.set('cart', JSON.stringify(Array.from(this.cartData2.entries())));
+                  });
+
                   this.cookieService.delete('checkout', '/');
                 });
               },
@@ -89,7 +106,7 @@ export class DetailCheckoutComponent implements OnInit {
       else {
         this.orderService.createOrder(this.order).subscribe(res => {
           if (res.status === 'OK') {
-            this.order.code=res.data.code
+            this.order.code = res.data.code
             this.orderCurrent = res.data;
             const orderDetailPromises = this.listCart.map((item: { productDetailDTO: { id: any; price: any; }; quantity: any; }) => {
               const obj = {
@@ -105,8 +122,29 @@ export class DetailCheckoutComponent implements OnInit {
             forkJoin(orderDetailPromises).subscribe(
               orderDetailsResponses => {
                 this.emailService.sendEmail(this.orderCurrent).subscribe(result => {
+                  // localStorage.removeItem('order-bill');
+                  // this.cookieService.delete('cart', '/');
+                  // this.cookieService.delete('checkout', '/');
+
                   localStorage.removeItem('order-bill');
-                  this.cookieService.delete('cart', '/');
+                  const cartData1 = this.cookieService.get('checkout');
+                  const entries1 = JSON.parse(cartData1);
+                  this.cartData1 = new Map(entries1);
+
+                  const cartData2 = this.cookieService.get('cart');
+                  const entries = JSON.parse(cartData2);
+                  this.cartData2 = new Map(entries);
+
+                  this.cartData1.forEach((value, key) => {
+                    const idKey = key.split('-');
+                    const cartKey = `${idKey[0]}-${idKey[1]}-${idKey[2]}`;
+                    this.cartData2.delete(cartKey);
+                    this.cartService.xoa(idKey[0], idKey[1], idKey[2], this.user.id).subscribe((res) => {
+                      console.log(res)
+                    })
+                    this.cookieService.set('cart', JSON.stringify(Array.from(this.cartData2.entries())));
+                  });
+
                   this.cookieService.delete('checkout', '/');
                 });
               }
@@ -120,16 +158,14 @@ export class DetailCheckoutComponent implements OnInit {
       if (this.user.id === null) {
         this.orderService.createOrderNotLogin(this.order).subscribe(res => {
           if (res.status === 'OK') {
-            this.order.code=res.data.code
+            this.order.code = res.data.code
             this.orderCurrent = res.data;
             const orderDetailPromises = this.listCart.map((item: { productDetailDTO: { id: any; price: any; }; quantity: any; }) => {
               const obj = {
                 idOrder: res.data.id,
                 idProductDetail: item.productDetailDTO.id,
                 quantity: item.quantity,
-                // price: item.productDTO?.reducePrice != null || item.productDTO?.percentageReduce != null ? (item.productDTO.price - item.productDTO.reducePrice) : item.productDTO.price,
                 price: item.productDetailDTO.price,
-                // codeDiscount: this.extractCodeDiscount(item.productDTO),
               };
               return this.orderDetailService.createOrderDetail(obj).toPromise();
             });
@@ -137,7 +173,22 @@ export class DetailCheckoutComponent implements OnInit {
               orderDetailsResponses => {
                 this.emailService.sendEmailNotLogin(this.orderCurrent).subscribe(result => {
                   localStorage.removeItem('order-bill');
-                  this.cookieService.delete('cart', '/');
+                  // this.cookieService.delete('cart', '/');
+                  const cartData1 = this.cookieService.get('checkout');
+                  const entries1 = JSON.parse(cartData1);
+                  this.cartData1 = new Map(entries1);
+
+                  const cartData2 = this.cookieService.get('cart');
+                  const entries = JSON.parse(cartData2);
+                  this.cartData2 = new Map(entries);
+
+                  this.cartData1.forEach((value, key) => {
+                    const idKey = key.split('-');
+                    const cartKey = `${idKey[0]}-${idKey[1]}-${idKey[2]}`;
+                    this.cartData2.delete(cartKey);
+                    this.cookieService.set('cart', JSON.stringify(Array.from(this.cartData2.entries())));
+                  });
+
                   this.cookieService.delete('checkout', '/');
                 });
               },
@@ -148,7 +199,7 @@ export class DetailCheckoutComponent implements OnInit {
       else {
         this.orderService.createOrder(this.order).subscribe(res => {
           if (res.status === 'OK') {
-            this.order.code=res.data.code
+            this.order.code = res.data.code
             this.orderCurrent = res.data;
             const orderDetailPromises = this.listCart.map((item: { productDetailDTO: { id: any; price: any; }; quantity: any; }) => {
               const obj = {
@@ -164,8 +215,29 @@ export class DetailCheckoutComponent implements OnInit {
             forkJoin(orderDetailPromises).subscribe(
               orderDetailsResponses => {
                 this.emailService.sendEmail(this.orderCurrent).subscribe(result => {
+                  // localStorage.removeItem('order-bill');
+                  // this.cookieService.delete('cart', '/');
+                  // this.cookieService.delete('checkout', '/');
+
                   localStorage.removeItem('order-bill');
-                  this.cookieService.delete('cart', '/');
+                  const cartData1 = this.cookieService.get('checkout');
+                  const entries1 = JSON.parse(cartData1);
+                  this.cartData1 = new Map(entries1);
+
+                  const cartData2 = this.cookieService.get('cart');
+                  const entries = JSON.parse(cartData2);
+                  this.cartData2 = new Map(entries);
+
+                  this.cartData1.forEach((value, key) => {
+                    const idKey = key.split('-');
+                    const cartKey = `${idKey[0]}-${idKey[1]}-${idKey[2]}`;
+                    this.cartData2.delete(cartKey);
+                    this.cartService.xoa(idKey[0], idKey[1], idKey[2], this.user.id).subscribe((res) => {
+                      console.log(res)
+                    })
+                    this.cookieService.set('cart', JSON.stringify(Array.from(this.cartData2.entries())));
+                  });
+
                   this.cookieService.delete('checkout', '/');
                 });
               }
@@ -180,15 +252,7 @@ export class DetailCheckoutComponent implements OnInit {
     const total = price * quantity;
     // return this.utilService.formatMoney(total);
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
-            .format(total)
-            .replace('₫', '') + 'đ';
+      .format(total)
+      .replace('₫', '') + 'đ';
   }
-
-  // extractCodeDiscount(productDTO): string | null {
-  //   return productDTO?.reducePrice != null || productDTO?.percentageReduce != null ?
-  //     productDTO.codeDiscount : null;
-  // }
-
-  // openHome() {
-  // }
 }

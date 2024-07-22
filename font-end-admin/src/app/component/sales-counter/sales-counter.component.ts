@@ -642,14 +642,19 @@ export class SalesCounterComponent implements OnInit {
 
                   this.calculateTotalAllProducts();
 
+                  // Lấy danh sách đơn hàng từ localStorage
                   let listOrderCurrent = JSON.parse(localStorage.getItem('listOrder'));
 
-                  // Xoá đơn hàng với id bằng currentOrderId khỏi listOrder
-                  listOrderCurrent = listOrderCurrent.filter((order: any) => order.id !== this.currentOrderId);
+                  // Xoá productList của đơn hàng có id bằng currentOrderId
+                  listOrderCurrent = listOrderCurrent.map((order: any) => {
+                    if (order.id === this.currentOrderId) {
+                      return { ...order, productList: [] };
+                    }
+                    return order;
+                  });
 
-                  localStorage.setItem('listOrder', JSON.stringify(listOrder));
-
-                  // localStorage.removeItem('listOrder');
+                  // Cập nhật lại vào localStorage
+                  localStorage.setItem('listOrder', JSON.stringify(listOrderCurrent));
                 }
               });
             }

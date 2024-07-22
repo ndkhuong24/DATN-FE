@@ -1,9 +1,10 @@
 <div class="container">
-  <div class="d-flex">
+  <div>
     <h1 class="title">Đơn Hàng</h1>
   </div>
+
   <div class="row">
-    <div class="col-4">
+    <div class="col-6">
       <div style="display: flex; align-items: flex-start; gap: 12px;">
         <div class="xacNhan">
           <div style="font-size: 14px">{{totalStatus?.xacNhan || '0'}}</div>
@@ -17,9 +18,6 @@
           <div style="font-size: 14px">{{totalStatus?.giaoHang || '0'}}</div>
           <label>Đang giao</label>
         </div>
-      </div>
-      <br>
-      <div style="display: flex; align-items: flex-start; gap: 12px;">
         <div class="xacNhan">
           <div style="font-size: 14px">{{totalStatus?.hoanThanh || '0'}}</div>
           <label>Hoàn thành</label>
@@ -29,8 +27,19 @@
           <label>Hủy</label>
         </div>
       </div>
+      <!-- <br>
+      <div style="display: flex; align-items: flex-start; gap: 12px;">
+        <div class="xacNhan">
+          <div style="font-size: 14px">{{totalStatus?.hoanThanh || '0'}}</div>
+          <label>Hoàn thành</label>
+        </div>
+        <div class="xacNhan">
+          <div style="font-size: 14px">{{totalStatus?.huy || '0'}}</div>
+          <label>Hủy</label>
+        </div>
+      </div> -->
     </div>
-    <div class="col-8">
+    <div class="col-6">
       <div class="" style="display: flex; justify-content: flex-end">
         <div>
           <div class="form-group" style="margin-top: -20px;">
@@ -53,7 +62,7 @@
     </div>
   </div>
 
-  <div>
+  <div style="margin-top: 10px;">
     <mat-tab-group (selectedTabChange)="tabChanged($event)">
       <mat-tab [label]="s?.name" *ngFor="let s of listStatus">
         <div class="order-table">

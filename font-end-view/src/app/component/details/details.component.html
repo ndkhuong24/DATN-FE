@@ -69,15 +69,19 @@
 
           <input style="width: 30px;height: 30px;" class="mtext-104 cl3 txt-center num-product" type="number"
             name="num-product" [(ngModel)]="quantityBuy" (ngModelChange)="checkQuantity()" />
+            
           <button type="button" class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m"
             [style.cursor]="quantityBuy< getProductDetailQuantity()? 'pointer':'not-allowed'" (click)="tangSoLuong();"
             [disabled]="quantityBuy >= getProductDetailQuantity()">
             <i class="fa-solid fa-plus"></i>
           </button>
         </div>
+
         <div class="validate-input" *ngIf="validQuantityBuy">
           <p class="validate-input-label" *ngIf="validQuantityBuy">{{validQuantityBuyMess}}</p>
         </div>
+
+        <!--Mua hàng-->
         <div class="btn-groups">
           <button class="add-cart-btn" style="border-radius: 5px"
             [disabled]="bothSizeAndColorSelected === false || this.validQuantityBuy"
