@@ -25,6 +25,8 @@ export class VoucherShipComponent implements OnInit {
   dateFromCurrent = null;
   dateToCurrent = null;
 
+  filterOption: '0' | '1';
+
   public rowSelection: 'single' | 'multiple' = 'multiple';
 
   constructor(
@@ -254,16 +256,14 @@ export class VoucherShipComponent implements OnInit {
     }
   }
 
-  // openAdd() {
-  //   const dialogref = this.matDialog.open(CreatVoucherShipComponent, {
-  //     width: '250vh',
-  //     height: '98vh',
-  //   });
-  //   dialogref.afterClosed().subscribe((result) => {
-  //     if (result === 'addVoucherFreeShip') {
-  //       this.ngOnInit();
-  //       this.cdr.detectChanges();
-  //     }
-  //   });
-  // }
+  onLocChange(event: any) {
+    switch (this.loc) {
+      case '0':
+        this.getAllVoucherShip();
+        break;
+      default:
+        this.getAllVoucherShip();
+        break;
+    }
+  }
 }

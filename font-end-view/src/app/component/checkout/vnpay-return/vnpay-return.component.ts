@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, NgModule, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { OrderDetailService } from 'src/app/service/order-detail.service';
 import { OrderService } from 'src/app/service/order.service';
 import { PaymentService } from 'src/app/service/payment.service';
@@ -17,6 +18,7 @@ export class VnpayReturnComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private paymentSalesService: PaymentService,
+        private cookieService: CookieService,
         private orderService: OrderService,
         private orderDetailService: OrderDetailService,
     ) { }
@@ -53,4 +55,11 @@ export class VnpayReturnComponent implements OnInit {
         );
     }
 
+    return() {
+        if (this.paymentResult === 'success') {
+            window.location.href = 'http://localhost:4000/cart/checkout-detail';
+        } else {
+            window.location.href = 'http://localhost:4000/cart/checkout';
+        }
+    }
 }
