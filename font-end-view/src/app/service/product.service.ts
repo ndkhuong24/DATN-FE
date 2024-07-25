@@ -20,4 +20,7 @@ export class ProductService {
   getDetailProduct(idProduct: number): Observable<any> {
     return this.http.get(`${apiURL}get-detail-product/${idProduct}`);
   }
+  getAllProduct(): Observable<any> {
+    return this.http.get(`${apiURL}get-all-product`)
+  }
 }

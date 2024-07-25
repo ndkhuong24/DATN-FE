@@ -1,48 +1,92 @@
 
 <div class=" row">
-  <div class="san-pham col-10" style="margin-top: 40px;">
-    <div class="breadcrumbs">
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <!-- <p ><span><a style="text-decoration: none;" href="index.html">Trang Chủ</a></span>
-              / <span>Sản Phẩm</span></p> -->
-          </div>
-          <img src="/assets/image/BANNER_L_N-RUNNING.jpg"  style="margin-left: 100px;" alt="">
+  <div class="container">
+        <div class="row" style="width: 1150px;">
+      
+          <img src="/assets/image/BANNER_L_N-RUNNING.jpg"    alt="">
         </div>
         
       </div>
-    </div>
+      <div class="col-4" style="margin-top: 100px;">
+        <p>Màu Sắc :</p>
+        <div *ngFor="let c of listColor" style="float: left; margin-left: 20px;">
+          <input type="checkbox" value="{{c.id}}" (change)="onColorChange(c.id, $event)" id="color" />
+          <span style="font-size: larger; font-weight: 500">{{c.name}}</span>
+        </div>
+      <br>
+        <p style="margin-top: 20px;">Size :</p>
+        <div *ngFor="let s of listSize" style="float: left; margin-left: 20px;">
+          <input type="checkbox" value="{{s.id}}" (change)="onSizeChange(s.id, $event)" id="size" />
+          <span style="font-size: larger; font-weight: 500">{{s.sizeNumber}}</span>
+        </div>
+<br>
+        <p style="margin-top: 20px;">Brand :</p>
+        <div *ngFor="let b of listBrand" style="float: left; margin-left: 20px;">
+          <input type="checkbox" value="{{b.id}}" (change)="onBrandChange(b.id,$event)"  id="brand" />
+          <span style="font-size: larger; font-weight: 500">{{b.name}}</span>
+        </div>
+<br>
+        <p style="margin-top: 20px;">Category :</p>
+        <div *ngFor="let c of listCategory" style="float: left; margin-left: 20px;">
+          <input type="checkbox" value="{{c.id}}" (change)="onCategoryChange(c.id,$event)"  id="category" />
+          <span style="font-size: larger; font-weight: 500">{{c.name}}</span>
+        </div>
+        <br>
+        <p style="margin-top: 20px;">Material :</p>
+        <div *ngFor="let m of listMaterial" style="float: left; margin-left: 20px;">
+          <input type="checkbox" value="{{m.id}}" (change)="onMaterialChange(m.id,$event)"  id="size" />
+          <span style="font-size: larger; font-weight: 500">{{m.name}}</span>
+        </div>
+        <br>
+        <p style="margin-top: 20px;">Sole :</p>
+        <div *ngFor="let s of listSole" style="float: left; margin-left: 20px;">
+          <input type="checkbox" value="{{s.id}}" (change)="onSoleChange(s.id,$event)" id="sole" />
+          <span style="font-size: larger; font-weight: 500">{{s.soleMaterial}},{{s.soleHeight}}</span>
+        </div>
+        <br>
+        <br>
+        <div>
+          <label for="minPrice">Min Price:</label>
+          <input type="number" id="minPrice" (input)="onMinPriceChange($event)">
+        </div>
+        <div>
+          <label for="maxPrice">Max Price:</label>
+          <input type="number" id="maxPrice" (input)="onMaxPriceChange($event)">
+        </div>
+        <div style="clear: both; margin-top: 20px;">
+          <button (click)="applyFilter()">Apply Filter</button>
+        </div>
+      </div>
+  <div class="col-8">
     <div style="margin-top: 40px;">
       <div class="container text-center">
         <div class="row align-items-start">
           <div style="display: flex; gap: 15px; margin-top: 50px;" class="col-4" *ngFor="let p of listProductNoiBat">
             <div class="card" style="width: 18rem;">
-              <a  [routerLink]="['/product-details',p.id]">
-                <img style="width: 300px; height: 300px"
-                  (mouseenter)="onMouseEnter(p)"
-                  (mouseleave)="onMouseLeave(p)"
-                  [src]="isMouseOver[p.id] ? p.imagesDTOList[1].imageName : p.imagesDTOList[0].imageName"
-                  class="card-img-top"
-                  alt="..."
-                >
-                <span style="font-size:smaller;" *ngIf="p.reducePrice != null && p.percentageReduce != null" class="percentage-badge">{{ p.percentageReduce }}%</span>
+              <a [routerLink]="['/product-details',p.id]">
+                <img style="width: 200px; height: 200px" [src]="p.imageURL" class="card-img-top">
               </a>
 
-              <div class="card-body" style="margin-left: 60px;">
+              <div class="card-body">
                 <h5 class="card-title">{{p.name}}</h5>
-                <div  *ngIf="p?.reducePrice == null && p?.percentageReduce == null">
-                  <div  style="font-size: 18px;font-weight: 500;color: red;" *ngIf="p?.price == p?.maxPrice"><span>{{utilService.formatMoney(p?.price)}}</span></div>
-                  <div  style="font-size: 18px;font-weight: 500;color: red;" *ngIf="p?.price != p?.maxPrice"><span>{{utilService.formatMoney(p?.price)}}-{{utilService.formatMoney(p?.maxPrice)}}</span></div>
-                </div>
-                <div *ngIf="p?.reducePrice != null && p?.percentageReduce != null">
-                  <div  style="font-size: 10px; margin-top: 10px"><div style="text-decoration: line-through; color: #757575">{{utilService.formatMoney(p.price)}}</div></div>
-                  <div style="font-size: 25px"><span>{{utilService.formatMoney(p.price - p.reducePrice)}}</span></div>
+                <div *ngIf="p?.reducePrice == null && p?.percentageReduce == null">
+
+                  <div style="font-size: 18px;font-weight: 600;color: red;" *ngIf="p?.minPrice == p?.maxPrice">
+                    <span>{{utilService.formatMoney(p?.minPrice)}}</span>
+                  </div>
+
+                  <div style="font-size: 18px;font-weight: 600;color: red;" *ngIf="p?.minPrice != p?.maxPrice">
+                    <span>{{utilService.formatMoney(p?.minPrice)}}-{{utilService.formatMoney(p?.maxPrice)}}</span>
+                  </div>
+
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+  
 </div>
 
