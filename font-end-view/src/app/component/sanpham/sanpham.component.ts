@@ -11,7 +11,8 @@ import {MaterialService} from '../../service/material.service';
 import {SoleService} from '../../service/sole.service';
 import {NestedTreeControl} from '@angular/cdk/tree';
 import {MatTreeNestedDataSource} from '@angular/material/tree';
-import { log } from 'console';
+
+
 
 
 
@@ -88,6 +89,7 @@ export class SanphamComponent implements OnInit {
     this.getBrandTop();
     this.getAlldata();
     this.getAllProduct();
+  
   }
 
   getProductNoiBat(idBrand){
@@ -163,8 +165,10 @@ export class SanphamComponent implements OnInit {
   selectedCategory: number[]=[];
   selectedMaterial:number[]=[];
   selectedSole:number[]=[];
-  minPrice: number | null = null; // Add minPrice
-  maxPrice: number | null = null; // Add maxPrice
+  minPrice: number = 0; // Initialize with default value
+  maxPrice: number = 10000; // Initialize with default value
+
+
   onColorChange(id: number, event: any) {
     if (event.target.checked) {
       this.selectedColors.push(id);
@@ -243,7 +247,11 @@ export class SanphamComponent implements OnInit {
     this.listProductNoiBat=[];
     this.listProductNoiBat=filteredProducts;
   }
-
-  
+  updateSlider() {
+    if (this.minPrice > this.maxPrice) {
+      [this.minPrice, this.maxPrice] = [this.maxPrice, this.minPrice];
+    }
+   
+  }
 } 
 

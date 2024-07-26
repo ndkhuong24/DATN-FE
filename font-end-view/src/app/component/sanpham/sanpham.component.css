@@ -1,18 +1,3 @@
-.card-img-top{
-  width: 220px;
-  height: 180px;
-  padding-left: 50px;
-  padding-top: 10px;
-
-
-}
-.img{
-  margin-left: 20px;
-  width: 1200px;
-  display: flex;
-  height: 310px;
-  max-width: 1200px;
-}
 .card {
   border: #ebebeb;
   border-radius: 6px;
@@ -41,14 +26,19 @@
   width: 100px;
   height: 100px;
 }
+
 .percentage-badge {
   position: absolute;
   top: 0;
   right: 13px;
-  background-color: #ff0000; /* Màu nền của phần % */
-  color: #ffffff; /* Màu chữ của phần % */
-  padding: 5px; /* Khoảng cách padding cho phần % */
-  border-radius: 5px; /* Bo góc cho phần % */
+  background-color: #ff0000;
+  /* Màu nền của phần % */
+  color: #ffffff;
+  /* Màu chữ của phần % */
+  padding: 5px;
+  /* Khoảng cách padding cho phần % */
+  border-radius: 5px;
+  /* Bo góc cho phần % */
 }
 .example-tree-invisible {
   display: none;
@@ -59,4 +49,105 @@
   margin-top: 0;
   margin-bottom: 0;
   list-style-type: none;
+}
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  float: left;
+}
+
+.checkbox-container input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.5);
+  cursor: pointer;
+}
+
+.checkbox-container span {
+  font-size: larger;
+  font-weight: 500;
+}
+
+.section-title {
+  clear: both;
+  margin-top: 20px;
+}
+
+.range-slider-container {
+  float: left;
+  position: relative;
+  width: 70%;
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: transparent;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #007bff;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  cursor: pointer;
+  pointer-events: all;
+  position: relative;
+}
+
+.range-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #007bff;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  cursor: pointer;
+  pointer-events: all;
+}
+
+.slider-track {
+  position: absolute;
+  width: 100%;
+  height: 8px;
+  background: #ddd;
+  border-radius: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.slider-track::before {
+  content: '';
+  position: absolute;
+  height: 8px;
+  background: #007bff;
+  border-radius: 4px;
+  z-index: -1;
+  left: 0;
+  right: 0;
+}
+
+.range-slider-container .slider-track::before {
+  left: calc(var(--min) / var(--max) * 100%);
+  right: calc(100% - var(--max) / var(--max) * 100%);
+}
+
+.slider-values {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 1rem;
 }
