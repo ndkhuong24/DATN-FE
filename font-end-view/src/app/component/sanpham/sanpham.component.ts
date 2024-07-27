@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ProductService } from '../../service/product.service';
 import { UtilService } from '../../util/util.service';
@@ -12,6 +13,24 @@ import { SoleService } from '../../service/sole.service';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 // import { log } from 'console';
+=======
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ProductService} from '../../service/product.service';
+import {UtilService} from '../../util/util.service';
+import {CookieService} from 'ngx-cookie-service';
+import {CartService} from '../../service/cart.service';
+import {BrandService} from '../../service/brand.service';
+import {ColorService} from '../../service/color.service';
+import {SizeService} from '../../service/size.service';
+import {CategoryService} from '../../service/category.service';
+import {MaterialService} from '../../service/material.service';
+import {SoleService} from '../../service/sole.service';
+import {NestedTreeControl} from '@angular/cdk/tree';
+import {MatTreeNestedDataSource} from '@angular/material/tree';
+
+
+
+>>>>>>> 95f510a796b10e0892af10ade6cd319e40f6276d
 
 
 interface FoodNode {
@@ -95,6 +114,7 @@ export class SanphamComponent implements OnInit {
     this.getBrandTop();
     this.getAlldata();
     this.getAllProduct();
+  
   }
 
   getProductNoiBat(idBrand) {
@@ -164,12 +184,22 @@ export class SanphamComponent implements OnInit {
 
   selectedColors: number[] = [];
   selectedSizes: number[] = [];
+<<<<<<< HEAD
   selectedBrand: number[] = [];
   selectedCategory: number[] = [];
   selectedMaterial: number[] = [];
   selectedSole: number[] = [];
   minPrice: number | null = null; // Add minPrice
   maxPrice: number | null = null; // Add maxPrice
+=======
+  selectedBrand: number[] =[];
+  selectedCategory: number[]=[];
+  selectedMaterial:number[]=[];
+  selectedSole:number[]=[];
+  minPrice: number = 0; // Initialize with default value
+  maxPrice: number = 10000; // Initialize with default value
+
+>>>>>>> 95f510a796b10e0892af10ade6cd319e40f6276d
 
   onColorChange(id: number, event: any) {
     if (event.target.checked) {
@@ -256,5 +286,15 @@ export class SanphamComponent implements OnInit {
     this.listProductNoiBat = [];
     this.listProductNoiBat = filteredProducts;
   }
+<<<<<<< HEAD
 }
+=======
+  updateSlider() {
+    if (this.minPrice > this.maxPrice) {
+      [this.minPrice, this.maxPrice] = [this.maxPrice, this.minPrice];
+    }
+   
+  }
+} 
+>>>>>>> 95f510a796b10e0892af10ade6cd319e40f6276d
 
