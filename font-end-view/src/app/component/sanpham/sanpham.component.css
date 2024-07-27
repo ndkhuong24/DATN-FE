@@ -67,12 +67,12 @@
 
 .checkbox-container span {
   font-size: larger;
-  font-weight: 500;
+  /* font-weight: 500; */
 }
 
 .section-title {
   clear: both;
-  margin-top: 20px;
+  /* margin-top: 40px; */
 }
 
 .range-slider-container {
@@ -80,8 +80,8 @@
   position: relative;
   width: 70%;
   max-width: 500px;
-  margin: 40px auto;
-  padding: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .range-slider {

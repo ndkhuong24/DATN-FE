@@ -159,7 +159,7 @@ export class SanphamComponent implements OnInit {
 
   treeControl = new NestedTreeControl<FoodNode>(node => node.children);
   dataSource = new MatTreeNestedDataSource<FoodNode>();
-  hasChild = (_: number, node: FoodNode) => !!node.children && node.children.length > 0;
+  // hasChild = (_: number, node: FoodNode) => !!node.children && node.children.length > 0;
 
   selectedColors: number[] = [];
   selectedSizes: number[] = [];
@@ -168,7 +168,7 @@ export class SanphamComponent implements OnInit {
   selectedMaterial: number[] = [];
   selectedSole: number[] = [];
   minPrice: number = 1; // Initialize with default value
-  maxPrice: number = 100000000; // Initialize with default value
+  maxPrice: number = 10000000; // Initialize with default value
 
 
   onColorChange(id: number, event: any) {

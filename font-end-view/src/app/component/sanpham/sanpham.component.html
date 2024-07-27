@@ -1,84 +1,96 @@
-<div class=" row">
-  <div class="container">
+<div class="container">
+  <div>
     <div class="row" style="width: 1150px;">
       <img src="/assets/image/BANNER_L_N-RUNNING.jpg" alt="">
     </div>
-
   </div>
-  <div class="col-4" style="margin-top: 100px; margin-left: 20px;">
-    <p class="section-title">Màu Sắc :</p>
-    <div *ngFor="let c of listColor" class="checkbox-container">
-      <input type="checkbox" value="{{c.id}}" (change)="onColorChange(c.id, $event)" id="color" />
-      <span>{{c.name}}</span>
-    </div>
-    <br>
 
-    <p class="section-title">Size :</p>
-    <div *ngFor="let s of listSize" class="checkbox-container">
-      <input type="checkbox" value="{{s.id}}" (change)="onSizeChange(s.id, $event)" id="size" />
-      <span>{{s.sizeNumber}}</span>
-    </div>
-    <br>
-
-    <p class="section-title">Brand :</p>
-    <div *ngFor="let b of listBrand" class="checkbox-container">
-      <input type="checkbox" value="{{b.id}}" (change)="onBrandChange(b.id,$event)" id="brand" />
-      <span>{{b.name}}</span>
-    </div>
-    <br>
-
-    <p class="section-title">Category :</p>
-    <div *ngFor="let c of listCategory" class="checkbox-container">
-      <input type="checkbox" value="{{c.id}}" (change)="onCategoryChange(c.id,$event)" id="category" />
-      <span>{{c.name}}</span>
-    </div>
-    <br>
-
-    <p class="section-title">Material :</p>
-    <div *ngFor="let m of listMaterial" class="checkbox-container">
-      <input type="checkbox" value="{{m.id}}" (change)="onMaterialChange(m.id,$event)" id="size" />
-      <span>{{m.name}}</span>
-    </div>
-    <br>
-
-    <p class="section-title">Sole :</p>
-    <div *ngFor="let s of listSole" class="checkbox-container">
-      <input type="checkbox" value="{{s.id}}" (change)="onSoleChange(s.id,$event)" id="sole" />
-      <span>{{s.soleMaterial}},{{s.soleHeight}}</span>
-    </div>
-    <div class="range-slider-container">
-      <div class="slider-values">
-        <span>Min: {{ minPrice | number: '1.0-0'}}</span>
-        <span>Max: {{ maxPrice | number: '1.0-0' }}</span>
+  <div class="row">
+    <div class="col-4" style="margin-top: 60px; margin-bottom: 10px;">
+      <div>
+        <p class="section-title">Màu Sắc :</p>
+        <div *ngFor="let c of listColor" class="checkbox-container">
+          <input type="checkbox" value="{{c.id}}" (change)="onColorChange(c.id, $event)" id="color" />
+          <span>{{c.name}}</span>
+        </div>
       </div>
-      <br>
-      <div class="slider-track"></div>
-      <input type="range" min="0" max="10000" [(ngModel)]="minPrice" (input)="updateSlider()" class="range-slider"
-        id="min-range">
-      <input type="range" min="0" max="10000" [(ngModel)]="maxPrice" (input)="updateSlider()" class="range-slider"
-        id="max-range">
+
+      <div>
+        <p class="section-title">Size :</p>
+        <div *ngFor="let s of listSize" class="checkbox-container">
+          <input type="checkbox" value="{{s.id}}" (change)="onSizeChange(s.id, $event)" id="size" />
+          <span>{{s.sizeNumber}}</span>
+        </div>
+      </div>
+
+      <div>
+        <p class="section-title">Brand :</p>
+        <div *ngFor="let b of listBrand" class="checkbox-container">
+          <input type="checkbox" value="{{b.id}}" (change)="onBrandChange(b.id,$event)" id="brand" />
+          <span>{{b.name}}</span>
+        </div>
+      </div>
+
+      <div>
+        <p class="section-title">Category :</p>
+        <div *ngFor="let c of listCategory" class="checkbox-container">
+          <input type="checkbox" value="{{c.id}}" (change)="onCategoryChange(c.id,$event)" id="category" />
+          <span>{{c.name}}</span>
+        </div>
+      </div>
+
+      <div>
+        <p class="section-title">Material :</p>
+        <div *ngFor="let m of listMaterial" class="checkbox-container">
+          <input type="checkbox" value="{{m.id}}" (change)="onMaterialChange(m.id,$event)" id="size" />
+          <span>{{m.name}}</span>
+        </div>
+      </div>
+
+      <div>
+        <p class="section-title">Sole :</p>
+        <div *ngFor="let s of listSole" class="checkbox-container">
+          <input type="checkbox" value="{{s.id}}" (change)="onSoleChange(s.id,$event)" id="sole" />
+          <span>{{s.soleMaterial}} - {{s.soleHeight}}</span>
+        </div>
+      </div>
+
+      <div class="range-slider-container">
+        <div class="slider-values">
+          <span>Min: {{ minPrice | number: '1.0-0'}}</span>
+          <span>Max: {{ maxPrice | number: '1.0-0' }}</span>
+        </div>
+        <br>
+        <div class="slider-track"></div>
+        <input type="range" min="1" max="10000000" [(ngModel)]="minPrice" (input)="updateSlider()" class="range-slider"
+          id="min-range">
+        <input type="range" min="1" max="10000000" [(ngModel)]="maxPrice" (input)="updateSlider()" class="range-slider"
+          id="max-range">
+      </div>
+
+      <div style="clear: both; margin-top: -60px;">
+        <button type="button" class="btn btn-outline-primary" (click)="applyFilter()">Áp dụng</button>
+      </div>
     </div>
-    <div style="clear: both; margin-top: -50px;">
-      <button type="button" class="btn btn-outline-primary" (click)="applyFilter()">Apply Filter</button>
-    </div>
-  </div>
-  <div class="col-7">
-    <div style="margin-top: 40px;">
-      <div class="container text-center">
-        <div class="row align-items-start">
-          <div style="display: flex; gap: 15px; margin-top: 50px;" class="col-4" *ngFor="let p of listProductNoiBat">
-            <div class="card" style="width: 18rem;">
-              <a [routerLink]="['/product-details',p.id]">
-                <img style="width: 200px; height: 200px" [src]="p.imageURL" class="card-img-top">
-              </a>
-              <div class="card-body">
-                <h5 class="card-title">{{p.name}}</h5>
-                <div *ngIf="p?.reducePrice == null && p?.percentageReduce == null">
-                  <div style="font-size: 18px;font-weight: 600;color: red;" *ngIf="p?.minPrice == p?.maxPrice">
-                    <span>{{utilService.formatMoney(p?.minPrice)}}</span>
-                  </div>
-                  <div style="font-size: 18px;font-weight: 600;color: red;" *ngIf="p?.minPrice != p?.maxPrice">
-                    <span>{{utilService.formatMoney(p?.minPrice)}}-{{utilService.formatMoney(p?.maxPrice)}}</span>
+
+    <div class="col-8" style="margin-bottom: 10px;">
+      <div style="margin-top: 40px;">
+        <div class="container text-center">
+          <div class="row align-items-start">
+            <div style="display: flex; gap: 15px; margin-top: 50px;" class="col-4" *ngFor="let p of listProductNoiBat">
+              <div class="card" style="width: 18rem;">
+                <a [routerLink]="['/product-details',p.id]">
+                  <img style="width: 200px; height: 200px" [src]="p.imageURL" class="card-img-top">
+                </a>
+                <div class="card-body">
+                  <h5 class="card-title">{{p.name}}</h5>
+                  <div *ngIf="p?.reducePrice == null && p?.percentageReduce == null">
+                    <div style="font-size: 18px;font-weight: 600;color: red;" *ngIf="p?.minPrice == p?.maxPrice">
+                      <span>{{utilService.formatMoney(p?.minPrice)}}</span>
+                    </div>
+                    <div style="font-size: 18px;font-weight: 600;color: red;" *ngIf="p?.minPrice != p?.maxPrice">
+                      <span>{{utilService.formatMoney(p?.minPrice)}} - {{utilService.formatMoney(p?.maxPrice)}}</span>
+                    </div>
                   </div>
                 </div>
               </div>
