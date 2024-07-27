@@ -9,7 +9,7 @@
         (keydown)="revoveInvalid(validFullName)" (blur)="validateFullName()">
       <div class="validate-input" *ngIf="!validFullName.done">
         <p class="validate-input-label" *ngIf="validFullName.empty">Họ và tên không được để trống</p>
-        <p class="validate-input-label" *ngIf="validFullName.maxLength">Họ và tên sản phẩm dưới 250 kí tự</p>
+        <p class="validate-input-label" *ngIf="validFullName.maxLength">Họ và tên dưới 250 kí tự</p>
       </div>
     </mat-form-field>
 
@@ -99,8 +99,8 @@
       <input [(ngModel)]="Description" name="Description" matInput placeholder="Vui lòng nhập quên quán"
         (keydown)="revoveInvalid(validDescription)" (blur)="validateDescription()">
       <div class="validate-input" *ngIf="!validDescription.done">
-        <p class="validate-input-label" *ngIf="validDescription.empty">Họ và tên không được để trống</p>
-        <p class="validate-input-label" *ngIf="validDescription.maxLength">Họ và tên sản phẩm dưới 250 kí tự</p>
+        <p class="validate-input-label" *ngIf="validDescription.empty">Quê quán không được để trống</p>
+        <p class="validate-input-label" *ngIf="validDescription.maxLength">Quê quán sản phẩm dưới 250 kí tự</p>
       </div>
     </mat-form-field>
 

@@ -258,7 +258,8 @@ export class UpdateStaffComponent implements OnInit {
   }
 
   validatePhone() {
-    this.validPhone = CommonFunction.validateInput(this.data.phone, null, /^(0[2-9]|1[2-9]|2[2-9]|3[2-9]|4[2-9]|5[2-9]|6[2-9]|7[2-9]|8[2-9]|9[2-9])\d{8}$/);
+    this.validPhone = CommonFunction.validateInput(this.data.phone, null, /^(0\d{9})$/);
+    // this.validPhone = CommonFunction.validateInput(this.data.phone, null, /^(0|1[2-9]|2[2-9]|3[2-9]|4[2-9]|5[2-9]|6[2-9]|7[2-9]|8[2-9]|9[2-9])\d{8}$/);
   }
 
   validateEmail() {
