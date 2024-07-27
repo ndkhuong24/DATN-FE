@@ -1,23 +1,17 @@
 <div class="login_form ">
-  <!-- <div class="left">
-    <img src="assets/image/logshoes.png">
-  </div> -->
-
   <div class="right" style="margin-bottom: 100px;margin-left: -100px;">
     <h2>Welcome to PulseWave</h2>
-
     <form (ngSubmit)="login()">
-      
       <div class="user">
         <i class="fa-solid fa-user"></i>
         <input type="text" name="user" placeholder="Tên đăng nhập" class="username" [(ngModel)]="form.username"
-               [ngModelOptions]="{standalone: true}" autocomplete="off">
+          [ngModelOptions]="{standalone: true}" autocomplete="off">
       </div>
-
       <p class="passworg_tag"></p>
       <div class="password">
         <i class="fa-solid fa-lock"></i>
-        <input type="{{ showPassword ? 'text' : 'password' }}" name="password" placeholder="Mật khẩu" [(ngModel)]="form.password" [ngModelOptions]="{standalone: true}">
+        <input type="{{ showPassword ? 'text' : 'password' }}" name="password" placeholder="Mật khẩu"
+          [(ngModel)]="form.password" [ngModelOptions]="{standalone: true}">
         <a class="btn" (click)="togglePasswordVisibility()"><i class="fa-solid fa-eye"></i></a>
       </div>
       <div class="d-flex">
@@ -28,11 +22,7 @@
           <a href="/forgot-pass">Quên mật khẩu ?</a>
         </p>
       </div>
-
       <button type="submit">Đăng Nhập</button>
-
     </form>
-
   </div>
-
 </div>

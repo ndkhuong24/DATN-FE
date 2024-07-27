@@ -7,11 +7,12 @@ import { UsersDTO } from '../component/model/UsersDTO';
   providedIn: 'root'
 })
 export class CustomerServiceService {
-
   constructor(private http: HttpClient) { }
+
   findCustomerByPhone(phone: string): Observable<any> {
     return this.http.get('http://localhost:8081/sales-customer/findByPhone/' + phone);
   }
+  
   addCustomerSC(customer: UsersDTO): Observable<any> {
     return this.http.post('http://localhost:8081/sales-customer/add-customer', customer);
   }

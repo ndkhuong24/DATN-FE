@@ -1,5 +1,5 @@
  .sales {
-   background-color: whitesmoke;
+   /* background-color: whitesmoke; */
    width: 100%;
  }
 
@@ -58,7 +58,7 @@
  }
 
  .custom-input {
-   background-color: whitesmoke;
+   /* background-color: whitesmoke; */
    border: none;
    border-bottom: 1px solid #8cd6f6;
  }

@@ -13,7 +13,6 @@ export class OrderDetailService {
 
   createOrderDetail(obj): Observable<any> {
     return this.http.post(`http://localhost:8081/sales-counter/api/create-order-detail`, obj);
-    // return this.http.post(`${apiURL}create-order-detail`, obj);
   }
 
   getAllOrderDetailByOrder(idOrder: number): Observable<any>{

@@ -275,18 +275,16 @@ export class SalesCounterComponent implements OnInit {
   }
 
   updateQuantityInOrder(product: any, newQuantity: number, index: number) {
-    // Kiểm tra newQuantity có hợp lệ hay không (ví dụ như không được âm)
     if (newQuantity <= 0) {
       this.toastr.error('Số lượng sản phẩm phải lớn hơn 0');
       return;
     }
 
-    // Kiểm tra nếu số lượng mới vượt quá số lượng trong kho
     if (newQuantity > product.quantity) {
       this.toastr.error('Không đủ số lượng trong kho');
       newQuantity = product.quantity;
       product.quantityInOrder = product.quantity;
-      // return;
+      return;
     } else {
       // Cập nhật quantityInOrder trên sản phẩm
       product.quantityInOrder = newQuantity;
@@ -684,7 +682,6 @@ export class SalesCounterComponent implements OnInit {
   }
 
   generateOrderHTML(): string {
-    // Lấy danh sách đơn hàng từ localStorage
     let listOrder = JSON.parse(localStorage.getItem('listOrder'));
     let currentOrder = listOrder.find((order: { id: number }) => order.id === this.currentOrderId);
 
@@ -756,14 +753,15 @@ export class SalesCounterComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(CustomerComponent, {
-      width: '1200px',
-      height: '600px',
+    this.dialog.open(CustomerComponent, {
+      width: '60vh',
+      height: '68vh',
       data: { name: this.name }
     });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log(result)
+    //   // Swal.fire('Thêm', 'Thêm khách hàng thành công', 'success');
+    // });
   }
 
   openDialogBill(): void {

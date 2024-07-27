@@ -59,14 +59,19 @@ export class DetailsComponent implements OnInit {
       const id = params.idProduct;
 
       this.productService.getDetailProduct(id).subscribe((res) => {
-        this.product = res.data;
+        if (res.message === 'Sản phẩm không hợp lệ hoặc đã bị xóa!') {
+          this.router.navigate(['/home']);
+        } else {
+          this.product = res.data;
 
-        this.productService.getProductTuongTu(res.data.id, res.data.categoryDTO.id).subscribe((res2) => {
-          this.listProductTuongTu = res2;
-          this.cdr.detectChanges();
-        });
+          this.productService.getProductTuongTu(res.data.id, res.data.categoryDTO.id).subscribe((res2) => {
+            this.listProductTuongTu = res2;
+            this.cdr.detectChanges();
+          });
 
-        this.loadData();
+          this.loadData();
+        }
+
       });
     });
 
@@ -258,11 +263,11 @@ export class DetailsComponent implements OnInit {
             this.showErrorNotification('Dữ liệu không hợp lệ.');
           }
         });
-      } 
+      }
       else {
         this.showErrorNotification('Dữ liệu trả về không hợp lệ.');
       }
-    } 
+    }
     // else {
     //   this.showErrorNotification(res.message || 'Có lỗi xảy ra khi thêm vào giỏ hàng.');
     // }

@@ -15,10 +15,6 @@ import Swal from 'sweetalert2';
 })
 
 export class UpdateStaffComponent implements OnInit {
-  // defaultImagePath = 'path/to/default-image.jpg';
-  // selectedImage: string = this.defaultImagePath;
-  // staff: UsersDTO;
-
   validFullName: ValidateInput = new ValidateInput();
   validPhone: ValidateInput = new ValidateInput();
   validEmail: ValidateInput = new ValidateInput();
@@ -39,24 +35,7 @@ export class UpdateStaffComponent implements OnInit {
     private toastr: ToastrService,
   ) { }
 
-  // findById() {
-  //   this.id = this.activeRoute.snapshot.paramMap.get('id');
-  //   console.log(this.id);
-  //   this.staffService.finById(this.id).subscribe(
-  //     data => {
-  //       this.staff = data.data;
-  //       console.log(data.data);
-  //     },
-  //     error => {
-  //       console.error('Error fetching staff by ID:', error);
-  //     }
-  //   );
-  // }
-
   ngOnInit(): void {
-    // if (this.data.birthday) {
-    //   this.data.birthday = this.formatDate(this.data.birthday);
-    // }
   }
 
   isStartDateValid() {
@@ -70,14 +49,6 @@ export class UpdateStaffComponent implements OnInit {
   removeCheckStartDate() {
     this.checkStartDateNull = false;
   }
-
-  // formatDate(dateString: string): string {
-  //   const date = new Date(dateString);
-  //   const year = date.getFullYear();
-  //   const month = ('0' + (date.getMonth() + 1)).slice(-2);
-  //   const day = ('0' + date.getDate()).slice(-2);
-  //   return `${year}-${month}-${day}`;
-  // }
 
   clickUpdate(idstaff: number) {
     this.password = CommonFunction.trimText(this.password);
@@ -200,7 +171,7 @@ export class UpdateStaffComponent implements OnInit {
             password: this.password,
           };
 
-          // console.log(staffCurrent)
+          console.log(staffCurrent)
 
           this.staffService.updateStaff(idstaff, staffCurrent).subscribe(
             data => {
@@ -212,12 +183,10 @@ export class UpdateStaffComponent implements OnInit {
                 this.toastr.error('Email đã tồn tại');
                 return;
               }
-              console.log('Material add success', result);
               this.dialogRef.close('saveStaff');
               Swal.fire('Cập nhật', 'Cập nhật thành công', 'success');
             },
             error => {
-              console.error(error);
               Swal.fire('Lỗi', 'Đã xảy lỗi trong quá trình cập nhật', 'error');
             }
           );

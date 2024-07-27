@@ -10,11 +10,11 @@ import { UtilService } from '../../util/util.service';
 })
 export class ThongKeComponent implements OnInit {
     listYear = [];
-    totalRevenue;
-    totalRevenueToday;
+    totalRevenue: number;
+    totalRevenueToday: number;
     totalOrder = 0;
     totalOrderToDay = 0;
-    totalQuantityProduct;
+    totalQuantityProduct: number;
     seriesDataRevenue: number[] = [];
     seriesDataOrder: number[] = [];
     seriesDateStr: string[] = [];
@@ -39,12 +39,6 @@ export class ThongKeComponent implements OnInit {
         private cdr: ChangeDetectorRef,
         public utilService: UtilService
     ) {
-        // const currentDate = new Date();
-
-        // this.dateFromCurrent = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-
-        // this.dateToCurrent = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
-
         const currentDate = new Date();
         const sixDaysAgo = new Date();
         sixDaysAgo.setDate(currentDate.getDate() - 6);
@@ -116,6 +110,7 @@ export class ThongKeComponent implements OnInit {
             // return this.utilService.formatMoney(0.00);
         }
     }
+
     getQuantityProduct(category: any) {
         const index = this.seriesDateStr.indexOf(category);
         if (index !== -1) {

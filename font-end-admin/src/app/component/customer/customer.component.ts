@@ -18,10 +18,17 @@ export class CustomerComponent implements OnInit {
     phone: '',
     gender: 'Nam'
   };
+
   validReceiver: ValidateInput = new ValidateInput();
   validEmail: ValidateInput = new ValidateInput();
   validReceiverPhone: ValidateInput = new ValidateInput();
-  constructor(private customerService: CustomerServiceService, private dialogRef: MatDialogRef<CustomerComponent>, private toastr: ToastrService) { }
+
+  constructor(
+    private customerService: CustomerServiceService,
+    private dialogRef: MatDialogRef<CustomerComponent>,
+    private toastr: ToastrService
+  ) { }
+
   addCustomerSC() {
     this.customer.fullname = CommonFunction.trimText(this.customer.fullname);
     this.customer.phone = CommonFunction.trimText(this.customer.phone);
@@ -35,19 +42,22 @@ export class CustomerComponent implements OnInit {
         this.toastr.error('Số điện thoại đã tồn tại');
         return;
       }
-      console.log(data);
       this.toastr.success('Thêm thành công', 'Thông báo');
       this.closeDialog();
     });
   }
+
   closeDialog() {
     this.dialogRef.close();
   }
+
   ngOnInit(): void {
   }
-  revoveInvalid(result) {
+
+  revoveInvalid(result: { done: boolean; }) {
     result.done = true;
   }
+
   validateReceiver() {
     this.validReceiver = CommonFunction.validateInput(this.customer.fullname, 250, null);
   }

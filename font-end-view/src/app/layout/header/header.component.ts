@@ -57,19 +57,10 @@ export class HeaderComponent implements OnInit {
             res.data.forEach(item => {
               if (item && item.quantity !== undefined) {
                 this.updateCookieWithServerCart(item);
-              } 
-              // else {
-              //   this.showErrorNotification('Dữ liệu không hợp lệ.');
-              // }
+              }
             });
-          } 
-          // else {
-          //   this.showErrorNotification('Dữ liệu trả về không hợp lệ.');
-          // }
-        } 
-        // else {
-        //   this.showErrorNotification(res.message || 'Có lỗi xảy ra khi thêm vào giỏ hàng.');
-        // }
+          }
+        }
       })
     }
   }

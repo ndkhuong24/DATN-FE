@@ -58,32 +58,10 @@ export class GiohangComponent implements OnInit {
             this.showErrorNotification('Dữ liệu trả về không hợp lệ.');
           }
         } else {
-          this.showErrorNotification(res.message || 'Có lỗi xảy ra khi thêm vào giỏ hàng.');
+          // this.showErrorNotification(res.message || 'Có lỗi xảy ra khi thêm vào giỏ hàng.');
         }
       });
     }
-
-    // if (this.cookieService.check('cart')) {
-    //   if (this.infoCustomer) {
-    //     this.cartService.getCartCustomer(this.infoCustomer.id).subscribe(res => {
-    //       if (res && res.success) {
-    //         if (Array.isArray(res.data)) {
-    //           res.data.forEach(item => {
-    //             if (item && item.quantity !== undefined) {
-    //               this.updateCookieWithServerCart(item);
-    //             } else {
-    //               this.showErrorNotification('Dữ liệu không hợp lệ.');
-    //             }
-    //           });
-    //         } else {
-    //           this.showErrorNotification('Dữ liệu trả về không hợp lệ.');
-    //         }
-    //       } else {
-    //         this.showErrorNotification(res.message || 'Có lỗi xảy ra khi thêm vào giỏ hàng.');
-    //       }
-    //     });
-    //   }
-    // }
   }
 
   ngOnInit(): void {

@@ -58,7 +58,7 @@ export class OrderComponent implements OnInit {
         headerName: 'STT',
         field: '',
         suppressMovable: true,
-        minWidth: 60,
+        // minWidth: 60,
         maxWidth: 60,
         valueGetter: (param: { node: { rowIndex: number; }; }) => {
           return param.node.rowIndex + 1;
@@ -68,6 +68,7 @@ export class OrderComponent implements OnInit {
         headerName: 'Mã đơn hàng',
         field: 'code',
         suppressMovable: true,
+        filter: true,
         sortable: true,
         cellStyle: {
           'font-weight': '500',
@@ -89,6 +90,7 @@ export class OrderComponent implements OnInit {
         headerName: 'Ngày Tạo',
         field: 'createDate',
         sortable: true,
+        filter: true,
         suppressMovable: true,
         valueFormatter: (params: { data: { createDate: string; }; }) => {
           return formatDateTime(params.data.createDate);
@@ -109,8 +111,8 @@ export class OrderComponent implements OnInit {
         headerName: 'Khách Hàng',
         field: 'customerAdminDTO.fullname',
         suppressMovable: true,
-        filter: true,
         sortable: true,
+        filter: true,
         cellStyle: {
           'font-weight': '500',
           'font-size': '12px',
@@ -129,6 +131,7 @@ export class OrderComponent implements OnInit {
       {
         headerName: 'Thanh Toán',
         sortable: true,
+        filter: true,
         field: 'statusPayment',
         valueFormatter: (params: { data: { statusPayment: number; }; }) => {
           return params.data.statusPayment === 0 ? 'Đã thanh toán' : 'Chưa thanh toán';
@@ -148,6 +151,7 @@ export class OrderComponent implements OnInit {
         headerName: 'Tổng Tiền',
         field: 'totalPayment',
         sortable: true,
+        filter: true,
         suppressMovable: true,
         valueFormatter: params => {
           return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
@@ -169,8 +173,8 @@ export class OrderComponent implements OnInit {
         headerName: 'Trạng Thái',
         field: 'status',
         suppressMovable: true,
-        filter: true,
         sortable: true,
+        filter: true,
         valueGetter: (params: { data: { status: any; }; }) => {
           const status = params.data.status;
           switch (status) {

@@ -16,7 +16,8 @@
               <a class="nav-link active" aria-current="page" href="/sanpham" style="margin-left: 20px;">Sản Phẩm</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" *ngIf="!isLoggedIn" aria-current="page" href="/tra-cuu-don-hang"> &nbsp;Tra cứu đơn hàng</a>
+              <a class="nav-link active" *ngIf="!isLoggedIn" aria-current="page" href="/tra-cuu-don-hang"> &nbsp;Tra cứu
+                đơn hàng</a>
             </li>
           </ul>
           <form class="d-flex" style="margin-top: 13px">
@@ -37,7 +38,6 @@
               <li><a class="dropdown-item" href="/user-profile"><i class="fa-solid fa-user"></i> Tài khoản</a>
               </li>
               <li><a class="dropdown-item" routerLink="order"><i class="fa-solid fa-bag-shopping"></i> Đơn Hàng</a></li>
-              <!-- <li><a class="dropdown-item" href="/user-profile"><i class="fa-solid fa-key"></i> Đổi mật khẩu</a></li> -->
               <li><a class="dropdown-item" href="/login" (click)="logOut()"><i
                     class="fa-solid fa-arrow-right-from-bracket"></i> Đăng xuất</a></li>
             </ul>

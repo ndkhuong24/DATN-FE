@@ -13,8 +13,6 @@ import { OrderSalesDetailComponent } from './order-sales-detail/order-sales-deta
 export class OrderSalesCounterComponent implements OnInit {
   active = 1;
 
-  // listStatus: any = [];
-
   status = 6;
 
   rowData = [];
@@ -59,6 +57,7 @@ export class OrderSalesCounterComponent implements OnInit {
         field: '',
         suppressMovable: true,
         maxWidth: 60,
+        
         valueGetter: (param: { node: { rowIndex: number; }; }) => {
           return param.node.rowIndex + 1;
         },
@@ -67,6 +66,8 @@ export class OrderSalesCounterComponent implements OnInit {
         headerName: 'Mã hóa đơn',
         field: 'code',
         suppressMovable: true,
+        sortable: true,
+        filter: true,
         cellStyle: {
           'font-weight': '500',
           'font-size': '12px',
@@ -87,6 +88,8 @@ export class OrderSalesCounterComponent implements OnInit {
       {
         headerName: 'Nhân Viên',
         field: 'staffAdminDTO.fullname',
+        sortable: true,
+        filter: true,
         suppressMovable: true,
         cellStyle: {
           'font-weight': '500',
@@ -104,6 +107,8 @@ export class OrderSalesCounterComponent implements OnInit {
       {
         headerName: 'Ngày Tạo',
         field: 'createDate',
+        sortable: true,
+        filter: true,
         suppressMovable: true,
         valueFormatter: (params: { data: { createDate: string; }; }) => {
           return formatDateTime(params.data.createDate);
@@ -124,6 +129,8 @@ export class OrderSalesCounterComponent implements OnInit {
       {
         headerName: 'Khách Hàng',
         field: 'customerAdminDTO.fullname',
+        sortable: true,
+        filter: true,
         suppressMovable: true,
         cellRenderer: (params: { data: { customerAdminDTO: { fullname: any; }; }; }) => {
           if (!params.data.customerAdminDTO || !params.data.customerAdminDTO.fullname) {
@@ -147,6 +154,8 @@ export class OrderSalesCounterComponent implements OnInit {
       {
         headerName: 'Thanh Toán',
         field: 'paymentType',
+        sortable: true,
+        filter: true,
         valueFormatter: (params: { data: { paymentType: number; }; }) => {
           return params.data.paymentType === 0 ? 'Tiền Mặt' : 'Chuyển Khoản';
         },
@@ -165,6 +174,8 @@ export class OrderSalesCounterComponent implements OnInit {
       }, {
         headerName: 'Tổng Tiền',
         field: 'totalPayment',
+        sortable: true,
+        filter: true,
         suppressMovable: true,
         valueFormatter: (params: { data: { totalPayment: number; }; }) => {
           return formatMoney(params.data.totalPayment);
@@ -258,13 +269,6 @@ export class OrderSalesCounterComponent implements OnInit {
 
     this.cdr.detectChanges();
   }
-
-  // tabChanged(event: any) {
-  //   const selectedTabIndex = event.index;
-  //   const selectedTabId = this.listStatus[selectedTabIndex].id;
-  //   this.status = selectedTabId;
-  //   this.getAllOrder();
-  // }
 
   openXemChiTiet(dataOrder: any) {
     const dialogref = this.matDialog.open(OrderSalesDetailComponent, {
