@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {SignInService} from '../../service/authentication/sign-in.service';
-import {Router} from '@angular/router';
-import {SignUpRepquest} from '../model/SignUpRepquest';
-import {ValidateInput} from '../../model/validate-input.model';
-import {CommonFunction} from '../../util/common-function';
-import {ToastrService} from 'ngx-toastr';
+import { SignInService } from '../../service/authentication/sign-in.service';
+import { Router } from '@angular/router';
+import { SignUpRepquest } from '../model/SignUpRepquest';
+import { ValidateInput } from '../../model/validate-input.model';
+import { CommonFunction } from '../../util/common-function';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sign-up',
@@ -31,10 +31,11 @@ export class SignUpComponent implements OnInit {
   validUsername: ValidateInput = new ValidateInput();
   validReceiverPassword: ValidateInput = new ValidateInput();
   validConfirm: boolean = true;
-  constructor(private signup: SignInService, private router: Router,private toastr: ToastrService) { }
+  constructor(private signup: SignInService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
   }
+
   signUp() {
     this.form.fullname = CommonFunction.trimText(this.form.fullname);
     this.form.phone = CommonFunction.trimText(this.form.phone);
@@ -45,12 +46,13 @@ export class SignUpComponent implements OnInit {
     this.validateReceiverUsername();
     this.validateReceiverPassword();
     this.validateConfirmPass();
+
     if (!this.validReceiver.done || !this.validEmail.done || !this.validReceiverPhone.done
       || !this.validUsername.done || !this.validReceiverPassword.done
     ) {
       return;
     }
-    this.signUpForm = new SignUpRepquest (
+    this.signUpForm = new SignUpRepquest(
       this.form.fullname,
       this.form.username,
       this.form.password,
@@ -63,28 +65,30 @@ export class SignUpComponent implements OnInit {
     console.log(this.signUpForm);
     this.signup.signUp(this.signUpForm).subscribe(data => {
       console.log(data);
-      if (data.message === 'Create Success'){
+      if (data.message === 'Create Success') {
         alert('Đăng kí thành công ! ');
         this.router.navigate(['login']);
       }
-        if (data.message === 'The Username is existed'){
-          this.toastr.error('Tên tài khoản đã tồn tại', 'Error');
-        }else if (data.message === 'The Email is existed'){
-          this.toastr.error('Email đã tồn tại', 'Error');
-        }else if (data.message === 'The Phone is existed'){
-          this.toastr.error('Số điện thoại đã tồn tại', 'Error');
-        }
+      if (data.message === 'The Username is existed') {
+        this.toastr.error('Tên tài khoản đã tồn tại', 'Error');
+      } else if (data.message === 'The Email is existed') {
+        this.toastr.error('Email đã tồn tại', 'Error');
+      } else if (data.message === 'The Phone is existed') {
+        this.toastr.error('Số điện thoại đã tồn tại', 'Error');
+      }
     },
       error => {
 
       }
     );
   }
+
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
-  revoveInvalid(result) {
-      result.done = true;
+
+  revoveInvalid(result: { done: boolean; }) {
+    result.done = true;
   }
 
   validateReceiver() {
@@ -94,16 +98,24 @@ export class SignUpComponent implements OnInit {
   validateEmail() {
     this.validEmail = CommonFunction.validateInput(this.form.email, 250, /^[^\s@]+@[^\s@]+\.[^\s@]+$/);
   }
+
+  // validateReceiverPhone() {
+  //   this.validReceiverPhone = CommonFunction.validateInput(this.form.phone, null, /^(0[2-9]|1[2-9]|2[2-9]|3[2-9]|4[2-9]|5[2-9]|6[2-9]|7[2-9]|8[2-9]|9[2-9])\d{8}$/);
+  // }
+
   validateReceiverPhone() {
-    this.validReceiverPhone = CommonFunction.validateInput(this.form.phone, null, /^(0[2-9]|1[2-9]|2[2-9]|3[2-9]|4[2-9]|5[2-9]|6[2-9]|7[2-9]|8[2-9]|9[2-9])\d{8}$/);
+    this.validReceiverPhone = CommonFunction.validateInput(this.form.phone, null, /^0\d{9}$/);
   }
-  validateReceiverUsername(){
-    this.validUsername = CommonFunction.validateInputUTF8Space(this.form.username, 50, /^[a-z][a-z\d]*$/, true, true );
+
+  validateReceiverUsername() {
+    this.validUsername = CommonFunction.validateInputUTF8Space(this.form.username, 50, /^[a-z][a-z\d]*$/, true, true);
   }
-  validateReceiverPassword(){
-    this.validReceiverPassword = CommonFunction.validateInput(this.form.password, 50, /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/);
+
+  validateReceiverPassword() {
+    this.validReceiverPassword = CommonFunction.validateInputUTF8Space(this.form.password, 50, /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, true, true);
   }
-  validateConfirmPass(){
+
+  validateConfirmPass() {
     this.validConfirm = this.form.password === this.confirmPass;
   }
 }
