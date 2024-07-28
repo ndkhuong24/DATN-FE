@@ -158,11 +158,17 @@ export class AddStaffComponent implements OnInit {
   }
 
   validateUserName() {
-    this.validUserName = CommonFunction.validateInputUTF8Space(this.UserName, 50, /^[a-z][a-z\d]*$/, true, true)
+    const regex = /^[a-z][a-z\d]{5,}$/;
+    this.validUserName = CommonFunction.validateInputUTF8Space(this.UserName, 50, regex, true, true);
   }
 
+  // validatePassword() {
+  //   this.validPassword = CommonFunction.validateInput(this.Password, 50, /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+  // }
+
   validatePassword() {
-    this.validPassword = CommonFunction.validateInput(this.Password, 50, /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-z][A-Za-z\d@$!%*?&]{7,}$/;
+    this.validPassword = CommonFunction.validateInputUTF8Space(this.Password, 50, regex, true, true);
   }
 
   validateDescription() {

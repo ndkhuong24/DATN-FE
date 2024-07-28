@@ -266,12 +266,22 @@ export class UpdateStaffComponent implements OnInit {
     this.validEmail = CommonFunction.validateInput(this.data.email, 250, /^[^\s@]+@[^\s@]+\.[^\s@]+$/);
   }
 
+  // validateUserName() {
+  //   this.validUserName = CommonFunction.validateInputUTF8Space(this.data.username, 50, /^[a-z][a-z\d]*$/, true, true)
+  // }
+
+  // validatePassword() {
+  //   this.validPassword = CommonFunction.validateInput(this.password, 50, /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+  // }
+
   validateUserName() {
-    this.validUserName = CommonFunction.validateInputUTF8Space(this.data.username, 50, /^[a-z][a-z\d]*$/, true, true)
+    const regex = /^[a-z][a-z\d]{5,}$/;
+    this.validUserName = CommonFunction.validateInputUTF8Space(this.data.username, 50, regex, true, true);
   }
 
   validatePassword() {
-    this.validPassword = CommonFunction.validateInput(this.password, 50, /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-z][A-Za-z\d@$!%*?&]{7,}$/;
+    this.validPassword = CommonFunction.validateInputUTF8Space(this.password, 50, regex, true, true);
   }
 
   validateDescription() {

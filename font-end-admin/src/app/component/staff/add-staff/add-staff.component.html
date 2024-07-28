@@ -56,6 +56,23 @@
       <div class="validate-input" *ngIf="!validPassword.done">
         <p class="validate-input-label" *ngIf="validPassword.empty">Mật khẩu không để trống</p>
         <p class="validate-input-label" *ngIf="validPassword.maxLength">Mật khẩu tối đa 50 kí tự</p>
+        <p class="validate-input-label" *ngIf="validPassword.regex">
+          Mật khẩu bắt đầu bằng chữ thường, có ít nhất một chữ cái in hoa,
+          <br>có ít nhất 1 số,
+          <br>có ít nhất 1 kí tự đặc biệt
+          <br>và có ít nhất 8 ký tự
+        </p>
+        <p class="validate-input-label" *ngIf="validPassword.space">Mật khẩu không được chứa dấu cách</p>
+        <p class="validate-input-label" *ngIf="validPassword.UTF8">Mật khẩu bắt đầu bằng chữ thường không dấu</p>
+      </div>
+    </mat-form-field>
+    <!-- <mat-form-field appearance="outline">
+      <mat-label>Mật Khẩu</mat-label>
+      <input [(ngModel)]="Password" name="Password" matInput placeholder="Nhập mật khẩu"
+        (keydown)="revoveInvalid(validPassword)" (blur)="validatePassword()">
+      <div class="validate-input" *ngIf="!validPassword.done">
+        <p class="validate-input-label" *ngIf="validPassword.empty">Mật khẩu không để trống</p>
+        <p class="validate-input-label" *ngIf="validPassword.maxLength">Mật khẩu tối đa 50 kí tự</p>
         <p class="validate-input-label" *ngIf="validPassword.regex">Mật khẩu bắt đầu bằng chữ có ít nhất một chứ cái in
           hoa
           <br> có ít nhất 1 số, <br>
@@ -64,7 +81,7 @@
         <p class="validate-input-label" *ngIf="validPassword.space">Mật khẩu không được chứa dấu cách</p>
         <p class="validate-input-label" *ngIf="validPassword.UTF8">Mật khẩu bắt đầu bằng chữ thường không dấu</p>
       </div>
-    </mat-form-field>
+    </mat-form-field> -->
   </div>
 
   <div style="flex: 1 1 50%; padding-left: 10px;">
