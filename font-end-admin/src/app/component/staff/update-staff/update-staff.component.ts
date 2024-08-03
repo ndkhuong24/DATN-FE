@@ -97,9 +97,8 @@ export class UpdateStaffComponent implements OnInit {
             description: this.data.description,
             role: this.data.role,
             idel: this.data.idel,
-            password: '',
+            password: null,
           };
-          console.log(staffCurrent)
 
           this.staffService.updateStaff(idstaff, staffCurrent).subscribe(
             data => {
