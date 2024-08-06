@@ -4,13 +4,8 @@
 
   <mat-form-field appearance="outline">
     <mat-label>Số kích cỡ</mat-label>
-    <input
-      [(ngModel)]="SizeNumber"
-      matInput
-      placeholder="Số kích cỡ"
-      (keydown)="revoveInvalid(validSizeNumber)"
-      (blur)="validateSizeNumber()"
-    />
+    <input [(ngModel)]="SizeNumber" matInput placeholder="Số kích cỡ" (keydown)="revoveInvalid(validSizeNumber)"
+      (blur)="validateSizeNumber()" />
     <div class="validate-input" *ngIf="!validSizeNumber.done">
       <p class="validate-input-label" *ngIf="validSizeNumber.empty">
         Số kích cỡ không được để trống

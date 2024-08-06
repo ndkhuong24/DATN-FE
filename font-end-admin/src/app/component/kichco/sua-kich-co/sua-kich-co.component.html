@@ -4,14 +4,8 @@
 
   <mat-form-field appearance="outline">
     <mat-label>Số kích cỡ</mat-label>
-    <input
-      type="number"
-      [(ngModel)]="data.sizeNumber"
-      matInput
-      placeholder="Số kích cỡ"
-      (keydown)="revoveInvalid(validSizeNumber)"
-      (blur)="validateSizeNumber()"
-    />
+    <input [(ngModel)]="data.sizeNumber" name="sizeNumber" matInput placeholder="Số kích cỡ"
+      (keydown)="revoveInvalid(validSizeNumber)" (blur)="validateSizeNumber()" />
     <div class="validate-input" *ngIf="!validSizeNumber.done">
       <p class="validate-input-label" *ngIf="validSizeNumber.empty">
         Số kích cỡ không được để trống
@@ -22,7 +16,7 @@
     </div>
   </mat-form-field>
 
-  <mat-radio-group [(ngModel)]="data.status">
+  <mat-radio-group [(ngModel)]="data.status" name="status">
     <mat-label style="margin-right: 10px;">Trạng thái</mat-label>
     <mat-radio-button [value]="0" style="margin-right: 5px;">Hoạt Động</mat-radio-button>
     <mat-radio-button [value]="1" style="margin-left: 5px;">Ngừng Hoạt Động</mat-radio-button>

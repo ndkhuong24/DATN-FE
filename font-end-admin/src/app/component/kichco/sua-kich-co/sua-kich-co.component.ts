@@ -14,14 +14,18 @@ import Swal from 'sweetalert2';
 export class SuaKichCoComponent implements OnInit {
   validSizeNumber: ValidateInput = new ValidateInput();
   rowData: [];
+
   constructor(
     public dialogRef: MatDialogRef<SuaKichCoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private szsv: SizeService
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
-  revoveInvalid(result) {
+  ngOnInit(): void {
+    console.log(this.data)
+  }
+
+  revoveInvalid(result: { done: boolean; }) {
     result.done = true;
   }
 

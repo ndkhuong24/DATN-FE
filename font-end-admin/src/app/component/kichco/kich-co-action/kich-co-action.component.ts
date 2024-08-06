@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 export class KichCoActionComponent implements ICellRendererAngularComp, OnInit {
   rowData = [];
   params: any;
+
   agInit(params: any): void {
     this.params = params.data;
   }
@@ -28,7 +29,7 @@ export class KichCoActionComponent implements ICellRendererAngularComp, OnInit {
     private szsv: SizeService,
     private cdr: ChangeDetectorRef,
     private kichcoComponent: KichcoComponent
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getAllSize();
@@ -41,7 +42,6 @@ export class KichCoActionComponent implements ICellRendererAngularComp, OnInit {
       data: this.params,
     });
     dialogref.afterClosed().subscribe((result) => {
-      console.log(result);
       if (result === 'saveSize') {
         this.kichcoComponent.ngOnInit();
         this.cdr.detectChanges();
