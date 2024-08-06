@@ -33,7 +33,7 @@ export class AddressCheckoutComponent implements OnInit {
 
   openPopup() {
     this.dialog.open(UpdateAddressComponent, {
-      width: '40%',
+      width: '50%',
       height: '65vh',
       data: {
         title: 'save',

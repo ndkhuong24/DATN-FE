@@ -1,13 +1,14 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { OrderDetailService } from '../../../service/order-detail.service';
-import { formatMoney, padZero } from '../../../util/util';
+import { padZero } from '../../../util/util';
 import { OrderService } from '../../../service/order.service';
 import { ToastrService } from 'ngx-toastr';
 import { NoteOrderComponent } from '../note-order/note-order.component';
 import { UtilService } from '../../../util/util.service';
 import { VoucherService } from 'src/app/service/voucher.service';
 import { VoucherShipService } from 'src/app/service/voucher-ship.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-order-detail',
@@ -37,15 +38,12 @@ export class OrderDetailComponent implements OnInit {
     private toastr: ToastrService,
     private matDiaLog: MatDialog,
     public utilService: UtilService,
-    private voucherService: VoucherService,
-    private voucherShipService: VoucherShipService
   ) {
     this.columnDefs = [
       {
         headerName: 'STT',
         field: '',
         suppressMovable: true,
-        // minWidth: 60,
         maxWidth: 60,
         valueGetter: (param: { node: { rowIndex: number; }; }) => {
           return param.node.rowIndex + 1;
@@ -94,9 +92,6 @@ export class OrderDetailComponent implements OnInit {
             .replace('₫', '') + 'đ';
         },
         flex: 1,
-        // valueFormatter: (params: { data: { price: number; }; }) => {
-        //   return formatMoney(params.data.price);
-        // },
       },
       {
         headerName: 'Thành tiền',
@@ -108,9 +103,7 @@ export class OrderDetailComponent implements OnInit {
             .replace('₫', '') + 'đ';
         },
         flex: 1,
-        // valueFormatter: (params: { data: { price: number; quantity: number; }; }) => {
-        //   return formatMoney(params.data.price * params.data.quantity);
-        // },
+
       }
     ];
     this.status = this.data.data.status;
@@ -145,6 +138,36 @@ export class OrderDetailComponent implements OnInit {
           this.toastr.success('Hủy đơn hàng thành công', 'Thông báo', {
             positionClass: 'toast-top-right'
           });
+          this.cdr.detectChanges();
+          this.matRef.close('update-order');
+        });
+      }
+    });
+  }
+
+  xacNhan() {
+    this.matDiaLog.open(NoteOrderComponent, {
+      width: '90vh',
+      height: '32vh',
+    }).afterClosed().subscribe(res => {
+      if (res.event === 'close-note') {
+        const obj = {
+          id: this.data.data.id,
+          idStaff: this.data.data.idStaff,
+          idCustomer: this.data.customer.id,
+          note: res.data.note
+        };
+
+        this.orderService.completeOrder(obj).subscribe(result => {
+          if (result.status === 'OK') {
+            Swal.fire('Đã nhận hàng thành công');
+            // this.ngOnInit();
+            this.cdr.detectChanges();
+          } else {
+            this.toastr.error(result.message, 'Thông báo', {
+              positionClass: 'toast-top-right'
+            });
+          }
           this.cdr.detectChanges();
           this.matRef.close('update-order');
         });
