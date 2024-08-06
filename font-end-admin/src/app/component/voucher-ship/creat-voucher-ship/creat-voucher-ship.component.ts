@@ -102,6 +102,14 @@ export class CreatVoucherShipComponent implements OnInit {
         flex: 1,
       },
       {
+        headerName: 'Số điện thoại',
+        field: 'phone',
+        sortable: true,
+        filter: true,
+        editable: true,
+        flex: 1,
+      },
+      {
         headerName: 'Giới tính',
         field: 'gender',
         sortable: true,
