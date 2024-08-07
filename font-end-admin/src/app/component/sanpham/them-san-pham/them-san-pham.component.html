@@ -20,6 +20,7 @@
         (keydown)="revoveInvalid(validDescription)" (blur)="validateDescription()">
       <div class="validate-input" *ngIf="!validDescription.done">
         <p class="validate-input-label" *ngIf="validDescription.empty">Mô tả không được để trống</p>
+        <p class="validate-input-label" *ngIf="validDescription.maxLength">Mô tả dưới 250 kí tự</p>
       </div>
     </mat-form-field>
 
