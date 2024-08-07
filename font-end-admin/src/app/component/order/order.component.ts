@@ -129,6 +129,34 @@ export class OrderComponent implements OnInit {
         },
       },
       {
+        headerName: 'Số điện thoại',
+        field: 'customerAdminDTO.fullname',
+        suppressMovable: true,
+        sortable: true,
+        filter: true,
+        cellStyle: {
+          'font-weight': '500',
+          'font-size': '12px',
+          'align-items': 'center',
+          color: '#101840',
+          display: 'flex',
+          'white-space': 'nowrap',
+          'text-overflow': 'ellipsis',
+          overflow: 'hidden',
+          'justify-content': 'center',
+        },
+        valueFormatter: (params: {
+          data: {
+            receiverPhone: any;
+            idCustomer: null; customerAdminDTO: {
+              phone: any; fullname: any;
+            };
+          };
+        }) => {
+          return params.data.idCustomer === null ? params.data.receiverPhone : params.data.customerAdminDTO.phone;
+        },
+      },
+      {
         headerName: 'Thanh Toán',
         sortable: true,
         filter: true,
@@ -242,6 +270,7 @@ export class OrderComponent implements OnInit {
 
     this.orderService.getAllOrderAdmin(obj).subscribe(res => {
       this.rowData = res;
+      console.log(this.rowData)
     });
 
     this.cdr.detectChanges();
