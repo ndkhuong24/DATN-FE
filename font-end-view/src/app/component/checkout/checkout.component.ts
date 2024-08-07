@@ -82,7 +82,6 @@ export class CheckoutComponent implements OnInit {
     private cartService: CartService,
     private cookieService: CookieService,
     private route: Router,
-    private orderService: OrderService,
     private paymentService: PaymentService,
     private matDialog: MatDialog,
     private addressService: AddressService,
@@ -275,9 +274,6 @@ export class CheckoutComponent implements OnInit {
               codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
               voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
               voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
-              // shipPrice: this.voucherShip ? this.shipFeeReduce : this.shipFee,
-              // codeVoucher: this.voucher ? this.voucher?.code : null,
-              // codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
               addressReceived: this.addressNotLogin.specificAddress + ', ' + ward.WardName + ', '
                 + district.DistrictName + ', ' + province.ProvinceName,
               paymentType: 0,
@@ -290,6 +286,7 @@ export class CheckoutComponent implements OnInit {
             };
 
             localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
+            
             this.route.navigate(['cart/checkout-detail']);
           }
         }
@@ -333,9 +330,6 @@ export class CheckoutComponent implements OnInit {
                 codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
                 voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
                 voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
-                // shipPrice: this.voucherShip ? this.shipFeeReduce : this.shipFee,
-                // codeVoucher: this.voucher ? this.voucher?.code : null,
-                // codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
                 addressReceived: this.address.specificAddress + ', ' + this.address.wards + ', ' + this.address.district + ', ' + this.address.province,
                 paymentType: 1,
                 email: this.user.email,
@@ -365,18 +359,17 @@ export class CheckoutComponent implements OnInit {
                 codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
                 voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
                 voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
-                // shipPrice: this.voucherShip ? this.shipFeeReduce : this.shipFee,
-                // codeVoucher: this.voucher ? this.voucher?.code : null,
-                // codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
                 addressReceived: this.address.specificAddress + ', ' + this.address.wards + ', ' + this.address.district + ', ' + this.address.province,
                 paymentType: 0,
                 email: this.user.email,
                 idCustomer: this.user.id,
               };
+
               const objOrderBill = {
                 order: obj,
                 listCart: this.listCart
               };
+              
               localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
               this.route.navigate(['cart/checkout-detail']);
             }

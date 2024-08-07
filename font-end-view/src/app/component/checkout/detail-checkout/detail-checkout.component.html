@@ -59,26 +59,10 @@
                     <span
                       style="margin-left: 5px">{{c.productDetailDTO.price | number:'1.0-0'}}</span>
                   </div>
-                  <!-- <div *ngIf="c.productDTO.reducePrice != null && c.productDTO.percentageReduce != null">
-                  <del>{{utilService.formatMoney(c.productDTO.price)}}</del>
-                  <span style="color: red; margin-left: 5px">{{utilService.formatMoney(c.productDTO.price -
-                    c.productDTO.reducePrice)}}</span>
-                </div> -->
-                  <!-- <div *ngIf="c.productDTO.reducePrice == null && c.productDTO.percentageReduce == null">
-                  <span style="color: red; margin-left: 5px">{{utilService.formatMoney(c.productDTO.price -
-                    c.productDTO.reducePrice)}}</span>
-                </div> -->
                 </td>
                 <td> {{c.quantity}}</td>
                 <th>
                   <div><span style="margin-left: 5px">{{calculateTotal(c.productDetailDTO.price,c.quantity)}}</span></div>
-                  <!-- <div *ngIf="c.productDTO.reducePrice != null && c.productDTO.percentageReduce != null">
-                    <span style="color: red; margin-left: 5px">{{calculateTotal(c.productDTO.price -
-                      c.productDTO.reducePrice, c.quantity)}}</span>
-                  </div>
-                  <div *ngIf="c.productDTO.reducePrice == null && c.productDTO.percentageReduce == null">
-                    <span style="color: red; margin-left: 5px">{{calculateTotal(c.productDTO.price, c.quantity)}}</span>
-                  </div> -->
                 </th>
               </tr>
             </tbody>
@@ -93,11 +77,4 @@
     </div>
   </div>
   <br>
-  <!-- Nút điều hướng -->
-  <!--  <div class="row">-->
-  <!--    <div class="col-md-12">-->
-  <!--      <button type="submit" class="btn btn-light" (click)="openHome();">Quay về trang chủ</button>-->
-  <!--      <button type="submit" class="btn btn-success" *ngIf="this.email == null || this.email === undefined" (click)="openDonMua();">Xem đơn mua</button>-->
-  <!--    </div>-->
-  <!--  </div>-->
 </div>

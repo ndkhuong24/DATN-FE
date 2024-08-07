@@ -6,7 +6,6 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { NoteOrderComponent } from '../order/note-order/note-order.component';
-import { OrderDetailService } from 'src/app/service/order-detail.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -26,7 +25,6 @@ export class SearchOrderComponent implements OnInit {
   infoCustomer: any;
 
   constructor(
-    // private SearchOrderComponent: SearchOrderComponent;
     private route: ActivatedRoute,
     public utilService: UtilService,
     private cdr: ChangeDetectorRef,
@@ -167,6 +165,44 @@ export class SearchOrderComponent implements OnInit {
             this.toastr.error(result.message, 'Thông báo', {
               positionClass: 'toast-top-right'
             });
+          }
+          this.cdr.detectChanges();
+        });
+      }
+    });
+  }
+
+  huy() {
+    this.matDiaLog.open(NoteOrderComponent, {
+      width: '90vh',
+      height: '32vh',
+    }).afterClosed().subscribe(res => {
+      if (res.event === 'close-note') {
+        const storedUsers = localStorage.getItem('customer');
+
+        if (storedUsers) {
+          this.infoCustomer = JSON.parse(storedUsers);
+        }
+
+        this.noteOrder = res.data.note;
+
+        const obj = {
+          id: this.order.id,
+          idStaff: this.order.idStaff,
+          idCustomer: this.infoCustomer ? this.infoCustomer.id : null,
+          note: res.data.note
+        };
+
+        this.orderService.cancelOrderView(obj).subscribe(result => {
+          if (result.status === 'OK') {
+            Swal.fire('Đã hủy đơn hàng thành công');
+            this.ngOnInit();
+            this.cdr.detectChanges();
+          } else {
+            this.toastr.error(result.message, 'Thông báo', {
+              positionClass: 'toast-top-right'
+            });
+            console.log(result)
           }
           this.cdr.detectChanges();
         });

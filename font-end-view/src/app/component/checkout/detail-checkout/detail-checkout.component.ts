@@ -60,22 +60,24 @@ export class DetailCheckoutComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.order.paymentType === 1) {
+
       if (this.user.id === null) {
         this.orderService.createOrderNotLogin(this.order).subscribe(res => {
           if (res.status === 'OK') {
             this.order.code = res.data.code
+
             this.orderCurrent = res.data;
+
             const orderDetailPromises = this.listCart.map((item: { productDetailDTO: { id: any; price: any; }; quantity: any; }) => {
               const obj = {
                 idOrder: res.data.id,
                 idProductDetail: item.productDetailDTO.id,
                 quantity: item.quantity,
-                // price: item.productDTO?.reducePrice != null || item.productDTO?.percentageReduce != null ? (item.productDTO.price - item.productDTO.reducePrice) : item.productDTO.price,
                 price: item.productDetailDTO.price,
-                // codeDiscount: this.extractCodeDiscount(item.productDTO),
               };
               return this.orderDetailService.createOrderDetail(obj).toPromise();
             });
+
             forkJoin(orderDetailPromises).subscribe(
               orderDetailsResponses => {
                 this.emailService.sendEmailNotLogin(this.orderCurrent).subscribe(result => {
@@ -246,11 +248,11 @@ export class DetailCheckoutComponent implements OnInit {
         });
       }
     }
+
   }
 
   calculateTotal(price: number, quantity: number): string {
     const total = price * quantity;
-    // return this.utilService.formatMoney(total);
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
       .format(total)
       .replace('₫', '') + 'đ';

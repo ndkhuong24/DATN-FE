@@ -3,79 +3,75 @@
     <h4><strong>Chi tiết đơn hàng</strong></h4>
   </div>
   <div class="grid">
-    <ag-grid-angular style="width: 100%; height: 300px" class="ag-theme-alpine"
-                     [rowData]="rowData"
-                     [columnDefs]="columnDefs"
-                     [headerHeight]="60"
-                     [rowHeight]="65"
-                     [suppressHorizontalScroll]="true"
-                     (gridReady)="onGridReady($event)">
+    <ag-grid-angular style="width: 100%; height: 300px" class="ag-theme-alpine" [rowData]="rowData"
+      [columnDefs]="columnDefs" [headerHeight]="60" [rowHeight]="65" [suppressHorizontalScroll]="true"
+      (gridReady)="onGridReady($event)">
     </ag-grid-angular>
     <table class="table">
-<!--      <thead>-->
-<!--      <tr>-->
-<!--        <th scope="col">#</th>-->
-<!--        <th scope="col">First</th>-->
-<!--        <th scope="col">Last</th>-->
-<!--      </tr>-->
-<!--      </thead>-->
+      <!--      <thead>-->
+      <!--      <tr>-->
+      <!--        <th scope="col">#</th>-->
+      <!--        <th scope="col">First</th>-->
+      <!--        <th scope="col">Last</th>-->
+      <!--      </tr>-->
+      <!--      </thead>-->
       <tbody>
-<!--      <tr>-->
-<!--        <th scope="row">Số tiền Giảm giá</th>-->
-<!--        <td></td>-->
-<!--        <td></td>-->
-<!--        <td></td>-->
-<!--        <td>Thornton</td>-->
-<!--      </tr>-->
-      <tr>
-        <th scope="row">Tổng giá trị sản phẩm</th>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>{{data.data?.totalPrice | number:'1.0-0'}} đ</td>
-      </tr>
-      <tr>
-        <th scope="row">Tổng số lượng sản phẩm</th>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>{{totalQuantity}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Voucher</th>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>{{this.data.data?.codeVoucher}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Voucher Ship</th>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>{{this.data.data?.codeVoucherShip}}</td>
-      </tr>
-      <tr>
-        <th scope="row">Phí vận chuyển</th>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>{{data.data?.shipPrice | number:'1.0-0'}} đ</td>
-      </tr>
-      <tr>
-        <th scope="row">Tổng thanh toán</th>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>{{data.data?.totalPayment | number:'1.0-0'}} đ</td>
-      </tr>
-      <tr>
-        <th scope="row">Hình thức thanh toán</th>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>{{data.data?.statusPayment === 0 ? "Đã thanh toán": "Chưa thanh toán"}}</td>
-      </tr>
+        <!--      <tr>-->
+        <!--        <th scope="row">Số tiền Giảm giá</th>-->
+        <!--        <td></td>-->
+        <!--        <td></td>-->
+        <!--        <td></td>-->
+        <!--        <td>Thornton</td>-->
+        <!--      </tr>-->
+        <tr>
+          <th scope="row">Tổng giá trị sản phẩm</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{data.data?.totalPrice | number:'1.0-0'}} đ</td>
+        </tr>
+        <tr>
+          <th scope="row">Tổng số lượng sản phẩm</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{totalQuantity}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Voucher</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{this.data.data?.codeVoucher}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Voucher Ship</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{this.data.data?.codeVoucherShip}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Phí vận chuyển</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{data.data?.shipPrice | number:'1.0-0'}} đ</td>
+        </tr>
+        <tr>
+          <th scope="row">Tổng thanh toán</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{data.data?.totalPayment | number:'1.0-0'}} đ</td>
+        </tr>
+        <tr>
+          <th scope="row">Hình thức thanh toán</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{data.data?.statusPayment === 0 ? "Đã thanh toán": "Chưa thanh toán"}}</td>
+        </tr>
       </tbody>
     </table>
     <br>
@@ -91,22 +87,22 @@
       <div>
         <table class="table">
           <thead>
-          <tr>
-            <th scope="col">STT</th>
-            <th scope="col">Nhân Viên</th>
-            <th scope="col">Trạng thái</th>
-            <th scope="col">Ngày sửa</th>
-            <th scope="col">Ghi chú</th>
-          </tr>
+            <tr>
+              <th scope="col">STT</th>
+              <th scope="col">Nhân Viên</th>
+              <th scope="col">Trạng thái</th>
+              <th scope="col">Ngày sửa</th>
+              <th scope="col">Ghi chú</th>
+            </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let oh of listOrderHistoryAdmin; let i = index">
-            <th scope="row">{{i + 1}}</th>
-            <td>{{oh.staffDTO.fullname}}</td>
-            <td>{{oh.status}}</td>
-            <td>{{utilService.formatDateTime(oh.createDate)}}</td>
-            <td>{{oh.note}}</td>
-          </tr>
+            <tr *ngFor="let oh of listOrderHistoryAdmin; let i = index">
+              <th scope="row">{{i + 1}}</th>
+              <td>{{oh.staffDTO.fullname}}</td>
+              <td>{{oh.status}}</td>
+              <td>{{utilService.formatDateTime(oh.createDate)}}</td>
+              <td>{{oh.note}}</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -120,22 +116,22 @@
       <div>
         <table class="table">
           <thead>
-          <tr>
-            <th scope="col">STT</th>
-            <th scope="col">Khách hàng</th>
-            <th scope="col">Trạng thái</th>
-            <th scope="col">Ngày sửa</th>
-            <th scope="col">Ghi chú</th>
-          </tr>
+            <tr>
+              <th scope="col">STT</th>
+              <th scope="col">Khách hàng</th>
+              <th scope="col">Trạng thái</th>
+              <th scope="col">Ngày sửa</th>
+              <th scope="col">Ghi chú</th>
+            </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let oh of listOrderHistoryView; let i = index">
-            <th scope="row">{{i + 1}}</th>
-            <td>{{oh.customerDTO.fullname}}</td>
-            <td>{{oh.status}}</td>
-            <td>{{utilService.formatDateTime(oh.createDate)}}</td>
-            <td>{{oh.note}}</td>
-          </tr>
+            <tr *ngFor="let oh of listOrderHistoryView; let i = index">
+              <th scope="row">{{i + 1}}</th>
+              <td>{{oh.customerDTO.fullname}}</td>
+              <td>{{oh.status}}</td>
+              <td>{{utilService.formatDateTime(oh.createDate)}}</td>
+              <td>{{oh.note}}</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -147,7 +143,7 @@
     <div class="btn btn-primary custom-btn" *ngIf="status === 0" (click)="xacNhanOrder();">Xác nhận</div>
     <div class="btn btn-primary custom-btn" *ngIf="status === 1" (click)="giaoHangOrder();">Giao hàng</div>
     <!-- <div class="btn btn-danger custom-btn" *ngIf="status === 2" (click)="boLoOrder();">Bỏ lỡ</div> -->
-    <div class="btn btn-success custom-btn" *ngIf="status === 2" (click)="hoanThanhOrder();"><span>Hoàn Thành</span></div>
+    <div class="btn btn-success custom-btn" *ngIf="status === 2" (click)="hoanThanhOrder();"><span>Hoàn Thành</span>
+    </div>
   </div>
 </div>
-

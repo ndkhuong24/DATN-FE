@@ -82,8 +82,8 @@ export class OrderDetailComponent implements OnInit {
         valueFormatter: (params: { data: { price: number; }; }) => {
           // return formatMoney(params.data.price);
           return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
-              .format(params.data.price)
-              .replace('₫', '') + 'đ';
+            .format(params.data.price)
+            .replace('₫', '') + 'đ';
         },
       },
       {
@@ -93,8 +93,8 @@ export class OrderDetailComponent implements OnInit {
         valueFormatter: (params: { data: { price: number; quantity: number; }; }) => {
           // return formatMoney(params.data.price * params.data.quantity);
           return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
-              .format(params.data.price * params.data.quantity)
-              .replace('₫', '') + 'đ';
+            .format(params.data.price * params.data.quantity)
+            .replace('₫', '') + 'đ';
         },
       }
     ];

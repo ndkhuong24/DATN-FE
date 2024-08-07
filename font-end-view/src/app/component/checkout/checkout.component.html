@@ -27,15 +27,6 @@
             <div>
               <span style="color: red; margin-left: 5px">{{c.productDetailDTO.price | number:'1.0-0'}} đ</span>
             </div>
-            <!-- <div *ngIf="c.productDTO.reducePrice != null && c.productDTO.percentageReduce != null">
-              <del>{{utilService.formatMoney(c.productDTO.price)}}</del>
-              <span style="color: red; margin-left: 5px">{{utilService.formatMoney(c.productDTO.price -
-                c.productDTO.reducePrice)}}</span>
-            </div> -->
-            <!-- <div *ngIf="c.productDTO.reducePrice == null && c.productDTO.percentageReduce == null">
-              <span style="color: red; margin-left: 5px">{{utilService.formatMoney(c.productDTO.price -
-                c.productDTO.reducePrice)}}</span>
-            </div> -->
           </td>
           <td> {{c.quantity}}</td>
           <th style="color: red">
@@ -49,20 +40,9 @@
           </th>
         </tr>
         <tr>
-          <!-- <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <th>Tiết kiệm</th> -->
           <th>Tổng Tiền</th>
         </tr>
         <tr>
-          <!-- <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <th>{{totalSaveMoney | number:'1.0-0'}} đ</th> -->
-          <!-- <th style="color: red">{{totalMoney | number:'1.0-0'}} đ</th> -->
           <th style="color: red">{{utilService.formatMoney(totalMoney)}}</th>
         </tr>
       </tbody>
@@ -87,7 +67,6 @@
               <p class="validate-input-label" *ngIf="validReceiver.maxLength">Họ và tên tối đa 250 kí tự</p>
             </div>
           </div>
-
           <div class="col-sm-6">
             <label for="lastName" class="form-label">SDT <span style="color: red">*</span></label>
             <input type="text" class="form-control" id="lastName" placeholder="Nhập SDT"
@@ -98,7 +77,6 @@
               <p class="validate-input-label" *ngIf="validReceiverPhone.regex">Số điện thoại không đúng định dạng</p>
             </div>
           </div>
-
           <div class="col-12" *ngIf="this.user.id === null">
             <label for="email" class="form-label">Email <span style="color: red">*</span></label>
             <input type="email" class="form-control" id="email" [(ngModel)]="email"
@@ -110,7 +88,6 @@
               <p class="validate-input-label" *ngIf="validEmail.regex">Email không đúng định dạng</p>
             </div>
           </div>
-
           <div class="col-sm-12" *ngIf="this.user.id !== null">
             <label for="" class="form-label" style="font-weight: bold">Địa chỉ nhận hàng </label>
             <div style="display: flex; justify-content: space-between">
@@ -122,7 +99,6 @@
               <button *ngIf="address == null" class="button-thaydoi" (click)="openPopupAddress();">Thêm địa chỉ</button>
             </div>
           </div>
-
           <div class="row" *ngIf="this.user.id === null">
             <label for="" class="form-label" style="font-weight: bold">Địa chỉ nhận hàng</label>
             <div class="col-md-4">
@@ -136,7 +112,6 @@
                 <p class="validate-input-label" *ngIf="validProvince.empty">Vui lòng không để trống</p>
               </div>
             </div>
-
             <div class="col-md-4">
               <label for="" class="form-label">Quận Huyện <span style="color: red">*</span></label>
               <ng-select [items]="listDistrict" bindLabel="DistrictName" bindValue="DistrictID"
@@ -162,7 +137,6 @@
             <input style="margin: auto;margin-left: 10px;" type="text" class="form-control" id="address" placeholder=""
               [ngModelOptions]="{standalone: true}" [(ngModel)]="addressNotLogin.specificAddress" required>
           </div>
-
         </div>
         <br>
         <div class="mb-3">
@@ -171,7 +145,6 @@
             id="exampleFormControlTextarea1" rows="3" [ngModelOptions]="{standalone: true}"></textarea>
         </div>
         <hr class="my-4">
-
         <div class="voucher">
           <h6>Voucher giảm giá:</h6>
           <span>{{voucher?.code}} , {{voucherShip?.code}}</span>
@@ -189,21 +162,13 @@
           <label class="form-check-label">Voucher giảm: </label>
           <input style="margin-left: 135px" type="text"
             [value]="(voucher?.reducedValue != null ? (voucher.reducedValue | number:'1.0-0') + ' đ' : '0 đ')" disabled>
-
-          <!-- <label class="form-check-label">Voucher giảm: </label> <input style="margin-left: 135px" type="text"
-            value="{{utilService.formatMoney(voucher?.reducedValue)}}" disabled> -->
         </div>
         <div style="margin-top: 10px">
           <label class="form-check-label">Tổng tiền phải thanh toán: </label> <input style="margin-left: 50px"
             type="text" value="{{totalMoneyPay | number:'1.0-0'}} đ" disabled>
-          <!-- <label class="form-check-label">Tổng tiền phải thanh toán: </label> <input style="margin-left: 50px"
-            type="text" value="{{utilService.formatMoney(totalMoneyPay)}}" disabled> -->
         </div>
-
         <hr class="my-4">
-
         <h4 class="mb-3">Phương thức thanh toán</h4>
-
         <div class="my-3">
           <input id="a" style="margin-left: 3px" name="paymentMethod" type="radio" class="form-check-input" [value]="0"
             [(ngModel)]="checkChoicePay" checked required value="">
@@ -217,7 +182,6 @@
           <button style="background: #fff; border-radius: 10px; border: none"><img style="width: 43px; height: 43px"
               src="../../../assets/image/vnPay.png" alt=""></button>
         </div>
-
         <button style="margin-bottom: 20px;" class="w-100 btn btn-danger btn-lg" type="submit"
           (click)="thanhToan();">Xác nhận thanh toán</button>
       </form>
