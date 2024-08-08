@@ -685,6 +685,11 @@ export class SalesCounterComponent implements OnInit {
     let listOrder = JSON.parse(localStorage.getItem('listOrder'));
     let currentOrder = listOrder.find((order: { id: number }) => order.id === this.currentOrderId);
 
+    // Hàm định dạng số
+    const formatNumber = (value: number): string => {
+      return value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    };
+
     // Khởi tạo chuỗi HTML
     let orderHTML = `<div>`;
     orderHTML += `<p>Thời gian: ${new Date().toLocaleString()}</p>`;
@@ -709,27 +714,78 @@ export class SalesCounterComponent implements OnInit {
     // Kiểm tra nếu có đơn hàng hiện tại
     if (currentOrder) {
       currentOrder.productList.forEach((product: any) => {
+        let totalPrice = product.quantityInOrder * product.price;
         orderHTML += `<tr>`;
         orderHTML += `<td>${product.productDTO.code}</td>`;
         orderHTML += `<td>${product.productDTO.name}</td>`;
         orderHTML += `<td>${product.sizeDTO.sizeNumber}</td>`;
         orderHTML += `<td>${product.colorDTO.name}</td>`;
         orderHTML += `<td>${product.quantityInOrder}</td>`;
-        orderHTML += `<td>${product.price}</td>`;
-        orderHTML += `<td>${product.quantityInOrder * product.price}</td>`;
+        orderHTML += `<td>${formatNumber(product.price)} đ</td>`;
+        orderHTML += `<td>${formatNumber(totalPrice)} đ</td>`;
         orderHTML += `</tr>`;
       });
     }
 
     orderHTML += `</tbody>`;
     orderHTML += `</table>`;
-    orderHTML += `<p>Tổng tiền: ${this.totalAllProducts} đ</p>`;
-    orderHTML += `<p>Giảm giá: ${this.priceVoucher} đ</p>`;
-    orderHTML += `<p>Tổng thanh toán: ${this.priceCustomer} đ</p>`;
+    orderHTML += `<p>Tổng tiền: ${formatNumber(this.totalAllProducts)} đ</p>`;
+    orderHTML += `<p>Giảm giá: ${formatNumber(this.priceVoucher)} đ</p>`;
+    orderHTML += `<p>Tổng thanh toán: ${formatNumber(this.priceCustomer)} đ</p>`;
     orderHTML += `</div>`;
 
     return orderHTML;
   }
+
+  // generateOrderHTML(): string {
+  //   let listOrder = JSON.parse(localStorage.getItem('listOrder'));
+  //   let currentOrder = listOrder.find((order: { id: number }) => order.id === this.currentOrderId);
+
+  //   // Khởi tạo chuỗi HTML
+  //   let orderHTML = `<div>`;
+  //   orderHTML += `<p>Thời gian: ${new Date().toLocaleString()}</p>`;
+  //   orderHTML += `<p>Tên nhân viên: ${this.user.fullname}</p>`;
+  //   orderHTML += `<p>Tên khách hàng: ${this.selectedCustomer ? this.selectedCustomer.fullname : 'Khách lẻ'}</p>`;
+  //   orderHTML += `<p>Số điện thoại: ${this.selectedCustomer ? this.selectedCustomer.phone : ''}</p>`;
+  //   orderHTML += `<h3>Chi tiết đơn hàng</h3>`;
+  //   orderHTML += `<table border="1" cellpadding="10">`;
+  //   orderHTML += `<thead>`;
+  //   orderHTML += `<tr>`;
+  //   orderHTML += `<th>Mã</th>`;
+  //   orderHTML += `<th>Tên</th>`;
+  //   orderHTML += `<th>Size</th>`;
+  //   orderHTML += `<th>Màu Sắc</th>`;
+  //   orderHTML += `<th>Số lượng</th>`;
+  //   orderHTML += `<th>Đơn giá</th>`;
+  //   orderHTML += `<th>Thành tiền</th>`;
+  //   orderHTML += `</tr>`;
+  //   orderHTML += `</thead>`;
+  //   orderHTML += `<tbody>`;
+
+  //   // Kiểm tra nếu có đơn hàng hiện tại
+  //   if (currentOrder) {
+  //     currentOrder.productList.forEach((product: any) => {
+  //       orderHTML += `<tr>`;
+  //       orderHTML += `<td>${product.productDTO.code}</td>`;
+  //       orderHTML += `<td>${product.productDTO.name}</td>`;
+  //       orderHTML += `<td>${product.sizeDTO.sizeNumber}</td>`;
+  //       orderHTML += `<td>${product.colorDTO.name}</td>`;
+  //       orderHTML += `<td>${product.quantityInOrder}</td>`;
+  //       orderHTML += `<td>${product.price}</td>`;
+  //       orderHTML += `<td>${product.quantityInOrder * product.price}</td>`;
+  //       orderHTML += `</tr>`;
+  //     });
+  //   }
+
+  //   orderHTML += `</tbody>`;
+  //   orderHTML += `</table>`;
+  //   orderHTML += `<p>Tổng tiền: ${this.totalAllProducts} đ</p>`;
+  //   orderHTML += `<p>Giảm giá: ${this.priceVoucher} đ</p>`;
+  //   orderHTML += `<p>Tổng thanh toán: ${this.priceCustomer} đ</p>`;
+  //   orderHTML += `</div>`;
+
+  //   return orderHTML;
+  // }
 
   printInvoice() {
     const invoiceHTML = this.generateOrderHTML();
@@ -916,30 +972,31 @@ export class SalesCounterComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result.event === 'saveVoucher') {
 
-        this.totalMoneyPay = originalTotalMoney;
+        this.priceCustomer = originalTotalMoney;
 
         if (result.data.voucher !== null) {
           this.voucherService.getVoucherSales(result.data.voucher).subscribe(res => {
-
             this.voucher = res.data;
-
             if (res.data.voucherType === 1) {
-
               const reducedVoucherPrice = parseFloat(((res.data.reducedValue / 100) * this.totalAllProducts).toFixed(2));
 
               if (reducedVoucherPrice > res.data.maxReduced) {
                 this.priceCustomer = this.totalAllProducts - this.voucher.maxReduced;
-                this.voucher.reducedValue = this.voucher.maxReduced;
+                // this.voucher.reducedValue = this.voucher.maxReduced;
+                this.priceVoucher = this.voucher.maxReduced;
               } else {
-                this.priceCustomer = this.totalAllProducts - this.voucher.reducedValue;
+                // this.priceCustomer = this.totalAllProducts - this.voucher.reducedValue;
+                this.priceCustomer = this.totalAllProducts - reducedVoucherPrice;
+                this.priceVoucher = reducedVoucherPrice;
               }
 
             } else {
               this.priceCustomer = this.totalAllProducts - this.voucher.reducedValue;
+              this.priceVoucher = res.data.reducedValue;
             }
 
-            this.priceVoucher = this.voucher.reducedValue;
-            this.voucherChoice.voucher = res.data.codess;
+            // this.priceVoucher = this.voucher.reducedValue;
+            this.voucherChoice.voucher = res.data.code;
 
             this.cdr.detectChanges();
           });

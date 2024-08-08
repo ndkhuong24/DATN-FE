@@ -87,27 +87,6 @@ export class OrderComponent implements OnInit {
         }
       },
       {
-        headerName: 'Ngày Tạo',
-        field: 'createDate',
-        sortable: true,
-        filter: true,
-        suppressMovable: true,
-        valueFormatter: (params: { data: { createDate: string; }; }) => {
-          return formatDateTime(params.data.createDate);
-        },
-        cellStyle: {
-          'font-weight': '500',
-          'font-size': '12px',
-          'align-items': 'center',
-          color: '#101840',
-          display: 'flex',
-          'white-space': 'nowrap',
-          'text-overflow': 'ellipsis',
-          overflow: 'hidden',
-          'justify-content': 'center',
-        },
-      },
-      {
         headerName: 'Khách Hàng',
         field: 'customerAdminDTO.fullname',
         suppressMovable: true,
@@ -231,6 +210,27 @@ export class OrderComponent implements OnInit {
           overflow: 'hidden',
           'justify-content': 'center',
         },
+      },
+      {
+        headerName: 'Ngày Tạo',
+        field: 'createDate',
+        sortable: true,
+        filter: true,
+        suppressMovable: true,
+        valueFormatter: (params: { data: { createDate: string; }; }) => {
+          return formatDateTime(params.data.createDate);
+        },
+        cellStyle: {
+          'font-weight': '500',
+          'font-size': '12px',
+          'align-items': 'center',
+          color: '#101840',
+          display: 'flex',
+          'white-space': 'nowrap',
+          'text-overflow': 'ellipsis',
+          overflow: 'hidden',
+          'justify-content': 'center',
+        },
       }
     ];
 
@@ -270,7 +270,6 @@ export class OrderComponent implements OnInit {
 
     this.orderService.getAllOrderAdmin(obj).subscribe(res => {
       this.rowData = res;
-      console.log(this.rowData)
     });
 
     this.cdr.detectChanges();

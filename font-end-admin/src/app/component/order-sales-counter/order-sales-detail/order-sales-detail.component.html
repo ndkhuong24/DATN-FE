@@ -23,14 +23,14 @@
           <td></td>
           <td>{{totalQuantity}}</td>
         </tr>
-        <tr>
+        <tr *ngIf="this.data.data?.codeVoucher">
           <th scope="row">Voucher</th>
           <td></td>
           <td></td>
           <td></td>
           <td>{{this.data.data?.codeVoucher}}</td>
         </tr>
-        <tr>
+        <tr *ngIf="this.data.data?.codeVoucher">
           <th scope="row">Số tiền được giảm</th>
           <td></td>
           <td></td>
