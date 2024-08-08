@@ -25,7 +25,7 @@ export class OrderDetailComponent implements OnInit {
   totalQuantity: number = 0;
   listOrderHistoryAdmin: any = [];
   listOrderHistoryView: any = [];
-
+  freeShipReduce: number = 0;
   voucherReduce: number = 0;
   voucherShipReduce: number = 0;
 
@@ -38,7 +38,12 @@ export class OrderDetailComponent implements OnInit {
     private toastr: ToastrService,
     private matDiaLog: MatDialog,
     public utilService: UtilService,
+    public voucherShipService:VoucherShipService,
   ) {
+    voucherShipService.getVoucherShip(data.data.codeVoucherShip).subscribe((res)=>{
+      this.freeShipReduce=res.data.reducedValue;
+    })
+
     this.columnDefs = [
       {
         headerName: 'STT',

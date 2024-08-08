@@ -11,6 +11,7 @@
     </div>
   </div>
   <br>
+
   <!-- Phần thông tin người nhận hàng và danh sách sản phẩm -->
   <div class="row">
     <!-- Thông tin người nhận hàng -->
@@ -67,11 +68,12 @@
               </tr>
             </tbody>
           </table>
+
           <p>Tổng cộng: {{order?.totalPrice | number:'1.0-0'}} đ</p>
           <p>Tiền ship: {{order?.shipPrice + order?.voucherFreeshipReduct | number:'1.0-0'}} đ</p>
-          <p>Tiền giảm giá: -{{order?.voucherReduct | number:'1.0-0'}} đ</p>
-          <p>Tiền giảm giá ship: -{{order?.voucherFreeshipReduct | number:'1.0-0'}} đ</p>
-          <p>Tổng cộng thanh toán: {{order?.totalPayment | number:'1.0-0'}} đ</p>
+          <p>Tiền giảm giá: - {{order?.voucherReduct | number:'1.0-0'}} đ</p>
+          <p>Tiền giảm giá ship: - {{order?.voucherFreeshipReduct | number:'1.0-0'}} đ</p>
+          <p>Tổng cộng thanh toán: {{order?.totalPayment + order?.shipPrice | number:'1.0-0'}} đ</p>
         </div>
       </div>
     </div>

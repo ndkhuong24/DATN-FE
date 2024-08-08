@@ -239,17 +239,17 @@ export class CheckoutComponent implements OnInit {
             const obj = {
               ...this.order,
               totalPrice: this.totalMoney,
-              totalPayment: this.totalMoneyPay,
+              voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
+              totalPayment: this.totalMoney - (this.voucher ? this.voucher.reducedValue : 0),
               shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
               codeVoucher: this.voucher ? this.voucher?.code : null,
               codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
-              voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
               voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
-              addressReceived: (this.addressNotLogin.specificAddress === null ? '...' : this.addressNotLogin.specificAddress) + ', ' + ward.WardName + ', '
+              addressReceived: this.addressNotLogin.specificAddress + ', ' + ward.WardName + ', '
                 + district.DistrictName + ', ' + province.ProvinceName,
-              paymentType: 1,
+              paymentType: 0,
               email: this.email
-            };
+            };            
 
             const objOrderBill = {
               order: obj,
@@ -265,20 +265,34 @@ export class CheckoutComponent implements OnInit {
             });
           }
           else {
+            // const obj = {
+            //   ...this.order,
+            //   totalPrice: this.totalMoney,
+            //   totalPayment: this.totalMoneyPay,
+            //   shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
+            //   codeVoucher: this.voucher ? this.voucher?.code : null,
+            //   codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
+            //   voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
+            //   voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
+            //   addressReceived: this.addressNotLogin.specificAddress + ', ' + ward.WardName + ', '
+            //     + district.DistrictName + ', ' + province.ProvinceName,
+            //   paymentType: 0,
+            //   email: this.email
+            // };
             const obj = {
               ...this.order,
               totalPrice: this.totalMoney,
-              totalPayment: this.totalMoneyPay,
+              voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
+              totalPayment: this.totalMoney - (this.voucher ? this.voucher.reducedValue : 0),
               shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
               codeVoucher: this.voucher ? this.voucher?.code : null,
               codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
-              voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
               voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
               addressReceived: this.addressNotLogin.specificAddress + ', ' + ward.WardName + ', '
                 + district.DistrictName + ', ' + province.ProvinceName,
               paymentType: 0,
               email: this.email
-            };
+            };            
 
             const objOrderBill = {
               order: obj,
@@ -321,20 +335,34 @@ export class CheckoutComponent implements OnInit {
         .then((result) => {
           if (result.isConfirmed) {
             if (this.checkChoicePay === 1) {
+              // const obj = {
+              //   ...this.order,
+              //   totalPrice: this.totalMoney,
+              //   totalPayment: this.totalMoneyPay,
+              //   shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
+              //   codeVoucher: this.voucher ? this.voucher?.code : null,
+              //   codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
+              //   voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
+              //   voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
+              //   addressReceived: this.address.specificAddress + ', ' + this.address.wards + ', ' + this.address.district + ', ' + this.address.province,
+              //   paymentType: 1,
+              //   email: this.user.email,
+              //   idCustomer: this.user.id,
+              // };
               const obj = {
                 ...this.order,
                 totalPrice: this.totalMoney,
-                totalPayment: this.totalMoneyPay,
+                voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
+                totalPayment: this.totalMoney - (this.voucher ? this.voucher.reducedValue : 0),
                 shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
                 codeVoucher: this.voucher ? this.voucher?.code : null,
                 codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
-                voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
                 voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
                 addressReceived: this.address.specificAddress + ', ' + this.address.wards + ', ' + this.address.district + ', ' + this.address.province,
-                paymentType: 1,
+                paymentType: 0,
                 email: this.user.email,
                 idCustomer: this.user.id,
-              };
+              };              
 
               const objOrderBill = {
                 order: obj,
@@ -353,17 +381,17 @@ export class CheckoutComponent implements OnInit {
               const obj = {
                 ...this.order,
                 totalPrice: this.totalMoney,
-                totalPayment: this.totalMoneyPay,
+                voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
+                totalPayment: this.totalMoney - (this.voucher ? this.voucher.reducedValue : 0),
                 shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
                 codeVoucher: this.voucher ? this.voucher?.code : null,
                 codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
-                voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
                 voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
                 addressReceived: this.address.specificAddress + ', ' + this.address.wards + ', ' + this.address.district + ', ' + this.address.province,
                 paymentType: 0,
                 email: this.user.email,
                 idCustomer: this.user.id,
-              };
+              };              
 
               const objOrderBill = {
                 order: obj,

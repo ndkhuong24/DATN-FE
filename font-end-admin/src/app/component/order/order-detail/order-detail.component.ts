@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
 import { NoteOrderComponent } from '../note-order/note-order.component';
 import { UtilService } from '../../../util/util.service';
+import { VoucherShipService } from 'src/app/service/voucher-ship.service';
 
 @Component({
   selector: 'app-order-detail',
@@ -23,6 +24,7 @@ export class OrderDetailComponent implements OnInit {
   noteOrder: string = null;
   listOrderHistoryAdmin: any = [];
   listOrderHistoryView: any = [];
+  freeShipReduce: number = 0;
 
   constructor(
     private orderDetailService: OrderDetailService,
@@ -32,8 +34,13 @@ export class OrderDetailComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private toastr: ToastrService,
     private matDiaLog: MatDialog,
-    public utilService: UtilService
+    public utilService: UtilService,
+    public voucherShipService: VoucherShipService,
   ) {
+    voucherShipService.searchByCode(data.data.codeVoucherShip).subscribe((res)=>{
+      this.freeShipReduce=res.reducedValue;
+    })
+
     this.rowData = [];
     this.columnDefs = [
       {

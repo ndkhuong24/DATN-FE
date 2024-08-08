@@ -8,6 +8,7 @@ import { apiURL } from '../config/apiUrl';
 })
 export class VoucherShipService {
   private apiUrl = 'http://localhost:8081/api/admin/voucherFS';
+
   constructor(private http: HttpClient) {}
 
   getSomeData() {
@@ -90,6 +91,14 @@ export class VoucherShipService {
     const params = new HttpParams().set('search', search);
     return this.http.get<any>(
       `http://localhost:8081/api/admin/voucherFS/searchByVoucherFS`,
+      { params }
+    );
+  }
+
+  searchByCode(code: string): Observable<any> {
+    const params = new HttpParams().set('code', code);
+    return this.http.get<any>(
+      `http://localhost:8081/api/admin/voucherFS/searchByCode`,
       { params }
     );
   }

@@ -28,35 +28,58 @@
           <td></td>
           <td></td>
           <td></td>
-          <td>{{data.data?.codeVoucher}}</td>
+          <td>
+            {{data.data?.codeVoucher}} 
+            <P style="color: red;">- {{data.data?.totalPrice - data.data?.totalPayment | number:'1.0-0'}} đ</P>
+          </td>
         </tr>
         <tr *ngIf="data.data?.codeVoucherShip">
           <th scope="row">Voucher Ship</th>
           <td></td>
           <td></td>
           <td></td>
-          <td>{{data.data?.codeVoucherShip}}</td>
+          <td>
+            {{data.data?.codeVoucherShip}}
+            <P style="color: red;">- {{freeShipReduce | number:'1.0-0'}} đ</P>
+          </td>
         </tr>
         <tr>
           <th scope="row">Phí vận chuyển</th>
           <td></td>
           <td></td>
           <td></td>
-          <td>{{data.data?.shipPrice | number:'1.0-0'}} đ</td>
+          <td>
+            {{data.data?.shipPrice + freeShipReduce | number:'1.0-0'}} đ
+          </td>
         </tr>
         <tr>
           <th scope="row">Tổng thanh toán</th>
           <td></td>
           <td></td>
           <td></td>
-          <td>{{data.data?.totalPayment | number:'1.0-0'}} đ</td>
+          <td>{{data.data?.totalPayment + data.data?.shipPrice | number:'1.0-0'}} đ</td>
         </tr>
+
         <tr>
           <th scope="row">Hình thức thanh toán</th>
           <td></td>
           <td></td>
           <td></td>
+          <td>{{data.data?.paymentType === 0 ? "Thanh toán khi nhận hàng": "Thanh toán online"}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Trạng thái thanh toán</th>
+          <td></td>
+          <td></td>
+          <td></td>
           <td>{{data.data?.statusPayment === 0 ? "Đã thanh toán": "Chưa thanh toán"}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Địa chỉ nhận hàng</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{data.data?.addressReceived}}</td>
         </tr>
       </tbody>
     </table>
@@ -90,6 +113,7 @@
         </table>
       </div>
     </div>
+
     <div class="row" *ngIf="listOrderHistoryView.length > 0">
       <div style="display:flex; justify-content: space-between">
         <div>
