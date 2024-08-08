@@ -202,7 +202,6 @@ export class SearchOrderComponent implements OnInit {
             this.toastr.error(result.message, 'Thông báo', {
               positionClass: 'toast-top-right'
             });
-            console.log(result)
           }
           this.cdr.detectChanges();
         });

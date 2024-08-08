@@ -161,7 +161,6 @@ export class OrderDetailComponent implements OnInit {
         this.orderService.completeOrder(obj).subscribe(result => {
           if (result.status === 'OK') {
             Swal.fire('Đã nhận hàng thành công');
-            // this.ngOnInit();
             this.cdr.detectChanges();
           } else {
             this.toastr.error(result.message, 'Thông báo', {
