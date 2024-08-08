@@ -178,31 +178,42 @@ export class SearchOrderComponent implements OnInit {
       height: '32vh',
     }).afterClosed().subscribe(res => {
       if (res.event === 'close-note') {
+        // Lấy thông tin khách hàng từ localStorage
         const storedUsers = localStorage.getItem('customer');
 
         if (storedUsers) {
           this.infoCustomer = JSON.parse(storedUsers);
         }
 
+        // Lấy ghi chú đơn hàng từ kết quả đóng của dialog
         this.noteOrder = res.data.note;
 
+        // Tạo đối tượng chứa thông tin đơn hàng để gửi yêu cầu hủy
         const obj = {
           id: this.order.id,
           idStaff: this.order.idStaff,
           idCustomer: this.infoCustomer ? this.infoCustomer.id : null,
-          note: res.data.note
+          note: this.noteOrder
         };
 
+        // Gửi yêu cầu hủy đơn hàng
         this.orderService.cancelOrderView(obj).subscribe(result => {
           if (result.status === 'OK') {
+            // Hiển thị thông báo thành công và làm mới dữ liệu
             Swal.fire('Đã hủy đơn hàng thành công');
             this.ngOnInit();
             this.cdr.detectChanges();
+
+            // Điều hướng đến trang tra cứu đơn hàng
+            window.location.href = `http://localhost:4000/tra-cuu-don-hang?code=${this.codeOrderSearch}`;
           } else {
+            // Hiển thị thông báo lỗi nếu hủy không thành công
             this.toastr.error(result.message, 'Thông báo', {
               positionClass: 'toast-top-right'
             });
           }
+
+          // Cập nhật lại giao diện sau khi xử lý xong
           this.cdr.detectChanges();
         });
       }
