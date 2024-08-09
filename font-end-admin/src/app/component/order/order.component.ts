@@ -1,8 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ColDef } from 'ag-grid-community';
 import { formatDate, formatDateTime, formatMoney } from '../../util/util';
 import { OrderService } from '../../service/order.service';
-import { ActionOrderComponent } from './action-order/action-order.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -19,7 +17,6 @@ export class OrderComponent implements OnInit {
   columnDefs = [];
   gridApi: any;
   gridColumnApi: any;
-
   user: any = {
     id: null,
     code: null,
@@ -27,13 +24,11 @@ export class OrderComponent implements OnInit {
     phone: '',
     email: '',
   };
-
   modelSearch: any = {
     code: null,
     dateFrom: null,
     dateTo: null
   };
-
   totalStatus: any;
 
   constructor(
@@ -58,7 +53,6 @@ export class OrderComponent implements OnInit {
         headerName: 'STT',
         field: '',
         suppressMovable: true,
-        // minWidth: 60,
         maxWidth: 60,
         valueGetter: (param: { node: { rowIndex: number; }; }) => {
           return param.node.rowIndex + 1;
@@ -303,6 +297,8 @@ export class OrderComponent implements OnInit {
       }
     }).afterClosed().subscribe(res => {
       if (res === 'update-order') {
+        this.ngOnInit();
+      } else {
         this.ngOnInit();
       }
     });

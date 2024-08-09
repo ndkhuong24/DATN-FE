@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ProductService } from '../../service/product.service';
-import { CookieService } from 'ngx-cookie-service';
 import { UsersDTO } from '../model/UsersDTO';
 import { OrderService } from '../../service/order.service';
 import { OrderDetailService } from '../../service/order-detail.service';
@@ -8,15 +7,12 @@ import { Order } from '../model/Order';
 import { OrderDetail } from '../model/OrderDetail';
 import { ActivatedRoute } from '@angular/router';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { SizeService } from '../../service/size.service';
-import { MausacService } from '../../service/mausac.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerComponent } from '../customer/customer.component';
 import { CustomerServiceService } from '../../service/customer-service.service';
 import { OrderSalesCounterComponent } from '../order-sales-counter/order-sales-counter.component';
 import * as printJS from 'print-js';
 import { ToastrService } from 'ngx-toastr';
-import { ProductdetailService } from '../../service/productdetail.service';
 import { GiaoHangServiceService } from '../../service/giao-hang-service.service';
 import Swal from 'sweetalert2';
 import { PaymentSalesService } from '../../service/payment-sales.service';
@@ -26,7 +22,6 @@ import { ValidateInput } from '../model/validate-input';
 import { PogupVoucherSCComponent } from './pogup-voucher-sc/pogup-voucher-sc.component';
 import { SalesCouterVoucherService } from '../../service/sales-couter-voucher.service';
 import { CurrencyPipe } from '@angular/common';
-import { CursorError } from '@angular/compiler/src/ml_parser/lexer';
 
 @Component({
   selector: 'app-sales-counter',
@@ -56,15 +51,11 @@ export class SalesCounterComponent implements OnInit {
   fullname: string;
   idStaff: string;
   currentOrderId: number = 1;
-
   listSizePR: any[];
   listColor: any[];
-
   listSizeFind: any[];
   lisColorFind: any[];
-
   name: string;
-  // animal: string;
   selectedOption: string = '1';
   selectedCustomer: any;
   idCustomer = null;
@@ -126,7 +117,6 @@ export class SalesCounterComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private cookieService: CookieService,
     private orderService: OrderService,
     private orderDetailService: OrderDetailService,
     private dialog: MatDialog,
@@ -420,16 +410,6 @@ export class SalesCounterComponent implements OnInit {
       console.error('Current order not found');
     }
   }
-
-  // getProductListForCurrentOrder() {
-  //   const currentOrder = this.listOder.find(order => order.id === this.currentOrderId);
-
-  //   this.listProductPush = [];
-
-  //   if (currentOrder) {
-  //     this.listProductPush = currentOrder.productList;
-  //   }
-  // }
 
   addCustomer(row: any) {
     if (!row.quantity) {
@@ -737,56 +717,6 @@ export class SalesCounterComponent implements OnInit {
     return orderHTML;
   }
 
-  // generateOrderHTML(): string {
-  //   let listOrder = JSON.parse(localStorage.getItem('listOrder'));
-  //   let currentOrder = listOrder.find((order: { id: number }) => order.id === this.currentOrderId);
-
-  //   // Khởi tạo chuỗi HTML
-  //   let orderHTML = `<div>`;
-  //   orderHTML += `<p>Thời gian: ${new Date().toLocaleString()}</p>`;
-  //   orderHTML += `<p>Tên nhân viên: ${this.user.fullname}</p>`;
-  //   orderHTML += `<p>Tên khách hàng: ${this.selectedCustomer ? this.selectedCustomer.fullname : 'Khách lẻ'}</p>`;
-  //   orderHTML += `<p>Số điện thoại: ${this.selectedCustomer ? this.selectedCustomer.phone : ''}</p>`;
-  //   orderHTML += `<h3>Chi tiết đơn hàng</h3>`;
-  //   orderHTML += `<table border="1" cellpadding="10">`;
-  //   orderHTML += `<thead>`;
-  //   orderHTML += `<tr>`;
-  //   orderHTML += `<th>Mã</th>`;
-  //   orderHTML += `<th>Tên</th>`;
-  //   orderHTML += `<th>Size</th>`;
-  //   orderHTML += `<th>Màu Sắc</th>`;
-  //   orderHTML += `<th>Số lượng</th>`;
-  //   orderHTML += `<th>Đơn giá</th>`;
-  //   orderHTML += `<th>Thành tiền</th>`;
-  //   orderHTML += `</tr>`;
-  //   orderHTML += `</thead>`;
-  //   orderHTML += `<tbody>`;
-
-  //   // Kiểm tra nếu có đơn hàng hiện tại
-  //   if (currentOrder) {
-  //     currentOrder.productList.forEach((product: any) => {
-  //       orderHTML += `<tr>`;
-  //       orderHTML += `<td>${product.productDTO.code}</td>`;
-  //       orderHTML += `<td>${product.productDTO.name}</td>`;
-  //       orderHTML += `<td>${product.sizeDTO.sizeNumber}</td>`;
-  //       orderHTML += `<td>${product.colorDTO.name}</td>`;
-  //       orderHTML += `<td>${product.quantityInOrder}</td>`;
-  //       orderHTML += `<td>${product.price}</td>`;
-  //       orderHTML += `<td>${product.quantityInOrder * product.price}</td>`;
-  //       orderHTML += `</tr>`;
-  //     });
-  //   }
-
-  //   orderHTML += `</tbody>`;
-  //   orderHTML += `</table>`;
-  //   orderHTML += `<p>Tổng tiền: ${this.totalAllProducts} đ</p>`;
-  //   orderHTML += `<p>Giảm giá: ${this.priceVoucher} đ</p>`;
-  //   orderHTML += `<p>Tổng thanh toán: ${this.priceCustomer} đ</p>`;
-  //   orderHTML += `</div>`;
-
-  //   return orderHTML;
-  // }
-
   printInvoice() {
     const invoiceHTML = this.generateOrderHTML();
     const frame = document.createElement('iframe');
@@ -815,7 +745,6 @@ export class SalesCounterComponent implements OnInit {
       data: { name: this.name }
     });
     // dialogRef.afterClosed().subscribe(result => {
-    //   console.log(result)
     //   // Swal.fire('Thêm', 'Thêm khách hàng thành công', 'success');
     // });
   }
@@ -949,7 +878,6 @@ export class SalesCounterComponent implements OnInit {
 
   openVoucherSC() {
     const originalTotalMoney = this.totalAllProducts;
-
     let selectCustomerCurrent = null;
 
     if (this.searcherCustomer.trim() === '') {
@@ -971,9 +899,7 @@ export class SalesCounterComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result.event === 'saveVoucher') {
-
         this.priceCustomer = originalTotalMoney;
-
         if (result.data.voucher !== null) {
           this.voucherService.getVoucherSales(result.data.voucher).subscribe(res => {
             this.voucher = res.data;
@@ -982,10 +908,8 @@ export class SalesCounterComponent implements OnInit {
 
               if (reducedVoucherPrice > res.data.maxReduced) {
                 this.priceCustomer = this.totalAllProducts - this.voucher.maxReduced;
-                // this.voucher.reducedValue = this.voucher.maxReduced;
                 this.priceVoucher = this.voucher.maxReduced;
               } else {
-                // this.priceCustomer = this.totalAllProducts - this.voucher.reducedValue;
                 this.priceCustomer = this.totalAllProducts - reducedVoucherPrice;
                 this.priceVoucher = reducedVoucherPrice;
               }
@@ -995,9 +919,7 @@ export class SalesCounterComponent implements OnInit {
               this.priceVoucher = res.data.reducedValue;
             }
 
-            // this.priceVoucher = this.voucher.reducedValue;
             this.voucherChoice.voucher = res.data.code;
-
             this.cdr.detectChanges();
           });
         }

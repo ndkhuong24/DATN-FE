@@ -247,7 +247,7 @@ export class CheckoutComponent implements OnInit {
               voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
               addressReceived: this.addressNotLogin.specificAddress + ', ' + ward.WardName + ', '
                 + district.DistrictName + ', ' + province.ProvinceName,
-              paymentType: 0,
+              paymentType: 1,
               email: this.email
             };            
 
@@ -359,7 +359,7 @@ export class CheckoutComponent implements OnInit {
                 codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
                 voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
                 addressReceived: this.address.specificAddress + ', ' + this.address.wards + ', ' + this.address.district + ', ' + this.address.province,
-                paymentType: 0,
+                paymentType: 1,
                 email: this.user.email,
                 idCustomer: this.user.id,
               };              

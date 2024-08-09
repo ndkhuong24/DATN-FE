@@ -16,4 +16,8 @@ export class CustomerServiceService {
   addCustomerSC(customer: UsersDTO): Observable<any> {
     return this.http.post('http://localhost:8081/sales-customer/add-customer', customer);
   }
+
+  findById(id: Number): Observable<any> {
+    return this.http.get('http://localhost:8081/sales-customer/findById/' + id);
+  }
 }

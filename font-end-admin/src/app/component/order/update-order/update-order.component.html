@@ -1,0 +1,52 @@
+<div style="text-align: center;">
+    <h1>Cập nhật đơn hàng</h1>
+</div>
+<div>
+    <ag-grid-angular style="width: 100%; height: 300px" class="ag-theme-alpine" [rowData]="rowData"
+        [columnDefs]="columnDefs" [headerHeight]="60" [rowHeight]="65" [suppressHorizontalScroll]="true"
+        (gridReady)="onGridReady($event)">
+    </ag-grid-angular>
+</div>
+<div style="margin-top: 10px;">
+    <div class="row">
+        <div class="col-4">
+            <button class="btn btn-success" (click)="openVoucherSC()">Voucher</button>
+            <button style="margin-left: 5px;" class="btn btn-danger" (click)="clearVoucher()">Xóa</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th scope="row">Tổng giá trị sản phẩm</th>
+                        <td>{{totalPrice | number:'1.0-0'}} đ</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Tổng số lượng sản phẩm</th>
+                        <td>{{totalQuantity}}</td>
+                    </tr>
+                    <tr *ngIf="voucherChoice.voucher">
+                        <th scope="row">Voucher</th>
+                        <td>
+                            {{voucherChoice.voucher}}
+                        </td>
+                    </tr>
+                    <tr *ngIf="voucherChoice.voucher">
+                        <th scope="row">Voucher giảm</th>
+                        <td>
+                            {{priceVoucher | number:'1.0-0'}} đ
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Tổng thanh toán</th>
+                        <td>{{totalPayment | number:'1.0-0'}} đ</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div style="text-align: center;">
+        <button class="btn btn-success" (click)="capNhat()">Cập nhật</button>
+    </div>
+</div>

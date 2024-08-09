@@ -15,6 +15,10 @@ export class OrderDetailService {
     return this.http.get(`${apiURL}get-order-detail/by-order/${idOrder}`);
   }
 
+  deleteOrderDetail(id: number): Observable<any> {
+    return this.http.delete(`${apiURL}delete-order-detail/${id}`);
+  }
+
   createDetailSales(orderDetail: OrderDetail): Observable<any> {
     return this.http.post('http://localhost:8081/sales-counter/api/create-order-detail', orderDetail);
   }

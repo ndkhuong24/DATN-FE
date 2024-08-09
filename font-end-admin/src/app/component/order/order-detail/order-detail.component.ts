@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { formatMoney, padZero } from '../../../util/util';
+import { padZero } from '../../../util/util';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { OrderDetailService } from '../../../service/order-detail.service';
 import { OrderService } from '../../../service/order.service';
@@ -8,12 +8,14 @@ import { ToastrService } from 'ngx-toastr';
 import { NoteOrderComponent } from '../note-order/note-order.component';
 import { UtilService } from '../../../util/util.service';
 import { VoucherShipService } from 'src/app/service/voucher-ship.service';
+import { UpdateOrderComponent } from '../update-order/update-order.component';
 
 @Component({
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
   styleUrls: ['./order-detail.component.scss']
 })
+
 export class OrderDetailComponent implements OnInit {
   rowData: any;
   columnDefs: any;
@@ -37,9 +39,11 @@ export class OrderDetailComponent implements OnInit {
     public utilService: UtilService,
     public voucherShipService: VoucherShipService,
   ) {
-    voucherShipService.searchByCode(data.data.codeVoucherShip).subscribe((res)=>{
-      this.freeShipReduce=res.reducedValue;
-    })
+    if (data.data?.codeVoucherShip) {
+      voucherShipService.searchByCode(data.data.codeVoucherShip).subscribe((res) => {
+        this.freeShipReduce = res.reducedValue;
+      });
+    }
 
     this.rowData = [];
     this.columnDefs = [
@@ -314,6 +318,27 @@ export class OrderDetailComponent implements OnInit {
           this.cdr.detectChanges();
           this.matRef.close('update-order');
         });
+      }
+    });
+  }
+
+  capNhat() {
+    const dialogref = this.matDiaLog.open(UpdateOrderComponent, {
+      width: '200vh',
+      height: '100vh',
+      data: this.data.data
+    });
+    dialogref.afterClosed().subscribe((result) => {
+      if (result === 'updateOrder') {
+        this.ngOnInit();
+        this.cdr.detectChanges();
+
+        // this.orderDetailService.getAllOrderDetailByOrder(this.data.data.id).subscribe(res => {
+        //   this.rowData = res.orderDetail;
+        //   this.listOrderHistoryAdmin = res.orderHistoryAdmin;
+        //   this.listOrderHistoryView = res.orderHistoryView;
+        //   this.totalQuantity = this.rowData.reduce((total, orderDetail) => total + (orderDetail.quantity || 0), 0);
+        // });
       }
     });
   }

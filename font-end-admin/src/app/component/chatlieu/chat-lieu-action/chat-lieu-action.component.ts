@@ -47,7 +47,6 @@ export class ChatlieuActionComponent implements OnInit {
       data: this.params,
     });
     dialogref.afterClosed().subscribe((result) => {
-      console.log(result);
       if (result === 'saveMaterial') {
         this.chatLieuComponent.ngOnInit();
         this.cdr.detectChanges();

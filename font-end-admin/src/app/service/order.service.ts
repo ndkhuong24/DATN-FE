@@ -8,7 +8,6 @@ import { Order } from '../component/model/Order';
   providedIn: 'root'
 })
 export class OrderService {
-
   constructor(private http: HttpClient) {
   }
 
@@ -34,6 +33,10 @@ export class OrderService {
 
   shipOrder(obj: { id: any; idStaff: any; note: any; }): Observable<any> {
     return this.http.post(`${apiURL}ship-order`, obj);
+  }
+
+  updateOrder(orderCurrent: any) {
+    return this.http.put(`${apiURL}update-order`, orderCurrent);
   }
 
   missedOrder(obj: { id: any; idStaff: any; note: any; }): Observable<any> {

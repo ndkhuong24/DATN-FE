@@ -101,6 +101,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { PogupVoucherSCComponent } from './component/sales-counter/pogup-voucher-sc/pogup-voucher-sc.component';
 import { ChiTietComponent } from './component/sanpham/chi-tiet/chi-tiet.component';
 import { VnpayReturnComponent } from './component/sales-counter/vnpay-return/vnpay-return.component';
+import { UpdateOrderComponent } from './component/order/update-order/update-order.component';
 
 @NgModule({
   declarations: [
@@ -176,7 +177,8 @@ import { VnpayReturnComponent } from './component/sales-counter/vnpay-return/vnp
     DetailVoucherShipComponent,
     VoucherShipComponent,
     PogupVoucherSCComponent,
-    ChiTietComponent
+    ChiTietComponent,
+    UpdateOrderComponent
   ],
   imports: [
     BrowserModule,

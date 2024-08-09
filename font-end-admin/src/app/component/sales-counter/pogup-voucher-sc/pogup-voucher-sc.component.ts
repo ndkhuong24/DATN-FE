@@ -98,30 +98,4 @@ export class PogupVoucherSCComponent implements OnInit {
       return false;
     }
   }
-
-
-  // checkValidateVoucher(v: any) {
-  //   this.checkConditionApply = false;
-  //   this.checkQuanity = false
-  //   this.checkStartDate = false;
-
-  //   if (new Date(v.startDate) > new Date()) {
-  //     this.checkStartDate = true;
-  //     return true;
-  //   }
-  //   else if (v.conditionApply > this.data.total) {
-  //     this.checkConditionApply = true;
-  //     return true;
-  //   } 
-  //   else if (v.useVoucher >= v.quantity) {
-  //     this.checkQuanity = true;
-  //     return true
-  //   }
-  //   else {
-  //     this.checkStartDate = false;
-  //     this.checkQuanity = false
-  //     this.checkConditionApply = false;
-  //     return false;
-  //   }
-  // }
 }

@@ -11,10 +11,13 @@ import { OrderService } from '../../../service/order.service';
   styleUrls: ['./action-order.component.scss']
 })
 export class ActionOrderComponent implements OnInit, ICellRendererAngularComp {
-
   data: any;
   status: any;
-  constructor(private matDialog: MatDialog, private orderService: OrderService, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private matDialog: MatDialog, 
+    private orderService: OrderService, 
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.status = this.data.status;
