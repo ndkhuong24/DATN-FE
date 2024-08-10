@@ -35,7 +35,7 @@ export class OrderService {
     return this.http.post(`${apiURL}ship-order`, obj);
   }
 
-  updateOrder(orderCurrent: any) {
+  updateOrder(orderCurrent: any): Observable<any> {
     return this.http.put(`${apiURL}update-order`, orderCurrent);
   }
 

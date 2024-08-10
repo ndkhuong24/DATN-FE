@@ -8,9 +8,8 @@ import { OrderDetail } from '../component/model/OrderDetail';
   providedIn: 'root'
 })
 export class OrderDetailService {
-
   constructor(private http: HttpClient) { }
-  
+
   getAllOrderDetailByOrder(idOrder: number): Observable<any> {
     return this.http.get(`${apiURL}get-order-detail/by-order/${idOrder}`);
   }
@@ -19,10 +18,18 @@ export class OrderDetailService {
     return this.http.delete(`${apiURL}delete-order-detail/${id}`);
   }
 
+  deleteOrderDetailByIdOrder(id: number): Observable<any> {
+    return this.http.delete(`${apiURL}delete-order-detail-by-id-order/${id}`);
+  }
+
+  updateOrderDetail(currentRowData: any): Observable<any> {
+    return this.http.put(`${apiURL}update-order-detail/${currentRowData.id}`, currentRowData);
+  }
+
   createDetailSales(orderDetail: OrderDetail): Observable<any> {
     return this.http.post('http://localhost:8081/sales-counter/api/create-order-detail', orderDetail);
   }
-  
+
   sendEmailFromCustomer(obj): Observable<any> {
     return this.http.post(`http://localhost:8081/view/api/send-email-from-customer`, obj);
   }

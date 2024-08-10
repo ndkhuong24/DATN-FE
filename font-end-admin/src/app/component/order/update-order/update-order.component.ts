@@ -55,7 +55,6 @@ export class UpdateOrderComponent implements OnInit {
         this.rowData = [];
 
         const storedUserString = localStorage.getItem('users');
-
         if (storedUserString) {
             const storedUser = JSON.parse(storedUserString);
             this.user = {
@@ -95,8 +94,55 @@ export class UpdateOrderComponent implements OnInit {
                 headerName: 'Số lượng',
                 field: 'quantity',
                 suppressMovable: true,
-                valueFormatter: (params: { data: { quantity: any; }; }) => {
-                    return padZero(params.data.quantity);
+                cellRenderer: (params: {
+                    node: any; value: any; data: any;
+                }) => {
+                    const input = document.createElement('input');
+                    input.type = 'number';
+                    input.value = params.value || 1;
+                    input.min = '1'; // Đặt giá trị min là 1
+
+                    const maxQuantity = params.data.productDetailDTO.quantity || 0;
+                    input.max = maxQuantity.toString(); // Đặt giá trị max là giá trị của productDetailDTO.quantity
+
+                    input.style.width = '30%';
+
+                    input.addEventListener('input', () => {
+                        let value = parseInt(input.value);
+
+                        // Kiểm tra giá trị nhập vào có nằm trong khoảng [1, maxQuantity]
+                        if (isNaN(value) || value < 1) {
+                            value = 1;
+                        } else if (value > maxQuantity) {
+                            value = maxQuantity;
+                        }
+
+                        input.value = value.toString();
+                    });
+
+                    input.addEventListener('change', () => {
+                        const value = parseInt(input.value);
+                        params.node.setDataValue('quantity', value);
+
+                        // Tính lại tổng số lượng và tổng tiền
+                        this.totalQuantity = this.rowData.reduce((total, orderDetail) => total + (orderDetail.quantity || 0), 0);
+                        this.tinhTong();
+
+                        // Cập nhật lại giá trị "Thành tiền" trong grid với trường totalPriceCurrent
+                        const price = params.data.price || 0;
+                        params.node.setDataValue('totalPriceCurrent', value * price);
+
+                        // Lấy toàn bộ dữ liệu của dòng hiện tại
+                        // const currentRowData = params.data;
+
+                        // orderDetailService.updateOrderDetail(currentRowData).subscribe((res) => {
+                        //     if (res.status === 200 || res.message === 'Success'){
+                        //         toastr.success('Cập nhật số lượng thành công','Thông báo')
+                        //     }
+                        // })
+                    });
+
+                    return input;
                 },
             },
             {
@@ -105,17 +151,22 @@ export class UpdateOrderComponent implements OnInit {
                 suppressMovable: true,
                 valueFormatter: (params: { data: { price: number; }; }) => {
                     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
-                        .format(params.data.price)
+                        .format(params.data.price || 0)
                         .replace('₫', '') + 'đ';
                 },
             },
             {
                 headerName: 'Thành tiền',
-                field: '',
+                field: 'totalPriceCurrent', // Sử dụng trường mới để lưu giá trị thành tiền hiện tại
                 suppressMovable: true,
-                valueFormatter: (params: { data: { price: number; quantity: number; }; }) => {
+                valueFormatter: (params: {
+                    data: {
+                        quantity: any;
+                        price: any; totalPriceCurrent: number;
+                    };
+                }) => {
                     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
-                        .format(params.data.price * params.data.quantity)
+                        .format(params.data.totalPriceCurrent || params.data.price * params.data.quantity)
                         .replace('₫', '') + 'đ';
                 },
             },
@@ -124,10 +175,9 @@ export class UpdateOrderComponent implements OnInit {
                 field: '',
                 suppressMovable: true,
                 cellRenderer: (params: { data: any }) => {
-                    // Tạo nút HTML
                     const button = document.createElement('button');
-                    button.className = 'btn btn-danger';  // Thêm lớp CSS cho nút
-                    button.innerText = 'Xóa';  // Văn bản hiển thị trên nút
+                    button.className = 'btn btn-danger';
+                    button.innerText = 'Xóa';
 
                     button.addEventListener('click', () => {
                         this.onDeleteRow(params.data);
@@ -137,35 +187,61 @@ export class UpdateOrderComponent implements OnInit {
                 }
             }
         ];
+
+        this.totalQuantity = this.rowData.reduce((total, orderDetail) => total + (orderDetail.quantity || 0), 0);
+
+        this.tinhTong();
     }
 
     onDeleteRow(dataCurrent: any) {
-        if (this.totalQuantity > 1) {
-            this.orderDetailService.deleteOrderDetail(dataCurrent.id).subscribe((res) => {
-                if (res.status === 200 || res.message === 'Success') {
-                    const index = this.rowData.findIndex(item => item.id === dataCurrent.id);
-                    if (index > -1) {
-                        this.rowData.splice(index, 1);
-                        // Cập nhật dữ liệu cho ag-grid
-                        this.gridApi.setRowData(this.rowData);
-                        // Cập nhật tổng số lượng
-                        this.totalQuantity = this.rowData.reduce((total, orderDetail) => total + (orderDetail.quantity || 0), 0);
+        const index = this.rowData.findIndex(item => item.id === dataCurrent.id);
 
-                        this.tinhTong();
+        if (index > -1) {
+            // Tính toán số lượng sản phẩm sau khi xóa
+            const potentialTotalQuantity = this.totalQuantity - this.rowData[index].quantity;
 
-                        this.toastr.success('Xóa sản phẩm thành công', 'Thông báo');
-                    }
-                    this.cdr.detectChanges();
-                } else {
-                    this.toastr.error('Không thể xóa sản phẩm. Vui lòng thử lại.', 'Thông báo');
-                }
-            }, (error) => {
-                this.toastr.error('Đã xảy ra lỗi trong quá trình xóa sản phẩm. Vui lòng thử lại.', 'Thông báo');
-            });
-        } else {
-            this.toastr.error('Nếu số lượng sản phẩm bằng 1 thì không thể xóa. Vui lòng hủy đơn hàng', 'Thông báo');
+            // Nếu sau khi xóa, số lượng sản phẩm <= 1, không cho phép xóa
+            if (potentialTotalQuantity < 1) {
+                this.toastr.error('Nếu số lượng sản phẩm bằng 1 thì không thể xóa. Vui lòng hủy đơn hàng', 'Thông báo');
+                return;
+            }
+
+            // Xóa sản phẩm và cập nhật lại grid
+            this.rowData.splice(index, 1);
+            this.gridApi.setRowData(this.rowData);
+
+            // Cập nhật tổng số lượng
+            this.totalQuantity = potentialTotalQuantity;
+            this.tinhTong();
+
+            this.toastr.success('Xóa sản phẩm thành công', 'Thông báo');
         }
+
+        this.cdr.detectChanges();
     }
+
+    // onDeleteRow(dataCurrent: any) {
+    //     if (this.totalQuantity > 1) {
+    //         const index = this.rowData.findIndex(item => item.id === dataCurrent.id);
+    //         if (index > -1) {
+    //             this.rowData.splice(index, 1);
+
+    //             // Cập nhật dữ liệu cho ag-grid
+    //             this.gridApi.setRowData(this.rowData);
+
+    //             // Cập nhật tổng số lượng
+    //             this.totalQuantity = this.rowData.reduce((total, orderDetail) => total + (orderDetail.quantity || 0), 0);
+
+    //             this.tinhTong();
+
+    //             this.toastr.success('Xóa sản phẩm thành công', 'Thông báo');
+    //         }
+
+    //         this.cdr.detectChanges();
+    //     } else {
+    //         this.toastr.error('Nếu số lượng sản phẩm bằng 1 thì không thể xóa. Vui lòng hủy đơn hàng', 'Thông báo');
+    //     }
+    // }
 
     ngOnInit(): void {
         this.orderDetailService.getAllOrderDetailByOrder(this.data.id).subscribe(res => {
@@ -287,11 +363,35 @@ export class UpdateOrderComponent implements OnInit {
 
                 orderCurrent.totalPrice = this.totalPrice;
                 orderCurrent.totalPayment = this.totalPayment;
-                orderCurrent.idStaff=this.user.id;
+                orderCurrent.idStaff = this.user.id;
 
                 this.orderService.updateOrder(orderCurrent).subscribe(
-                    (result) => {
-                        this.matRef.close('updateOrder');
+                    (res) => {
+                        if (res.status === 200 || res.message === 'Success') {
+                            this.orderDetailService.deleteOrderDetailByIdOrder(orderCurrent.id).subscribe((res) => {
+                                if (res.status === 200 || res.message === 'Success') {
+                                    for (let product of this.rowData) {
+                                        const orderDetail = {
+                                            idOrder: product.idOrder, // Sử dụng idOrder từ product
+                                            idProductDetail: product.idProductDetail,
+                                            quantity: product.quantity,
+                                            price: product.price,
+                                        };
+
+                                        this.orderDetailService.createDetailSales(orderDetail).subscribe(res => {
+                                            if (res.status !== 'OK') {
+                                                return;
+                                            } else {
+                                                this.matRef.close('updateOrder');
+                                            }
+                                        });
+                                    }
+                                }
+                            })
+                        } else {
+                            this.toastr.error('Đã xảy ra lỗi vui lòng thực hiện lại sau', 'Thông báo')
+                        }
+
                     },
                     (error) => {
                         console.error('Material add error', error);
