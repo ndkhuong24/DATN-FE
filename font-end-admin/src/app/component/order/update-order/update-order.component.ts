@@ -10,6 +10,7 @@ import { UtilService } from "src/app/util/util.service";
 import { PogupVoucherSCComponent } from "../../sales-counter/pogup-voucher-sc/pogup-voucher-sc.component";
 import { SalesCouterVoucherService } from "src/app/service/sales-couter-voucher.service";
 import Swal from "sweetalert2";
+import { ProductService } from "src/app/service/product.service";
 
 @Component({
     selector: 'app-update-order',
@@ -38,6 +39,10 @@ export class UpdateOrderComponent implements OnInit {
         phone: '',
         email: '',
     };
+    searchTerm: string = '';
+    showResults: boolean = false;
+    searchResults: any[] = [];
+    isProductListVisible: boolean = true;
 
     constructor(
         private orderDetailService: OrderDetailService,
@@ -51,6 +56,7 @@ export class UpdateOrderComponent implements OnInit {
         private voucherShipService: VoucherShipService,
         private customerService: CustomerServiceService,
         private voucherService: SalesCouterVoucherService,
+        private productService: ProductService,
     ) {
         this.rowData = [];
 
@@ -220,29 +226,6 @@ export class UpdateOrderComponent implements OnInit {
         this.cdr.detectChanges();
     }
 
-    // onDeleteRow(dataCurrent: any) {
-    //     if (this.totalQuantity > 1) {
-    //         const index = this.rowData.findIndex(item => item.id === dataCurrent.id);
-    //         if (index > -1) {
-    //             this.rowData.splice(index, 1);
-
-    //             // Cập nhật dữ liệu cho ag-grid
-    //             this.gridApi.setRowData(this.rowData);
-
-    //             // Cập nhật tổng số lượng
-    //             this.totalQuantity = this.rowData.reduce((total, orderDetail) => total + (orderDetail.quantity || 0), 0);
-
-    //             this.tinhTong();
-
-    //             this.toastr.success('Xóa sản phẩm thành công', 'Thông báo');
-    //         }
-
-    //         this.cdr.detectChanges();
-    //     } else {
-    //         this.toastr.error('Nếu số lượng sản phẩm bằng 1 thì không thể xóa. Vui lòng hủy đơn hàng', 'Thông báo');
-    //     }
-    // }
-
     ngOnInit(): void {
         this.orderDetailService.getAllOrderDetailByOrder(this.data.id).subscribe(res => {
             this.rowData = res.orderDetail;
@@ -400,6 +383,83 @@ export class UpdateOrderComponent implements OnInit {
                 Swal.fire('Cập nhật', 'Cập nhật thành công', 'success');
             }
         });
+    }
+
+    search() {
+        this.isProductListVisible = true;
+
+        if (this.searchTerm.trim() === '') {
+            this.searchResults = [];
+        } else {
+            this.productService.searchProduct(this.searchTerm).subscribe(
+                data => {
+                    this.searchResults = data;
+                }
+            );
+        }
+
+        this.showResults = this.searchTerm.length > 0;
+    }
+
+    addProductInOrder(row: any) {
+        const idOrderCurrent = this.rowData.length > 0 ? this.rowData[0].idOrder : null;
+
+        // Kiểm tra xem sản phẩm đã tồn tại trong rowData chưa
+        let existingProduct = this.rowData.find((item: any) =>
+            item.idProductDetail === row.id
+        );
+
+        if (existingProduct) {
+            // Nếu sản phẩm đã tồn tại, cập nhật số lượng
+            existingProduct.quantity += 1;
+            
+            this.gridApi.setRowData(this.rowData);
+
+            this.totalQuantity = this.rowData.reduce((total, orderDetail) => total + (orderDetail.quantity || 0), 0);
+
+            this.tinhTong();
+
+            this.toastr.success('Thêm sản phẩm thành công', 'Thông báo');
+        } else {
+            // Nếu sản phẩm chưa tồn tại, thêm mới
+            const newProduct = {
+                id: null, // Bạn có thể đặt id cho sản phẩm mới hoặc để null nếu tự động generate.
+                idOrder: idOrderCurrent, // Cần xác định idOrder nếu có.
+                idProductDetail: row.id, // Hoặc row.idProductDetail tùy thuộc vào cấu trúc dữ liệu.
+                quantity: 1,
+                price: row.price,
+                codeDiscount: null,
+                status: 0,
+                productDetailDTO: {
+                    id: row.id,
+                    idProduct: row.idProduct,
+                    idColor: row.idColor,
+                    idSize: row.idSize,
+                    quantity: row.quantity,
+                    price: row.price,
+                    shoeCollar: row.shoeCollar,
+                    listedPrice: row.listedPrice,
+                    totalBestSeller: row.totalBestSeller,
+                    productDTO: row.productDTO,
+                    colorDTO: row.colorDTO,
+                    sizeDTO: row.sizeDTO
+                },
+                orderAdminDTO: null
+            };
+
+            this.rowData.push(newProduct);
+
+            this.gridApi.setRowData(this.rowData);
+
+            // Cập nhật tổng số lượng
+            this.totalQuantity = this.rowData.reduce((total, orderDetail) => total + (orderDetail.quantity || 0), 0);
+
+            this.tinhTong();
+
+            this.toastr.success('Thêm sản phẩm thành công', 'Thông báo');
+        }
+
+        this.cdr.detectChanges();
     }
 }
 

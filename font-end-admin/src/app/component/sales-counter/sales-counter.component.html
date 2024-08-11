@@ -80,9 +80,6 @@
             <td>{{product?.colorDTO?.name}}</td>
             <td><input type="number" min="1" [max]="product.quantity" class="quantity" name="quantity" [(ngModel)]="product.quantityInOrder"
               (ngModelChange)="updateQuantityInOrder(product, $event, i)" [ngModelOptions]="{standalone: true}"></td>
-            <!-- <td><input type="number" min="1" class="quantity" name="quantity" [(ngModel)]="product.quantityInOrder"
-                (ngModelChange)="calculateTotalAllProducts()" [ngModelOptions]="{standalone: true}"></td> -->
-            <!-- <td>{{utilService.formatMoney(product?.price)}}</td> -->
             <td>{{product?.price| number:'1.0-0'}} đ</td>
             <td>
               <button type="button" (click)="removeProduct(i)" class="remove-btn-order"><i
