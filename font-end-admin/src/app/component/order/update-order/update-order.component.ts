@@ -420,6 +420,8 @@ export class UpdateOrderComponent implements OnInit {
             this.tinhTong();
 
             this.toastr.success('Thêm sản phẩm thành công', 'Thông báo');
+
+            this.clearSearchTerm();
         } else {
             // Nếu sản phẩm chưa tồn tại, thêm mới
             const newProduct = {
@@ -457,9 +459,16 @@ export class UpdateOrderComponent implements OnInit {
             this.tinhTong();
 
             this.toastr.success('Thêm sản phẩm thành công', 'Thông báo');
+
+            this.clearSearchTerm();
         }
 
         this.cdr.detectChanges();
+    }
+
+    clearSearchTerm() {
+        this.searchTerm = '';
+        this.isProductListVisible = false;
     }
 }
 

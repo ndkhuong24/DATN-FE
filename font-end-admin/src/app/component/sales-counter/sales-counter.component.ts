@@ -310,51 +310,6 @@ export class SalesCounterComponent implements OnInit {
     }
   }
 
-  // updateQuantityInOrder(product: any, newQuantity: number, index: number) {
-  //   // Kiểm tra newQuantity có hợp lệ hay không (ví dụ như không được âm)
-  //   if (newQuantity <= 0) {
-  //     this.toastr.error('Số lượng sản phẩm phải lớn hơn 0');
-  //     return;
-  //   }
-
-  //   if (newQuantity > product.quantity) {
-  //     this.toastr.error('Không đủ số lượng trong kho');
-  //     return;
-  //   }
-
-  //   // Cập nhật quantityInOrder trên sản phẩm
-  //   product.quantityInOrder = newQuantity;
-
-  //   // Cập nhật lại trong listProductPush
-  //   this.listProductPush[index].quantityInOrder = newQuantity;
-
-  //   // Cập nhật lại trong listOrder trong localStorage
-  //   let listOrder = JSON.parse(localStorage.getItem('listOrder'));
-
-  //   if (listOrder) {
-  //     let currentOrder = listOrder.find((order: { id: number }) => order.id === this.currentOrderId);
-
-  //     if (currentOrder) {
-  //       let productList = currentOrder.productList || [];
-  //       // Tìm và cập nhật sản phẩm trong productList của đơn hàng hiện tại
-  //       let updatedProduct = productList.find((p: any) => p.id === product.id);
-  //       if (updatedProduct) {
-  //         updatedProduct.quantityInOrder = newQuantity;
-  //       }
-
-  //       // Cập nhật lại listOrder trong localStorage
-  //       localStorage.setItem('listOrder', JSON.stringify(listOrder));
-  //     } else {
-  //       console.error('Current order not found');
-  //     }
-
-  //     // Sau khi cập nhật, tính lại tổng tiền của các sản phẩm
-  //     this.calculateTotalAllProducts();
-  //   } else {
-  //     console.error('listOrder not found in localStorage');
-  //   }
-  // }
-
   calculateTotalAllProducts() {
     this.totalAllProducts = 0;
 
