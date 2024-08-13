@@ -102,6 +102,7 @@ import { PogupVoucherSCComponent } from './component/sales-counter/pogup-voucher
 import { ChiTietComponent } from './component/sanpham/chi-tiet/chi-tiet.component';
 import { VnpayReturnComponent } from './component/sales-counter/vnpay-return/vnpay-return.component';
 import { UpdateOrderComponent } from './component/order/update-order/update-order.component';
+import { ImportFileSoleComponent } from './component/degiay/import-file-de-giay/import-file-de-giay.component';
 
 @NgModule({
   declarations: [
@@ -178,7 +179,8 @@ import { UpdateOrderComponent } from './component/order/update-order/update-orde
     VoucherShipComponent,
     PogupVoucherSCComponent,
     ChiTietComponent,
-    UpdateOrderComponent
+    UpdateOrderComponent,
+    ImportFileSoleComponent
   ],
   imports: [
     BrowserModule,
