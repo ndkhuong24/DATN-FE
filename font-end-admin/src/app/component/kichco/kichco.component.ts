@@ -3,6 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ThemKichCoComponent } from './them-kich-co/them-kich-co.component';
 import { SizeService } from '../../service/size.service';
 import { KichCoActionComponent } from './kich-co-action/kich-co-action.component';
+import { getFormattedDateCurrent } from 'src/app/util/util';
+import { ImportFileSizeComponent } from './import-file-kich-co/import-file-kich-co.component';
 
 @Component({
   selector: 'app-kichco',
@@ -90,5 +92,43 @@ export class KichcoComponent implements OnInit {
     if (!dateStr) return '';
     const date = new Date(dateStr);
     return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+  }
+
+  exportToExcel() {
+    this.szsv.exportData().subscribe(response => {
+      // Create a new Blob object using the response data
+      const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+      // Create a link element
+      const link = document.createElement('a');
+      const url = window.URL.createObjectURL(blob);
+
+      // Set link attributes
+      link.href = url;
+      const formattedDate = getFormattedDateCurrent(new Date());
+      link.download = `DS_DeGiay_${formattedDate}.xlsx`;
+
+      // Append link to the body
+      document.body.appendChild(link);
+
+      // Trigger click event to download the file
+      link.click();
+
+      // Remove link from the body
+      document.body.removeChild(link);
+    });
+  }
+
+  openPopupImport() {
+    this.matdialog.open(ImportFileSizeComponent, {
+      disableClose: true,
+      hasBackdrop: true,
+      width: '446px'
+    }).afterClosed().subscribe(res => {
+      if (res === 'cancel-import') {
+        this.ngOnInit();
+        this.cdr.detectChanges();
+      }
+    });
   }
 }

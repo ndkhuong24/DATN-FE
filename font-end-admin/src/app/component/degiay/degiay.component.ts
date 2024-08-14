@@ -16,7 +16,9 @@ export class DegiayComponent implements OnInit {
   columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
+
   public rowSelection: 'single' | 'multiple' = 'multiple';
+
   constructor(
     private matdialog: MatDialog,
     private slsv: SoleService,
@@ -82,6 +84,7 @@ export class DegiayComponent implements OnInit {
   ngOnInit(): void {
     this.getAllSole();
   }
+  
   getAllSole() {
     this.slsv.getAllSole().subscribe((result) => {
       this.rowData = result;

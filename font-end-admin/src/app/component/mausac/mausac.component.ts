@@ -3,6 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ThemMauSacComponent } from './them-mau-sac/them-mau-sac.component';
 import { MausacService } from '../../service/mausac.service';
 import { MauSacActionComponent } from './mau-sac-action/mau-sac-action.component';
+import { getFormattedDateCurrent } from 'src/app/util/util';
+import { ImportFileColorComponent } from './import-file-mau-sac/import-file-mau-sac.component';
 
 @Component({
   selector: 'app-mausac',
@@ -14,7 +16,9 @@ export class MausacComponent implements OnInit {
   columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
+
   public rowSelection: 'single' | 'multiple' = 'multiple';
+
   constructor(
     private matdialog: MatDialog,
     private mssv: MausacService,
@@ -79,6 +83,7 @@ export class MausacComponent implements OnInit {
       this.rowData = res;
     });
   }
+
   openAdd() {
     const dialogref = this.matdialog.open(ThemMauSacComponent, {
       width: '65vh',
@@ -86,6 +91,44 @@ export class MausacComponent implements OnInit {
     });
     dialogref.afterClosed().subscribe((result) => {
       if (result === 'addColor') {
+        this.ngOnInit();
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  exportToExcel() {
+    this.mssv.exportData().subscribe(response => {
+      // Create a new Blob object using the response data
+      const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+      // Create a link element
+      const link = document.createElement('a');
+      const url = window.URL.createObjectURL(blob);
+
+      // Set link attributes
+      link.href = url;
+      const formattedDate = getFormattedDateCurrent(new Date());
+      link.download = `DS_MauSac_${formattedDate}.xlsx`;
+
+      // Append link to the body
+      document.body.appendChild(link);
+
+      // Trigger click event to download the file
+      link.click();
+
+      // Remove link from the body
+      document.body.removeChild(link);
+    });
+  }
+
+  openPopupImport() {
+    this.matdialog.open(ImportFileColorComponent, {
+      disableClose: true,
+      hasBackdrop: true,
+      width: '446px'
+    }).afterClosed().subscribe(res => {
+      if (res === 'cancel-import') {
         this.ngOnInit();
         this.cdr.detectChanges();
       }

@@ -103,6 +103,9 @@ import { ChiTietComponent } from './component/sanpham/chi-tiet/chi-tiet.componen
 import { VnpayReturnComponent } from './component/sales-counter/vnpay-return/vnpay-return.component';
 import { UpdateOrderComponent } from './component/order/update-order/update-order.component';
 import { ImportFileSoleComponent } from './component/degiay/import-file-de-giay/import-file-de-giay.component';
+import { ImportFileSizeComponent } from './component/kichco/import-file-kich-co/import-file-kich-co.component';
+import { ImportFileColorComponent } from './component/mausac/import-file-mau-sac/import-file-mau-sac.component';
+import { ImportFileMaterialComponent } from './component/chatlieu/import-file-chat-lieu/import-file-chat-lieu.component';
 
 @NgModule({
   declarations: [
@@ -180,7 +183,10 @@ import { ImportFileSoleComponent } from './component/degiay/import-file-de-giay/
     PogupVoucherSCComponent,
     ChiTietComponent,
     UpdateOrderComponent,
-    ImportFileSoleComponent
+    ImportFileSoleComponent,
+    ImportFileColorComponent,
+    ImportFileSizeComponent,
+    ImportFileMaterialComponent
   ],
   imports: [
     BrowserModule,

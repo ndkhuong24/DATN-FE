@@ -1,23 +1,42 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {apiURL} from '../config/apiUrl';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { apiURL } from '../config/apiUrl';
 @Injectable({
   providedIn: 'root'
 })
 export class MausacService {
-
   constructor(private http: HttpClient) { }
-  getAllMauSac(): Observable<any>{
+
+  getAllMauSac(): Observable<any> {
     return this.http.get(`${apiURL}color/hien-thi`);
   }
-  AddMauSac(category: any): Observable<any>{
+
+  AddMauSac(category: any): Observable<any> {
     return this.http.post(`${apiURL}color/add`, category);
   }
-  UpdateMauSac(id: number, category: any): Observable<any>{
+
+  UpdateMauSac(id: number, category: any): Observable<any> {
     return this.http.put(`${apiURL}color/update/${id}`, category);
   }
-  DeleteMauSac(id: number): Observable<any>{
+
+  DeleteMauSac(id: number): Observable<any> {
     return this.http.delete(`${apiURL}color/delete/${id}`);
+  }
+
+  exportData(): Observable<Blob> {
+    return this.http.get(`${apiURL}color/export-data`, {
+      responseType: 'blob'
+    });
+  }
+
+  exportDataTemplate(): Observable<Blob> {
+    return this.http.get(`${apiURL}color/export-data-template`, {
+      responseType: 'blob'
+    });
+  }
+
+  onUpload(formData: FormData): Observable<string> {
+    return this.http.post(`${apiURL}color/import-data`, formData, { responseType: 'text' });
   }
 }
