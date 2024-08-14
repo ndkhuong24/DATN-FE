@@ -99,7 +99,8 @@
               <button *ngIf="address == null" class="button-thaydoi" (click)="openPopupAddress();">Thêm địa chỉ</button>
             </div>
           </div>
-          <div class="row" *ngIf="this.user.id === null">
+          
+          <div class="row" style="margin-top: 10px;" *ngIf="this.user.id === null">
             <label for="" class="form-label" style="font-weight: bold">Địa chỉ nhận hàng</label>
             <div class="col-md-4">
               <label class="form-label">Thành Phố <span style="color: red">*</span></label>
@@ -112,6 +113,7 @@
                 <p class="validate-input-label" *ngIf="validProvince.empty">Vui lòng không để trống</p>
               </div>
             </div>
+
             <div class="col-md-4">
               <label for="" class="form-label">Quận Huyện <span style="color: red">*</span></label>
               <ng-select [items]="listDistrict" bindLabel="DistrictName" bindValue="DistrictID"
@@ -123,6 +125,7 @@
                 <p class="validate-input-label" *ngIf="validDistrict.empty">Vui lòng không để trống</p>
               </div>
             </div>
+
             <div class="col-md-4">
               <label for="" class="form-label">Phường Xã <span style="color: red">*</span></label>
               <ng-select [items]="listWard" bindLabel="WardName" bindValue="WardCode" placeholder="--Lựa chọn--"
@@ -133,9 +136,16 @@
                 <p class="validate-input-label" *ngIf="validWard.empty">Vui lòng không để trống</p>
               </div>
             </div>
-            <label for="address" class="form-label">Địa chỉ cụ thể</label>
-            <input style="margin: auto;margin-left: 10px;" type="text" class="form-control" id="address" placeholder=""
-              [ngModelOptions]="{standalone: true}" [(ngModel)]="addressNotLogin.specificAddress" required>
+
+            <div class="col-md-12">
+              <label for="address" class="form-label">Địa chỉ cụ thể <span style="color: red">*</span></label>
+              <input style="margin: auto;" type="text" class="form-control" id="address" placeholder=""
+                [ngModelOptions]="{standalone: true}" [(ngModel)]="addressNotLogin.specificAddress" required (keydown)="revoveInvalid(validDiaChi)"
+                (blur)="validateDiaChi()">
+              <div class="validate-input" *ngIf="!validDiaChi.done">
+                <p class="validate-input-label" *ngIf="validDiaChi.empty">Vui lòng không để trống</p>
+              </div>
+            </div>
           </div>
         </div>
         <br>

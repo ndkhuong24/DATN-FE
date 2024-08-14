@@ -74,6 +74,7 @@ export class CheckoutComponent implements OnInit {
   validEmail: ValidateInput = new ValidateInput();
   validReceiverPhone: ValidateInput = new ValidateInput();
   validProvince: ValidateInput = new ValidateInput();
+  validDiaChi: ValidateInput = new ValidateInput();
   validDistrict: ValidateInput = new ValidateInput();
   validWard: ValidateInput = new ValidateInput();
 
@@ -143,8 +144,8 @@ export class CheckoutComponent implements OnInit {
   calculateTotal(price: number, quantity: number): string {
     const total = price * quantity;
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
-            .format(total)
-            .replace('₫', '') + 'đ';
+      .format(total)
+      .replace('₫', '') + 'đ';
   }
 
   getDistrict(event: { ProvinceID: number; }) {
@@ -207,6 +208,7 @@ export class CheckoutComponent implements OnInit {
       this.order.receiver = CommonFunction.trimText(this.order.receiver);
       this.email = CommonFunction.trimText(this.email);
       this.order.receiverPhone = CommonFunction.trimText(this.order.receiverPhone);
+      this.order.description = CommonFunction.trimText(this.order.description);
 
       this.validateReceiver();
       this.validateReceiverPhone();
@@ -214,9 +216,10 @@ export class CheckoutComponent implements OnInit {
       this.validateProvince();
       this.validateDistrict();
       this.validateWard();
+      this.validateDiaChi();
 
       if (!this.validReceiver.done || !this.validEmail.done || !this.validReceiverPhone.done || !this.validProvince.done
-        || !this.validDistrict.done || !this.validWard.done) {
+        || !this.validDistrict.done || !this.validWard.done || !this.validDiaChi.done) {
         return;
       }
 
@@ -249,7 +252,7 @@ export class CheckoutComponent implements OnInit {
                 + district.DistrictName + ', ' + province.ProvinceName,
               paymentType: 1,
               email: this.email
-            };            
+            };
 
             const objOrderBill = {
               order: obj,
@@ -265,20 +268,6 @@ export class CheckoutComponent implements OnInit {
             });
           }
           else {
-            // const obj = {
-            //   ...this.order,
-            //   totalPrice: this.totalMoney,
-            //   totalPayment: this.totalMoneyPay,
-            //   shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
-            //   codeVoucher: this.voucher ? this.voucher?.code : null,
-            //   codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
-            //   voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
-            //   voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
-            //   addressReceived: this.addressNotLogin.specificAddress + ', ' + ward.WardName + ', '
-            //     + district.DistrictName + ', ' + province.ProvinceName,
-            //   paymentType: 0,
-            //   email: this.email
-            // };
             const obj = {
               ...this.order,
               totalPrice: this.totalMoney,
@@ -292,7 +281,7 @@ export class CheckoutComponent implements OnInit {
                 + district.DistrictName + ', ' + province.ProvinceName,
               paymentType: 0,
               email: this.email
-            };            
+            };
 
             const objOrderBill = {
               order: obj,
@@ -300,7 +289,7 @@ export class CheckoutComponent implements OnInit {
             };
 
             localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
-            
+
             this.route.navigate(['cart/checkout-detail']);
           }
         }
@@ -335,20 +324,6 @@ export class CheckoutComponent implements OnInit {
         .then((result) => {
           if (result.isConfirmed) {
             if (this.checkChoicePay === 1) {
-              // const obj = {
-              //   ...this.order,
-              //   totalPrice: this.totalMoney,
-              //   totalPayment: this.totalMoneyPay,
-              //   shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
-              //   codeVoucher: this.voucher ? this.voucher?.code : null,
-              //   codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
-              //   voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
-              //   voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
-              //   addressReceived: this.address.specificAddress + ', ' + this.address.wards + ', ' + this.address.district + ', ' + this.address.province,
-              //   paymentType: 1,
-              //   email: this.user.email,
-              //   idCustomer: this.user.id,
-              // };
               const obj = {
                 ...this.order,
                 totalPrice: this.totalMoney,
@@ -362,7 +337,7 @@ export class CheckoutComponent implements OnInit {
                 paymentType: 1,
                 email: this.user.email,
                 idCustomer: this.user.id,
-              };              
+              };
 
               const objOrderBill = {
                 order: obj,
@@ -391,13 +366,13 @@ export class CheckoutComponent implements OnInit {
                 paymentType: 0,
                 email: this.user.email,
                 idCustomer: this.user.id,
-              };              
+              };
 
               const objOrderBill = {
                 order: obj,
                 listCart: this.listCart
               };
-              
+
               localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
               this.route.navigate(['cart/checkout-detail']);
             }
@@ -484,6 +459,10 @@ export class CheckoutComponent implements OnInit {
 
   validateProvince() {
     this.validProvince = CommonFunction.validateInput(this.addressNotLogin.provinceId, null, null);
+  }
+
+  validateDiaChi(){
+    this.validDiaChi = CommonFunction.validateInput(this.addressNotLogin.specificAddress, null, null);
   }
 
   validateDistrict() {

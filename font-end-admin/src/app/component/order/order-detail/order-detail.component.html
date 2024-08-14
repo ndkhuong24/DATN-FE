@@ -65,7 +65,6 @@
           <td></td>
           <td>{{data.data?.totalPayment + data.data?.shipPrice | number:'1.0-0'}} đ</td>
         </tr>
-
         <tr>
           <th scope="row">Hình thức thanh toán</th>
           <td></td>
@@ -79,6 +78,13 @@
           <td></td>
           <td></td>
           <td>{{data.data?.statusPayment === 0 ? "Đã thanh toán": "Chưa thanh toán"}}</td>
+        </tr>
+        <tr *ngIf="data.data?.description">
+          <th scope="row">Ghi chú</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{data.data?.description}}</td>
         </tr>
         <tr>
           <th scope="row">Địa chỉ nhận hàng</th>
