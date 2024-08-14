@@ -1,6 +1,10 @@
 <div class="row my-5" style="margin-left: 12px">
   <div class="col">
-    <a (click)="openAdd()" class="btn btn-primary" style="margin-bottom: 10px">Thêm thương hiệu</a>
+    <a (click)="openAdd()" class="btn btn-primary" style="margin-bottom: 20px;">Thêm thương hiệu</a>
+    <a class="btn btn-primary" style="margin-bottom: 20px;margin-left: 10px;" (click)="exportToExcel()">Xuất dữ liệu</a>
+    <a class="btn btn-primary" style="margin-bottom: 20px;margin-left: 10px;" (click)="openPopupImport()">Nhập dữ
+      liệu</a>
+
     <div class="grid">
       <ag-grid-angular style="width: 100%; height: 550px" class="ag-theme-balham" [rowData]="rowData"
         [columnDefs]="columnDefs" [rowSelection]="rowSelection" [headerHeight]="headerHeight" [rowHeight]="rowHeight"

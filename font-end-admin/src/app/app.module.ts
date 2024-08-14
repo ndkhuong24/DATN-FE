@@ -106,6 +106,8 @@ import { ImportFileSoleComponent } from './component/degiay/import-file-de-giay/
 import { ImportFileSizeComponent } from './component/kichco/import-file-kich-co/import-file-kich-co.component';
 import { ImportFileColorComponent } from './component/mausac/import-file-mau-sac/import-file-mau-sac.component';
 import { ImportFileMaterialComponent } from './component/chatlieu/import-file-chat-lieu/import-file-chat-lieu.component';
+import { ImportFileBrandComponent } from './component/thuonghieu/import-file-thuong-hieu/import-file-thuong-hieu.component';
+import { ImportFileCategoryComponent } from './component/danhmuc/import-file-danh-muc/import-file-danh-muc.component';
 
 @NgModule({
   declarations: [
@@ -186,7 +188,9 @@ import { ImportFileMaterialComponent } from './component/chatlieu/import-file-ch
     ImportFileSoleComponent,
     ImportFileColorComponent,
     ImportFileSizeComponent,
-    ImportFileMaterialComponent
+    ImportFileMaterialComponent,
+    ImportFileBrandComponent,
+    ImportFileCategoryComponent
   ],
   imports: [
     BrowserModule,

@@ -3,6 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ThemThuongHieuComponent } from './them-thuong-hieu/them-thuong-hieu.component';
 import { BrandService } from '../../service/brand.service';
 import { ThuongHieuActionComponent } from './thuong-hieu-action/thuong-hieu-action.component';
+import { getFormattedDateCurrent } from 'src/app/util/util';
+import { ImportFileBrandComponent } from './import-file-thuong-hieu/import-file-thuong-hieu.component';
 
 @Component({
   selector: 'app-thuonghieu',
@@ -66,6 +68,7 @@ export class ThuonghieuComponent implements OnInit {
   ngOnInit(): void {
     this.getAllBrand();
   }
+
   getAllBrand() {
     this.brandService.getAllBrand().subscribe((res) => {
       this.rowData = res;
@@ -79,6 +82,44 @@ export class ThuonghieuComponent implements OnInit {
     });
     dialogref.afterClosed().subscribe((result) => {
       if (result === 'addBrand') {
+        this.ngOnInit();
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  exportToExcel() {
+    this.brandService.exportData().subscribe(response => {
+      // Create a new Blob object using the response data
+      const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+      // Create a link element
+      const link = document.createElement('a');
+      const url = window.URL.createObjectURL(blob);
+
+      // Set link attributes
+      link.href = url;
+      const formattedDate = getFormattedDateCurrent(new Date());
+      link.download = `DS_ThuongHieu_${formattedDate}.xlsx`;
+
+      // Append link to the body
+      document.body.appendChild(link);
+
+      // Trigger click event to download the file
+      link.click();
+
+      // Remove link from the body
+      document.body.removeChild(link);
+    });
+  }
+
+  openPopupImport() {
+    this.matdialog.open(ImportFileBrandComponent, {
+      disableClose: true,
+      hasBackdrop: true,
+      width: '446px'
+    }).afterClosed().subscribe(res => {
+      if (res === 'cancel-import') {
         this.ngOnInit();
         this.cdr.detectChanges();
       }

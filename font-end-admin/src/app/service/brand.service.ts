@@ -24,4 +24,20 @@ export class BrandService {
   DeleteBrand(id: number): Observable<any>{
     return this.http.delete(`${apiURL}brand/delete/${id}`);
   }
+
+  exportData(): Observable<Blob> {
+    return this.http.get(`${apiURL}brand/export-data`, {
+      responseType: 'blob'
+    });
+  }
+
+  exportDataTemplate(): Observable<Blob> {
+    return this.http.get(`${apiURL}brand/export-data-template`, {
+      responseType: 'blob'
+    });
+  }
+
+  onUpload(formData: FormData): Observable<string> {
+    return this.http.post(`${apiURL}brand/import-data`, formData, { responseType: 'text' });
+  }
 }
