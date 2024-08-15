@@ -67,8 +67,9 @@
       <mat-label>Giá trị giảm</mat-label>
       <input matInput type="number" [(ngModel)]="ReducedValue" name="ReducedValue" placeholder="Giá trị giảm"
         (keydown)="revoveInvalid(validReducedValue)" (blur)="validateReducedValue()">
-      <div *ngIf="VoucherType === 1 && ReducedValue > 100">
-        Giá trị giảm không được quá 100%
+      <div class="validate-input" *ngIf="VoucherType === 1 && ReducedValue > 100">
+        <p class="validate-input-label" *ngIf="VoucherType === 1 && ReducedValue > 100">Giá trị giảm không được quá 100%
+        </p>
       </div>
       <div class="validate-input" *ngIf="!validReducedValue.done">
         <p class="validate-input-label" *ngIf="validReducedValue.empty">Giá trị giảm không để trống</p>
@@ -119,7 +120,7 @@
   <div class="form-group" *ngIf="OptionCustomer === 1" style="margin-bottom: 0;">
     <label for="customer">Khách hàng</label>
     <div class="grid">
-      <ag-grid-angular style="width: 100%; height: 300px" class="ag-theme-balham" [rowData]="rowData"
+      <ag-grid-angular style="width: 100%; height: 300px" class="ag-theme-alpine" [rowData]="rowData"
         [columnDefs]="columnDefs" [rowSelection]="rowSelection" [headerHeight]="headerHeight" [rowHeight]="rowHeight"
         [pagination]="true" [paginationPageSize]="5" (gridReady)="onGridReady($event)"></ag-grid-angular>
     </div>
@@ -136,11 +137,6 @@
       <p class="validate-input-label" *ngIf="validLimitCustomer.regex">Số lượng phải lớn hơn 0</p>
     </div>
   </mat-form-field>
-
-  <!-- <mat-form-field appearance="outline">
-    <mat-label>Cho phép sử dụng cùng giảm giá</mat-label>
-    <mat-checkbox [(ngModel)]="voucher.allow" id="allow" (change)="toggleAllowDiscount($event)" checked></mat-checkbox>
-  </mat-form-field> -->
 </div>
 
 <br>

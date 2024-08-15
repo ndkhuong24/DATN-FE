@@ -7,7 +7,7 @@ import { CreatVoucherComponent } from './creat-voucher/creat-voucher.component';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-bangvoucher',
+  selector: 'app-voucher',
   templateUrl: './voucher.component.html',
   styleUrls: ['./voucher.component.css'],
 })
