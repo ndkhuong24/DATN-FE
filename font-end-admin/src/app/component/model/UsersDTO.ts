@@ -1,4 +1,4 @@
-export class UsersDTO{
+export class UsersDTO {
   id?: number;
   code?: number;
   fullname?: string;
@@ -13,4 +13,5 @@ export class UsersDTO{
   idel?: string;
   isdn?: string;
   role?: string;
+  status?: number;
 }

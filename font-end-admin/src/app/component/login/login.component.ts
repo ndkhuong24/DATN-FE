@@ -26,17 +26,19 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private tokenService: TokenService,
-    private jwt: AuthJwtService,
     private toastr: ToastrService
   ) { }
 
   login() {
     this.signFrom = new SignForm(this.form.username, this.form.password);
+
     this.authService.signIn(this.signFrom).subscribe(
       (data) => {
         if (!data.token) {
           alert('Lỗi đăng nhập');
+        } else if (data.usersDTO.status === 1) {
+          // Thông báo khi tài khoản bị đình chỉ
+          this.toastr.error('Tài khoản của bạn bị đình chỉ. Vui lòng liên hệ quản lý để mở lại.', 'Thông báo');
         } else {
           localStorage.setItem('token', data.token);
           localStorage.setItem('users', JSON.stringify(data.usersDTO));
@@ -46,14 +48,14 @@ export class LoginComponent implements OnInit {
         }
       },
       (error) => {
-        if (error.status === 400){
+        if (error.status === 400) {
           this.toastr.error('Mật khẩu sai', 'Error');
-        }else if (error.status === 401){
+        } else if (error.status === 401) {
           this.toastr.error('Không tìm thấy Tên tài khoản', 'Error');
         }
       }
     );
   }
-  
+
   ngOnInit(): void { }
 }
