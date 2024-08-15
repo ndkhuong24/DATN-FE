@@ -10,22 +10,28 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./address-checkout.component.css']
 })
 export class AddressCheckoutComponent implements OnInit {
-
   listAddress: any = [];
   idAddress: any;
 
-  constructor(private dialog: MatDialog, private addressService: AddressService, private cdr: ChangeDetectorRef,
-    public matDialogRef: MatDialogRef<AddressCheckoutComponent>, @Inject(MAT_DIALOG_DATA) public data: any,
-    private toastr: ToastrService) {
+  constructor(
+    private dialog: MatDialog,
+    private addressService: AddressService,
+    private cdr: ChangeDetectorRef,
+    public matDialogRef: MatDialogRef<AddressCheckoutComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private toastr: ToastrService
+  ) {
   }
 
   ngOnInit(): void {
     const obj = {
       idCustomer: this.data
     };
+
     this.addressService.getAllAddress(obj).subscribe(res => {
       this.listAddress = res;
     });
+
     this.addressService.getAddress(obj).subscribe(res => {
       this.idAddress = res.data.id;
     });
@@ -48,14 +54,14 @@ export class AddressCheckoutComponent implements OnInit {
     });
   }
 
-  openPopupUpdate() {
+  openPopupUpdate(id: number) {
     this.dialog.open(UpdateAddressComponent, {
-      width: '40%',
+      width: '50%',
       height: '65vh',
       data: {
         title: 'update',
         customer: this.data,
-        address: this.idAddress
+        address: id,
       }
     }).afterClosed().subscribe(result => {
       if (result === 'saveAddress') {
@@ -72,7 +78,7 @@ export class AddressCheckoutComponent implements OnInit {
     };
     this.addressService.updateAddressConfig(obj).subscribe(res => {
       if (res.status === 'OK') {
-        this.toastr.success('Thay đổi địa chỉ thành công!', 'Thông báo');
+        this.toastr.success('Thay đổi địa chỉ thành công', 'Thông báo');
         this.matDialogRef.close('close-address');
       }
     });

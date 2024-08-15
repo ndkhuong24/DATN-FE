@@ -20,13 +20,11 @@
           <!-- <span>{{ utilService.formatMoney(minPrice) }} - {{ utilService.formatMoney(maxPrice) }}</span> -->
         </div>
 
-        <!-- Display when bothSizeAndColorSelected is true -->
         <div class="new-price" style="font-size: 25px" *ngIf="minPrice !== maxPrice &&bothSizeAndColorSelected==true">
           <span>{{utilService.formatMoney( (getProductDetailprice() == null) ? product?.totalQuantity :
             getProductDetailprice() )}}</span>
         </div>
 
-        <!-- size -->
         <div class="product-details my-2">
           <div class="d-flex" style="display: flex; gap: 20px; align-items: center;">
             <p class="details-title text-color mb-1">Size : </p>
@@ -38,7 +36,6 @@
           </div>
         </div>
 
-        <!-- color -->
         <div class="product-details my-2" style="margin-top: 10px !important;">
           <div class="d-flex" style="display: flex; gap: 20px; align-items: center;">
             <p class="details-title text-color mb-1">Màu Sắc : </p>
@@ -50,7 +47,6 @@
           </div>
         </div>
 
-        <!--Số lượng-->
         <div class="product-details my-2">
           <p class="details-title text-color mb-1" *ngIf="getProductDetailQuantity() != 0">Số lượng :
             {{(getProductDetailQuantity() == -1 || getProductDetailQuantity()== null) ? product?.totalQuantity :
@@ -69,7 +65,7 @@
 
           <input style="width: 30px;height: 30px;" class="mtext-104 cl3 txt-center num-product" type="number"
             name="num-product" [(ngModel)]="quantityBuy" (ngModelChange)="checkQuantity()" />
-            
+
           <button type="button" class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m"
             [style.cursor]="quantityBuy< getProductDetailQuantity()? 'pointer':'not-allowed'" (click)="tangSoLuong();"
             [disabled]="quantityBuy >= getProductDetailQuantity()">
@@ -81,7 +77,6 @@
           <p class="validate-input-label" *ngIf="validQuantityBuy">{{validQuantityBuyMess}}</p>
         </div>
 
-        <!--Mua hàng-->
         <div class="btn-groups">
           <button class="add-cart-btn" style="border-radius: 5px"
             [disabled]="bothSizeAndColorSelected === false || this.validQuantityBuy"
@@ -92,6 +87,7 @@
             [style.opacity]="(bothSizeAndColorSelected === false || this.validQuantityBuy) ? '0.5': ''"
             (click)="buyNow(product.id);"><i class="fas fa-wallet"></i>Mua ngay</button>
         </div>
+
         <div style="margin-top: 25px; width: 380px;">
           <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
@@ -105,6 +101,7 @@
                 phẩm</button>
             </li>
           </ul>
+
           <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab"
               style="font-weight:500;margin-top: 20px;">
@@ -113,10 +110,8 @@
               <label>Chất liệu: </label> {{product?.materialDTO?.name}} <br>
               <label>Độ cao của đế giày: </label> {{product?.soleDTO?.soleHeight}} cm (Chất liệu:
               {{product?.soleDTO?.soleMaterial}}) <br>
-              <!-- 
-              <label>Cổ giày : </label>
-              <span *ngIf="product?.productDetailDTOList?.length > 0">{{ product.productDetailDTOList[0]?.shoeCollar}}</span> -->
-
+              <label *ngIf="showShoeCollar">Cổ giày : </label>
+              <span *ngIf="showShoeCollar"> {{ shoeCollar === 1 ? 'Cổ cao' : 'Cổ thấp' }}</span>
             </div>
             <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab"
               style="font-weight:500;margin-top: 20px;">

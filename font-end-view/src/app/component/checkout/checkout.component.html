@@ -50,11 +50,13 @@
   </div>
   <div class="row">
     <div class="col-md-7 col-lg-8">
+
       <div style="display: flex; justify-content: space-between">
         <h4 class="mb-3">Thông tin giao hàng</h4>
         <div *ngIf="this.user.id === null"><span>Bạn chưa đăng nhập?</span> <a style="margin-left: 5px"
             routerLink="/login">Đăng nhập</a></div>
       </div>
+      
       <form class="needs-validation" novalidate>
         <div class="row g-3">
           <div class="col-sm-6">
@@ -148,18 +150,21 @@
             </div>
           </div>
         </div>
+
         <br>
         <div class="mb-3">
           <label for="exampleFormControlTextarea1" class="form-label" style="margin-left: -10px">Ghi chú</label>
           <textarea style="margin-left: -10px" class="form-control" [(ngModel)]="this.order.description"
             id="exampleFormControlTextarea1" rows="3" [ngModelOptions]="{standalone: true}"></textarea>
         </div>
+
         <hr class="my-4">
         <div class="voucher">
           <h6>Voucher giảm giá:</h6>
-          <span>{{voucher?.code}} , {{voucherShip?.code}}</span>
+          <span>{{voucher?.code}} {{voucherShip?.code}}</span>
           <button class="btn btn-light" (click)="openVoucher();">Chọn Voucher</button>
         </div>
+
         <br>
         <div>
           <label class="form-check-label">Phí ship: </label>
@@ -177,6 +182,7 @@
           <label class="form-check-label">Tổng tiền phải thanh toán: </label> <input style="margin-left: 50px"
             type="text" value="{{totalMoneyPay | number:'1.0-0'}} đ" disabled>
         </div>
+
         <hr class="my-4">
         <h4 class="mb-3">Phương thức thanh toán</h4>
         <div class="my-3">
@@ -192,6 +198,7 @@
           <button style="background: #fff; border-radius: 10px; border: none"><img style="width: 43px; height: 43px"
               src="../../../assets/image/vnPay.png" alt=""></button>
         </div>
+        
         <button style="margin-bottom: 20px;" class="w-100 btn btn-danger btn-lg" type="submit"
           (click)="thanhToan();">Xác nhận thanh toán</button>
       </form>

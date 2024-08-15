@@ -1,0 +1,9 @@
+.validate-input {
+    .validate-input-label {
+        margin: 5px 0 0 !important;
+        color: red;
+        font-size: 12px;
+        line-height: 10px;
+        font-weight: 500;
+    }
+}

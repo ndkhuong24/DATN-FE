@@ -3,7 +3,6 @@ import { GiaoHangService } from '../../service/giao-hang.service';
 import { CartService } from '../../service/cart.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
-import { OrderService } from '../../service/order.service';
 import { PaymentService } from '../../service/payment.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddressCheckoutComponent } from './address-checkout/address-checkout.component';

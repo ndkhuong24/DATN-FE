@@ -34,6 +34,8 @@ export class DetailsComponent implements OnInit {
   validQuantityBuyMess = null;
   minPrice: number | null = null;
   maxPrice: number | null = null;
+  showShoeCollar: boolean = false;
+  shoeCollar: null;
 
   constructor(
     private productService: ProductService,
@@ -220,6 +222,8 @@ export class DetailsComponent implements OnInit {
           detail.idColor === parseInt(String(this.colorId), 10)
       );
       if (selectedProductDetail) {
+        this.showShoeCollar = true
+        this.shoeCollar = selectedProductDetail.shoeCollar;
         return selectedProductDetail.quantity;
       }
     }
@@ -244,7 +248,6 @@ export class DetailsComponent implements OnInit {
     if (this.infoCustomer) {
       this.cartService.addToCartCustomer(product, this.colorId, this.sizeId, this.quantityBuy, this.infoCustomer.id)
         .subscribe((res: any) => {
-          // console.log(res.data)
           this.handleServerResponse(res)
         }
         );
@@ -268,9 +271,6 @@ export class DetailsComponent implements OnInit {
         this.showErrorNotification('Dữ liệu trả về không hợp lệ.');
       }
     }
-    // else {
-    //   this.showErrorNotification(res.message || 'Có lỗi xảy ra khi thêm vào giỏ hàng.');
-    // }
   }
 
   updateCookieWithServerCart(data: any) {
@@ -348,12 +348,10 @@ export class DetailsComponent implements OnInit {
   }
 
   onMouseEnter(product: any) {
-    // Khi chuột di vào, cập nhật isMouseOver của sản phẩm này thành true
     this.isMouseOver[product.id] = true;
   }
 
   onMouseLeave(product: any) {
-    // Khi chuột rời khỏi, cập nhật isMouseOver của sản phẩm này thành false
     this.isMouseOver[product.id] = false;
   }
 
@@ -368,7 +366,6 @@ export class DetailsComponent implements OnInit {
   }
 
   onSizeChange(event: any): void {
-    // console.log("Size: ", event);
     const selectedSizeId = this.sizeId;
     if (this.product && this.product.productDetailDTOList) {
       if (this.sizeId === null) {
@@ -383,12 +380,9 @@ export class DetailsComponent implements OnInit {
         );
 
         this.listColor = this.listColor.map(color => {
-          // Kiểm tra xem color.id có trong colorIDsForSelectedSize hay không
           if (colorIDsForSelectedSize.includes(color.id)) {
-            // Nếu có, trả về color mà không có thay đổi
             return color;
           } else {
-            // Nếu không, thêm thuộc tính disabled vào color
             return {
               ...color,
               disabled: true

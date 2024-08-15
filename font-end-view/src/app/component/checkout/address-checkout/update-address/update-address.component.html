@@ -1,39 +1,54 @@
 <div class="row">
   <h5 style="text-align: center">Thêm địa chỉ</h5>
+
   <div class="col-md-4">
     <label class="form-label">Thành Phố</label>
     <ng-select [items]="listProvince" bindLabel="ProvinceName" bindValue="ProvinceID" placeholder="--Lựa chọn--"
-               [searchable]="false" [(ngModel)]="address.provinceId" [ngModelOptions]="{standalone: true}" (change)="getDistrict($event.ProvinceID)">
+      [searchable]="false" [(ngModel)]="address.provinceId" [ngModelOptions]="{standalone: true}"
+      (change)="getDistrict($event.ProvinceID)" (keydown)="revoveInvalid(validProvince)" (blur)="validateProvince()">
     </ng-select>
-    <div class="invalid-feedback">
-      Please select a valid country.
+    <div class="validate-input" *ngIf="!validProvince.done">
+      <p class="validate-input-label" *ngIf="validProvince.empty">Vui lòng không để trống</p>
     </div>
   </div>
 
   <div class="col-md-4">
     <label for="" class="form-label">Quận Huyện</label>
     <ng-select [items]="listDistrict" bindLabel="DistrictName" bindValue="DistrictID" placeholder="--Lựa chọn--"
-               [searchable]="false" [(ngModel)]="address.districtId" [ngModelOptions]="{standalone: true}" (change)="getWard($event.DistrictID)">
+      [searchable]="false" [(ngModel)]="address.districtId" [ngModelOptions]="{standalone: true}"
+      (change)="getWard($event.DistrictID)" (keydown)="revoveInvalid(validDistrict)" (blur)="validateDistrict()">
     </ng-select>
+    <div class="validate-input" *ngIf="!validDistrict.done">
+      <p class="validate-input-label" *ngIf="validDistrict.empty">Vui lòng không để trống</p>
+    </div>
   </div>
+
   <div class="col-md-4">
     <label for="" class="form-label">Phường Xã</label>
     <ng-select [items]="listWard" bindLabel="WardName" bindValue="WardCode" placeholder="--Lựa chọn--"
-               [searchable]="false" [ngModelOptions]="{standalone: true}" [(ngModel)]="address.wardCode">
+      [searchable]="false" [ngModelOptions]="{standalone: true}" [(ngModel)]="address.wardCode"
+      (keydown)="revoveInvalid(validWard)" (blur)="validateWard()">
     </ng-select>
-    <div class="invalid-feedback">
-      Please provide a valid state.
+    <div class="validate-input" *ngIf="!validWard.done">
+      <p class="validate-input-label" *ngIf="validWard.empty">Vui lòng không để trống</p>
     </div>
   </div>
 </div>
-<div class="col-12">
+
+<div style="margin-top: 10px;">
   <label for="address" class="form-label">Địa chỉ cụ thể</label>
-  <input type="text" class="form-control" id="address" placeholder="" [ngModelOptions]="{standalone: true}" [(ngModel)]="address.specificAddress" required>
-  <div class="invalid-feedback">
-    Please enter your shipping address.
+
+  <input type="text" class="form-control" id="address" placeholder="Địa chỉ chi tiết ..."
+    [ngModelOptions]="{standalone: true}" [(ngModel)]="address.specificAddress" (keydown)="revoveInvalid(validDiaChi)"
+    (blur)="validateDiaChi()" required>
+
+  <div class="validate-input" *ngIf="!validDiaChi.done">
+    <p class="validate-input-label" *ngIf="validDiaChi.empty">Vui lòng không để trống</p>
   </div>
+
   <div style="text-align: center; margin-top:20px">
     <button type="button" class="btn btn-light" (click)="matRef.close()">Quay lại</button>
-    <button type="button" class="btn btn-primary" style="margin-left: 10px" (click)="add()">Thêm</button>
+    <button type="button" *ngIf="showButtonAdd" class="btn btn-success" style="margin-left: 10px" (click)="add()">Thêm</button>
+    <button type="button" *ngIf="showButtonUpdate" class="btn btn-success" style="margin-left: 10px" (click)="add()">Cập nhật</button>
   </div>
 </div>
