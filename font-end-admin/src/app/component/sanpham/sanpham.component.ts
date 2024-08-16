@@ -50,7 +50,7 @@ export class SanphamComponent implements OnInit {
       },
       {
         headerName: 'SL SPCT',
-        field: 'productDetailAdminDTOList.size', // Original field for reference
+        field: 'productDetailAdminDTOList.size',
         valueGetter: (params: { data: { productDetailAdminDTOList: string | any[]; }; }) => params.data.productDetailAdminDTOList ? params.data.productDetailAdminDTOList.length : 0,
         sortable: true,
         filter: true,
@@ -63,26 +63,6 @@ export class SanphamComponent implements OnInit {
         filter: true,
         flex: 1
       },
-      // {
-      //   headerName: 'Chất liệu',
-      //   field: 'materialAdminDTO.name',
-      //   sortable: true,
-      //   filter: true,
-      //   flex: 1
-      // },
-      // {
-      //   headerName: 'Đế giày',
-      //   field: 'soleAdminDTO',
-      //   valueGetter: (params: { data: { soleAdminDTO: { soleHeight: any; soleMaterial: any; }; }; }) => {
-      //     if (params.data.soleAdminDTO) {
-      //       return `${params.data.soleAdminDTO.soleHeight} - ${params.data.soleAdminDTO.soleMaterial}`;
-      //     }
-      //     return '';
-      //   },
-      //   sortable: true,
-      //   filter: true,
-      //   flex: 1
-      // },
       {
         headerName: 'Danh mục',
         field: 'categoryAdminDTO.name',

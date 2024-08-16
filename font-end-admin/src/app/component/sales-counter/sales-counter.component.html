@@ -4,6 +4,9 @@
       <input type="text" name="search-product" class="form-control search-input" [(ngModel)]="searchTerm"
         placeholder="Tìm kiếm sản phẩm" (input)="search()">
 
+      <button (click)="startScan()">Scan</button>
+      <zxing-scanner #scanner (scanSuccess)="handleQrCodeResult($event)" *ngIf="isScanning"></zxing-scanner>
+
       <div class="search-results" *ngIf="showResults">
         <mat-table [dataSource]="searchResults" *ngIf="isProductListVisible">
           <ng-container matColumnDef="image">
@@ -78,8 +81,9 @@
             <td>{{product?.productDTO?.name}}</td>
             <td>{{product?.sizeDTO?.sizeNumber}}</td>
             <td>{{product?.colorDTO?.name}}</td>
-            <td><input type="number" min="1" [max]="product.quantity" class="quantity" name="quantity" [(ngModel)]="product.quantityInOrder"
-              (ngModelChange)="updateQuantityInOrder(product, $event, i)" [ngModelOptions]="{standalone: true}"></td>
+            <td><input type="number" min="1" [max]="product.quantity" class="quantity" name="quantity"
+                [(ngModel)]="product.quantityInOrder" (ngModelChange)="updateQuantityInOrder(product, $event, i)"
+                [ngModelOptions]="{standalone: true}"></td>
             <td>{{product?.price| number:'1.0-0'}} đ</td>
             <td>
               <button type="button" (click)="removeProduct(i)" class="remove-btn-order"><i
@@ -108,7 +112,8 @@
                 <i class="bi bi-plus-lg"></i>
               </a>
               <!-- Nút xóa nội dung của ô input -->
-              <a style="margin-right: 35px;" class="btn icon-clear position-absolute top-0 end-0" (click)="clearInput()">
+              <a style="margin-right: 35px;" class="btn icon-clear position-absolute top-0 end-0"
+                (click)="clearInput()">
                 <i class="bi bi-x-lg"></i>
               </a>
             </ol>
@@ -131,14 +136,16 @@
         <div class="row mb-1">
           <label class="col-sm-6 col-form-label">Tổng Tiền:</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control custom-input" name="sumPrice" readonly value="{{totalAllProducts| number:'1.0-0'}} đ">
+            <input type="text" class="form-control custom-input" name="sumPrice" readonly
+              value="{{totalAllProducts| number:'1.0-0'}} đ">
             <!-- <input type="text" class="form-control custom-input" name="sumPrice" readonly value="{{utilService.formatMoney(totalAllProducts)}}"> -->
           </div>
         </div>
         <div class="row mb-2">
           <label class="col-sm-6 col-form-label">Giảm giá:</label>
           <div class="col-sm-6 position-relative">
-            <input type="text" min="0" class="form-control custom-input" name="priceVoucher" (change)="priceVouchers() " value="{{priceVoucher| number:'1.0-0'}} đ" readonly>
+            <input type="text" min="0" class="form-control custom-input" name="priceVoucher" (change)="priceVouchers() "
+              value="{{priceVoucher| number:'1.0-0'}} đ" readonly>
             <!-- <input type="text" min="0" class="form-control custom-input" name="priceVoucher" (change)="priceVouchers() " value="{{utilService.formatMoney(priceVoucher)}}" readonly> -->
             <a class="btn icon-add position-absolute top-0 end-0" (click)="openVoucherSC()">
               <i class="bi bi-plus-lg"></i>
@@ -261,7 +268,8 @@
           <div class="row mb-2">
             <label class="col-sm-6 col-form-label">Khách cần trả:</label>
             <div class="col-sm-6">
-              <input type="text" class="form-control custom-input" readonly name="priceCustomer" value="{{priceCustomer| number:'1.0-0'}} đ">
+              <input type="text" class="form-control custom-input" readonly name="priceCustomer"
+                value="{{priceCustomer| number:'1.0-0'}} đ">
               <!-- <input type="text" class="form-control custom-input" readonly name="priceCustomer" value="{{utilService.formatMoney(priceCustomer)}}"> -->
             </div>
           </div>

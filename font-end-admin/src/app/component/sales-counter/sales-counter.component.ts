@@ -22,6 +22,7 @@ import { ValidateInput } from '../model/validate-input';
 import { PogupVoucherSCComponent } from './pogup-voucher-sc/pogup-voucher-sc.component';
 import { SalesCouterVoucherService } from '../../service/sales-couter-voucher.service';
 import { CurrencyPipe } from '@angular/common';
+import { ProductdetailService } from 'src/app/service/productdetail.service';
 
 @Component({
   selector: 'app-sales-counter',
@@ -115,8 +116,12 @@ export class SalesCounterComponent implements OnInit {
   validWard: ValidateInput = new ValidateInput();
   specificAddress: ValidateInput = new ValidateInput();
 
+  isScanning: boolean = false;
+  imageURL: any;
+
   constructor(
     private productService: ProductService,
+    private productDetailService: ProductdetailService,
     private orderService: OrderService,
     private orderDetailService: OrderDetailService,
     private dialog: MatDialog,
@@ -262,6 +267,76 @@ export class SalesCounterComponent implements OnInit {
         this.toastr.error('Lỗi hóa đơn');
       }
     }
+  }
+
+  handleQrCodeResult(result: string) {
+    // Chuyển đổi result từ chuỗi sang số
+    const resultId = Number(result);
+
+    // Kiểm tra nếu resultId là số hợp lệ
+    if (isNaN(resultId)) {
+      this.toastr.error('Dữ liệu QR code không hợp lệ', 'Thông báo');
+      return;
+    }
+
+    this.productDetailService.getAllProductDetail().subscribe((res) => {
+      // Lọc các chi tiết sản phẩm dựa trên ID
+      const filteredDetails = res.filter((item: any) => item.id === resultId);
+      const firstItem = filteredDetails[0];
+
+      if (firstItem) {
+
+        if (firstItem.quantity <= 0) {
+          this.toastr.error('Số lượng sản phẩm trong kho đã hết');
+        } else {
+          if (!firstItem.quantity) {
+            firstItem.quantity = 1;
+          }
+          this.imageURL = 'http://localhost:8081/view/anh/' + firstItem.productDTO.id;
+          firstItem.productDTO.imageURL = this.imageURL;
+
+          let listOrder = JSON.parse(localStorage.getItem('listOrder'));
+
+          let currentOrder = listOrder.find((order: { id: number; }) => order.id === this.currentOrderId);
+
+          if (currentOrder) {
+            let existingProductInOrder = currentOrder.productList.find((product: { id: any; }) => product.id === firstItem.id);
+
+            if (existingProductInOrder) {
+              existingProductInOrder.quantityInOrder += 1;
+            } else {
+              firstItem.quantityInOrder = 1;
+              currentOrder.productList.push(firstItem);
+            }
+
+            localStorage.setItem('listOrder', JSON.stringify(listOrder));
+
+            this.isProductListVisible = false;
+
+            this.priceVouchers();
+
+            this.fillProductInListOrder();
+
+            this.clearSearchTerm();
+
+            this.calculateTotalAllProducts();
+          } else {
+            this.toastr.error('Lỗi hóa đơn');
+          }
+        }
+
+      } else {
+        this.toastr.error('Không tìm thấy chi tiết sản phẩm', 'Thông báo');
+      }
+
+      this.isScanning = false;
+    }, (error) => {
+      this.toastr.error('Đã xảy ra lỗi khi lấy thông tin chi tiết sản phẩm', 'Thông báo');
+    });
+  }
+
+  startScan() {
+    this.isScanning = true;
   }
 
   updateQuantityInOrder(product: any, newQuantity: number, index: number) {
