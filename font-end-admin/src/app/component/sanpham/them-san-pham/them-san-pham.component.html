@@ -35,16 +35,6 @@
         <p class="validate-input-label" *ngIf="validBrand.empty">Vui lòng chọn thương hiệu</p>
       </div>
     </mat-form-field>
-
-    <!-- <mat-form-field appearance="outline">
-      <mat-label>Giá</mat-label>
-      <input [(ngModel)]="Price" name="Price" matInput placeholder="Giá" (keydown)="revoveInvalid(validPrice)"
-        (blur)="validatePrice()">
-      <div class="validate-input" *ngIf="!validPrice.done">
-        <p class="validate-input-label" *ngIf="validPrice.empty">Giá không được để trống</p>
-        <p class="validate-input-label" *ngIf="validPrice.regex">Không đúng định dạng giá phải là số dương</p>
-      </div>
-    </mat-form-field> -->
   </div>
 
   <div style="padding-left: 10px; flex: 1 1 45%;">
@@ -83,16 +73,7 @@
         <p class="validate-input-label" *ngIf="validMaterial.empty">Vui lòng chọn Chất liệu</p>
       </div>
     </mat-form-field>
-
   </div>
-
-  <!-- <div style="padding-right: 10px; width: 55%;">
-    <mat-radio-group [(ngModel)]="Status" name="Status">
-      <mat-label style="padding-right: 10px;">Trạng thái</mat-label>
-      <mat-radio-button [value]="0" style="margin-right: 5px;">Hoạt động</mat-radio-button>
-      <mat-radio-button [value]="1" style="margin-left: 5px;">Ngừng hoạt động</mat-radio-button>
-    </mat-radio-group>
-  </div> -->
 
   <div style="padding-left: 10px; flex: 1 1 45%; width: 45%;">
     <div>

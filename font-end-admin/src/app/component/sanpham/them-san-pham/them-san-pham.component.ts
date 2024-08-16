@@ -17,6 +17,8 @@ import { SizeService } from '../../../service/size.service';
 import { SizeInterface } from '../../../interface/size-interface';
 import { ColorInterface } from '../../../interface/color-interface';
 import { ToastrService } from 'ngx-toastr';
+import QRCode from 'qrcode'; // Import thư viện QRCode
+import { ProductdetailService } from 'src/app/service/productdetail.service';
 
 @Component({
   selector: 'app-them-san-pham',
@@ -85,8 +87,17 @@ export class ThemSanPhamComponent implements OnInit {
 
   productDetail = [];
 
+  jsonCurrent = {
+    idProduct: null,
+    idColor: null,
+    idSize: null
+  }
+
+  nameQR: string;
+
   constructor(
     private productService: ProductService,
+    private productDetailService: ProductdetailService,
     private brandService: BrandService,
     private categoryService: CategoryService,
     private soleService: SoleService,
@@ -178,7 +189,7 @@ export class ThemSanPhamComponent implements OnInit {
       this.toastr.error('Vui lòng nhập giá tiền', 'Lỗi nhập liệu');
       return;
     }
-    
+
     Swal.fire({
       title: 'Bạn muốn thêm',
       text: 'Thao tác này sẽ không hoàn tác',
@@ -203,16 +214,83 @@ export class ThemSanPhamComponent implements OnInit {
 
         this.productService.CreateProduct(products).subscribe(
           result => {
+            // result.data.productDetailList.forEach(detail => {
+            //   this.jsonCurrent = {
+            //     idProduct: detail.idProduct,
+            //     idColor: detail.idColor,
+            //     idSize: detail.idSize
+            //   }
+
+            //   this.productDetailService.getAllProductDetail().subscribe((res) => {
+            //     const filteredDetails = res.filter((item: any) => item.id === detail.id);
+            //     const firstItem = filteredDetails[0];
+
+            //     this.nameQR = `${firstItem.productDTO.name} - ${firstItem.colorDTO.name} - ${firstItem.sizeDTO.name}`;
+            //   })
+
+            //   const qrData = JSON.stringify(this.jsonCurrent);
+
+            //   QRCode.toDataURL(qrData, { width: 256 }, (err: any, url: string) => {
+            //     if (err) {
+            //       this.toastr.error('Đã xảy ra lỗi khi  tạo QR', 'Thông báo');
+            //       return;
+            //     }
+
+            //     const link = document.createElement('a');
+            //     link.href = url;
+            //     link.download = `${this.nameQR}.png`;
+            //     document.body.appendChild(link);
+            //     link.click();
+            //     document.body.removeChild(link);
+            //   })
+            // })
+            result.data.productDetailList.forEach(detail => {
+              this.jsonCurrent = {
+                idProduct: detail.idProduct,
+                idColor: detail.idColor,
+                idSize: detail.idSize
+              };
+
+              // Gọi dịch vụ để lấy chi tiết sản phẩm
+              this.productDetailService.getAllProductDetail().subscribe((res) => {
+                const filteredDetails = res.filter((item: any) => item.id === detail.id);
+                const firstItem = filteredDetails[0];
+
+                if (firstItem) {
+                  // Gán tên QR code sau khi có dữ liệu
+                  this.nameQR = `${firstItem.productDTO.name} - ${firstItem.colorDTO.name} - ${firstItem.sizeDTO.sizeNumber}`;
+
+                  // Chuyển đổi dữ liệu thành QR code
+                  const qrData = JSON.stringify(this.jsonCurrent);
+
+                  QRCode.toDataURL(qrData, { width: 256 }, (err: any, url: string) => {
+                    if (err) {
+                      this.toastr.error('Đã xảy ra lỗi khi tạo QR', 'Thông báo');
+                      return;
+                    }
+
+                    // Tạo và tải xuống tệp QR code
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `${this.nameQR}.png`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  });
+                } else {
+                  this.toastr.error('Không tìm thấy chi tiết sản phẩm', 'Thông báo');
+                }
+              });
+            });
+
             this.productService.uploadImgProduct(this.imageList, result.data.id).subscribe(
               rsss => {
-                console.log(rsss);
+                this.dialogRef.close('addProduct');
               }
             );
-            console.log('Product add success');
-            this.dialogRef.close('addProduct');
           },
           error => {
-            console.error('Product add error', error);
+            this.toastr.error('Lỗi khi tạo sản phẩm.', 'Thông báo');
           }
         );
 

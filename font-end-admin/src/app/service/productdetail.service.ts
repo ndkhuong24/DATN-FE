@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { apiURL } from '../config/apiUrl';
 
@@ -7,8 +7,6 @@ import { apiURL } from '../config/apiUrl';
   providedIn: 'root'
 })
 export class ProductdetailService {
-
-
   constructor(private http: HttpClient) {
   }
 
