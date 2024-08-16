@@ -44,9 +44,13 @@
       </div>
     </div>
 
-    <div class="grid">
+    <div class="grid row">
       <ag-grid-angular style="width: 100%; height: 360px;" class="ag-theme-alpine custom-class" [rowData]="rowData"
         [columnDefs]="columnDefs" [headerHeight]="headerHeight" [rowHeight]="rowHeight"></ag-grid-angular>
+    </div>
+
+    <div style="text-align: center;">
+      <button class="btn btn-success" (click)="qrDownload()">Tải về mã QR</button>
     </div>
 
   </div>
