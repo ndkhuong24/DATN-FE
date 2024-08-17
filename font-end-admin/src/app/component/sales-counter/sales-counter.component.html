@@ -1,10 +1,14 @@
 <div class="sales">
-  <div class="col-md-12 search-product mb-2 d-flex row">
+  <!-- <div class="col-md-12 search-product mb-2 d-flex row">
     <div class="col-md-4" style="margin-top: 5px; margin-bottom: 5px;">
-      <input type="text" name="search-product" class="form-control search-input" [(ngModel)]="searchTerm"
-        placeholder="Tìm kiếm sản phẩm" (input)="search()">
+      <div style="position: relative; width: 100%;">
+        <input type="text" name="search-product" class="form-control search-input" [(ngModel)]="searchTerm"
+          placeholder="Tìm kiếm sản phẩm" style="padding-right: 60px;">
 
-      <button (click)="startScan()">Scan</button>
+        <button style="position: absolute; right: 0; top: 0; height: 100%;border: none; background-color: transparent;"
+          (click)="startScan()"><i class="bi bi-qr-code-scan"></i></button>
+      </div>
+
       <zxing-scanner #scanner (scanSuccess)="handleQrCodeResult($event)" *ngIf="isScanning"></zxing-scanner>
 
       <div class="search-results" *ngIf="showResults">
@@ -25,7 +29,6 @@
           </ng-container>
           <ng-container matColumnDef="price">
             <mat-cell *matCellDef="let product">{{product?.price | number:'1.0-0'}} đ</mat-cell>
-            <!-- <mat-cell *matCellDef="let product">{{utilService.formatMoney(product?.price)}}</mat-cell> -->
           </ng-container>
           <mat-row *matRowDef="let row; columns: ['image','name', 'color', 'size', 'price']"
             (click)="addProductInOrder(row)"></mat-row>
@@ -33,6 +36,78 @@
       </div>
     </div>
 
+    <div class="col-md-6 row align-items-start">
+      <div class="col-md-10">
+        <mat-tab-group *ngIf="count > 0" (selectedTabChange)="onTabChange($event)">
+          <mat-tab *ngFor="let o of listOder">
+            <ng-template mat-tab-label>
+              <span>{{ o?.name }}</span>
+              <button (click)="removeOrder(o)" type="button" class="remove-btn-order">
+                <i class="bi bi-x-circle"></i>
+              </button>
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+      <div class="col-md-2">
+        <button (click)="addOrder()" type="button" class="add-btn-order">
+          | <i class="bi bi-plus-circle"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="col-md-2" style="margin: auto;">
+      <a class="btn" (click)="openDialogBill()"><i class="bi bi-receipt-cutoff"></i></a>
+    </div>
+  </div> -->
+  <div class="col-md-12 search-product mb-2 d-flex row">
+
+    <div class="col-md-4" style="margin-top: 5px; margin-bottom: 5px;">
+      <div style="position: relative; width: 100%;">
+        <input type="text" name="search-product" class="form-control search-input" [(ngModel)]="searchTerm"
+          placeholder="Tìm kiếm sản phẩm" style="padding-right: 60px;">
+        <button style="position: absolute; right: 0; top: 0; height: 100%; border: none; background-color: transparent;"
+          (click)="startScan()"><i class="bi bi-qr-code-scan"></i></button>
+      </div>
+
+      <!-- Zxing Scanner -->
+      <div *ngIf="isScanning"
+        style="position: absolute; top: 0; left: 0; width: 95%; height: 95%; z-index: 1000; margin: auto; display: block;">
+        <zxing-scanner #scanner (scanSuccess)="handleQrCodeResult($event)"
+          style="width: 100%; height: 100%;"></zxing-scanner>
+        <button (click)="stopScan()"
+          style="position: absolute; top: 10px; right: 10px; z-index: 1001; border: none; padding: 10px; cursor: pointer;">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <!-- Search Results -->
+      <div class="search-results" *ngIf="showResults">
+        <mat-table [dataSource]="searchResults" *ngIf="isProductListVisible">
+          <ng-container matColumnDef="image">
+            <mat-cell *matCellDef="let product">
+              <img width="60px" height="60px" src="{{ product?.productDTO?.imageURL }}" alt="Product Image">
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <mat-cell *matCellDef="let product"> {{ product?.productDTO?.name }} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="color">
+            <mat-cell *matCellDef="let product"> {{ product?.colorDTO?.name }} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="size">
+            <mat-cell *matCellDef="let product"> {{ product?.sizeDTO?.sizeNumber }} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="price">
+            <mat-cell *matCellDef="let product">{{product?.price | number:'1.0-0'}} đ</mat-cell>
+          </ng-container>
+          <mat-row *matRowDef="let row; columns: ['image','name', 'color', 'size', 'price']"
+            (click)="addProductInOrder(row)"></mat-row>
+        </mat-table>
+      </div>
+    </div>
+
+    <!-- Other Content -->
     <div class="col-md-6 row align-items-start">
       <div class="col-md-10">
         <mat-tab-group *ngIf="count > 0" (selectedTabChange)="onTabChange($event)">

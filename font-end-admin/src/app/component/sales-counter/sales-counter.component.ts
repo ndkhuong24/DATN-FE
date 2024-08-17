@@ -339,6 +339,10 @@ export class SalesCounterComponent implements OnInit {
     this.isScanning = true;
   }
 
+  stopScan() {
+    this.isScanning = false;
+  }
+
   updateQuantityInOrder(product: any, newQuantity: number, index: number) {
     if (newQuantity <= 0) {
       this.toastr.error('Số lượng sản phẩm phải lớn hơn 0');
