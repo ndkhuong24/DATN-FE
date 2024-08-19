@@ -65,7 +65,7 @@
     <div class="col-md-4" style="margin-top: 5px; margin-bottom: 5px;">
       <div style="position: relative; width: 100%;">
         <input type="text" name="search-product" class="form-control search-input" [(ngModel)]="searchTerm"
-          placeholder="Tìm kiếm sản phẩm" style="padding-right: 60px;">
+          placeholder="Tìm kiếm sản phẩm" style="padding-right: 60px;" (input)="search()">
         <button style="position: absolute; right: 0; top: 0; height: 100%; border: none; background-color: transparent;"
           (click)="startScan()"><i class="bi bi-qr-code-scan"></i></button>
       </div>

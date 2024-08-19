@@ -389,6 +389,7 @@ export class CheckoutComponent implements OnInit {
     }).afterClosed().subscribe(result => {
       if (result.event === 'saveVoucher') {
         this.totalMoneyPay = originalTotalMoney;
+
         if (result.data.voucher !== null) {
           this.voucherService.getVoucher(result.data.voucher).subscribe(res => {
             this.voucher = res.data;
@@ -398,17 +399,25 @@ export class CheckoutComponent implements OnInit {
                 this.totalMoneyPay = this.totalMoneyPay - res.data.maxReduced;
                 this.voucher.reducedValue = res.data.maxReduced;
               } else {
-                this.totalMoneyPay = this.totalMoneyPay - reducedVoucherPrice;
-                this.voucher.reducedValue = reducedVoucherPrice;
+                this.totalMoneyPay = this.totalMoneyPay - res.data.reducedValue;
+                this.voucher.reducedValue = res.data.reducedValue;
               }
             } else {
-              this.totalMoneyPay = this.totalMoneyPay - res.data.reducedValue;
-              this.voucher.reducedValue = res.data.reducedValue;
+              // this.totalMoneyPay = this.totalMoneyPay - res.data.reducedValue;
+              // this.voucher.reducedValue = res.data.reducedValue;
+              if (this.totalMoneyPay > res.data.reducedValue) {
+                this.totalMoneyPay = this.totalMoneyPay - res.data.reducedValue;
+                this.voucher.reducedValue = res.data.reducedValue;
+              } else {
+                this.totalMoneyPay = 0
+                this.voucher.reducedValue = res.data.reducedValue;
+              }
             }
             this.voucherChoice.voucher = res.data.code;
             this.cdr.detectChanges();
           });
         }
+
         if (result.data.voucherShip !== null) {
           this.voucherShipService.getVoucherShip(result.data.voucherShip).subscribe(res => {
             this.voucherShip = res.data;
@@ -460,7 +469,7 @@ export class CheckoutComponent implements OnInit {
     this.validProvince = CommonFunction.validateInput(this.addressNotLogin.provinceId, null, null);
   }
 
-  validateDiaChi(){
+  validateDiaChi() {
     this.validDiaChi = CommonFunction.validateInput(this.addressNotLogin.specificAddress, null, null);
   }
 

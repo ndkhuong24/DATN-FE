@@ -35,7 +35,7 @@
                 <div class="form-group">
                   <label for="diaChi">Địa chỉ email:</label>
                   <input type="text" class="form-control" id="diaChi" name="diaChiEmail"
-                    placeholder="Số nhà, tòa nhà, ngõ, đường" required [(ngModel)]="infoCustomer.email"
+                    placeholder="Email..." required [(ngModel)]="infoCustomer.email"
                     (keydown)="revoveInvalid(validEmail)" (blur)="validateEmail()" autocomplete="off">
                 </div>
                 <div class="validate-input" *ngIf="!validEmail.done">

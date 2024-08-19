@@ -949,28 +949,19 @@ export class SalesCounterComponent implements OnInit {
               }
 
             } else {
-              this.priceCustomer = this.totalAllProducts - this.voucher.reducedValue;
-              this.priceVoucher = res.data.reducedValue;
+              if (this.totalAllProducts > this.voucher.reducedValue) {
+                this.priceCustomer = this.totalAllProducts - this.voucher.reducedValue;
+                this.priceVoucher = res.data.reducedValue;
+              } else {
+                this.priceCustomer = 0
+                this.priceVoucher = res.data.reducedValue;
+              }
             }
 
             this.voucherChoice.voucher = res.data.code;
             this.cdr.detectChanges();
           });
         }
-        // if (result.data.voucherShip !== null) {
-        //   this.voucherShipService.getVoucherShip(result.data.voucherShip).subscribe(res => {
-        //     this.voucherShip = res.data;
-        //     if (this.shipFee <= res.data.reducedValue) {
-        //       this.shipFeeReduce = this.shipFee;
-        //       this.totalMoneyPay = this.totalMoneyPay - this.shipFee;
-        //     } else {
-        //       this.totalMoneyPay = this.totalMoneyPay - res.data.reducedValue;
-        //       this.shipFeeReduce = res.data.reducedValue;
-        //     }
-        //     this.voucherChoice.voucherShip = res.data.code;
-        //     this.cdr.detectChanges();
-        //   });
-        // }
       }
     });
   }
