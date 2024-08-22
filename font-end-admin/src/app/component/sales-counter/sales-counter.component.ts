@@ -23,6 +23,8 @@ import { PogupVoucherSCComponent } from './pogup-voucher-sc/pogup-voucher-sc.com
 import { SalesCouterVoucherService } from '../../service/sales-couter-voucher.service';
 import { CurrencyPipe } from '@angular/common';
 import { ProductdetailService } from 'src/app/service/productdetail.service';
+import { forkJoin, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sales-counter',
@@ -532,6 +534,7 @@ export class SalesCounterComponent implements OnInit {
 
   }
 
+
   placeOrderSales() {
     this.receiver = CommonFunction.trimText(this.receiver);
     this.receiver_mail = CommonFunction.trimText(this.receiver_mail);
@@ -549,178 +552,372 @@ export class SalesCounterComponent implements OnInit {
       return;
     }
 
-    for (let product of this.listProductPush) {
-      console.log(product);
-      this.productDetailService.getAllProductDetail().subscribe((res) => {
-        const productDetail = res.find((item: any) => item.idColor === product.idColor && item.idSize === product.idSize);
-
-        if (productDetail === undefined) {
-          this.toastr.error('Không tìm thấy sản phẩm ' + product.productDTO.name + ' trong kho');
-          return;
-        } else {
-          // Tiếp tục với logic của bạn
-          if (productDetail.quantity < product.quantity) {
+    const productDetailChecks = this.listProductPush.map(product =>
+      this.productDetailService.getAllProductDetail().pipe(
+        map(res => {
+          const productDetail = res.find((item: any) => item.idColor === product.idColor && item.idSize === product.idSize);
+          if (!productDetail) {
+            this.toastr.error('Không tìm thấy sản phẩm ' + product.productDTO.name + ' trong kho');
+            throw new Error('Product not found');
+          } else if (productDetail.quantity < product.quantity) {
             this.toastr.error('Số lượng sản phẩm ' + product.productDTO.name + ' vượt quá số lượng trong kho');
-            return;
+            throw new Error('Insufficient quantity');
+          }
+          return productDetail;
+        }),
+        catchError(err => of(null))
+      )
+    );
+
+    forkJoin(productDetailChecks).subscribe(results => {
+      if (results.some(result => result === null)) {
+        return;
+      }
+
+      this.user = JSON.parse(localStorage.getItem('users'));
+
+      if (this.user === null) {
+        this.toastr.error('Đã hết hạn đăng nhập');
+        return;
+      }
+
+      if (this.isChecked === true) {
+        this.typeOrder = 0;
+        this.statusOrder = 1;
+        if (!this.validReceiver.done || !this.validEmail.done || !this.validReceiverPhone.done || !this.validProvince.done
+          || !this.validDistrict.done || !this.validWard.done) {
+          return;
+        }
+      } else {
+        this.typeOrder = 1;
+        this.statusOrder = 3;
+      }
+
+      Swal.fire({
+        title: 'Bạn có xác nhận thanh toán đơn hàng',
+        text: '',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Thanh toán',
+        cancelButtonText: 'Thoát',
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+          let province = this.listProvince.find(c => c.ProvinceID === this.addressNotLogin.provinceId);
+          let district = this.listDistrict.find(d => d.DistrictID === this.addressNotLogin.districtId);
+          let ward = this.listWard.find(w => w.WardCode === this.addressNotLogin.wardCode);
+
+          if (this.selectedOption === '1') {
+            const order: Order = {
+              paymentType: 1,
+              totalPrice: this.totalAllProducts,
+              totalPayment: this.priceCustomer,
+              idCustomer: this.idCustomer,
+              idStaff: this.user.id,
+              addressReceived: this.isChecked ? (this.addressNotLogin?.specificAddress + ', ' + ward?.WardName + ', '
+                + district?.DistrictName + ', ' + province?.ProvinceName) : null,
+              statusPayment: 0,
+              shipPrice: this.shipFee,
+              codeVoucher: this.voucher ? this.voucher?.code : null,
+              email: 'customer123@gmail.com',
+              type: this.typeOrder,
+              status: this.statusOrder,
+              receiver: this.receiver,
+              receiverPhone: this.receiver_phone
+            };
+
+            const orderJson = JSON.stringify(order);
+            const currentOrderId = JSON.stringify(this.currentOrderId);
+            localStorage.setItem('order', orderJson);
+            localStorage.setItem('currentOrderId', currentOrderId);
+
+            this.paymentService.createPayment(this.priceCustomer).subscribe(resPay => {
+              if (resPay.status === 'OK') {
+                window.location.href = resPay.url;
+              }
+            });
+
+          } else {
+            const order: Order = {
+              paymentType: 0,
+              totalPrice: this.totalAllProducts,
+              totalPayment: this.priceCustomer,
+              idCustomer: this.idCustomer,
+              shipPrice: this.shipFee,
+              idStaff: this.user.id,
+              addressReceived: this.isChecked ? (this.addressNotLogin?.specificAddress + ', ' + ward?.WardName + ', '
+                + district?.DistrictName + ', ' + province?.ProvinceName) : null,
+              statusPayment: 0,
+              codeVoucher: this.voucher ? this.voucher?.code : null,
+              email: 'customer123@gmail.com',
+              type: this.typeOrder,
+              status: this.statusOrder,
+              receiver: this.receiver,
+              receiverPhone: this.receiver_phone
+            };
+
+            this.orderService.createOrderSales(order).subscribe(
+              (response) => {
+
+                const saveIdOrder = response.data.id;
+
+                let listOrder = JSON.parse(localStorage.getItem('listOrder'));
+
+                if (listOrder) {
+                  let currentOrder = listOrder.find((order: any) => order.id === this.currentOrderId);
+
+                  if (currentOrder) {
+                    for (let product of currentOrder.productList) {
+                      const orderDetail: OrderDetail = {
+                        idOrder: saveIdOrder,
+                        idProductDetail: product.id,
+                        quantity: product.quantityInOrder,
+                        price: product.price,
+                      };
+
+                      this.orderDetailService.createDetailSales(orderDetail).subscribe(res => {
+                        if (res.status !== 'OK') {
+                          this.checkStatus = 1;
+                          return;
+                        }
+                      });
+                    }
+                  } else {
+                    console.error('Current order not found');
+                  }
+                } else {
+                  console.error('listOrder not found in localStorage');
+                }
+
+                Swal.fire({
+                  title: 'Thanh toán thành công',
+                  text: '',
+                  icon: 'success',
+                  showCancelButton: false,
+                  confirmButtonColor: '#3085d6',
+                  confirmButtonText: 'OK'
+                }).then(results => {
+                  if (results.isConfirmed) {
+                    this.printInvoice();
+
+                    this.refreshData();
+
+                    this.removeOrder(order);
+
+                    this.calculateTotalAllProducts();
+
+                    // Lấy danh sách đơn hàng từ localStorage
+                    let listOrderCurrent = JSON.parse(localStorage.getItem('listOrder'));
+
+                    // Xoá productList của đơn hàng có id bằng currentOrderId
+                    listOrderCurrent = listOrderCurrent.map((order: any) => {
+                      if (order.id === this.currentOrderId) {
+                        return { ...order, productList: [] };
+                      }
+                      return order;
+                    });
+
+                    // Cập nhật lại vào localStorage
+                    localStorage.setItem('listOrder', JSON.stringify(listOrderCurrent));
+                  }
+                });
+              }
+            );
           }
         }
       });
-    }
-
-    this.user = JSON.parse(localStorage.getItem('users'));
-
-    if (this.user === null) {
-      this.toastr.error('Đã hết hạn đăng nhập');
-    }
-
-    if (this.isChecked === true) {
-      this.typeOrder = 0;
-      this.statusOrder = 1;
-      if (!this.validReceiver.done || !this.validEmail.done || !this.validReceiverPhone.done || !this.validProvince.done
-        || !this.validDistrict.done || !this.validWard.done) {
-        return;
-      }
-    } else {
-      this.typeOrder = 1;
-      this.statusOrder = 3;
-    }
-
-    Swal.fire({
-      title: 'Bạn có xác nhận thanh toán đơn hàng',
-      text: '',
-      icon: 'info',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Thanh toán',
-      cancelButtonText: 'Thoát',
-    }).then((result) => {
-      if (result.isConfirmed) {
-
-        let province = this.listProvince.find(c => c.ProvinceID === this.addressNotLogin.provinceId);
-        let district = this.listDistrict.find(d => d.DistrictID === this.addressNotLogin.districtId);
-        let ward = this.listWard.find(w => w.WardCode === this.addressNotLogin.wardCode);
-
-        if (this.selectedOption === '1') {
-          const order: Order = {
-            paymentType: 1,
-            totalPrice: this.totalAllProducts,
-            totalPayment: this.priceCustomer,
-            idCustomer: this.idCustomer,
-            idStaff: this.user.id,
-            addressReceived: this.isChecked ? (this.addressNotLogin?.specificAddress + ', ' + ward?.WardName + ', '
-              + district?.DistrictName + ', ' + province?.ProvinceName) : null,
-            statusPayment: 0,
-            shipPrice: this.shipFee,
-            codeVoucher: this.voucher ? this.voucher?.code : null,
-            email: 'customer123@gmail.com',
-            type: this.typeOrder,
-            status: this.statusOrder,
-            receiver: this.receiver,
-            receiverPhone: this.receiver_phone
-          };
-
-          const orderJson = JSON.stringify(order);
-          const currentOrderId = JSON.stringify(this.currentOrderId);
-          localStorage.setItem('order', orderJson);
-          localStorage.setItem('currentOrderId', currentOrderId);
-
-          this.paymentService.createPayment(this.priceCustomer).subscribe(resPay => {
-            if (resPay.status === 'OK') {
-              window.location.href = resPay.url;
-            }
-          });
-
-        } else {
-          const order: Order = {
-            paymentType: 0,
-            totalPrice: this.totalAllProducts,
-            totalPayment: this.priceCustomer,
-            idCustomer: this.idCustomer,
-            shipPrice: this.shipFee,
-            idStaff: this.user.id,
-            addressReceived: this.isChecked ? (this.addressNotLogin?.specificAddress + ', ' + ward?.WardName + ', '
-              + district?.DistrictName + ', ' + province?.ProvinceName) : null,
-            statusPayment: 0,
-            codeVoucher: this.voucher ? this.voucher?.code : null,
-            email: 'customer123@gmail.com',
-            type: this.typeOrder,
-            status: this.statusOrder,
-            receiver: this.receiver,
-            receiverPhone: this.receiver_phone
-          };
-
-          this.orderService.createOrderSales(order).subscribe(
-            (response) => {
-
-              const saveIdOrder = response.data.id;
-
-              let listOrder = JSON.parse(localStorage.getItem('listOrder'));
-
-              if (listOrder) {
-                let currentOrder = listOrder.find((order: any) => order.id === this.currentOrderId);
-
-                if (currentOrder) {
-                  for (let product of currentOrder.productList) {
-                    const orderDetail: OrderDetail = {
-                      idOrder: saveIdOrder,
-                      idProductDetail: product.id,
-                      quantity: product.quantityInOrder,
-                      price: product.price,
-                    };
-
-                    this.orderDetailService.createDetailSales(orderDetail).subscribe(res => {
-                      if (res.status !== 'OK') {
-                        this.checkStatus = 1;
-                        return;
-                      }
-                    });
-                  }
-                } else {
-                  console.error('Current order not found');
-                }
-              } else {
-                console.error('listOrder not found in localStorage');
-              }
-
-              Swal.fire({
-                title: 'Thanh toán thành công',
-                text: '',
-                icon: 'success',
-                showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'OK'
-              }).then(results => {
-                if (results.isConfirmed) {
-                  this.printInvoice();
-
-                  this.refreshData();
-
-                  this.removeOrder(order);
-
-                  this.calculateTotalAllProducts();
-
-                  // Lấy danh sách đơn hàng từ localStorage
-                  let listOrderCurrent = JSON.parse(localStorage.getItem('listOrder'));
-
-                  // Xoá productList của đơn hàng có id bằng currentOrderId
-                  listOrderCurrent = listOrderCurrent.map((order: any) => {
-                    if (order.id === this.currentOrderId) {
-                      return { ...order, productList: [] };
-                    }
-                    return order;
-                  });
-
-                  // Cập nhật lại vào localStorage
-                  localStorage.setItem('listOrder', JSON.stringify(listOrderCurrent));
-                }
-              });
-            }
-          );
-        }
-      }
     });
   }
+
+  // placeOrderSales() {
+  //   this.receiver = CommonFunction.trimText(this.receiver);
+  //   this.receiver_mail = CommonFunction.trimText(this.receiver_mail);
+  //   this.receiver_phone = CommonFunction.trimText(this.receiver_phone);
+
+  //   this.validateReceiver();
+  //   this.validateReceiverPhone();
+  //   this.validateEmail();
+  //   this.validateProvince();
+  //   this.validateDistrict();
+  //   this.validateWard();
+
+  //   if (this.listProductPush.length === 0) {
+  //     this.toastr.error('Không có sản phẩm nào để thanh toán');
+  //     return;
+  //   }
+
+  //   for (let product of this.listProductPush) {
+  //     this.productDetailService.getAllProductDetail().subscribe((res) => {
+  //       const productDetail = res.find((item: any) => item.idColor === product.idColor && item.idSize === product.idSize);
+
+  //       if (productDetail === undefined) {
+  //         this.toastr.error('Không tìm thấy sản phẩm ' + product.productDTO.name + ' trong kho');
+  //         return;
+  //       } else {
+  //         if (productDetail.quantity < product.quantity) {
+  //           this.toastr.error('Số lượng sản phẩm ' + product.productDTO.name + ' vượt quá số lượng trong kho');
+  //           return;
+  //         }
+  //       }
+  //     });
+  //   }
+
+  //   this.user = JSON.parse(localStorage.getItem('users'));
+
+  //   if (this.user === null) {
+  //     this.toastr.error('Đã hết hạn đăng nhập');
+  //   }
+
+  //   if (this.isChecked === true) {
+  //     this.typeOrder = 0;
+  //     this.statusOrder = 1;
+  //     if (!this.validReceiver.done || !this.validEmail.done || !this.validReceiverPhone.done || !this.validProvince.done
+  //       || !this.validDistrict.done || !this.validWard.done) {
+  //       return;
+  //     }
+  //   } else {
+  //     this.typeOrder = 1;
+  //     this.statusOrder = 3;
+  //   }
+
+  //   Swal.fire({
+  //     title: 'Bạn có xác nhận thanh toán đơn hàng',
+  //     text: '',
+  //     icon: 'info',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Thanh toán',
+  //     cancelButtonText: 'Thoát',
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+
+  //       let province = this.listProvince.find(c => c.ProvinceID === this.addressNotLogin.provinceId);
+  //       let district = this.listDistrict.find(d => d.DistrictID === this.addressNotLogin.districtId);
+  //       let ward = this.listWard.find(w => w.WardCode === this.addressNotLogin.wardCode);
+
+  //       if (this.selectedOption === '1') {
+  //         const order: Order = {
+  //           paymentType: 1,
+  //           totalPrice: this.totalAllProducts,
+  //           totalPayment: this.priceCustomer,
+  //           idCustomer: this.idCustomer,
+  //           idStaff: this.user.id,
+  //           addressReceived: this.isChecked ? (this.addressNotLogin?.specificAddress + ', ' + ward?.WardName + ', '
+  //             + district?.DistrictName + ', ' + province?.ProvinceName) : null,
+  //           statusPayment: 0,
+  //           shipPrice: this.shipFee,
+  //           codeVoucher: this.voucher ? this.voucher?.code : null,
+  //           email: 'customer123@gmail.com',
+  //           type: this.typeOrder,
+  //           status: this.statusOrder,
+  //           receiver: this.receiver,
+  //           receiverPhone: this.receiver_phone
+  //         };
+
+  //         const orderJson = JSON.stringify(order);
+  //         const currentOrderId = JSON.stringify(this.currentOrderId);
+  //         localStorage.setItem('order', orderJson);
+  //         localStorage.setItem('currentOrderId', currentOrderId);
+
+  //         this.paymentService.createPayment(this.priceCustomer).subscribe(resPay => {
+  //           if (resPay.status === 'OK') {
+  //             window.location.href = resPay.url;
+  //           }
+  //         });
+
+  //       } else {
+  //         const order: Order = {
+  //           paymentType: 0,
+  //           totalPrice: this.totalAllProducts,
+  //           totalPayment: this.priceCustomer,
+  //           idCustomer: this.idCustomer,
+  //           shipPrice: this.shipFee,
+  //           idStaff: this.user.id,
+  //           addressReceived: this.isChecked ? (this.addressNotLogin?.specificAddress + ', ' + ward?.WardName + ', '
+  //             + district?.DistrictName + ', ' + province?.ProvinceName) : null,
+  //           statusPayment: 0,
+  //           codeVoucher: this.voucher ? this.voucher?.code : null,
+  //           email: 'customer123@gmail.com',
+  //           type: this.typeOrder,
+  //           status: this.statusOrder,
+  //           receiver: this.receiver,
+  //           receiverPhone: this.receiver_phone
+  //         };
+
+  //         this.orderService.createOrderSales(order).subscribe(
+  //           (response) => {
+
+  //             const saveIdOrder = response.data.id;
+
+  //             let listOrder = JSON.parse(localStorage.getItem('listOrder'));
+
+  //             if (listOrder) {
+  //               let currentOrder = listOrder.find((order: any) => order.id === this.currentOrderId);
+
+  //               if (currentOrder) {
+  //                 for (let product of currentOrder.productList) {
+  //                   const orderDetail: OrderDetail = {
+  //                     idOrder: saveIdOrder,
+  //                     idProductDetail: product.id,
+  //                     quantity: product.quantityInOrder,
+  //                     price: product.price,
+  //                   };
+
+  //                   this.orderDetailService.createDetailSales(orderDetail).subscribe(res => {
+  //                     if (res.status !== 'OK') {
+  //                       this.checkStatus = 1;
+  //                       return;
+  //                     }
+  //                   });
+  //                 }
+  //               } else {
+  //                 console.error('Current order not found');
+  //               }
+  //             } else {
+  //               console.error('listOrder not found in localStorage');
+  //             }
+
+  //             Swal.fire({
+  //               title: 'Thanh toán thành công',
+  //               text: '',
+  //               icon: 'success',
+  //               showCancelButton: false,
+  //               confirmButtonColor: '#3085d6',
+  //               confirmButtonText: 'OK'
+  //             }).then(results => {
+  //               if (results.isConfirmed) {
+  //                 this.printInvoice();
+
+  //                 this.refreshData();
+
+  //                 this.removeOrder(order);
+
+  //                 this.calculateTotalAllProducts();
+
+  //                 // Lấy danh sách đơn hàng từ localStorage
+  //                 let listOrderCurrent = JSON.parse(localStorage.getItem('listOrder'));
+
+  //                 // Xoá productList của đơn hàng có id bằng currentOrderId
+  //                 listOrderCurrent = listOrderCurrent.map((order: any) => {
+  //                   if (order.id === this.currentOrderId) {
+  //                     return { ...order, productList: [] };
+  //                   }
+  //                   return order;
+  //                 });
+
+  //                 // Cập nhật lại vào localStorage
+  //                 localStorage.setItem('listOrder', JSON.stringify(listOrderCurrent));
+  //               }
+  //             });
+  //           }
+  //         );
+  //       }
+  //     }
+  //   });
+  // }
 
   refreshData() {
     this.selectedCustomer = '';
