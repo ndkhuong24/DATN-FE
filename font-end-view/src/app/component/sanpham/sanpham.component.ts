@@ -260,5 +260,29 @@ export class SanphamComponent implements OnInit {
       [this.minPrice, this.maxPrice] = [this.maxPrice, this.minPrice];
     }
   }
+  colorsToggled: boolean = false;
+  sizesToggled: boolean = false;
+  brandsToggled: boolean=false;
+  categoryToggled: boolean=false;
+  materialsToggled: boolean=false;
+  soleToggled: boolean=false;
+  toggleColors(): void {
+    this.colorsToggled = !this.colorsToggled;
+  }
+  toggleSizes(): void {
+    this.sizesToggled = !this.sizesToggled;
+  }
+  toggleBrands(): void {
+    this.brandsToggled = !this.brandsToggled;
+  }
+  toggleCategorys(): void {
+    this.categoryToggled = !this.categoryToggled;
+  }
+  toggleMaterials(): void {
+    this.materialsToggled = !this.materialsToggled;
+  }
+  toggleSoles(): void {
+    this.soleToggled = !this.soleToggled;
+  }
 }
 
