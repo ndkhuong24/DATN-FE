@@ -400,15 +400,12 @@ export class SalesCounterComponent implements OnInit {
     const input = event.target;
     let value = input.value;
 
-    // Loại bỏ bất kỳ ký tự không phải số và đảm bảo giá trị không phải là số âm
     value = value.replace(/[^0-9]/g, '');
 
-    // Nếu giá trị là rỗng hoặc bằng 0, đặt nó thành 1
     if (value === '' || parseInt(value, 10) <= 0) {
       value = '1';
     }
 
-    // Nếu giá trị vượt quá số lượng cho phép, đặt nó thành số lượng tối đa
     if (parseInt(value, 10) > maxQuantity) {
       value = maxQuantity.toString();
     }
@@ -559,7 +556,7 @@ export class SalesCounterComponent implements OnInit {
           if (!productDetail) {
             this.toastr.error('Không tìm thấy sản phẩm ' + product.productDTO.name + ' trong kho');
             throw new Error('Product not found');
-          } else if (productDetail.quantity < product.quantity) {
+          } else if (productDetail.quantity < product.quantityInOrder) {
             this.toastr.error('Số lượng sản phẩm ' + product.productDTO.name + ' vượt quá số lượng trong kho');
             throw new Error('Insufficient quantity');
           }
