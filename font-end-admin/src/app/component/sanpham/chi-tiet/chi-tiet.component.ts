@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { ProductService } from 'src/app/service/product.service';
 import { ProductdetailService } from 'src/app/service/productdetail.service';
-import QRCode from 'qrcode';
+import * as QRCode from 'qrcode';
 
 @Component({
     selector: 'app-chi-tiet',
