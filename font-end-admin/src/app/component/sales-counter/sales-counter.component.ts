@@ -346,13 +346,19 @@ export class SalesCounterComponent implements OnInit {
   updateQuantityInOrder(product: any, newQuantity: number, index: number) {
     if (newQuantity <= 0) {
       this.toastr.error('Số lượng sản phẩm phải lớn hơn 0');
+
+      product.quantityInOrder = 1;
+
       return;
     }
 
     if (newQuantity > product.quantity) {
       this.toastr.error('Không đủ số lượng trong kho');
+
       newQuantity = product.quantity;
+
       product.quantityInOrder = product.quantity;
+
       return;
     } else {
       // Cập nhật quantityInOrder trên sản phẩm
@@ -387,6 +393,29 @@ export class SalesCounterComponent implements OnInit {
     } else {
       console.error('listOrder not found in localStorage');
     }
+  }
+
+  validateInput(event: any, maxQuantity: number) {
+    const input = event.target;
+    let value = input.value;
+
+    // Loại bỏ bất kỳ ký tự không phải số và đảm bảo giá trị không phải là số âm
+    value = value.replace(/[^0-9]/g, '');
+
+    // Nếu giá trị là rỗng hoặc bằng 0, đặt nó thành 1
+    if (value === '' || parseInt(value, 10) <= 0) {
+      value = '1';
+    }
+
+    // Nếu giá trị vượt quá số lượng cho phép, đặt nó thành số lượng tối đa
+    if (parseInt(value, 10) > maxQuantity) {
+      value = maxQuantity.toString();
+    }
+
+    input.value = value;
+
+    // Kích hoạt ngModelChange thủ công nếu cần
+    input.dispatchEvent(new Event('input'));
   }
 
   calculateTotalAllProducts() {

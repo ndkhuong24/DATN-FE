@@ -156,9 +156,14 @@
             <td>{{product?.productDTO?.name}}</td>
             <td>{{product?.sizeDTO?.sizeNumber}}</td>
             <td>{{product?.colorDTO?.name}}</td>
-            <td><input type="number" min="1" [max]="product.quantity" class="quantity" name="quantity"
+            <!-- <td><input type="number" min="1" [max]="product.quantity" class="quantity" name="quantity"
                 [(ngModel)]="product.quantityInOrder" (ngModelChange)="updateQuantityInOrder(product, $event, i)"
-                [ngModelOptions]="{standalone: true}"></td>
+                [ngModelOptions]="{standalone: true}" (input)="validateInput($event)"></td> -->
+            <td>
+              <input type="number" min="1" [max]="product.quantity" class="quantity" name="quantity"
+                [(ngModel)]="product.quantityInOrder" (ngModelChange)="updateQuantityInOrder(product, $event, i)"
+                (input)="validateInput($event, product.quantity)" [ngModelOptions]="{standalone: true}">
+            </td>
             <td>{{product?.price| number:'1.0-0'}} đ</td>
             <td>
               <button type="button" (click)="removeProduct(i)" class="remove-btn-order"><i
