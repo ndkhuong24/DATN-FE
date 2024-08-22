@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, forwardRef, OnInit } from '@angular/core';
 import { ProductService } from '../../service/product.service';
 import { UsersDTO } from '../model/UsersDTO';
 import { OrderService } from '../../service/order.service';
@@ -361,7 +361,6 @@ export class SalesCounterComponent implements OnInit {
 
       return;
     } else {
-      // Cập nhật quantityInOrder trên sản phẩm
       product.quantityInOrder = newQuantity;
     }
 
@@ -548,6 +547,24 @@ export class SalesCounterComponent implements OnInit {
     if (this.listProductPush.length === 0) {
       this.toastr.error('Không có sản phẩm nào để thanh toán');
       return;
+    }
+
+    for (let product of this.listProductPush) {
+      console.log(product);
+      this.productDetailService.getAllProductDetail().subscribe((res) => {
+        const productDetail = res.find((item: any) => item.idColor === product.idColor && item.idSize === product.idSize);
+
+        if (productDetail === undefined) {
+          this.toastr.error('Không tìm thấy sản phẩm ' + product.productDTO.name + ' trong kho');
+          return;
+        } else {
+          // Tiếp tục với logic của bạn
+          if (productDetail.quantity < product.quantity) {
+            this.toastr.error('Số lượng sản phẩm ' + product.productDTO.name + ' vượt quá số lượng trong kho');
+            return;
+          }
+        }
+      });
     }
 
     this.user = JSON.parse(localStorage.getItem('users'));
