@@ -15,6 +15,9 @@ import { CommonFunction } from '../../util/common-function';
 import { VoucherShipService } from '../../service/voucher-ship.service';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { ProductService } from 'src/app/service/product.service';
+import { catchError, map } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
 
 @Component({
   selector: 'app-checkout',
@@ -89,7 +92,8 @@ export class CheckoutComponent implements OnInit {
     public utilService: UtilService,
     private voucherShipService: VoucherShipService,
     private cdr: ChangeDetectorRef,
-    private toaStr: ToastrService
+    private toaStr: ToastrService,
+    private productService: ProductService,
   ) {
     if (this.cookieService.check('checkout')) {
       const cartData = this.cookieService.get('checkout');
@@ -222,77 +226,186 @@ export class CheckoutComponent implements OnInit {
         return;
       }
 
-      Swal.fire({
-        title: 'Bạn có xác nhận thanh toán đơn hàng',
-        text: '',
-        icon: 'info',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Đồng ý',
-        cancelButtonText: 'Thoát'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          let province = this.listProvince.find(c => c.ProvinceID === this.addressNotLogin.provinceId);
-          let district = this.listDistrict.find(d => d.DistrictID === this.addressNotLogin.districtId);
-          let ward = this.listWard.find(w => w.WardCode === this.addressNotLogin.wardCode);
+      this.productService.getAllProduct().subscribe(res => {
+        const productDetailChecks = this.listCart.map(product => {
+          const productDetail = res.data.find((item: any) => item.id === product.productId);
 
-          if (this.checkChoicePay === 1) {
-            const obj = {
-              ...this.order,
-              totalPrice: this.totalMoney,
-              voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
-              totalPayment: this.totalMoney - (this.voucher ? this.voucher.reducedValue : 0),
-              shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
-              codeVoucher: this.voucher ? this.voucher?.code : null,
-              codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
-              voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
-              addressReceived: this.addressNotLogin.specificAddress + ', ' + ward.WardName + ', '
-                + district.DistrictName + ', ' + province.ProvinceName,
-              paymentType: 1,
-              email: this.email
-            };
+          if (!productDetail) {
+            this.toaStr.error('Không tìm thấy sản phẩm ' + product.productName + ' trong kho');
+            return of(new Error('Product not found'));
+          } else {
+            const detail = productDetail.productDetailDTOList.find((detail: any) =>
+              detail.idColor === product.productDetailDTO.idColor &&
+              detail.idSize === product.productDetailDTO.idSize
+            );
 
-            const objOrderBill = {
-              order: obj,
-              listCart: this.listCart
-            };
+            if (!detail) {
+              this.toaStr.error('Không tìm thấy chi tiết sản phẩm ' + product.productName + ' trong kho');
+              return of(new Error('Product detail not found'));
+            }
 
-            localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
+            if (detail.quantity < product.quantity) {
+              this.toaStr.error('Số lượng sản phẩm ' + product.productName + ' vượt quá số lượng trong kho');
+              return of(new Error('Insufficient quantity'));
+            }
 
-            this.paymentService.createPayment(this.totalMoneyPay).subscribe(resPay => {
-              if (resPay.status === 'OK') {
-                window.location.href = resPay.url;
+            return of(detail);
+          }
+        });
+
+        forkJoin(productDetailChecks).subscribe(results => {
+          const hasError = results.some(result => result instanceof Error);
+
+          if (hasError) {
+            console.log('Some products have issues, cannot proceed to payment.');
+            return;
+          }
+
+          Swal.fire({
+            title: 'Bạn có xác nhận thanh toán đơn hàng',
+            text: '',
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Thoát'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              let province = this.listProvince.find(c => c.ProvinceID === this.addressNotLogin.provinceId);
+              let district = this.listDistrict.find(d => d.DistrictID === this.addressNotLogin.districtId);
+              let ward = this.listWard.find(w => w.WardCode === this.addressNotLogin.wardCode);
+
+              if (this.checkChoicePay === 1) {
+                const obj = {
+                  ...this.order,
+                  totalPrice: this.totalMoney,
+                  voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
+                  totalPayment: this.totalMoney - (this.voucher ? this.voucher.reducedValue : 0),
+                  shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
+                  codeVoucher: this.voucher ? this.voucher?.code : null,
+                  codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
+                  voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
+                  addressReceived: this.addressNotLogin.specificAddress + ', ' + ward.WardName + ', '
+                    + district.DistrictName + ', ' + province.ProvinceName,
+                  paymentType: 1,
+                  email: this.email
+                };
+
+                const objOrderBill = {
+                  order: obj,
+                  listCart: this.listCart
+                };
+
+                localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
+
+                this.paymentService.createPayment(this.totalMoneyPay).subscribe(resPay => {
+                  if (resPay.status === 'OK') {
+                    window.location.href = resPay.url;
+                  }
+                });
               }
-            });
-          }
-          else {
-            const obj = {
-              ...this.order,
-              totalPrice: this.totalMoney,
-              voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
-              totalPayment: this.totalMoney - (this.voucher ? this.voucher.reducedValue : 0),
-              shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
-              codeVoucher: this.voucher ? this.voucher?.code : null,
-              codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
-              voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
-              addressReceived: this.addressNotLogin.specificAddress + ', ' + ward.WardName + ', '
-                + district.DistrictName + ', ' + province.ProvinceName,
-              paymentType: 0,
-              email: this.email
-            };
+              else {
+                const obj = {
+                  ...this.order,
+                  totalPrice: this.totalMoney,
+                  voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
+                  totalPayment: this.totalMoney - (this.voucher ? this.voucher.reducedValue : 0),
+                  shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
+                  codeVoucher: this.voucher ? this.voucher?.code : null,
+                  codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
+                  voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
+                  addressReceived: this.addressNotLogin.specificAddress + ', ' + ward.WardName + ', '
+                    + district.DistrictName + ', ' + province.ProvinceName,
+                  paymentType: 0,
+                  email: this.email
+                };
 
-            const objOrderBill = {
-              order: obj,
-              listCart: this.listCart
-            };
+                const objOrderBill = {
+                  order: obj,
+                  listCart: this.listCart
+                };
 
-            localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
+                localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
 
-            this.route.navigate(['cart/checkout-detail']);
-          }
-        }
-      });
+                this.route.navigate(['cart/checkout-detail']);
+              }
+            }
+          });
+        });
+      }, catchError(err => of(null)));
+
+      // Swal.fire({
+      //   title: 'Bạn có xác nhận thanh toán đơn hàng',
+      //   text: '',
+      //   icon: 'info',
+      //   showCancelButton: true,
+      //   confirmButtonColor: '#3085d6',
+      //   cancelButtonColor: '#d33',
+      //   confirmButtonText: 'Đồng ý',
+      //   cancelButtonText: 'Thoát'
+      // }).then((result) => {
+      //   if (result.isConfirmed) {
+      //     let province = this.listProvince.find(c => c.ProvinceID === this.addressNotLogin.provinceId);
+      //     let district = this.listDistrict.find(d => d.DistrictID === this.addressNotLogin.districtId);
+      //     let ward = this.listWard.find(w => w.WardCode === this.addressNotLogin.wardCode);
+
+      //     if (this.checkChoicePay === 1) {
+      //       const obj = {
+      //         ...this.order,
+      //         totalPrice: this.totalMoney,
+      //         voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
+      //         totalPayment: this.totalMoney - (this.voucher ? this.voucher.reducedValue : 0),
+      //         shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
+      //         codeVoucher: this.voucher ? this.voucher?.code : null,
+      //         codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
+      //         voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
+      //         addressReceived: this.addressNotLogin.specificAddress + ', ' + ward.WardName + ', '
+      //           + district.DistrictName + ', ' + province.ProvinceName,
+      //         paymentType: 1,
+      //         email: this.email
+      //       };
+
+      //       const objOrderBill = {
+      //         order: obj,
+      //         listCart: this.listCart
+      //       };
+
+      //       localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
+
+      //       this.paymentService.createPayment(this.totalMoneyPay).subscribe(resPay => {
+      //         if (resPay.status === 'OK') {
+      //           window.location.href = resPay.url;
+      //         }
+      //       });
+      //     }
+      //     else {
+      //       const obj = {
+      //         ...this.order,
+      //         totalPrice: this.totalMoney,
+      //         voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
+      //         totalPayment: this.totalMoney - (this.voucher ? this.voucher.reducedValue : 0),
+      //         shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
+      //         codeVoucher: this.voucher ? this.voucher?.code : null,
+      //         codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
+      //         voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
+      //         addressReceived: this.addressNotLogin.specificAddress + ', ' + ward.WardName + ', '
+      //           + district.DistrictName + ', ' + province.ProvinceName,
+      //         paymentType: 0,
+      //         email: this.email
+      //       };
+
+      //       const objOrderBill = {
+      //         order: obj,
+      //         listCart: this.listCart
+      //       };
+
+      //       localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
+
+      //       this.route.navigate(['cart/checkout-detail']);
+      //     }
+      //   }
+      // });
     }
     else {
       this.order.receiver = CommonFunction.trimText(this.order.receiver);
@@ -310,73 +423,186 @@ export class CheckoutComponent implements OnInit {
         return;
       }
 
-      Swal.fire({
-        title: 'Bạn có xác nhận thanh toán đơn hàng',
-        text: '',
-        icon: 'info',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Đồng ý',
-        cancelButtonText: 'Thoát',
-      })
-        .then((result) => {
-          if (result.isConfirmed) {
-            if (this.checkChoicePay === 1) {
-              const obj = {
-                ...this.order,
-                totalPrice: this.totalMoney,
-                voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
-                totalPayment: this.totalMoney - (this.voucher ? this.voucher.reducedValue : 0),
-                shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
-                codeVoucher: this.voucher ? this.voucher?.code : null,
-                codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
-                voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
-                addressReceived: this.address.specificAddress + ', ' + this.address.wards + ', ' + this.address.district + ', ' + this.address.province,
-                paymentType: 1,
-                email: this.user.email,
-                idCustomer: this.user.id,
-              };
+      this.productService.getAllProduct().subscribe(res => {
+        const productDetailChecks = this.listCart.map(product => {
+          const productDetail = res.data.find((item: any) => item.id === product.productId);
 
-              const objOrderBill = {
-                order: obj,
-                listCart: this.listCart
-              };
+          if (!productDetail) {
+            this.toaStr.error('Không tìm thấy sản phẩm ' + product.productName + ' trong kho');
+            return of(new Error('Product not found'));
+          } else {
+            const detail = productDetail.productDetailDTOList.find((detail: any) =>
+              detail.idColor === product.productDetailDTO.idColor &&
+              detail.idSize === product.productDetailDTO.idSize
+            );
 
-              localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
-
-              this.paymentService.createPayment(this.totalMoneyPay).subscribe(resPay => {
-                if (resPay.status === 'OK') {
-                  window.location.href = resPay.url;
-                }
-              });
+            if (!detail) {
+              this.toaStr.error('Không tìm thấy chi tiết sản phẩm ' + product.productName + ' trong kho');
+              return of(new Error('Product detail not found'));
             }
-            else {
-              const obj = {
-                ...this.order,
-                totalPrice: this.totalMoney,
-                voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
-                totalPayment: this.totalMoney - (this.voucher ? this.voucher.reducedValue : 0),
-                shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
-                codeVoucher: this.voucher ? this.voucher?.code : null,
-                codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
-                voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
-                addressReceived: this.address.specificAddress + ', ' + this.address.wards + ', ' + this.address.district + ', ' + this.address.province,
-                paymentType: 0,
-                email: this.user.email,
-                idCustomer: this.user.id,
-              };
 
-              const objOrderBill = {
-                order: obj,
-                listCart: this.listCart
-              };
-
-              localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
-              this.route.navigate(['cart/checkout-detail']);
+            if (detail.quantity < product.quantity) {
+              this.toaStr.error('Số lượng sản phẩm ' + product.productName + ' vượt quá số lượng trong kho');
+              return of(new Error('Insufficient quantity'));
             }
+
+            return of(detail);
           }
         });
+
+        forkJoin(productDetailChecks).subscribe(results => {
+          const hasError = results.some(result => result instanceof Error);
+
+          if (hasError) {
+            console.log('Some products have issues, cannot proceed to payment.');
+            return;
+          }
+
+          Swal.fire({
+            title: 'Bạn có xác nhận thanh toán đơn hàng',
+            text: '',
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Thoát',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              const obj = {
+                ...this.order,
+                totalPrice: this.totalMoney,
+                voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
+                totalPayment: this.totalMoney - (this.voucher ? this.voucher.reducedValue : 0),
+                shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
+                codeVoucher: this.voucher ? this.voucher?.code : null,
+                codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
+                voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
+                addressReceived: this.address.specificAddress + ', ' + this.address.wards + ', ' + this.address.district + ', ' + this.address.province,
+                paymentType: this.checkChoicePay === 1 ? 1 : 0,
+                email: this.user.email,
+                idCustomer: this.user.id,
+              };
+
+              const objOrderBill = {
+                order: obj,
+                listCart: this.listCart
+              };
+
+              localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
+
+              if (this.checkChoicePay === 1) {
+                this.paymentService.createPayment(this.totalMoneyPay).subscribe(resPay => {
+                  if (resPay.status === 'OK') {
+                    window.location.href = resPay.url;
+                  }
+                });
+              } else {
+                this.route.navigate(['cart/checkout-detail']);
+              }
+            }
+          });
+        });
+      }, catchError(err => of(null)));
+
+      // this.productService.getAllProduct().subscribe(res => {
+      //   const productDetailChecks = this.listCart.map(product => {
+      //     const productDetail = res.data.find((item: any) => item.id === product.productId);
+
+      //     if (!productDetail) {
+      //       this.toaStr.error('Không tìm thấy sản phẩm ' + product.productName + ' trong kho');
+      //       throw new Error('Product not found');
+      //     } else {
+      //       const detail = productDetail.productDetailDTOList.find((detail: any) =>
+      //         detail.idColor === product.productDetailDTO.idColor &&
+      //         detail.idSize === product.productDetailDTO.idSize
+      //       );
+
+      //       if (!detail) {
+      //         this.toaStr.error('Không tìm thấy chi tiết sản phẩm ' + product.productName + ' trong kho');
+      //         throw new Error('Product detail not found');
+      //       }
+
+      //       if (detail.quantity < product.quantity) {
+      //         this.toaStr.error('Số lượng sản phẩm ' + product.productName + ' vượt quá số lượng trong kho');
+      //         throw new Error('Insufficient quantity');
+      //       }
+
+      //       return detail;
+      //     }
+      //   });
+
+      //   forkJoin(productDetailChecks).subscribe(results => {
+      //     Swal.fire({
+      //       title: 'Bạn có xác nhận thanh toán đơn hàng',
+      //       text: '',
+      //       icon: 'info',
+      //       showCancelButton: true,
+      //       confirmButtonColor: '#3085d6',
+      //       cancelButtonColor: '#d33',
+      //       confirmButtonText: 'Đồng ý',
+      //       cancelButtonText: 'Thoát',
+      //     })
+      //       .then((result) => {
+      //         if (result.isConfirmed) {
+      //           if (this.checkChoicePay === 1) {
+      //             const obj = {
+      //               ...this.order,
+      //               totalPrice: this.totalMoney,
+      //               voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
+      //               totalPayment: this.totalMoney - (this.voucher ? this.voucher.reducedValue : 0),
+      //               shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
+      //               codeVoucher: this.voucher ? this.voucher?.code : null,
+      //               codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
+      //               voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
+      //               addressReceived: this.address.specificAddress + ', ' + this.address.wards + ', ' + this.address.district + ', ' + this.address.province,
+      //               paymentType: 1,
+      //               email: this.user.email,
+      //               idCustomer: this.user.id,
+      //             };
+
+      //             const objOrderBill = {
+      //               order: obj,
+      //               listCart: this.listCart
+      //             };
+
+      //             localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
+
+      //             this.paymentService.createPayment(this.totalMoneyPay).subscribe(resPay => {
+      //               if (resPay.status === 'OK') {
+      //                 window.location.href = resPay.url;
+      //               }
+      //             });
+      //           }
+      //           else {
+      //             const obj = {
+      //               ...this.order,
+      //               totalPrice: this.totalMoney,
+      //               voucherReduct: this.voucher ? this.voucher.reducedValue : 0,
+      //               totalPayment: this.totalMoney - (this.voucher ? this.voucher.reducedValue : 0),
+      //               shipPrice: this.voucherShip ? this.shipFee - this.shipFeeReduce : this.shipFee,
+      //               codeVoucher: this.voucher ? this.voucher?.code : null,
+      //               codeVoucherShip: this.voucherShip ? this.voucherShip?.code : null,
+      //               voucherFreeshipReduct: this.voucherShip ? this.shipFeeReduce : 0,
+      //               addressReceived: this.address.specificAddress + ', ' + this.address.wards + ', ' + this.address.district + ', ' + this.address.province,
+      //               paymentType: 0,
+      //               email: this.user.email,
+      //               idCustomer: this.user.id,
+      //             };
+
+      //             const objOrderBill = {
+      //               order: obj,
+      //               listCart: this.listCart
+      //             };
+
+      //             localStorage.setItem('order-bill', JSON.stringify(objOrderBill));
+      //             this.route.navigate(['cart/checkout-detail']);
+      //           }
+      //         }
+      //       });
+      //   });
+      // }, catchError(err => of(null))
+      // );
     }
   }
 
