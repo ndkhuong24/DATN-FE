@@ -12,6 +12,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   templateUrl: './edit-voucher-ship.component.html',
   styleUrls: ['./edit-voucher-ship.component.css']
 })
+
 export class EditVoucherShipComponent implements OnInit {
   voucherFreeShip: any = {
     name: '',
@@ -382,5 +383,20 @@ export class EditVoucherShipComponent implements OnInit {
 
   formatDate(date: Date): string {
     return this.datePipe.transform(date, 'yyyy-MM-ddTHH:mm') || '';
+  }
+
+  preventNegative(event: any) {
+    if (event.target.value < 1) {
+      event.target.value = 1;
+      if (event.target.name === 'quantity') {
+        this.voucherFreeShip.quantity = 1;
+      } else if (event.target.name === 'conditionApply') {
+        this.voucherFreeShip.conditionApply = 1;
+      } else if (event.target.name === 'reducedValue') {
+        this.voucherFreeShip.reducedValue = 1;
+      } else if (event.target.name === 'limitCustomer') {
+        this.voucherFreeShip.limitCustomer = 1;
+      }
+    }
   }
 }

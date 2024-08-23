@@ -4,8 +4,8 @@
   <div style="flex: 1 1 50%; padding-right: 10px">
     <mat-form-field appearance="outline" class="example-full-width">
       <mat-label>Tên</mat-label>
-      <input matInput [(ngModel)]="voucherFreeShip.name" name="name" placeholder="Tên" (keydown)="revoveInvalid(validName)"
-        (blur)="validateName()">
+      <input matInput [(ngModel)]="voucherFreeShip.name" name="name" placeholder="Tên"
+        (keydown)="revoveInvalid(validName)" (blur)="validateName()">
       <div class="validate-input" *ngIf="!validName.done">
         <p class="validate-input-label" *ngIf="validName.empty">Tên không được để trống</p>
         <p class="validate-input-label" *ngIf="validName.maxLength">Tên sản phẩm dưới 250 kí tự</p>
@@ -14,8 +14,8 @@
 
     <mat-form-field appearance="outline" class="example-full-width">
       <mat-label>Ngày bắt đầu</mat-label>
-      <input matInput type="datetime-local" [(ngModel)]="voucherFreeShip.startDate" name="startDate" (keydown)="removeCheckStartDate()"
-        (blur)="isStartDateValid()">
+      <input matInput type="datetime-local" [(ngModel)]="voucherFreeShip.startDate" name="startDate"
+        (keydown)="removeCheckStartDate()" (blur)="isStartDateValid()">
       <div class="validate-input">
         <p class="validate-input-label" *ngIf="checkStartDateNull">Vui lòng chọn ngày bắt đầu</p>
         <p class="validate-input-label" *ngIf="checkStartDate">Ngày bắt đầu phải lớn hơn hoặc bằng ngày hiện tại</p>
@@ -24,8 +24,8 @@
 
     <mat-form-field appearance="outline" class="example-full-width">
       <mat-label>Ngày kết thúc</mat-label>
-      <input type="datetime-local" [(ngModel)]="voucherFreeShip.endDate" name="endDate" matInput (keydown)="removeCheckEndDate()"
-        (blur)="isEndDateValid()">
+      <input type="datetime-local" [(ngModel)]="voucherFreeShip.endDate" name="endDate" matInput
+        (keydown)="removeCheckEndDate()" (blur)="isEndDateValid()">
       <div class="validate-input">
         <p class="validate-input-label" *ngIf="checkEndDateNull">Vui lòng chọn ngày kết thúc</p>
         <p class="validate-input-label" *ngIf="checkEndDate">Ngày kết thúc phải lớn hơn ngày bắt đầu</p>
@@ -46,7 +46,8 @@
   <div style="flex: 1 1 50%; padding-left: 10px;">
     <mat-form-field appearance="outline" class="example-full-width">
       <mat-label>Điều kiện sử dụng</mat-label>
-      <input matInput type="number" [(ngModel)]="voucherFreeShip.conditionApply" name="conditionApply" placeholder="Điều kiện sử dụng"
+      <input matInput type="number" [(ngModel)]="voucherFreeShip.conditionApply" name="conditionApply"
+        (input)="preventNegative($event)" min="1" placeholder="Điều kiện sử dụng"
         (keydown)="revoveInvalid(validconditionApply)" (blur)="validateConditionApply()">
       <div class="validate-input" *ngIf="!validconditionApply.done">
         <p class="validate-input-label" *ngIf="validconditionApply.empty">Điều kiện sử dụng không để trống</p>
@@ -56,7 +57,8 @@
 
     <mat-form-field appearance="outline" class="example-full-width">
       <mat-label>Giá trị giảm</mat-label>
-      <input matInput type="number" [(ngModel)]="voucherFreeShip.reducedValue" name="reducedValue" placeholder="Giá trị giảm"
+      <input matInput type="number" [(ngModel)]="voucherFreeShip.reducedValue" name="reducedValue"
+        (input)="preventNegative($event)" min="1" placeholder="Giá trị giảm"
         (keydown)="revoveInvalid(validReducedValue)" (blur)="validateReducedValue()">
       <div class="validate-input" *ngIf="!validReducedValue.done">
         <p class="validate-input-label" *ngIf="validReducedValue.empty">Giá trị giảm không để trống</p>
@@ -67,7 +69,7 @@
     <mat-form-field appearance="outline" class="example-full-width">
       <mat-label>Số lượng</mat-label>
       <input matInput type="number" [(ngModel)]="voucherFreeShip.quantity" name="quantity" placeholder="Số lượng"
-        (keydown)="revoveInvalid(validQuantity)" (blur)="validateQuantity()">
+        (input)="preventNegative($event)" min="1" (keydown)="revoveInvalid(validQuantity)" (blur)="validateQuantity()">
       <div class="validate-input" *ngIf="!validQuantity.done">
         <p class="validate-input-label" *ngIf="validQuantity.empty">Số lượng sử dụng không để trống</p>
         <p class="validate-input-label" *ngIf="validQuantity.regex">Số lượng phải lớn hơn 0</p>
@@ -96,8 +98,10 @@
 
   <mat-form-field appearance="outline" *ngIf="voucherFreeShip.optionCustomer == 1" style="width: 45%;">
     <mat-label>Giới hạn số lần sử dụng với mỗi khách hàng</mat-label>
-    <input matInput type="number" [(ngModel)]="voucherFreeShip.limitCustomer" name="limitCustomer" placeholder="Số lần sử dụng"
-      (keydown)="voucherFreeShip.optionCustomer == 1 && revoveInvalid(validLimitCustomer)" (blur)="validateLimitCustomer()">
+    <input matInput type="number" [(ngModel)]="voucherFreeShip.limitCustomer" name="limitCustomer"
+      (input)="preventNegative($event)" min="1" placeholder="Số lần sử dụng"
+      (keydown)="voucherFreeShip.optionCustomer == 1 && revoveInvalid(validLimitCustomer)"
+      (blur)="validateLimitCustomer()">
     <div class="validate-input" *ngIf="voucherFreeShip.optionCustomer == 1 && !validLimitCustomer.done">
       <p class="validate-input-label" *ngIf="validLimitCustomer.empty">Số lượng sử dụng không để trống</p>
       <p class="validate-input-label" *ngIf="validLimitCustomer.regex">Số lượng phải lớn hơn 0</p>

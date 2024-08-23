@@ -292,9 +292,7 @@ export class CreatVoucherComponent implements OnInit {
     this.validName = CommonFunction.validateInput(this.Name, 50, null);
   }
 
-  validateQuantity() {
-    this.validQuantity = CommonFunction.validateInput(this.Quantity, 50, /^[1-9]\d*(\.\d+)?$/);
-  }
+
 
   validateDescription() {
     this.validDescription = CommonFunction.validateInput(this.Description, 250, null);
@@ -314,5 +312,26 @@ export class CreatVoucherComponent implements OnInit {
 
   validateLimitCustomer() {
     this.validLimitCustomer = CommonFunction.validateInput(this.LimitCustomer, 250, /^[1-9]\d*(\.\d+)?$/);
+  }
+
+  validateQuantity() {
+    this.validQuantity = CommonFunction.validateInput(this.Quantity, 50, /^[1-9]\d*(\.\d+)?$/);
+  }
+
+  preventNegative(event: any) {
+    if (event.target.value < 1) {
+      event.target.value = 1;
+      if (event.target.name === 'Quantity') {
+        this.Quantity = 1;
+      } else if (event.target.name === 'MaxReduced') {
+        this.MaxReduced = 1;
+      } else if (event.target.name === 'ConditionApply') {
+        this.ConditionApply = 1;
+      } else if (event.target.name === 'ReducedValue') {
+        this.ReducedValue = 1;
+      } else if (event.target.name === 'LimitCustomer') {
+        this.LimitCustomer = 1;
+      }
+    }
   }
 }

@@ -123,7 +123,7 @@
         <td>{{prdtl.colorDTO.name}}</td>
         <td>
           <div>
-            <input type="number" [(ngModel)]="productDetail[i].quantity">
+            <input min="1" type="number" [(ngModel)]="productDetail[i].quantity" (input)="preventNegative($event)">
           </div>
         </td>
         <td>
@@ -135,7 +135,7 @@
         </td>
         <td>
           <div>
-            <input type="number" [(ngModel)]="productDetail[i].price">
+            <input min="1" type="number" [(ngModel)]="productDetail[i].price" (input)="preventNegative($event)">
           </div>
         </td>
         <td>

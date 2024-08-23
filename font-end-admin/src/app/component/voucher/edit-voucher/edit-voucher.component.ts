@@ -357,4 +357,21 @@ export class EditVoucherComponent implements OnInit {
   formatDate(date: Date): string {
     return this.datePipe.transform(date, 'yyyy-MM-ddTHH:mm') || '';
   }
+
+  preventNegative(event: any) {
+    if (event.target.value < 1) {
+      event.target.value = 1;
+      if (event.target.name === 'quantity') {
+        this.voucher.quantity = 1;
+      } else if (event.target.name === 'maxReduced') {
+        this.voucher.maxReduced = 1;
+      } else if (event.target.name === 'conditionApply') {
+        this.voucher.conditionApply = 1;
+      } else if (event.target.name === 'reducedValue') {
+        this.voucher.reducedValue = 1;
+      } else if (event.target.name === 'limitCustomer') {
+        this.voucher.limitCustomer = 1;
+      }
+    }
+  }
 }

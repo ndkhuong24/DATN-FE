@@ -307,4 +307,10 @@ export class SuaSanPhamComponent implements OnInit {
     this.productDetail.splice(i, 1);
     this.cdr.detectChanges();
   }
+
+  preventNegative(event: any) {
+    if (event.target.value < 1) {
+      event.target.value = 1;
+    }
+  }
 }

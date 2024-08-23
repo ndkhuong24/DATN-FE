@@ -47,7 +47,8 @@
     <mat-form-field appearance="outline" class="example-full-width">
       <mat-label>Điều kiện sử dụng</mat-label>
       <input matInput type="number" [(ngModel)]="ConditionApply" name="ConditionApply" placeholder="Điều kiện sử dụng"
-        (keydown)="revoveInvalid(validconditionApply)" (blur)="validateConditionApply()">
+        min="1" (input)="preventNegative($event)" (keydown)="revoveInvalid(validconditionApply)"
+        (blur)="validateConditionApply()">
       <div class="validate-input" *ngIf="!validconditionApply.done">
         <p class="validate-input-label" *ngIf="validconditionApply.empty">Điều kiện sử dụng không để trống</p>
         <p class="validate-input-label" *ngIf="validconditionApply.regex">Điều kiện sử dụng phải là số dương</p>
@@ -56,8 +57,8 @@
 
     <mat-form-field appearance="outline" class="example-full-width">
       <mat-label>Giá trị giảm</mat-label>
-      <input matInput type="number" [(ngModel)]="ReducedValue" name="ReducedValue" placeholder="Giá trị giảm"
-        (keydown)="revoveInvalid(validReducedValue)" (blur)="validateReducedValue()">
+      <input matInput type="number" [(ngModel)]="ReducedValue" name="ReducedValue" placeholder="Giá trị giảm" min="1"
+        (input)="preventNegative($event)" (keydown)="revoveInvalid(validReducedValue)" (blur)="validateReducedValue()">
       <div class="validate-input" *ngIf="!validReducedValue.done">
         <p class="validate-input-label" *ngIf="validReducedValue.empty">Giá trị giảm không để trống</p>
         <p class="validate-input-label" *ngIf="validReducedValue.regex">Giá trị giảm phải là số dương</p>
@@ -66,8 +67,8 @@
 
     <mat-form-field appearance="outline" class="example-full-width">
       <mat-label>Số lượng</mat-label>
-      <input matInput type="number" [(ngModel)]="Quantity" name="Quantity" placeholder="Số lượng"
-        (keydown)="revoveInvalid(validQuantity)" (blur)="validateQuantity()">
+      <input matInput type="number" [(ngModel)]="Quantity" name="Quantity" placeholder="Số lượng" min="1"
+        (input)="preventNegative($event)" (keydown)="revoveInvalid(validQuantity)" (blur)="validateQuantity()">
       <div class="validate-input" *ngIf="!validQuantity.done">
         <p class="validate-input-label" *ngIf="validQuantity.empty">Số lượng sử dụng không để trống</p>
         <p class="validate-input-label" *ngIf="validQuantity.regex">Số lượng phải lớn hơn 0</p>
@@ -96,8 +97,9 @@
 
   <mat-form-field appearance="outline" *ngIf="OptionCustomer == 1" style="width: 45%;">
     <mat-label>Giới hạn số lần sử dụng với mỗi khách hàng</mat-label>
-    <input matInput type="number" [(ngModel)]="LimitCustomer" name="LimitCustomer" placeholder="Số lần sử dụng"
-      (keydown)="OptionCustomer == 1 && revoveInvalid(validLimitCustomer)" (blur)="validateLimitCustomer()">
+    <input matInput type="number" [(ngModel)]="LimitCustomer" name="LimitCustomer" placeholder="Số lần sử dụng" min="1"
+      (input)="preventNegative($event)" (keydown)="OptionCustomer == 1 && revoveInvalid(validLimitCustomer)"
+      (blur)="validateLimitCustomer()">
     <div class="validate-input" *ngIf="OptionCustomer == 1 && !validLimitCustomer.done">
       <p class="validate-input-label" *ngIf="validLimitCustomer.empty">Số lượng sử dụng không để trống</p>
       <p class="validate-input-label" *ngIf="validLimitCustomer.regex">Số lượng phải lớn hơn 0</p>

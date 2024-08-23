@@ -301,4 +301,19 @@ export class CreatVoucherShipComponent implements OnInit {
   validateQuantity() {
     this.validQuantity = CommonFunction.validateInput(this.Quantity, 50, /^[1-9]\d*(\.\d+)?$/);
   }
+
+  preventNegative(event: any) {
+    if (event.target.value < 1) {
+      event.target.value = 1;
+      if (event.target.name === 'Quantity') {
+        this.Quantity = 1;
+      } else if (event.target.name === 'ConditionApply') {
+        this.ConditionApply = 1;
+      } else if (event.target.name === 'ReducedValue') {
+        this.ReducedValue = 1;
+      } else if (event.target.name === 'LimitCustomer') {
+        this.LimitCustomer = 1;
+      }
+    }
+  }
 }
