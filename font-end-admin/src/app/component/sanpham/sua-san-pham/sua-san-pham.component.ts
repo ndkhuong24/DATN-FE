@@ -86,6 +86,8 @@ export class SuaSanPhamComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log(this.products);
+
     this.getALLBrand();
     this.getAllCategory();
     this.getAllMaterial();
@@ -294,6 +296,9 @@ export class SuaSanPhamComponent implements OnInit {
             quantity: 1,
             shoeCollar: 0,
             price: 1000,
+            idProduct: this.products.id,
+            idColor: this.listColorChoice[j].id,
+            idSize: this.listSizeChoice[i].id,
           };
           this.productDetail.push(obj);
         }
