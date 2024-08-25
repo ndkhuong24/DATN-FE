@@ -318,19 +318,57 @@ export class CreatVoucherComponent implements OnInit {
     this.validQuantity = CommonFunction.validateInput(this.Quantity, 50, /^[1-9]\d*(\.\d+)?$/);
   }
 
+  // preventNegative(event: any) {
+  //   if (event.target.value < 1) {
+  //     event.target.value = 1;
+  //     if (event.target.name === 'Quantity') {
+  //       this.Quantity = 1;
+  //     } else if (event.target.name === 'MaxReduced') {
+  //       this.MaxReduced = 1;
+  //     } else if (event.target.name === 'ConditionApply') {
+  //       this.ConditionApply = 1;
+  //     } else if (event.target.name === 'ReducedValue') {
+  //       this.ReducedValue = 1;
+  //     } else if (event.target.name === 'LimitCustomer') {
+  //       this.LimitCustomer = 1;
+  //     }
+  //   }
+  // }
+
   preventNegative(event: any) {
-    if (event.target.value < 1) {
-      event.target.value = 1;
-      if (event.target.name === 'Quantity') {
-        this.Quantity = 1;
-      } else if (event.target.name === 'MaxReduced') {
-        this.MaxReduced = 1;
-      } else if (event.target.name === 'ConditionApply') {
-        this.ConditionApply = 1;
-      } else if (event.target.name === 'ReducedValue') {
-        this.ReducedValue = 1;
-      } else if (event.target.name === 'LimitCustomer') {
-        this.LimitCustomer = 1;
+    let value = event.target.value;
+    const name = event.target.name;
+
+    // Regular expression to match positive integers
+    const positiveIntegerRegex = /^[1-9]\d*$/;
+
+    if (!positiveIntegerRegex.test(value)) {
+      value = value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+      value = value.replace(/^0+/, ''); // Remove leading zeros
+
+      if (value === '' || value === '0') {
+        value = '1'; // Default to 1 if the input is invalid
+      }
+
+      event.target.value = value;
+
+      // Update the corresponding property based on the input name
+      switch (name) {
+        case 'Quantity':
+          this.Quantity = parseInt(value, 10);
+          break;
+        case 'MaxReduced':
+          this.MaxReduced = parseInt(value, 10);
+          break;
+        case 'ConditionApply':
+          this.ConditionApply = parseInt(value, 10);
+          break;
+        case 'ReducedValue':
+          this.ReducedValue = parseInt(value, 10);
+          break;
+        case 'LimitCustomer':
+          this.LimitCustomer = parseInt(value, 10);
+          break;
       }
     }
   }

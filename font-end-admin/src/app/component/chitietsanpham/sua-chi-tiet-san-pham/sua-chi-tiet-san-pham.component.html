@@ -42,8 +42,8 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Số lượng</mat-label>
-      <input [(ngModel)]="data.quantity" name="quantity" matInput placeholder="Số lượng"
-        (keydown)="revoveInvalid(validQuantity)" (blur)="validateQuantity()">
+      <input [(ngModel)]="data.quantity" name="quantity" matInput placeholder="Số lượng" type="number" min="1"
+        (input)="preventNegative($event)" (keydown)="revoveInvalid(validQuantity)" (blur)="validateQuantity()">
       <div class="validate-input" *ngIf="!validQuantity.done">
         <p class="validate-input-label" *ngIf="validQuantity.empty">Mô tả không được để trống</p>
       </div>
@@ -61,8 +61,8 @@
   <div class="column">
     <mat-form-field appearance="outline">
       <mat-label>Giá</mat-label>
-      <input [(ngModel)]="data.price" name="price" matInput placeholder="Giá"
-        (keydown)="revoveInvalid(validPrice)" (blur)="validatePrice()">
+      <input [(ngModel)]="data.price" name="price" matInput placeholder="Giá" (keydown)="revoveInvalid(validPrice)"
+        (input)="preventNegative($event)" type="number" min="1" (blur)="validatePrice()">
       <div class="validate-input" *ngIf="!validPrice.done">
         <p class="validate-input-label" *ngIf="validPrice.empty">Vui lòng nhập giá tiền</p>
       </div>

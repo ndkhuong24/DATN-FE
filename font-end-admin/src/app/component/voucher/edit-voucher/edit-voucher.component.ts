@@ -358,19 +358,57 @@ export class EditVoucherComponent implements OnInit {
     return this.datePipe.transform(date, 'yyyy-MM-ddTHH:mm') || '';
   }
 
+  // preventNegative(event: any) {
+  //   if (event.target.value < 1) {
+  //     event.target.value = 1;
+  //     if (event.target.name === 'quantity') {
+  //       this.voucher.quantity = 1;
+  //     } else if (event.target.name === 'maxReduced') {
+  //       this.voucher.maxReduced = 1;
+  //     } else if (event.target.name === 'conditionApply') {
+  //       this.voucher.conditionApply = 1;
+  //     } else if (event.target.name === 'reducedValue') {
+  //       this.voucher.reducedValue = 1;
+  //     } else if (event.target.name === 'limitCustomer') {
+  //       this.voucher.limitCustomer = 1;
+  //     }
+  //   }
+  // }
+
   preventNegative(event: any) {
-    if (event.target.value < 1) {
-      event.target.value = 1;
-      if (event.target.name === 'quantity') {
-        this.voucher.quantity = 1;
-      } else if (event.target.name === 'maxReduced') {
-        this.voucher.maxReduced = 1;
-      } else if (event.target.name === 'conditionApply') {
-        this.voucher.conditionApply = 1;
-      } else if (event.target.name === 'reducedValue') {
-        this.voucher.reducedValue = 1;
-      } else if (event.target.name === 'limitCustomer') {
-        this.voucher.limitCustomer = 1;
+    let value = event.target.value;
+    const name = event.target.name;
+
+    // Regular expression to match positive integers
+    const positiveIntegerRegex = /^[1-9]\d*$/;
+
+    if (!positiveIntegerRegex.test(value)) {
+      value = value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+      value = value.replace(/^0+/, ''); // Remove leading zeros
+
+      if (value === '' || value === '0') {
+        value = '1'; // Default to 1 if the input is invalid
+      }
+
+      event.target.value = value;
+
+      // Update the corresponding property based on the input name
+      switch (name) {
+        case 'quantity':
+          this.voucher.quantity = parseInt(value, 10);
+          break;
+        case 'maxReduced':
+          this.voucher.maxReduced = parseInt(value, 10);
+          break;
+        case 'conditionApply':
+          this.voucher.conditionApply = parseInt(value, 10);
+          break;
+        case 'reducedValue':
+          this.voucher.reducedValue = parseInt(value, 10);
+          break;
+        case 'limitCustomer':
+          this.voucher.limitCustomer = parseInt(value, 10);
+          break;
       }
     }
   }

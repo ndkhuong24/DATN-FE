@@ -137,7 +137,7 @@ export class SuaChiTietSanPhamComponent implements OnInit {
           price: this.data.price,
           shoeCollar: this.data.shoeCollar
         };
-        
+
         this.productDetailService.UpdateProductDetail(id, productDetail).subscribe(
           result => {
             console.log('productDetail update success', result);
@@ -156,4 +156,32 @@ export class SuaChiTietSanPhamComponent implements OnInit {
     });
   }
 
+  preventNegative(event: any) {
+    let value = event.target.value;
+    const name = event.target.name;
+
+    // Regular expression to match positive integers
+    const positiveIntegerRegex = /^[1-9]\d*$/;
+
+    if (!positiveIntegerRegex.test(value)) {
+      value = value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+      value = value.replace(/^0+/, ''); // Remove leading zeros
+
+      if (value === '' || value === '0') {
+        value = '1'; // Default to 1 if the input is invalid
+      }
+
+      event.target.value = value;
+
+      // Update the corresponding property based on the input name
+      switch (name) {
+        case 'price':
+          this.data.price = parseInt(value, 10);
+          break;
+        case 'quantity':
+          this.data.quantity = parseInt(value, 10);
+          break;
+      }
+    }
+  }
 }

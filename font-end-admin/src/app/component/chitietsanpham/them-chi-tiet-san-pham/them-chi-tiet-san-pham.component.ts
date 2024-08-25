@@ -22,7 +22,7 @@ export class ThemChiTietSanPhamComponent implements OnInit {
   IdColor: number;
   IdSize: number;
   shoeCollar: number = 0;
-  quantity: string;
+  quantity: number = 1;
   price: number = 1000;
 
   size: SizeInterface[] = [];
@@ -145,4 +145,43 @@ export class ThemChiTietSanPhamComponent implements OnInit {
     });
   }
 
+  // preventNegative(event: any) {
+  //   if (event.target.value < 1) {
+  //     event.target.value = 1;
+  //     if (event.target.name === 'price') {
+  //       this.price = 1;
+  //     } else if (event.target.name === 'quantity') {
+  //       this.quantity = 1;
+  //     }
+  //   }
+  // }
+
+  preventNegative(event: any) {
+    let value = event.target.value;
+    const name = event.target.name;
+
+    // Regular expression to match positive integers
+    const positiveIntegerRegex = /^[1-9]\d*$/;
+
+    if (!positiveIntegerRegex.test(value)) {
+      value = value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+      value = value.replace(/^0+/, ''); // Remove leading zeros
+
+      if (value === '' || value === '0') {
+        value = '1'; // Default to 1 if the input is invalid
+      }
+
+      event.target.value = value;
+
+      // Update the corresponding property based on the input name
+      switch (name) {
+        case 'price':
+          this.price = parseInt(value, 10);
+          break;
+        case 'quantity':
+          this.quantity = parseInt(value, 10);
+          break;
+      }
+    }
+  }
 }
