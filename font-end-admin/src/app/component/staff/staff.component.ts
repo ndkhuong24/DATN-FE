@@ -58,8 +58,8 @@ export class StaffComponent implements OnInit {
     // this.listStatus = lst;
     this.columnDefs = [
       {
-        headerName: 'Mã nhân viên',
-        field: 'code',
+        headerName: 'Chức vụ',
+        field: 'role',
         sortable: true,
         filter: true,
         flex: 1
