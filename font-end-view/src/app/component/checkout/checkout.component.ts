@@ -240,14 +240,28 @@ export class CheckoutComponent implements OnInit {
             );
 
             if (!detail) {
-              this.toaStr.error('Không tìm thấy chi tiết sản phẩm ' + product.productName + ' trong kho');
+              // this.toaStr.error('Không tìm thấy chi tiết sản phẩm ' + product.productName + ' trong kho');
+              this.toaStr.error(`Không tìm thấy chi tiết sản phẩm ${product.productName} - ${product.productDetailDTO.colorDTO.name} - ${product.productDetailDTO.sizeDTO.sizeNumber} trong kho`);
               return of(new Error('Product detail not found'));
             }
 
             if (detail.quantity < product.quantity) {
-              this.toaStr.error('Số lượng sản phẩm ' + product.productName + ' vượt quá số lượng trong kho');
+              this.toaStr.error(`Số lượng sản phẩm ${product.productName} - ${product.productDetailDTO.colorDTO.name} - ${product.productDetailDTO.sizeDTO.sizeNumber} vượt quá số lượng trong kho`);
+              // this.toaStr.error('Số lượng sản phẩm ' + product.productName + ' vượt quá số lượng trong kho');
               return of(new Error('Insufficient quantity'));
             }
+
+            // if (!detail) {
+            //   // this.toaStr.error('Không tìm thấy chi tiết sản phẩm ' + product.productName + ' trong kho');
+            //   this.toaStr.error(`Không tìm thấy chi tiết sản phẩm ${product.productName} - ${product.productDetailDTO.colorName} - ${product.productDetailDTO.sizeNumber} trong kho`);
+            //   return of(new Error('Product detail not found'));
+            // }
+
+            // if (detail.quantity < product.quantity) {
+            //   this.toaStr.error(`Số lượng sản phẩm ${product.productName} - ${product.productDetailDTO.colorName} - ${product.productDetailDTO.sizeNumber} vượt quá số lượng trong kho`);
+            //   // this.toaStr.error('Số lượng sản phẩm ' + product.productName + ' vượt quá số lượng trong kho');
+            //   return of(new Error('Insufficient quantity'));
+            // }
 
             return of(detail);
           }
@@ -437,14 +451,26 @@ export class CheckoutComponent implements OnInit {
             );
 
             if (!detail) {
-              this.toaStr.error('Không tìm thấy chi tiết sản phẩm ' + product.productName + ' trong kho');
+              // this.toaStr.error('Không tìm thấy chi tiết sản phẩm ' + product.productName + ' trong kho');
+              this.toaStr.error(`Không tìm thấy chi tiết sản phẩm ${product.productName} - ${product.productDetailDTO.colorDTO.name} - ${product.productDetailDTO.sizeDTO.sizeNumber} trong kho`);
               return of(new Error('Product detail not found'));
             }
 
             if (detail.quantity < product.quantity) {
-              this.toaStr.error('Số lượng sản phẩm ' + product.productName + ' vượt quá số lượng trong kho');
+              this.toaStr.error(`Số lượng sản phẩm ${product.productName} - ${product.productDetailDTO.colorDTO.name} - ${product.productDetailDTO.sizeDTO.sizeNumber} vượt quá số lượng trong kho`);
+              // this.toaStr.error('Số lượng sản phẩm ' + product.productName + ' vượt quá số lượng trong kho');
               return of(new Error('Insufficient quantity'));
             }
+
+            // if (!detail) {
+            //   this.toaStr.error('Không tìm thấy chi tiết sản phẩm ' + product.productName + ' trong kho');
+            //   return of(new Error('Product detail not found'));
+            // }
+
+            // if (detail.quantity < product.quantity) {
+            //   this.toaStr.error('Số lượng sản phẩm ' + product.productName + ' vượt quá số lượng trong kho');
+            //   return of(new Error('Insufficient quantity'));
+            // }
 
             return of(detail);
           }

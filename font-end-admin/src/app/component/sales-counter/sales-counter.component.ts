@@ -556,10 +556,12 @@ export class SalesCounterComponent implements OnInit {
         map(res => {
           const productDetail = res.find((item: any) => item.idColor === product.idColor && item.idSize === product.idSize);
           if (!productDetail) {
-            this.toastr.error('Không tìm thấy sản phẩm ' + product.productDTO.name + ' trong kho');
+            // this.toastr.error('Không tìm thấy sản phẩm ' + product.productDTO.name + ' trong kho');
+            this.toastr.error(`Không tìm thấy sản phẩm ${product.productDTO.name} - ${product.colorDTO.name} - ${product.sizeDTO.sizeNumber}2 trong kho`);
             throw new Error('Product not found');
           } else if (productDetail.quantity < product.quantityInOrder) {
-            this.toastr.error('Số lượng sản phẩm ' + product.productDTO.name + ' vượt quá số lượng trong kho');
+            // this.toastr.error('Số lượng sản phẩm ' + product.productDTO.name + ' vượt quá số lượng trong kho');
+            this.toastr.error(`Số lượng sản phẩm ${product.productDTO.name} - ${product.colorDTO.name} - ${product.sizeDTO.sizeNumber}) vượt quá số lượng trong kho`);
             throw new Error('Insufficient quantity');
           }
           return productDetail;
