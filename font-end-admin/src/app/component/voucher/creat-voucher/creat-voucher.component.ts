@@ -19,7 +19,6 @@ export class CreatVoucherComponent implements OnInit {
   columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
-
   checkAllow: boolean = false;
   checkStartDate: boolean = false;
   checkStartDateNull: boolean = false;
@@ -31,40 +30,26 @@ export class CreatVoucherComponent implements OnInit {
 
   Name: string;
   validName: ValidateInput = new ValidateInput();
-
   StartDate: any;
   EndDate: any;
-
   Description: string;
   validDescription: ValidateInput = new ValidateInput();
-
   ConditionApply: number = 1;
   validconditionApply: ValidateInput = new ValidateInput();
-
   VoucherType: number = 0;
-
   ReducedValue: number = 1;
   validReducedValue: ValidateInput = new ValidateInput();
-
   MaxReduced: number = 1;
   validMaxReduced: ValidateInput = new ValidateInput();
-
   Quantity: number = 1;
   validQuantity: ValidateInput = new ValidateInput();
-
   Apply: number = 2;
-
   OptionCustomer: number = 0;
-
   LimitCustomer: number = 1;
   validLimitCustomer: ValidateInput = new ValidateInput();
-
   Allow: number = 1;
-
   currentDate: Date = new Date();
-
   CustomerAdminDTOList: any;
-
   gridApi: any;
 
   constructor(
@@ -202,8 +187,6 @@ export class CreatVoucherComponent implements OnInit {
   validateName() {
     this.validName = CommonFunction.validateInput(this.Name, 50, null);
   }
-
-
 
   validateDescription() {
     this.validDescription = CommonFunction.validateInput(this.Description, 250, null);
@@ -344,7 +327,7 @@ export class CreatVoucherComponent implements OnInit {
           quantity: this.Quantity,
           apply: this.Apply,
           optionCustomer: this.OptionCustomer,
-          limitCustomer: this.LimitCustomer,
+          limitCustomer: this.Quantity,
           customerAdminDTOList: arrayCustomer,
           allow: this.Allow,
           createName: localStorage.getItem('fullname'),

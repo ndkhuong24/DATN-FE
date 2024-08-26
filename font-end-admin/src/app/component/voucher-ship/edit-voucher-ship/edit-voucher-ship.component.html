@@ -96,7 +96,7 @@
     </div>
   </div>
 
-  <mat-form-field appearance="outline" *ngIf="voucherFreeShip.optionCustomer == 1" style="width: 45%;">
+  <!-- <mat-form-field appearance="outline" *ngIf="voucherFreeShip.optionCustomer == 1" style="width: 45%;">
     <mat-label>Giới hạn số lần sử dụng với mỗi khách hàng</mat-label>
     <input matInput type="number" [(ngModel)]="voucherFreeShip.limitCustomer" name="limitCustomer"
       (input)="preventNegative($event)" min="1" placeholder="Số lần sử dụng"
@@ -106,7 +106,7 @@
       <p class="validate-input-label" *ngIf="validLimitCustomer.empty">Số lượng sử dụng không để trống</p>
       <p class="validate-input-label" *ngIf="validLimitCustomer.regex">Số lượng phải lớn hơn 0</p>
     </div>
-  </mat-form-field>
+  </mat-form-field> -->
 </div>
 
 <br>

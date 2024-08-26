@@ -272,8 +272,7 @@ export class EditVoucherComponent implements OnInit {
           quantity: this.voucher.quantity,
           apply: this.voucher.apply,
           optionCustomer: this.voucher.optionCustomer,
-
-          limitCustomer: this.voucher.limitCustomer,
+          limitCustomer: this.voucher.quantity,
           customerAdminDTOList: arrayCustomer,
 
           allow: this.allowCurrent,
