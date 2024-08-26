@@ -90,6 +90,12 @@ export class VoucherShipComponent implements OnInit {
         sortable: true,
         filter: true,
         maxWidth: 125,
+        valueFormatter: params => {
+          return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+            .format(params.data.conditionApply)
+            .replace('₫', '') + 'đ';
+        },
+
       },
       {
         headerName: 'Sử dụng',

@@ -148,7 +148,8 @@ export class OrderComponent implements OnInit {
           overflow: 'hidden',
           'justify-content': 'center',
         },
-      }, {
+      }, 
+      {
         headerName: 'Tổng Tiền',
         field: 'totalPayment',
         sortable: true,
