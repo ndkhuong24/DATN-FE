@@ -17,7 +17,6 @@ export class CreatVoucherShipComponent implements OnInit {
   columnDefs = [];
   headerHeight = 50;
   rowHeight = 40;
-
   checkStartDate: boolean = false;
   checkStartDateNull = false;
   checkEndDate: boolean = false;
@@ -250,7 +249,7 @@ export class CreatVoucherShipComponent implements OnInit {
           quantity: this.Quantity,
           optionCustomer: this.OptionCustomer,
 
-          limitCustomer: this.LimitCustomer,
+          limitCustomer: this.Quantity,
           customerAdminDTOList: arrayCustomer,
 
           createName: localStorage.getItem('fullname'),

@@ -391,6 +391,8 @@ export class SalesCounterComponent implements OnInit {
 
       // Sau khi cập nhật, tính lại tổng tiền của các sản phẩm
       this.calculateTotalAllProducts();
+
+      this.clearVoucher();
     } else {
       console.error('listOrder not found in localStorage');
     }

@@ -255,7 +255,7 @@ export class EditVoucherShipComponent implements OnInit {
           quantity: this.voucherFreeShip.quantity,
           optionCustomer: this.voucherFreeShip.optionCustomer,
 
-          limitCustomer: this.voucherFreeShip.limitCustomer,
+          limitCustomer: this.voucherFreeShip.quantity,
           customerAdminDTOList: arrayCustomer,
           createName: localStorage.getItem('fullname'),
         }

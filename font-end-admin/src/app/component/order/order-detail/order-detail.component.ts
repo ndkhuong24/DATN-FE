@@ -9,6 +9,7 @@ import { NoteOrderComponent } from '../note-order/note-order.component';
 import { UtilService } from '../../../util/util.service';
 import { VoucherShipService } from 'src/app/service/voucher-ship.service';
 import { UpdateOrderComponent } from '../update-order/update-order.component';
+import { ProductdetailService } from 'src/app/service/productdetail.service';
 
 @Component({
   selector: 'app-order-detail',
@@ -38,6 +39,7 @@ export class OrderDetailComponent implements OnInit {
     private matDiaLog: MatDialog,
     public utilService: UtilService,
     public voucherShipService: VoucherShipService,
+    private productDetailService: ProductdetailService,
   ) {
     if (data.data?.codeVoucherShip) {
       voucherShipService.searchByCode(data.data.codeVoucherShip).subscribe((res) => {
@@ -196,44 +198,109 @@ export class OrderDetailComponent implements OnInit {
           note: res.data.note
         };
 
-        this.orderService.progressingOrder(obj).subscribe(result => {
-          if (result.status === 'OK') {
-            this.toastr.success('Xác nhận thành công', 'Thông báo', {
-              positionClass: 'toast-top-right'
-            });
+        this.orderDetailService.getAllOrderDetailByOrder(this.data.data.id).subscribe(orderDetails => {
+          this.productDetailService.getAllProductDetail().subscribe(productDetails => {
+            // Check if any orderDetail quantity is greater than productDetail quantity
+            for (let orderDetail of orderDetails.orderDetail) {
+              let productDetail = productDetails.find(pd => pd.id === orderDetail.idProductDetail);
+              if (productDetail && orderDetail.quantity > productDetail.quantity) {
+                this.toastr.error(`Số sản phẩm trong kho không đủ`);
+              } else {
+                this.orderService.progressingOrder(obj).subscribe(result => {
+                  if (result.status === 'OK') {
+                    this.toastr.success('Xác nhận thành công', 'Thông báo', {
+                      positionClass: 'toast-top-right'
+                    });
 
-            const orderCurrent = this.data.data;
-            orderCurrent.status = 1;
+                    const orderCurrent = this.data.data;
+                    orderCurrent.status = 1;
 
-            Swal.fire({
-              title: 'Bạn có muốn gửi Email thông báo đến khách hàng',
-              text: '',
-              icon: 'info',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Đồng ý',
-              cancelButtonText: 'Thoát'
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.orderDetailService.sendEmailFromCustomer(orderCurrent).subscribe(res => {
-                  if (res.success) {
-                    this.toastr.success('Gửi email thành công');
+                    Swal.fire({
+                      title: 'Bạn có muốn gửi Email thông báo đến khách hàng',
+                      text: '',
+                      icon: 'info',
+                      showCancelButton: true,
+                      confirmButtonColor: '#3085d6',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Đồng ý',
+                      cancelButtonText: 'Thoát'
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        this.orderDetailService.sendEmailFromCustomer(orderCurrent).subscribe(res => {
+                          if (res.success) {
+                            this.toastr.success('Gửi email thành công');
+                          } else {
+                            this.toastr.error('Gửi email không thành công');
+                          }
+                        });
+                      }
+                    });
                   } else {
-                    this.toastr.error('Gửi email không thành công');
+                    this.toastr.error(result.message, 'Thông báo', {
+                      positionClass: 'toast-top-right'
+                    });
                   }
+
+                  this.cdr.detectChanges();
+                  this.matRef.close('update-order');
                 });
               }
-            });
-          } else {
-            this.toastr.error(result.message, 'Thông báo', {
-              positionClass: 'toast-top-right'
-            });
-          }
-
-          this.cdr.detectChanges();
-          this.matRef.close('update-order');
+            }
+          });
         });
+
+        // const obj = {
+        //   id: this.data.data.id,
+        //   idStaff: this.data.staff.id,
+        //   note: res.data.note
+        // };
+
+        // this.orderDetailService.getAllOrderDetailByOrder(this.data.data.id).subscribe(res => {
+        //   console.log(res.orderDetail);
+
+        //   this.productDetailService.getAllProductDetail().subscribe(res => {
+        //     console.log(res);
+        //   });
+        // });
+
+        // this.orderService.progressingOrder(obj).subscribe(result => {
+        //   if (result.status === 'OK') {
+        //     this.toastr.success('Xác nhận thành công', 'Thông báo', {
+        //       positionClass: 'toast-top-right'
+        //     });
+
+        //     const orderCurrent = this.data.data;
+        //     orderCurrent.status = 1;
+
+        //     Swal.fire({
+        //       title: 'Bạn có muốn gửi Email thông báo đến khách hàng',
+        //       text: '',
+        //       icon: 'info',
+        //       showCancelButton: true,
+        //       confirmButtonColor: '#3085d6',
+        //       cancelButtonColor: '#d33',
+        //       confirmButtonText: 'Đồng ý',
+        //       cancelButtonText: 'Thoát'
+        //     }).then((result) => {
+        //       if (result.isConfirmed) {
+        //         this.orderDetailService.sendEmailFromCustomer(orderCurrent).subscribe(res => {
+        //           if (res.success) {
+        //             this.toastr.success('Gửi email thành công');
+        //           } else {
+        //             this.toastr.error('Gửi email không thành công');
+        //           }
+        //         });
+        //       }
+        //     });
+        //   } else {
+        //     this.toastr.error(result.message, 'Thông báo', {
+        //       positionClass: 'toast-top-right'
+        //     });
+        //   }
+
+        //   this.cdr.detectChanges();
+        //   this.matRef.close('update-order');
+        // });
 
       }
     });
@@ -326,7 +393,8 @@ export class OrderDetailComponent implements OnInit {
     const dialogref = this.matDiaLog.open(UpdateOrderComponent, {
       width: '200vh',
       height: '100vh',
-      data: this.data.data
+      data: this.data.data,
+      disableClose: true
     });
     dialogref.afterClosed().subscribe((result) => {
       if (result === 'updateOrder') {
