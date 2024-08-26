@@ -24,7 +24,7 @@ export class CreatVoucherShipComponent implements OnInit {
   checkEndDateNull = false;
   disableCheckLimitCustomer: boolean = false;
 
-  public rowSelection: 'single' | 'multiple' = 'multiple';
+  public rowSelection: 'single' | 'multiple' = 'single';
 
   Name: string;
   validName: ValidateInput = new ValidateInput();
@@ -93,14 +93,14 @@ export class CreatVoucherShipComponent implements OnInit {
         editable: true,
         flex: 1,
       },
-      {
-        headerName: 'Ngày sinh',
-        field: 'birthday',
-        sortable: true,
-        filter: true,
-        editable: true,
-        flex: 1,
-      },
+      // {
+      //   headerName: 'Ngày sinh',
+      //   field: 'birthday',
+      //   sortable: true,
+      //   filter: true,
+      //   editable: true,
+      //   flex: 1,
+      // },
       {
         headerName: 'Số điện thoại',
         field: 'phone',

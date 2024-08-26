@@ -58,7 +58,7 @@ export class EditVoucherComponent implements OnInit {
   validconditionApply: ValidateInput = new ValidateInput();
   validLimitCustomer: ValidateInput = new ValidateInput();
 
-  public rowSelection: 'single' | 'multiple' = 'multiple';
+  public rowSelection: 'single' | 'multiple' = 'single';
 
   constructor(
     public dialogRef: MatDialogRef<EditVoucherComponent>,
@@ -89,14 +89,14 @@ export class EditVoucherComponent implements OnInit {
         editable: true,
         flex: 1,
       },
-      {
-        headerName: 'Ngày sinh',
-        field: 'birthday',
-        sortable: true,
-        filter: true,
-        editable: true,
-        flex: 1,
-      },
+      // {
+      //   headerName: 'Ngày sinh',
+      //   field: 'birthday',
+      //   sortable: true,
+      //   filter: true,
+      //   editable: true,
+      //   flex: 1,
+      // },
       {
         headerName: 'Giới tính',
         field: 'gender',

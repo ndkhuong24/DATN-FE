@@ -27,7 +27,7 @@ export class CreatVoucherComponent implements OnInit {
   checkEndDateNull: boolean = false;
   disableCheckLimitCustomer: boolean = false;
 
-  public rowSelection: 'single' | 'multiple' = 'multiple';
+  public rowSelection: 'single' | 'multiple' = 'single';
 
   Name: string;
   validName: ValidateInput = new ValidateInput();
@@ -91,17 +91,17 @@ export class CreatVoucherComponent implements OnInit {
         editable: true,
         flex: 1,
       },
-      {
-        headerName: 'Ngày sinh',
-        field: 'birthday',
-        sortable: true,
-        filter: true,
-        editable: true,
-        flex: 1,
-        valueGetter: (params: { data: { birthday: string; }; }) => {
-          return `${formatDate(params.data.birthday)}`;
-        },
-      },
+      // {
+      //   headerName: 'Ngày sinh',
+      //   field: 'birthday',
+      //   sortable: true,
+      //   filter: true,
+      //   editable: true,
+      //   flex: 1,
+      //   valueGetter: (params: { data: { birthday: string; }; }) => {
+      //     return `${formatDate(params.data.birthday)}`;
+      //   },
+      // },
       {
         headerName: 'Số điện thoại',
         field: 'phone',
@@ -195,95 +195,6 @@ export class CreatVoucherComponent implements OnInit {
     this.gridApi = params.api;
   }
 
-  addVoucher() {
-    this.isEndDateValid();
-    this.isStartDateValid();
-    this.validateName();
-    this.validateReducedValue();
-    this.validateDescription();
-    this.validateMaxReducedValue();
-    this.validateConditionApply();
-    this.validateQuantity();
-    this.validateLimitCustomer();
-
-    if (!this.validName.done || !this.validDescription.done || !this.validReducedValue.done
-      || !this.validQuantity.done || !this.validconditionApply.done ||
-      this.checkStartDate || this.checkStartDateNull || this.checkEndDate || this.checkEndDateNull) {
-      return;
-    }
-
-    if (this.VoucherType === 1 && !this.validMaxReduced.done) {
-      return;
-    }
-
-    if (this.OptionCustomer === 1 && !this.validLimitCustomer.done) {
-      return;
-    }
-
-    if (this.OptionCustomer == 1 && this.LimitCustomer > this.Quantity) {
-      this.disableCheckLimitCustomer = true;
-      this.toastr.error('Giới hạn sử dụng với mỗi khách hàng phải nhỏ hơn số lượng');
-      return;
-    }
-
-    const arrayCustomer = this.OptionCustomer === 0 ? null : this.gridApi.getSelectedRows();
-
-    if (arrayCustomer && arrayCustomer.length <= 0 && this.OptionCustomer === 1) {
-      this.disableCheckLimitCustomer = true;
-      this.toastr.error('Không có khách hàng ');
-      return;
-    }
-
-    Swal.fire({
-      title: 'Bạn muốn thêm',
-      text: 'Thao tác này sẽ không hoàn tác',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#dd3333',
-      confirmButtonText: 'Thêm',
-      cancelButtonText: 'Thoát'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const voucher = {
-          name: this.Name,
-          startDate: this.StartDate,
-          endDate: this.EndDate,
-          description: this.Description,
-          conditionApply: this.ConditionApply,
-
-          voucherType: this.VoucherType,
-          reducedValue: this.ReducedValue,
-          maxReduced: this.MaxReduced,
-          quantity: this.Quantity,
-          apply: this.Apply,
-          optionCustomer: this.OptionCustomer,
-
-          limitCustomer: this.LimitCustomer,
-          customerAdminDTOList: arrayCustomer,
-
-          allow: this.Allow,
-          createName: localStorage.getItem('fullname'),
-        }
-
-        this.voucherService.createVoucher(voucher).subscribe(
-          result => {
-            console.log('Product add success', result);
-            this.dialogRef.close('addVoucher');
-          },
-          (error: any) => {
-            console.error('Product add error', error);
-          }
-        );
-        Swal.fire({
-          title: 'Thêm',
-          text: 'Thêm thành công',
-          icon: 'success'
-        });
-      }
-    });
-  }
-
   revoveInvalid(result: { done: boolean; }) {
     result.done = true;
   }
@@ -372,4 +283,330 @@ export class CreatVoucherComponent implements OnInit {
       }
     }
   }
+
+  addVoucher() {
+    this.isEndDateValid();
+    this.isStartDateValid();
+    this.validateName();
+    this.validateReducedValue();
+    this.validateDescription();
+    this.validateMaxReducedValue();
+    this.validateConditionApply();
+    this.validateQuantity();
+    this.validateLimitCustomer();
+
+    if (!this.validName.done || !this.validDescription.done || !this.validReducedValue.done
+      || !this.validQuantity.done || !this.validconditionApply.done ||
+      this.checkStartDate || this.checkStartDateNull || this.checkEndDate || this.checkEndDateNull) {
+      return;
+    }
+
+    if (this.VoucherType === 1 && !this.validMaxReduced.done) {
+      return;
+    }
+
+    if (this.OptionCustomer === 1 && !this.validLimitCustomer.done) {
+      return;
+    }
+
+    if (this.OptionCustomer === 1 && !this.validateQuantityAgainstLimitCustomer()) {
+      this.toastr.error('Số lượng phải lớn hơn hoặc bằng số lần sử dụng với mỗi khách hàng nhân với số lượng khách hàng được chọn.');
+      return;
+    }
+
+    const arrayCustomer = this.OptionCustomer === 0 ? null : this.gridApi.getSelectedRows();
+
+    if (arrayCustomer && arrayCustomer.length <= 0 && this.OptionCustomer === 1) {
+      this.toastr.error('Không có khách hàng được chọn.');
+      return;
+    }
+
+    Swal.fire({
+      title: 'Bạn muốn thêm',
+      text: 'Thao tác này sẽ không hoàn tác',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#dd3333',
+      confirmButtonText: 'Thêm',
+      cancelButtonText: 'Thoát'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const voucher = {
+          name: this.Name,
+          startDate: this.StartDate,
+          endDate: this.EndDate,
+          description: this.Description,
+          conditionApply: this.ConditionApply,
+          voucherType: this.VoucherType,
+          reducedValue: this.ReducedValue,
+          maxReduced: this.MaxReduced,
+          quantity: this.Quantity,
+          apply: this.Apply,
+          optionCustomer: this.OptionCustomer,
+          limitCustomer: this.LimitCustomer,
+          customerAdminDTOList: arrayCustomer,
+          allow: this.Allow,
+          createName: localStorage.getItem('fullname'),
+        };
+
+        this.voucherService.createVoucher(voucher).subscribe(
+          result => {
+            console.log('Product add success', result);
+            this.dialogRef.close('addVoucher');
+          },
+          (error: any) => {
+            console.error('Product add error', error);
+          }
+        );
+
+        Swal.fire({
+          title: 'Thêm',
+          text: 'Thêm thành công',
+          icon: 'success'
+        });
+      }
+    });
+  }
+
+  validateQuantityAgainstLimitCustomer() {
+    if (this.OptionCustomer === 1) {
+      const arrayCustomer = this.gridApi.getSelectedRows();
+      const selectedCustomersCount = arrayCustomer.length;
+
+      const requiredQuantity = this.LimitCustomer * selectedCustomersCount;
+
+      if (this.Quantity < requiredQuantity) {
+        this.validQuantity.done = false;
+        this.validQuantity.regex = true;
+        return false;
+      }
+    }
+
+    this.validQuantity.done = true;
+    this.validQuantity.regex = false;
+    return true;
+  }
+
+  // validateQuantityAgainstLimitCustomer() {
+  //   if (this.OptionCustomer === 1) {
+  //     const arrayCustomer = this.gridApi.getSelectedRows();
+  //     const selectedCustomersCount = arrayCustomer.length;
+
+  //     const requiredQuantity = this.LimitCustomer * selectedCustomersCount;
+
+  //     if (this.Quantity < requiredQuantity) {
+  //       this.validQuantity.done = false;
+  //       this.validQuantity.regex = true;
+  //       return false;
+  //     }
+  //   }
+
+  //   this.validQuantity.done = true;
+  //   this.validQuantity.regex = false;
+  //   return true;
+  // }
+
+  // addVoucher() {
+  //   this.isEndDateValid();
+  //   this.isStartDateValid();
+  //   this.validateName();
+  //   this.validateReducedValue();
+  //   this.validateDescription();
+  //   this.validateMaxReducedValue();
+  //   this.validateConditionApply();
+  //   this.validateQuantity();
+  //   this.validateLimitCustomer();
+
+  //   if (!this.validName.done || !this.validDescription.done || !this.validReducedValue.done
+  //     || !this.validQuantity.done || !this.validconditionApply.done ||
+  //     this.checkStartDate || this.checkStartDateNull || this.checkEndDate || this.checkEndDateNull) {
+  //     return;
+  //   }
+
+  //   if (this.VoucherType === 1 && !this.validMaxReduced.done) {
+  //     return;
+  //   }
+
+  //   if (this.OptionCustomer === 1 && !this.validLimitCustomer.done) {
+  //     return;
+  //   }
+
+  //   if (this.OptionCustomer === 1 && !this.validateQuantityAgainstLimitCustomer()) {
+  //     this.toastr.error('Số lượng phải lớn hơn hoặc bằng số lần sử dụng với mỗi khách hàng nhân với số lượng khách hàng được chọn.');
+  //     return;
+  //   }
+
+  //   const arrayCustomer = this.OptionCustomer === 0 ? null : this.gridApi.getSelectedRows();
+
+  //   if (arrayCustomer && arrayCustomer.length <= 0 && this.OptionCustomer === 1) {
+  //     this.toastr.error('Không có khách hàng được chọn.');
+  //     return;
+  //   }
+
+  //   Swal.fire({
+  //     title: 'Bạn muốn thêm',
+  //     text: 'Thao tác này sẽ không hoàn tác',
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#dd3333',
+  //     confirmButtonText: 'Thêm',
+  //     cancelButtonText: 'Thoát'
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       const voucher = {
+  //         name: this.Name,
+  //         startDate: this.StartDate,
+  //         endDate: this.EndDate,
+  //         description: this.Description,
+  //         conditionApply: this.ConditionApply,
+  //         voucherType: this.VoucherType,
+  //         reducedValue: this.ReducedValue,
+  //         maxReduced: this.MaxReduced,
+  //         quantity: this.Quantity,
+  //         apply: this.Apply,
+  //         optionCustomer: this.OptionCustomer,
+  //         limitCustomer: this.LimitCustomer,
+  //         customerAdminDTOList: arrayCustomer,
+  //         allow: this.Allow,
+  //         createName: localStorage.getItem('fullname'),
+  //       };
+
+  //       this.voucherService.createVoucher(voucher).subscribe(
+  //         result => {
+  //           console.log('Product add success', result);
+  //           this.dialogRef.close('addVoucher');
+  //         },
+  //         (error: any) => {
+  //           console.error('Product add error', error);
+  //         }
+  //       );
+
+  //       Swal.fire({
+  //         title: 'Thêm',
+  //         text: 'Thêm thành công',
+  //         icon: 'success'
+  //       });
+  //     }
+  //   });
+  // }
+
+  // validateQuantityAgainstLimitCustomer() {
+  //   if (this.OptionCustomer === 1) {
+  //     const arrayCustomer = this.gridApi.getSelectedRows();
+  //     const selectedCustomersCount = arrayCustomer.length;
+
+  //     const requiredQuantity = this.LimitCustomer * selectedCustomersCount;
+
+  //     if (this.Quantity < requiredQuantity) {
+  //       this.validQuantity.done = false;
+  //       this.validQuantity.regex = true;
+  //       return false;
+  //     }
+  //   }
+
+  //   this.validQuantity.done = true;
+  //   this.validQuantity.regex = false;
+  //   return true;
+  // }
+
+  // addVoucher() {
+  //   if (this.validateQuantityAgainstLimitCustomer()) {
+  //     // Proceed with adding the voucher
+  //     // Your existing addVoucher logic here
+  //   } else {
+  //     // Handle the validation error
+  //     this.toastr.error('Số lượng phải lớn hơn hoặc bằng số lần sử dụng với mỗi khách hàng nhân với số lượng khách hàng được chọn.');
+  //   }
+  // }
+
+  // addVoucher() {
+  //   this.isEndDateValid();
+  //   this.isStartDateValid();
+  //   this.validateName();
+  //   this.validateReducedValue();
+  //   this.validateDescription();
+  //   this.validateMaxReducedValue();
+  //   this.validateConditionApply();
+  //   this.validateQuantity();
+  //   this.validateLimitCustomer();
+
+  //   if (!this.validName.done || !this.validDescription.done || !this.validReducedValue.done
+  //     || !this.validQuantity.done || !this.validconditionApply.done ||
+  //     this.checkStartDate || this.checkStartDateNull || this.checkEndDate || this.checkEndDateNull) {
+  //     return;
+  //   }
+
+  //   if (this.VoucherType === 1 && !this.validMaxReduced.done) {
+  //     return;
+  //   }
+
+  //   if (this.OptionCustomer === 1 && !this.validLimitCustomer.done) {
+  //     return;
+  //   }
+
+  //   if (this.OptionCustomer == 1 && this.LimitCustomer > this.Quantity) {
+  //     this.disableCheckLimitCustomer = true;
+  //     this.toastr.error('Giới hạn sử dụng với mỗi khách hàng phải nhỏ hơn số lượng');
+  //     return;
+  //   }
+
+  //   const arrayCustomer = this.OptionCustomer === 0 ? null : this.gridApi.getSelectedRows();
+
+  //   if (arrayCustomer && arrayCustomer.length <= 0 && this.OptionCustomer === 1) {
+  //     this.disableCheckLimitCustomer = true;
+  //     this.toastr.error('Không có khách hàng ');
+  //     return;
+  //   }
+
+  //   Swal.fire({
+  //     title: 'Bạn muốn thêm',
+  //     text: 'Thao tác này sẽ không hoàn tác',
+  //     icon: 'warning',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#dd3333',
+  //     confirmButtonText: 'Thêm',
+  //     cancelButtonText: 'Thoát'
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       const voucher = {
+  //         name: this.Name,
+  //         startDate: this.StartDate,
+  //         endDate: this.EndDate,
+  //         description: this.Description,
+  //         conditionApply: this.ConditionApply,
+
+  //         voucherType: this.VoucherType,
+  //         reducedValue: this.ReducedValue,
+  //         maxReduced: this.MaxReduced,
+  //         quantity: this.Quantity,
+  //         apply: this.Apply,
+  //         optionCustomer: this.OptionCustomer,
+
+  //         limitCustomer: this.LimitCustomer,
+  //         customerAdminDTOList: arrayCustomer,
+
+  //         allow: this.Allow,
+  //         createName: localStorage.getItem('fullname'),
+  //       }
+
+  //       this.voucherService.createVoucher(voucher).subscribe(
+  //         result => {
+  //           console.log('Product add success', result);
+  //           this.dialogRef.close('addVoucher');
+  //         },
+  //         (error: any) => {
+  //           console.error('Product add error', error);
+  //         }
+  //       );
+  //       Swal.fire({
+  //         title: 'Thêm',
+  //         text: 'Thêm thành công',
+  //         icon: 'success'
+  //       });
+  //     }
+  //   });
+  // }
 }

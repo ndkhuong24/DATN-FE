@@ -313,9 +313,27 @@ export class SuaSanPhamComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
+  // preventNegative(event: any) {
+  //   if (event.target.value < 1) {
+  //     event.target.value = 1;
+  //   }
+  // }
+
   preventNegative(event: any) {
-    if (event.target.value < 1) {
-      event.target.value = 1;
+    let value = event.target.value;
+
+    // Regular expression to match positive integers
+    const positiveIntegerRegex = /^[1-9]\d*$/;
+
+    if (!positiveIntegerRegex.test(value)) {
+      value = value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+      value = value.replace(/^0+/, ''); // Remove leading zeros
+
+      if (value === '' || value === '0') {
+        value = '1'; // Default to 1 if the input is invalid
+      }
+
+      event.target.value = value;
     }
   }
 }
