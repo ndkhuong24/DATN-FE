@@ -205,7 +205,7 @@ export class SearchOrderComponent implements OnInit {
             this.cdr.detectChanges();
 
             // Điều hướng đến trang tra cứu đơn hàng
-            window.location.href = `http://localhost:4000/tra-cuu-don-hang?code=${this.codeOrderSearch}`;
+            window.location.href = `http://localhost:4000/tra-cuu-don-hang`;
           } else {
             // Hiển thị thông báo lỗi nếu hủy không thành công
             this.toastr.error(result.message, 'Thông báo', {
